@@ -1,0 +1,112 @@
+import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_permission/contacts_permission.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/record_permission/record_permission.dart';
+
+class SuperNavigator {
+  static void push({
+    required BuildContext context,
+    required Widget widget,
+    bool fullScreen = true,
+  }) {
+    Navigator.of(context).push(
+      MaterialPageRoute<String>(
+        builder: (BuildContext context) {
+          return widget;
+        },
+        fullscreenDialog: fullScreen,
+      ),
+    );
+  }
+
+  static void handleContactsNavigation({
+    required BuildContext context,
+    bool shouldShowHistory = false,
+    Function? primaryAction,
+  }) async {
+    var status = await Permission.contacts.status;
+
+    if (status.isGranted) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          // Makes widget fullscreen
+          return Contacts(
+            shouldShowHistory: shouldShowHistory,
+            primaryAction: primaryAction,
+          );
+        },
+      );
+      // showGeneralDialog(
+      //   context: context,
+      //   barrierColor:
+      //       Colors.grey.shade900.withOpacity(0.95), // Background color
+      //   barrierDismissible: false,
+      //   barrierLabel: 'Dialog',
+      //   transitionDuration: Duration(milliseconds: 200),
+      //   transitionBuilder: (context, a1, a2, widget) {
+      //     return Transform.scale(
+      //       scale: a1.value,
+      //       child: Opacity(
+      //         opacity: a1.value,
+      //         child: Dismissible(
+      //           direction: DismissDirection.vertical,
+      //           resizeDuration: Duration(milliseconds: 1),
+      //           onDismissed: (_) {
+      //             Navigator.of(context).pop();
+      //           },
+      //           key: Key("key"),
+      //           child: Contacts(),
+      //         ),
+      //       ),
+      //     );
+      //   },
+      //   pageBuilder: (context, __, ___) {
+      //     // Makes widget fullscreen
+      //     return Dismissible(
+      //       direction: DismissDirection.vertical,
+      //       resizeDuration: Duration(milliseconds: 1),
+      //       onDismissed: (_) {
+      //         Navigator.of(context).pop();
+      //       },
+      //       key: Key("key"),
+      //       child: Contacts(),
+      //     );
+      //   },
+      // );
+      // SuperNavigator.push(
+      //   context: context,
+      //   widget: Contacts(),
+      //   fullScreen: false,
+      // );
+    } else {
+      SuperNavigator.push(
+        context: context,
+        widget: ContactsPermission(),
+        fullScreen: false,
+      );
+    }
+  }
+
+  static void handleRecordNavigation(BuildContext context) async {
+    var cameraStatus = await Permission.camera.status;
+    var microphoneStatus = await Permission.microphone.status;
+
+    if (cameraStatus.isGranted && microphoneStatus.isGranted) {
+      SuperNavigator.push(
+        context: context,
+        widget: Record(),
+        fullScreen: false,
+      );
+    } else {
+      SuperNavigator.push(
+        context: context,
+        widget: RecordPermission(),
+        fullScreen: false,
+      );
+    }
+  }
+}
