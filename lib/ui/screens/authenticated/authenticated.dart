@@ -19,9 +19,12 @@ class _AuthenticatedState extends State<Authenticated> {
     // final _auth = Provider.of<AuthService>(context, listen: false);
     // _auth.signOut();
 
-    if (superuser == null) {
-      return Center(
-        child: CircularProgressIndicator(),
+    if (superuser == null || superuser.id == '') {
+      return Container(
+        color: Colors.white,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
       );
     } else if (!superuser.onboarded) {
       return Onboarding();
