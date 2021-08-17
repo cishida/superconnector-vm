@@ -9,7 +9,7 @@ import 'package:superconnector_vm/core/services/superuser/superuser_service.dart
 import 'package:superconnector_vm/core/services/video/video_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
-import 'package:superconnector_vm/ui/components/chevron_back_button.dart';
+import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/components/video_grid_tile.dart';

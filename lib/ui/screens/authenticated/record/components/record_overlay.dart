@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
-import 'package:superconnector_vm/ui/components/chevron_back_button.dart';
+import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 
 class RecordOverlay extends StatelessWidget {
   const RecordOverlay({
