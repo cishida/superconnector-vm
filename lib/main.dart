@@ -34,6 +34,9 @@ class SuperconnectorMessenger extends StatefulWidget {
 class _SuperconnectorMessengerState extends State<SuperconnectorMessenger> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   final AuthServiceType initialAuthServiceType = AuthServiceType.firebase;
+  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   void initState() {
@@ -46,8 +49,6 @@ class _SuperconnectorMessengerState extends State<SuperconnectorMessenger> {
         SystemUiOverlayStyle(statusBarBrightness: Brightness.dark));
     // FlutterStatusbarcolor.setStatusBarColor(ConstantColors.DARK_BLUE);
     // _firebaseMessaging.requestNotificationPermissions();
-
-    FirebaseAnalytics analytics = FirebaseAnalytics();
 
     return FutureBuilder(
       // Initialize FlutterFire:
@@ -67,6 +68,9 @@ class _SuperconnectorMessengerState extends State<SuperconnectorMessenger> {
                   initialAuthServiceType: initialAuthServiceType,
                 ),
                 dispose: (_, AuthService authService) => authService.dispose(),
+              ),
+              Provider<FirebaseAnalytics>(
+                create: (_) => FirebaseAnalytics(),
               ),
             ],
             child: AuthWidgetBuilder(
