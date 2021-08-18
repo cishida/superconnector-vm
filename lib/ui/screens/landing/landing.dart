@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/go_back.dart';
@@ -97,6 +99,8 @@ class _LandingState extends State<Landing> {
   }
 
   Future _createUserProfile(User user) async {
+    final analytics = Provider.of<FirebaseAnalytics>(context);
+
     var batch = FirebaseFirestore.instance.batch();
     final superuserDoc = await superuserCollection.doc(user.uid).get();
     final phoneNumber = user.phoneNumber ?? '';
@@ -129,25 +133,9 @@ class _LandingState extends State<Landing> {
         superuserDoc.reference,
         superuser.toJson(),
       );
-
-      // var newUserConnectionDoc = superuserCollection
-      //     .doc(superuser.id)
-      //     .collection('userConnections')
-      //     .doc(connection.id);
-
-      // UserConnection userConnection = UserConnection(
-      //   id: newConnectionDoc.id,
-      //   users: {
-      //     '000': {
-      //       'name': 'Example Conversation',
-      //     },
-      //   },
-      // );
-
-      // batch.set(
-      //   newUserConnectionDoc,
-      //   userConnection.toJson(),
-      // );
+      analytics.logSignUp(signUpMethod: 'phone_authentication');
+    } else {
+      analytics.logLogin();
     }
 
     return batch.commit();

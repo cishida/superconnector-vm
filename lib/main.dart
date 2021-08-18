@@ -70,7 +70,7 @@ class _SuperconnectorMessengerState extends State<SuperconnectorMessenger> {
                 dispose: (_, AuthService authService) => authService.dispose(),
               ),
               Provider<FirebaseAnalytics>(
-                create: (_) => FirebaseAnalytics(),
+                create: (_) => analytics,
               ),
             ],
             child: AuthWidgetBuilder(

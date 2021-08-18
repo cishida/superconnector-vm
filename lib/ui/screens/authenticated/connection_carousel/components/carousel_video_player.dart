@@ -1,5 +1,7 @@
 import 'package:better_player/better_player.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
@@ -169,20 +171,40 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
     //   });
   }
 
-  Future _loadUserData() async {
+  Future _loadUserAndLog() async {
     _superuser = await SuperuserService().getSuperuserFromId(
       widget.video.superuserId,
     );
+    _logWatchedEvent();
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void _logWatchedEvent() {
+    if (_superuser == null) {
+      return;
+    }
+
+    final analytics = Provider.of<FirebaseAnalytics>(
+      context,
+      listen: false,
+    );
+
+    analytics.logEvent(
+      name: 'vm_watched',
+      parameters: <String, dynamic>{
+        'video_id': widget.video.id,
+        'watcher_id': _superuser!.id,
+      },
+    );
   }
 
   @override
   void initState() {
     super.initState();
     _initializeVideo();
-    _loadUserData();
+    _loadUserAndLog();
   }
 
   @override

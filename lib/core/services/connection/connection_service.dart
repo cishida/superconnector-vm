@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 
@@ -22,6 +23,7 @@ class ConnectionService {
     required String currentUserId,
     required SelectedContacts selectedContacts,
     required List<Connection> connections,
+    required FirebaseAnalytics analytics,
   }) async {
     List<String> userIds = selectedContacts.getSelectedSupercontacts
         .map((supercontact) => supercontact.targetUserId)
@@ -97,10 +99,17 @@ class ConnectionService {
           return connection;
         }
       }
-      continue;
     }
 
     await connectionDoc.set(connection.toJson());
+    analytics.logEvent(
+      name: 'connection_created',
+      parameters: <String, dynamic>{
+        'id': connectionDoc.id,
+        'userIds': connection.userIds,
+      },
+    );
+
     return connection;
   }
 

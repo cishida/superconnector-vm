@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:better_player/better_player.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_upchunk/flutter_upchunk.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -212,6 +213,17 @@ class _RecordState extends State<Record>
     });
   }
 
+  double _getVideoDuration() {
+    double? duration = (_betterPlayerController!
+        .videoPlayerController?.value.duration!.inMilliseconds
+        .toDouble());
+    if (duration != null) {
+      return double.parse((duration / 1000).toStringAsFixed(2));
+    } else {
+      return 0.0;
+    }
+  }
+
   Future<void> _uploadFile() async {
     _progress = 0;
     final superuser = Provider.of<Superuser?>(context, listen: false);
@@ -250,17 +262,12 @@ class _RecordState extends State<Record>
           return;
         }
 
-        double? duration = (_betterPlayerController!
-            .videoPlayerController?.value.duration!.inMilliseconds
-            .toDouble());
-        duration = double.parse((duration! / 1000).toStringAsFixed(2));
-
         await _videoDoc.set({
           'uploadId': video.uploadId,
           'superuserId': superuser.id,
           'caption': video.caption,
           'created': Timestamp.now(),
-          'duration': duration,
+          'duration': _getVideoDuration(),
           'views': 0,
           'deleted': false,
         });
@@ -278,14 +285,6 @@ class _RecordState extends State<Record>
         } else {
           print('UploadComplete -> No Send');
         }
-        // await AnalyticsLogger.sendAnalyticsEvent(
-        //   'video_created',
-        //   parameters: {
-        //     'caption': _video.caption,
-        //     'superuserId': superuser.uid,
-        //     'uploadId': _video.uploadId,
-        //   },
-        // );
       };
 
     _upchunk = UpChunk.createUpload(uploadOptions);
@@ -338,14 +337,30 @@ class _RecordState extends State<Record>
       return;
     }
 
+    final analytics = Provider.of<FirebaseAnalytics>(
+      context,
+      listen: false,
+    );
+
     Connection connection = await ConnectionService().getOrCreateConnection(
       currentUserId: superuser.id,
       selectedContacts: selectedContacts,
       connections: connections,
+      analytics: analytics,
     );
     await _videoDoc.update({
       'connectionId': connection.id,
     });
+
+    analytics.logEvent(
+      name: 'vm_sent',
+      parameters: <String, dynamic>{
+        'id': _videoDoc.id,
+        'senderId': superuser.id,
+        'connectionId': connection.id,
+        'duration': _getVideoDuration(),
+      },
+    );
 
     selectedContacts.reset();
     Navigator.of(context).popUntil((route) => route.isFirst);
