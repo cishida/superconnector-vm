@@ -192,7 +192,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
 
-    if (superuser == null || superuser.id == '') {
+    if (superuser == null) {
       return Container();
     }
 
