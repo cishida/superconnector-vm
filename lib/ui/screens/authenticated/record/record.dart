@@ -12,6 +12,7 @@ import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
+import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/video/video_player_helper.dart';
 import 'package:superconnector_vm/core/utils/video/video_uploader.dart';
@@ -387,8 +388,12 @@ class _RecordState extends State<Record>
     WidgetsFlutterBinding.ensureInitialized().addObserver(this);
 
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 10));
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(
+        seconds: ConstantValues.VIDEO_TIME_LIMIT,
+      ),
+    );
     _animationController.addListener(() {
       if (mounted) {
         setState(() {});

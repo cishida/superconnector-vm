@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:superconnector_vm/core/utils/constants/values.dart';
 
 class CameraPreviewContainer extends StatefulWidget {
   const CameraPreviewContainer({
@@ -33,7 +34,6 @@ class CameraPreviewContainer extends StatefulWidget {
 class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
   bool _isRecording = false;
   Timer? _timer;
-  int _videoSecondsLimit = 10;
   int _currentVideoSeconds = 0;
   String? _filePath;
 
@@ -111,7 +111,7 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
       _timer = Timer.periodic(
         oneSec,
         (Timer timer) {
-          if (_currentVideoSeconds >= _videoSecondsLimit) {
+          if (_currentVideoSeconds >= ConstantValues.VIDEO_TIME_LIMIT) {
             _onStopButtonPressed();
           } else {
             _currentVideoSeconds = _currentVideoSeconds + 1;
@@ -217,7 +217,7 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
                     color: Colors.black.withOpacity(.20),
                   ),
                   child: Text(
-                    'Tap and hold to record (10s)',
+                    'Tap and hold to record (${ConstantValues.VIDEO_TIME_LIMIT.toString()}s)',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
