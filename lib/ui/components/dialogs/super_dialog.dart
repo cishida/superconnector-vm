@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
-class SuperDialog extends StatelessWidget {
+class SuperDialog extends StatefulWidget {
   const SuperDialog({
     Key? key,
     required this.title,
@@ -10,6 +10,7 @@ class SuperDialog extends StatelessWidget {
     required this.primaryAction,
     this.secondaryActionTitle,
     this.secondaryAction,
+    this.shouldAnimate = true,
   }) : super(key: key);
 
   final String title;
@@ -18,62 +19,107 @@ class SuperDialog extends StatelessWidget {
   final Function primaryAction;
   final String? secondaryActionTitle;
   final Function? secondaryAction;
+  final bool shouldAnimate;
+
+  @override
+  _SuperDialogState createState() => _SuperDialogState();
+}
+
+class _SuperDialogState extends State<SuperDialog>
+    with TickerProviderStateMixin {
+  late AnimationController controller;
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+        duration: Duration(milliseconds: widget.shouldAnimate ? 200 : 0),
+        vsync: this);
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
+
+    // animation.addStatusListener((status) {
+    // if (status == AnimationStatus.completed) {
+    //   controller.reverse();
+    // } else if (status == AnimationStatus.dismissed) {
+    //   controller.forward();
+    // }
+    // });
+
+    controller.forward();
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Dialog(
-      insetPadding: const EdgeInsets.all(12.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      elevation: 3,
-      child: Container(
-        width: size.width,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 35.0,
-            right: 30.0,
-            top: 32.0,
-            bottom: 24.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w600,
+    return FadeTransition(
+      opacity: animation,
+      child: Dialog(
+        insetPadding: const EdgeInsets.all(12.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 3,
+        child: Container(
+          width: size.width,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 35.0,
+              right: 30.0,
+              top: 32.0,
+              bottom: 24.0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  widget.title,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 8.0,
-              ),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.87),
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.w400,
+                SizedBox(
+                  height: 8.0,
                 ),
-              ),
-              SizedBox(
-                height: 17.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (secondaryAction != null)
+                Text(
+                  widget.subtitle,
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.87),
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                SizedBox(
+                  height: 17.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (widget.secondaryAction != null)
+                      GestureDetector(
+                        onTap: () {
+                          widget.secondaryAction!();
+                        },
+                        child: Text(
+                          widget.secondaryActionTitle!,
+                          style: TextStyle(
+                            color: ConstantColors.PRIMARY,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    SizedBox(width: 40.0),
                     GestureDetector(
                       onTap: () {
-                        secondaryAction!();
+                        widget.primaryAction();
                       },
                       child: Text(
-                        secondaryActionTitle!,
+                        widget.primaryActionTitle,
                         style: TextStyle(
                           color: ConstantColors.PRIMARY,
                           fontSize: 18.0,
@@ -81,24 +127,10 @@ class SuperDialog extends StatelessWidget {
                         ),
                       ),
                     ),
-                  SizedBox(width: 40.0),
-                  GestureDetector(
-                    onTap: () {
-                      primaryAction();
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      primaryActionTitle,
-                      style: TextStyle(
-                        color: ConstantColors.PRIMARY,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

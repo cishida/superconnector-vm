@@ -430,7 +430,7 @@ class _RecordState extends State<Record>
 
     return GestureDetector(
       onTap: () {
-        print('please');
+        print('Record container');
       },
       child: LayoutBuilder(
         builder: (context, constraints) {

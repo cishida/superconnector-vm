@@ -21,9 +21,11 @@ class ConnectionTile extends StatefulWidget {
   const ConnectionTile({
     Key? key,
     required this.connection,
+    this.shouldIgnoreTaps = false,
   }) : super(key: key);
 
   final Connection connection;
+  final bool shouldIgnoreTaps;
 
   @override
   _ConnectionTileState createState() => _ConnectionTileState();
@@ -73,6 +75,10 @@ class _ConnectionTileState extends State<ConnectionTile> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        if (widget.shouldIgnoreTaps) {
+          return;
+        }
+
         SuperNavigator.push(
           context: context,
           widget: ConnectionGrid(
@@ -161,8 +167,14 @@ class _ConnectionTileState extends State<ConnectionTile> {
                   itemCount: min(videos.length, 5),
                   itemBuilder: (context, index) {
                     return GestureDetector(
-                      behavior: HitTestBehavior.opaque,
+                      behavior: widget.shouldIgnoreTaps
+                          ? HitTestBehavior.translucent
+                          : HitTestBehavior.opaque,
                       onTap: () {
+                        if (widget.shouldIgnoreTaps) {
+                          return;
+                        }
+
                         SuperNavigator.push(
                           context: context,
                           widget: ConnectionCarousel(

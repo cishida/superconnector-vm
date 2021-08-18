@@ -120,6 +120,7 @@ class _LandingState extends State<Landing> {
         displayName: user.displayName ?? '',
         phoneNumber: phoneNumber,
         photoUrl: photoUrl,
+        homeOnboardingStage: HomeOnboardingStage.connections,
         unseenNotificationCount: 1,
         created: DateTime.now(),
       );

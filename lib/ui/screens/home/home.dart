@@ -1,14 +1,14 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/services/supercontact/supercontact_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/app_bars/light_app_bar.dart';
-import 'package:superconnector_vm/ui/components/buttons/send_vm_button.dart';
+import 'package:superconnector_vm/ui/components/buttons/new_vm_button.dart';
+import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/account/account.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/connection_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/connections_list.dart';
 import 'package:superconnector_vm/ui/screens/home/components/home_title_bar.dart';
 
@@ -20,26 +20,171 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool _isValidContact(Contact contact) {
-    bool hasName = contact.displayName != null && contact.displayName != '';
-    bool hasNumber = contact.phones != null && contact.phones!.isNotEmpty;
+  bool _isShowingDialog = false;
 
-    return hasName && hasNumber;
-  }
+  // bool _isValidContact(Contact contact) {
+  //   bool hasName = contact.displayName != null && contact.displayName != '';
+  //   bool hasNumber = contact.phones != null && contact.phones!.isNotEmpty;
+
+  //   return hasName && hasNumber;
+  // }
 
   // Would love to sync contacts early but would required contact access
-  Future<void> _syncContacts() async {
-    Iterable<Contact> contacts = await ContactsService.getContacts();
-    contacts = contacts.where((contact) {
-      return _isValidContact(contact);
+  // Future<void> _syncContacts() async {
+  //   Iterable<Contact> contacts = await ContactsService.getContacts();
+  //   contacts = contacts.where((contact) {
+  //     return _isValidContact(contact);
+  //   });
+
+  //   final superuser = Provider.of<Superuser?>(context, listen: false);
+  //   if (superuser != null) {
+  //     SupercontactService().syncContacts(
+  //       superuser,
+  //       contacts.toList(),
+  //     );
+  //   }
+  // }
+
+  Future goToOnboardingStage(
+    HomeOnboardingStage stage,
+    Superuser superuser,
+  ) async {
+    superuser.homeOnboardingStage = stage;
+    await superuser.update();
+  }
+
+  Future _showOnboardingDialog({
+    required String title,
+    required String subtitle,
+    required Widget overlayWidget,
+    required Function onTap,
+  }) async {
+    if (_isShowingDialog) {
+      return;
+    }
+
+    setState(() {
+      _isShowingDialog = true;
     });
 
-    final superuser = Provider.of<Superuser?>(context, listen: false);
-    if (superuser != null) {
-      SupercontactService().syncContacts(
-        superuser,
-        contacts.toList(),
-      );
+    Function nextStep = () async {
+      Navigator.of(context).pop();
+      await onTap();
+      setState(() {
+        _isShowingDialog = false;
+      });
+    };
+
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Listener(
+          onPointerUp: (e) => nextStep(),
+          child: Stack(
+            children: [
+              overlayWidget,
+              SuperDialog(
+                title: title,
+                subtitle: subtitle,
+                primaryActionTitle: 'Continue',
+                primaryAction: () {},
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future _startOnboarding(
+    Superuser superuser,
+  ) async {
+    switch (superuser.homeOnboardingStage) {
+      case HomeOnboardingStage.connections:
+        await _showOnboardingDialog(
+            title: ConstantStrings.ONBOARDING_CONNECTIONS_TITLE,
+            subtitle: ConstantStrings.ONBOARDING_CONNECTIONS_SUBTITLE,
+            onTap: () => goToOnboardingStage(
+                  HomeOnboardingStage.contacts,
+                  superuser,
+                ),
+            overlayWidget: Consumer<List<Connection>>(
+              builder: (context, connections, child) {
+                return Positioned(
+                  top: 60.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: Card(
+                    elevation: 0.0,
+                    margin: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0.0),
+                    ),
+                    child: ConnectionTile(
+                      shouldIgnoreTaps: true,
+                      connection: connections[0],
+                    ),
+                  ),
+                );
+              },
+            ));
+        break;
+      case HomeOnboardingStage.contacts:
+        await _showOnboardingDialog(
+          title: ConstantStrings.ONBOARDING_CONTACTS_TITLE,
+          subtitle: ConstantStrings.ONBOARDING_CONTACTS_SUBTITLE,
+          onTap: () => goToOnboardingStage(
+            HomeOnboardingStage.settings,
+            superuser,
+          ),
+          overlayWidget: Positioned(
+            right: 73.0,
+            top: 12.0,
+            child: Image.asset(
+              'assets/images/authenticated/search-icon-white.png',
+              width: 26.0,
+            ),
+          ),
+        );
+        break;
+      case HomeOnboardingStage.settings:
+        await _showOnboardingDialog(
+          title: ConstantStrings.ONBOARDING_SETTINGS_TITLE,
+          subtitle: ConstantStrings.ONBOARDING_SETTINGS_SUBTITLE,
+          onTap: () => goToOnboardingStage(
+            HomeOnboardingStage.newVM,
+            superuser,
+          ),
+          overlayWidget: Positioned(
+            right: 9.0,
+            top: 4.0,
+            child: SuperuserImage(
+              url: superuser.photoUrl,
+              radius: 21.0,
+            ),
+          ),
+        );
+        break;
+      case HomeOnboardingStage.newVM:
+        await _showOnboardingDialog(
+          title: ConstantStrings.ONBOARDING_NEW_VM_TITLE,
+          subtitle: ConstantStrings.ONBOARDING_NEW_VM_SUBTITLE,
+          onTap: () => goToOnboardingStage(
+            HomeOnboardingStage.completed,
+            superuser,
+          ),
+          overlayWidget: Positioned(
+            right: 16.0,
+            bottom: 16.0,
+            child: NewVMButton(
+              isInverted: true,
+            ),
+          ),
+        );
+        break;
+      default:
+        break;
     }
   }
 
@@ -47,21 +192,21 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
 
-    // WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) {
-    //   if (superuser != null && superuser.numContacts == 0) {
-    //      _syncContacts();
-    //   }
-    // });
-
-    if (superuser == null) {
+    if (superuser == null || superuser.id == '') {
       return Container();
     }
+
+    // Start onboarding cards after building
+    // will use the stage a user left off at
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
+      _startOnboarding(superuser);
+    });
 
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
           appBar: LightAppBar(),
-          floatingActionButton: SendVMButton(),
+          floatingActionButton: NewVMButton(),
           body: SafeArea(
             child: Container(
               color: ConstantColors.OFF_WHITE,

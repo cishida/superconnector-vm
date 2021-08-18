@@ -30,7 +30,6 @@ class ConnectionCarousel extends StatefulWidget {
 class _ConnectionCarouselState extends State<ConnectionCarousel> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     TextStyle bottomNavStyle = TextStyle(
       color: ConstantColors.TURQUOISE,
       fontSize: 18.0,

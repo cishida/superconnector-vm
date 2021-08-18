@@ -12,6 +12,37 @@ class SuperFirebaseUser {
   });
 }
 
+enum HomeOnboardingStage {
+  connections,
+  contacts,
+  settings,
+  newVM,
+  completed,
+}
+
+extension HomeOnboardingStageExtension on HomeOnboardingStage {
+  static HomeOnboardingStage fromString(String string) {
+    switch (string) {
+      case 'connections':
+        return HomeOnboardingStage.connections;
+      case 'contacts':
+        return HomeOnboardingStage.contacts;
+      case 'settings':
+        return HomeOnboardingStage.settings;
+      case 'newVM':
+        return HomeOnboardingStage.newVM;
+      case 'completed':
+        return HomeOnboardingStage.completed;
+      default:
+        return HomeOnboardingStage.completed;
+    }
+  }
+
+  String toShortString() {
+    return this.toString().split('.').last;
+  }
+}
+
 @JsonSerializable()
 class Superuser {
   @JsonKey(ignore: true, defaultValue: '')
@@ -40,8 +71,8 @@ class Superuser {
 
   @JsonKey(defaultValue: false)
   bool onboarded;
-  @JsonKey(defaultValue: false)
-  bool homeOnboarding;
+  @JsonKey(defaultValue: HomeOnboardingStage.completed)
+  HomeOnboardingStage homeOnboardingStage;
   @JsonKey(defaultValue: false)
   bool recordOnboarding;
   @JsonKey(defaultValue: false)
@@ -72,7 +103,7 @@ class Superuser {
     this.unseenNotificationCount = 0,
     this.numContacts = 0,
     this.onboarded = false,
-    this.homeOnboarding = false,
+    this.homeOnboardingStage = HomeOnboardingStage.completed,
     this.recordOnboarding = false,
     this.contactsOnboarding = false,
     required this.created,
