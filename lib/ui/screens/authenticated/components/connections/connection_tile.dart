@@ -120,7 +120,7 @@ class _ConnectionTileState extends State<ConnectionTile> {
                     children: [
                       ConnectionNames(
                         names: widget.connection.isExampleConversation
-                            ? ['Example Conversation']
+                            ? ['Example Connection']
                             : _superusers.map((e) => e.fullName).toList(),
                         phoneNumberNameMap:
                             widget.connection.phoneNumberNameMap,
