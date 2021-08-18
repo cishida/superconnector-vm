@@ -51,9 +51,9 @@ class Connection {
 
   Map<String, dynamic> toJson() => _$ConnectionToJson(this);
 
-  Future update(String currentSuperuserId) async {
+  Future update() async {
     await ConnectionService().update(
-      currentSuperuserId,
+      this.id,
       this.toJson(),
     );
   }

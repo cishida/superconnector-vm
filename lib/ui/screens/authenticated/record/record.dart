@@ -353,6 +353,9 @@ class _RecordState extends State<Record>
       'connectionId': connection.id,
     });
 
+    connection.mostRecentActivity = DateTime.now();
+    await connection.update();
+
     analytics.logEvent(
       name: 'vm_sent',
       parameters: <String, dynamic>{
