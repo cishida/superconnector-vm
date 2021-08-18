@@ -84,7 +84,7 @@ class _SuperconnectorMessengerState extends State<SuperconnectorMessenger> {
                   theme: appTheme(),
                   home: AuthWidget(userSnapshot: userSnapshot),
                   navigatorObservers: [
-                    FirebaseAnalyticsObserver(analytics: analytics),
+                    observer,
                   ],
                 );
               },

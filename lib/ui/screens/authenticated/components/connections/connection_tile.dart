@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,6 +36,7 @@ class _ConnectionTileState extends State<ConnectionTile> {
   VideoService _videoService = VideoService();
   SuperuserService _superuserService = SuperuserService();
   List<Superuser> _superusers = [];
+  late Timer _periodicUpdate;
 
   Future _loadUsers() async {
     List<Superuser> tempSuperusers = [];
@@ -69,6 +71,15 @@ class _ConnectionTileState extends State<ConnectionTile> {
   void initState() {
     super.initState();
     _loadUsers();
+    _periodicUpdate = Timer.periodic(Duration(seconds: 10), (Timer t) {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _periodicUpdate.cancel();
+    super.dispose();
   }
 
   @override
