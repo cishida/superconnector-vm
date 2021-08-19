@@ -22,6 +22,10 @@ Video _$VideoFromJson(Map<String, dynamic> json) {
     views: json['views'] as int? ?? 0,
     duration: (json['duration'] as num?)?.toDouble() ?? 0.0,
     deleted: json['deleted'] as bool? ?? false,
+    viewerIds: (json['viewerIds'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList() ??
+        [],
   );
 }
 
@@ -36,5 +40,6 @@ Map<String, dynamic> _$VideoToJson(Video instance) => <String, dynamic>{
       'views': instance.views,
       'duration': instance.duration,
       'deleted': instance.deleted,
+      'viewerIds': instance.viewerIds,
       'created': Video._dateTimeAsIs(instance.created),
     };
