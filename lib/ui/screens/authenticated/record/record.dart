@@ -182,11 +182,11 @@ class _RecordState extends State<Record>
   Future _onResetPressed() async {
     // _cameraController = null;
     // initCamera();
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-      listen: false,
-    );
-    selectedContacts.reset();
+    // var selectedContacts = Provider.of<SelectedContacts>(
+    //   context,
+    //   listen: false,
+    // );
+    // selectedContacts.reset();
 
     setState(() {
       _isResetting = true;
