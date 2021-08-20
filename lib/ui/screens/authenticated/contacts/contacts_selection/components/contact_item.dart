@@ -2,7 +2,6 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/images/empty_image.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/components/contact_avatar.dart';
 
 class ContactItem extends StatelessWidget {
   const ContactItem({

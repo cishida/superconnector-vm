@@ -52,11 +52,13 @@ class _RecordState extends State<Record>
   Future initCamera() async {
     var status = await Permission.camera.status;
 
+    print('init');
+
     if (status.isGranted && cameras.isNotEmpty) {
       _cameraController = CameraController(
         cameras.firstWhere((description) =>
             description.lensDirection == CameraLensDirection.front),
-        ResolutionPreset.high,
+        ResolutionPreset.veryHigh,
         enableAudio: true,
       );
       await _cameraController!.initialize();
@@ -64,6 +66,8 @@ class _RecordState extends State<Record>
       if (mounted) {
         setState(() {});
       }
+
+      print('prepared');
       // .then((_) {
       //   if (!mounted) {
       //     return;
@@ -95,6 +99,7 @@ class _RecordState extends State<Record>
 
     _betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
+        startAt: Duration(milliseconds: 150),
         autoPlay: false,
         looping: true,
         aspectRatio: 9 / 16,
@@ -151,7 +156,7 @@ class _RecordState extends State<Record>
     }
     _cameraController = CameraController(
       cameraDescription,
-      ResolutionPreset.high,
+      ResolutionPreset.veryHigh,
       enableAudio: true,
     );
 
@@ -394,6 +399,7 @@ class _RecordState extends State<Record>
     WidgetsFlutterBinding.ensureInitialized().addObserver(this);
 
     super.initState();
+    initCamera();
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(
@@ -405,7 +411,6 @@ class _RecordState extends State<Record>
         setState(() {});
       }
     });
-    initCamera();
   }
 
   void dispose() {
