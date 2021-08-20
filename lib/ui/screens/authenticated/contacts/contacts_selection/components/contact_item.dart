@@ -1,6 +1,7 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/ui/components/images/empty_image.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/components/contact_avatar.dart';
 
 class ContactItem extends StatelessWidget {
@@ -28,8 +29,8 @@ class ContactItem extends StatelessWidget {
                   left: 19.0,
                   right: 12.0,
                 ),
-                child: ContactAvatar(
-                  contact: contact,
+                child: EmptyImage(
+                  size: 38.0,
                 ),
               ),
               Column(
@@ -78,7 +79,7 @@ class ContactItem extends StatelessWidget {
         Container(
           height: 1.0,
           // width: MediaQuery.of(context).size.width,
-          color: ConstantColors.DIVIDER_GRAY,
+          color: ConstantColors.CONTACTS_GROUP_BACKGROUND,
           margin: const EdgeInsets.only(
             left: 69.0,
           ),

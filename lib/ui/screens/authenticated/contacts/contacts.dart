@@ -128,6 +128,8 @@ class _ContactsState extends State<Contacts> {
 
   @override
   Widget build(BuildContext context) {
+    print('build');
+
     TextStyle bottomNavStyle = TextStyle(
       color: ConstantColors.PRIMARY,
       fontSize: 18.0,
@@ -158,35 +160,53 @@ class _ContactsState extends State<Contacts> {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 horizontal: 18.0,
               ),
-              margin: const EdgeInsets.only(
-                bottom: 9.0,
+              decoration: BoxDecoration(
+                color: ConstantColors.SEARCH_BAR_BACKGROUND,
+                borderRadius: BorderRadius.circular(6.0),
               ),
-              child: CupertinoSlidingSegmentedControl(
-                  groupValue: _segmentedControlValue,
-                  // backgroundColor: Colors.blue.shade200,
-                  children: <int, Widget>{
-                    0: Text(
-                      'Connections',
-                      style: segmentStyle,
+              child: Column(
+                children: [
+                  SearchBar(
+                    controller: _controller,
+                    enabled: true,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: CupertinoColors.systemFill,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(6.0),
+                        bottomRight: Radius.circular(6.0),
+                      ),
                     ),
-                    1: Text(
-                      'Phone Contacts',
-                      style: segmentStyle,
+                    child: CupertinoSlidingSegmentedControl(
+                      groupValue: _segmentedControlValue,
+                      // backgroundColor: Colors.blue.shade200,
+                      children: <int, Widget>{
+                        0: Text(
+                          'Connections',
+                          style: segmentStyle,
+                        ),
+                        1: Text(
+                          'Phone Contacts',
+                          style: segmentStyle,
+                        ),
+                      },
+                      onValueChanged: (value) {
+                        setState(() {
+                          _segmentedControlValue = value as int;
+                        });
+                      },
                     ),
-                  },
-                  onValueChanged: (value) {
-                    setState(() {
-                      _segmentedControlValue = value as int;
-                    });
-                  }),
+                  ),
+                ],
+              ),
             ),
-            SearchBar(
-              controller: _controller,
-              enabled: true,
+            SizedBox(
+              height: 9.0,
             ),
             Expanded(
               child: _segmentedControlValue == 0

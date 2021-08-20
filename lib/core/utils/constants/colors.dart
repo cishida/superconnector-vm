@@ -18,7 +18,7 @@ class ConstantColors {
   // Search
   static const Color SEARCH_BAR_TEXT = Color(0xFF909090);
   static const Color SEARCH_BAR_BACKGROUND = Color(0xFFECECEE);
-  static const Color CONTACTS_GROUP_BACKGROUND = Color(0xFFEAEAEA);
+  static const Color CONTACTS_GROUP_BACKGROUND = Color(0xFFF5F6F6);
   static const Color CONTACT_SELECTION_CIRCLE_BORDER = Color(0xFFC7C6CB);
 
   // Errors
