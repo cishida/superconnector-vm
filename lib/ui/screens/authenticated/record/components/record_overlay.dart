@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
+import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 
@@ -104,10 +105,15 @@ class RecordOverlay extends StatelessWidget {
             ),
           ),
         ),
-        if (!isRecording)
-          Positioned(
-            top: 60.0,
-            right: 10.0,
+        // if (!isRecording)
+        Positioned(
+          top: 60.0,
+          right: 10.0,
+          child: AnimatedOpacity(
+            opacity: !isRecording ? 1.0 : 0.0,
+            duration: const Duration(
+              milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+            ),
             child: Column(
               children: [
                 CameraIcon(
@@ -143,6 +149,7 @@ class RecordOverlay extends StatelessWidget {
               ],
             ),
           ),
+        ),
       ],
     );
   }

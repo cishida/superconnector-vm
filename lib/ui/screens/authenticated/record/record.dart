@@ -99,7 +99,7 @@ class _RecordState extends State<Record>
 
     _betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
-        startAt: Duration(milliseconds: 150),
+        startAt: Duration(milliseconds: 50),
         autoPlay: false,
         looping: true,
         aspectRatio: 9 / 16,
@@ -246,6 +246,7 @@ class _RecordState extends State<Record>
 
     // Chunk upload
     var uploadOptions = UpChunkOptions()
+      ..chunkSize = 5120 * 10
       ..endPoint = json['url']
       ..file = File(_videoFile!.path)
       ..onProgress = (double progress) {
@@ -403,7 +404,7 @@ class _RecordState extends State<Record>
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(
-        seconds: ConstantValues.VIDEO_TIME_LIMIT,
+        milliseconds: ConstantValues.VIDEO_TIME_LIMIT * 1000,
       ),
     );
     _animationController.addListener(() {

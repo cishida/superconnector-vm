@@ -33,6 +33,7 @@ class CameraPreviewContainer extends StatefulWidget {
 
 class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
   bool _isRecording = false;
+  bool _shouldShowOnboardingChip = true;
   Timer? _timer;
   int _currentVideoSeconds = 0;
   String? _filePath;
@@ -152,11 +153,12 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
 
     return GestureDetector(
       onTapDown: (_) async {
-        print('ontapdown');
-
-        await startVideoRecording();
-        HapticFeedback.lightImpact();
         widget._animationController.forward();
+        await startVideoRecording();
+        // await HapticFeedback.mediumImpact();
+        setState(() {
+          _shouldShowOnboardingChip = false;
+        });
       },
       onTapUp: (_) async {
         if (widget._animationController.status == AnimationStatus.forward) {
@@ -164,7 +166,7 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
         }
 
         await _onStopButtonPressed();
-        HapticFeedback.lightImpact();
+        // HapticFeedback.lightImpact();
       },
       child: Stack(
         alignment: FractionalOffset.center,
@@ -194,19 +196,48 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
           ),
           Positioned(
             bottom: 50.0,
-            child: Image.asset(
-              _isRecording
-                  ? 'assets/images/authenticated/record/recording-button.png'
-                  : 'assets/images/authenticated/record/record-button.png',
-              width: 80.0,
+            child: AnimatedOpacity(
+              opacity: _isRecording ? 1.0 : 0.0,
+              duration: const Duration(
+                milliseconds: 100,
+              ),
+              child: Image.asset(
+                'assets/images/authenticated/record/recording-button.png',
+                width: 80.0,
+              ),
+
+              //  Image.asset(
+              //   _isRecording
+              //       ? 'assets/images/authenticated/record/recording-button.png'
+              //       : 'assets/images/authenticated/record/record-button.png',
+              //   width: 80.0,
+              // ),
             ),
           ),
-          if (!_isRecording)
-            Positioned.fill(
-              bottom: 0.0,
-              left: 0.0,
-              child: Align(
-                alignment: Alignment.bottomCenter,
+          Positioned(
+            bottom: 50.0,
+            child: AnimatedOpacity(
+              opacity: !_isRecording && _shouldShowOnboardingChip ? 1.0 : 0.0,
+              duration: const Duration(
+                milliseconds: 100,
+              ),
+              child: Image.asset(
+                'assets/images/authenticated/record/record-button.png',
+                width: 80.0,
+              ),
+            ),
+          ),
+          // if (_shouldShowOnboardingChip)
+          Positioned.fill(
+            bottom: 0.0,
+            left: 0.0,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: AnimatedOpacity(
+                opacity: !_isRecording && _shouldShowOnboardingChip ? 1.0 : 0.0,
+                duration: const Duration(
+                  milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+                ),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 15.0,
@@ -228,6 +259,7 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
                 ),
               ),
             ),
+          ),
         ],
       ),
     );
