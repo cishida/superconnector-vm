@@ -128,8 +128,6 @@ class _ContactsState extends State<Contacts> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
-
     TextStyle bottomNavStyle = TextStyle(
       color: ConstantColors.PRIMARY,
       fontSize: 18.0,
@@ -212,7 +210,11 @@ class _ContactsState extends State<Contacts> {
               child: _segmentedControlValue == 0
                   ? SupercontactSelection(
                       filter: _filter,
-                    )
+                      toContacts: () {
+                        setState(() {
+                          _segmentedControlValue = 1;
+                        });
+                      })
                   : ContactsSelection(
                       toggleContact: (contact) => _toggleContact(
                         contact: contact,

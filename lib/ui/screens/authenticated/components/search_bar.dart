@@ -33,6 +33,7 @@ class SearchBar extends StatelessWidget {
       ),
       child: TextFormField(
         autofocus: shouldAutofocus,
+        autocorrect: false,
         enabled: enabled,
         keyboardAppearance: Brightness.dark,
         style: TextStyle(

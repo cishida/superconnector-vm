@@ -11,9 +11,11 @@ class SupercontactSelection extends StatefulWidget {
   const SupercontactSelection({
     Key? key,
     this.filter = '',
+    required this.toContacts,
   }) : super(key: key);
 
   final String filter;
+  final Function toContacts;
 
   @override
   _SupercontactSelectionState createState() => _SupercontactSelectionState();
@@ -42,6 +44,66 @@ class _SupercontactSelectionState extends State<SupercontactSelection> {
                       .toLowerCase()
                       .contains(widget.filter.toLowerCase()));
         }).toList();
+
+        if (filteredSupercontacts.length == 0) {
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 67.0),
+                Text(
+                  'Want more connections?',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: 6.0,
+                ),
+                Text(
+                  'You can VM anyone in your phone contacts\nto connect with them.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                SizedBox(
+                  height: 32.0,
+                ),
+                ElevatedButton(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 38.0),
+                    child: Text(
+                      'View Phone Contacts',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(0, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        8.0,
+                      ),
+                    ),
+                  ),
+                  onPressed: () => widget.toContacts(),
+                ),
+                SizedBox(
+                  height: 38.0,
+                ),
+                Image.asset(
+                  'assets/images/authenticated/sitting-people.png',
+                  height: 331.0,
+                ),
+              ],
+            ),
+          );
+        }
 
         return Padding(
           padding: const EdgeInsets.only(top: 11.0),
