@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
+import 'package:superconnector_vm/core/utils/video/video_player_helper.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 
 class CarouselVideoPlayer extends StatefulWidget {
@@ -25,6 +26,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
   Superuser? _superuser;
   Duration? _duration = Duration(seconds: 0);
   Duration? _position = Duration(seconds: 0);
+  VideoPlayerHelper _videoPlayerHelper = VideoPlayerHelper();
 
   // @override
   // void initState() {
@@ -231,31 +233,36 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
     Size size = MediaQuery.of(context).size;
     var aspectRatio = _betterPlayerController.getAspectRatio();
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Stack(
-          children: [
-            Transform.scale(
-              scale: aspectRatio! / (size.width / (constraints.maxHeight)),
-              child: Center(
-                child: AspectRatio(
-                  aspectRatio: aspectRatio,
+    return Container(
+      color: Colors.blue,
+      child: Stack(
+        children: [
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return Transform.scale(
+                scale: aspectRatio! /
+                    (constraints.maxWidth / (constraints.maxHeight)),
+                child: BetterPlayerMultipleGestureDetector(
+                  onTap: () {
+                    print('test');
+                    _videoPlayerHelper.toggleVideo(_betterPlayerController);
+                  },
                   child: BetterPlayer(
                     controller: _betterPlayerController,
                   ),
                 ),
-              ),
+              );
+            },
+          ),
+          if (_superuser != null)
+            VideoMetaData(
+              video: widget.video,
+              superuser: _superuser!,
+              duration: _duration,
+              position: _position,
             ),
-            if (_superuser != null)
-              VideoMetaData(
-                video: widget.video,
-                superuser: _superuser!,
-                duration: _duration,
-                position: _position,
-              ),
-          ],
-        );
-      },
+        ],
+      ),
     );
   }
 }
