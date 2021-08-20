@@ -22,7 +22,7 @@ class CarouselVideoPlayer extends StatefulWidget {
 }
 
 class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
-  Superuser? _superuser;
+  Superuser? _videoSuperuser;
   Duration? _duration = Duration(seconds: 0);
   Duration? _position = Duration(seconds: 0);
   VideoPlayerHelper _videoPlayerHelper = VideoPlayerHelper();
@@ -78,7 +78,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
   }
 
   Future _loadUserAndLog() async {
-    _superuser = await SuperuserService().getSuperuserFromId(
+    _videoSuperuser = await SuperuserService().getSuperuserFromId(
       widget.video.superuserId,
     );
     _logWatchedEvent();
@@ -88,8 +88,17 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
   }
 
   void _logWatchedEvent() {
-    if (_superuser == null) {
+    Superuser? currentSuperuser = Provider.of<Superuser?>(
+      context,
+      listen: false,
+    );
+    if (_videoSuperuser == null || currentSuperuser == null) {
       return;
+    }
+
+    if (!widget.video.viewerIds.contains(currentSuperuser.id)) {
+      widget.video.viewerIds.add(currentSuperuser.id);
+      widget.video.update();
     }
 
     final analytics = Provider.of<FirebaseAnalytics>(
@@ -101,7 +110,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
       name: 'vm_watched',
       parameters: <String, dynamic>{
         'video_id': widget.video.id,
-        'watcher_id': _superuser!.id,
+        'watcher_id': currentSuperuser.id,
       },
     );
   }
@@ -120,7 +129,6 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     var aspectRatio = _betterPlayerController.getAspectRatio();
 
     return Container(
@@ -144,10 +152,10 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
               );
             },
           ),
-          if (_superuser != null)
+          if (_videoSuperuser != null)
             VideoMetaData(
               video: widget.video,
-              superuser: _superuser!,
+              superuser: _videoSuperuser!,
               duration: _duration,
               position: _position,
             ),

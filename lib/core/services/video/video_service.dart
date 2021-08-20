@@ -8,14 +8,11 @@ class VideoService {
   final CollectionReference superuserCollection =
       FirebaseFirestore.instance.collection('superusers');
 
-  Future updateVideo(
-      String connectionId, String videoId, Map<String, dynamic> map) async {
+  Future updateVideo(String videoId, Map<String, dynamic> map) async {
     var db = FirebaseFirestore.instance;
     var batch = db.batch();
     final DocumentReference videoDocument = videoCollection.doc(videoId);
-
     batch.update(videoDocument, map);
-
     return batch.commit();
   }
 

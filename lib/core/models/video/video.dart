@@ -61,8 +61,8 @@ class Video {
 
   Map<String, dynamic> toJson() => _$VideoToJson(this);
 
-  Future update(String connectionId) async {
-    await VideoService().updateVideo(connectionId, this.id, this.toJson());
+  Future update() async {
+    await VideoService().updateVideo(this.id, this.toJson());
   }
 
   Future incrementViewCount() {
