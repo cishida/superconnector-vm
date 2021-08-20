@@ -111,6 +111,15 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
       BetterPlayerDataSourceType.network,
       'https://stream.mux.com/' + widget.video.playbackIds[0] + '.m3u8',
       subtitles: [],
+      cacheConfiguration: BetterPlayerCacheConfiguration(
+          // useCache: true,
+          // preCacheSize: 10 * 1024 * 1024,
+          // maxCacheSize: 10 * 1024 * 1024,
+          // maxCacheFileSize: 10 * 1024 * 1024,
+
+          // ///Android only option to use cached video between app sessions
+          // key: "testCacheKey",
+          ),
     );
     _betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
@@ -222,27 +231,31 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
     Size size = MediaQuery.of(context).size;
     var aspectRatio = _betterPlayerController.getAspectRatio();
 
-    return Stack(
-      children: [
-        Transform.scale(
-          scale: aspectRatio! / (size.width / size.height),
-          child: Center(
-            child: AspectRatio(
-              aspectRatio: aspectRatio,
-              child: BetterPlayer(
-                controller: _betterPlayerController,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          children: [
+            Transform.scale(
+              scale: aspectRatio! / (size.width / (constraints.maxHeight)),
+              child: Center(
+                child: AspectRatio(
+                  aspectRatio: aspectRatio,
+                  child: BetterPlayer(
+                    controller: _betterPlayerController,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        if (_superuser != null)
-          VideoMetaData(
-            video: widget.video,
-            superuser: _superuser!,
-            duration: _duration,
-            position: _position,
-          ),
-      ],
+            if (_superuser != null)
+              VideoMetaData(
+                video: widget.video,
+                superuser: _superuser!,
+                duration: _duration,
+                position: _position,
+              ),
+          ],
+        );
+      },
     );
   }
 }
