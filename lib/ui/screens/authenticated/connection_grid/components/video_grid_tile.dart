@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 
 class VideoGridTile extends StatefulWidget {
@@ -19,6 +22,8 @@ class VideoGridTile extends StatefulWidget {
 class _VideoGridTileState extends State<VideoGridTile> {
   @override
   Widget build(BuildContext context) {
+    Superuser? superuser = Provider.of<Superuser?>(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.black,
@@ -57,6 +62,23 @@ class _VideoGridTileState extends State<VideoGridTile> {
               ),
             ),
           ),
+          if (superuser != null &&
+              !widget.video.viewerIds.contains(superuser.id))
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6.0),
+                child: Container(
+                  color: Colors.black.withOpacity(.6),
+                  child: Center(
+                    child: Icon(
+                      Icons.circle,
+                      size: 15.0,
+                      color: ConstantColors.PRIMARY,
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
