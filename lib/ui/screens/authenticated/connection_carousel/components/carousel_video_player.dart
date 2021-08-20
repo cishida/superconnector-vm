@@ -6,6 +6,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/utils/video/video_player_helper.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/custom_controls_widget.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 
 class CarouselVideoPlayer extends StatefulWidget {
@@ -27,6 +28,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
   Duration? _duration = Duration(seconds: 0);
   Duration? _position = Duration(seconds: 0);
   VideoPlayerHelper _videoPlayerHelper = VideoPlayerHelper();
+  BetterPlayerTheme _playerTheme = BetterPlayerTheme.custom;
 
   // @override
   // void initState() {
@@ -126,11 +128,16 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
     _betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
         autoPlay: true,
+        autoDispose: true,
         looping: true,
         aspectRatio: 9 / 16,
         fit: BoxFit.cover,
         controlsConfiguration: BetterPlayerControlsConfiguration(
-          showControls: false,
+          showControls: true,
+          playerTheme: _playerTheme,
+          customControlsBuilder: (controller) => CustomControlsWidget(
+            controller: controller,
+          ),
         ),
         placeholder: Center(
           child: CircularProgressIndicator(),
