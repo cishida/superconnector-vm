@@ -52,7 +52,7 @@ class _SuperconnectorVMState extends State<SuperconnectorVM> {
     // but not terminated
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print(
-        'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
+        'Background: Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
       );
     });
 
@@ -79,7 +79,7 @@ class _SuperconnectorVMState extends State<SuperconnectorVM> {
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         print(
-          'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
+          'OnMessageListen Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
         );
       });
     } else {
@@ -95,7 +95,7 @@ class _SuperconnectorVMState extends State<SuperconnectorVM> {
 
     if (initialMessage != null) {
       print(
-        'Message title: ${initialMessage.notification?.title}, body: ${initialMessage.notification?.body}, data: ${initialMessage.data}',
+        'Initial Message: Message title: ${initialMessage.notification?.title}, body: ${initialMessage.notification?.body}, data: ${initialMessage.data}',
       );
     }
   }

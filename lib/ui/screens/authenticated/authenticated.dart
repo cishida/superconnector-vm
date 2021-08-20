@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
@@ -15,12 +16,14 @@ class Authenticated extends StatefulWidget {
   _AuthenticatedState createState() => _AuthenticatedState();
 }
 
-class _AuthenticatedState extends State<Authenticated> {
+class _AuthenticatedState extends State<Authenticated>
+    with WidgetsBindingObserver {
   SuperuserService _superuserService = SuperuserService();
 
   @override
   void initState() {
     super.initState();
+    WidgetsFlutterBinding.ensureInitialized().addObserver(this);
     _logAppOpen();
     _setAnalyticsProperties();
   }
@@ -52,6 +55,33 @@ class _AuthenticatedState extends State<Authenticated> {
     });
   }
 
+  Future _syncBadge() async {
+    final superuser = Provider.of<Superuser?>(
+      context,
+      listen: false,
+    );
+
+    if (superuser == null) {
+      return;
+    }
+
+    int unseenNotificationCount = await _superuserService.syncNotifications(
+      superuser,
+    );
+    FlutterAppBadger.updateBadgeCount(unseenNotificationCount);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _syncBadge();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final superuser = context.watch<Superuser?>();
@@ -69,20 +99,8 @@ class _AuthenticatedState extends State<Authenticated> {
 
     WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
       _setFCMToken(superuser);
+      // _syncBadge(superuser);
     });
-
-    final analytics = Provider.of<FirebaseAnalytics>(context);
-
-    analytics.logEvent(
-      name: 'test_event',
-      parameters: <String, dynamic>{
-        'string': 'string',
-        'int': 42,
-        'long': 12345678910,
-        'double': 42.0,
-        'bool': true,
-      },
-    );
 
     if (!superuser.onboarded) {
       return Onboarding();

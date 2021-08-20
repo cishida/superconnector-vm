@@ -22,6 +22,9 @@ class _VideoTileState extends State<VideoTile> {
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
 
+    bool unwatched =
+        superuser != null && widget.video.unwatchedIds.contains(superuser.id);
+
     return Container(
       height: 146.0,
       width: 110.0,
@@ -52,8 +55,7 @@ class _VideoTileState extends State<VideoTile> {
                     ),
             ),
           ),
-          if (superuser != null &&
-              !widget.video.viewerIds.contains(superuser.id))
+          if (unwatched)
             Positioned.fill(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6.0),

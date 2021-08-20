@@ -351,6 +351,9 @@ class _RecordState extends State<Record>
     );
     await _videoDoc.update({
       'connectionId': connection.id,
+      'unwatchedIds': connection.userIds
+          .where((element) => element != superuser.id)
+          .toList(),
     });
 
     connection.mostRecentActivity = DateTime.now();

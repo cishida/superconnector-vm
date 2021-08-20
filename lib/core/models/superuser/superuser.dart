@@ -118,6 +118,14 @@ class Superuser {
     await SuperuserService(id: this.id).updateSuperuser(this.toJson());
   }
 
+  Future decrementUnseenNotificationCount() async {
+    if (unseenNotificationCount > 0) {
+      await FirebaseFirestore.instance.collection('superusers').doc(id).update({
+        'unseenNotificationCount': FieldValue.increment(-1),
+      });
+    }
+  }
+
   String operator [](String key) {
     switch (key) {
       case 'fullName':

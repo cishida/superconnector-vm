@@ -104,4 +104,17 @@ class SuperuserService {
 
     return true;
   }
+
+  Future<int> syncNotifications(Superuser superuser) async {
+    final videoSnap = await videoCollection
+        .where(
+          'unwatchedIds',
+          arrayContains: superuser.id,
+        )
+        .get();
+
+    superuser.unseenNotificationCount = videoSnap.docs.length;
+    await superuser.update();
+    return superuser.unseenNotificationCount;
+  }
 }

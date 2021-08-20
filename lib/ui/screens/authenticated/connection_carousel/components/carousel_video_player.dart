@@ -96,9 +96,12 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
       return;
     }
 
-    if (!widget.video.viewerIds.contains(currentSuperuser.id)) {
-      widget.video.viewerIds.add(currentSuperuser.id);
+    print('here');
+
+    if (widget.video.unwatchedIds.contains(currentSuperuser.id)) {
+      widget.video.unwatchedIds.remove(currentSuperuser.id);
       widget.video.update();
+      currentSuperuser.decrementUnseenNotificationCount();
     }
 
     final analytics = Provider.of<FirebaseAnalytics>(

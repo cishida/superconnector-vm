@@ -28,7 +28,7 @@ class Video {
   @JsonKey(defaultValue: false)
   bool deleted;
   @JsonKey(defaultValue: [])
-  List<String> viewerIds;
+  List<String> unwatchedIds;
 
   @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeAsIs)
   DateTime created;
@@ -53,7 +53,7 @@ class Video {
     this.views = 0,
     this.duration = 0.0,
     this.deleted = false,
-    this.viewerIds = const [],
+    this.unwatchedIds = const [],
   });
 
   factory Video.fromJson(String id, Map<String, dynamic> json) =>

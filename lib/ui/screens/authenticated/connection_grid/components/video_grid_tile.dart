@@ -63,7 +63,7 @@ class _VideoGridTileState extends State<VideoGridTile> {
             ),
           ),
           if (superuser != null &&
-              !widget.video.viewerIds.contains(superuser.id))
+              widget.video.unwatchedIds.contains(superuser.id))
             Positioned.fill(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6.0),
