@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
+import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
 class VideoTile extends StatefulWidget {
@@ -18,12 +19,33 @@ class VideoTile extends StatefulWidget {
 }
 
 class _VideoTileState extends State<VideoTile> {
+  Superuser? _owner;
+
+  Future _loadUser(Superuser superuser) async {
+    if (widget.video.superuserId == superuser.id) {
+      setState(() {
+        _owner = superuser;
+      });
+    }
+    if (widget.video.status != 'ready') {
+      _owner =
+          await SuperuserService().getSuperuserFromId(widget.video.superuserId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
 
-    bool unwatched =
-        superuser != null && widget.video.unwatchedIds.contains(superuser.id);
+    if (superuser == null) {
+      return Container();
+    }
+
+    bool unwatched = widget.video.unwatchedIds.contains(superuser.id);
+
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
+      _loadUser(superuser);
+    });
 
     return Container(
       height: 146.0,
@@ -50,9 +72,19 @@ class _VideoTileState extends State<VideoTile> {
                             '/animated.gif',
                       ),
                     )
-                  : Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                  : (_owner != null
+                      ? Stack(
+                          children: [
+                            Image(
+                              fit: BoxFit.fitHeight,
+                              image: CachedNetworkImageProvider(
+                                _owner!.photoUrl,
+                              ),
+                            ),
+                            VideoTileLinearProgress(),
+                          ],
+                        )
+                      : VideoTileLinearProgress()),
             ),
           ),
           if (unwatched)
@@ -85,6 +117,24 @@ class _VideoTileState extends State<VideoTile> {
           //   ),
           // ),
         ],
+      ),
+    );
+  }
+}
+
+class VideoTileLinearProgress extends StatelessWidget {
+  const VideoTileLinearProgress({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16.0,
+        ),
+        child: LinearProgressIndicator(),
       ),
     );
   }
