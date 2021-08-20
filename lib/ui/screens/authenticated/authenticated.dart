@@ -1,7 +1,9 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding.dart';
 import 'package:superconnector_vm/ui/screens/home/home.dart';
 // import 'package:superconnector_vm/core/services/auth/auth_service.dart';
@@ -14,6 +16,8 @@ class Authenticated extends StatefulWidget {
 }
 
 class _AuthenticatedState extends State<Authenticated> {
+  SuperuserService _superuserService = SuperuserService();
+
   @override
   void initState() {
     super.initState();
@@ -38,11 +42,34 @@ class _AuthenticatedState extends State<Authenticated> {
     await analytics.setUserId(superuser.id);
   }
 
+  Future _setFCMToken(Superuser superuser) async {
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+    _firebaseMessaging.getToken().then((String? token) {
+      if (token != null) {
+        _superuserService.addToken(superuser.id, token);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final superuser = context.watch<Superuser?>();
     // final _auth = Provider.of<AuthService>(context, listen: false);
     // _auth.signOut();
+
+    if (superuser == null || superuser.id == '') {
+      return Container(
+        color: Colors.white,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
+      _setFCMToken(superuser);
+    });
 
     final analytics = Provider.of<FirebaseAnalytics>(context);
 
@@ -57,14 +84,7 @@ class _AuthenticatedState extends State<Authenticated> {
       },
     );
 
-    if (superuser == null || superuser.id == '') {
-      return Container(
-        color: Colors.white,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    } else if (!superuser.onboarded) {
+    if (!superuser.onboarded) {
       return Onboarding();
     } else {
       return Home();

@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
 class VideoTile extends StatefulWidget {
   const VideoTile({
@@ -17,6 +20,8 @@ class VideoTile extends StatefulWidget {
 class _VideoTileState extends State<VideoTile> {
   @override
   Widget build(BuildContext context) {
+    Superuser? superuser = Provider.of<Superuser?>(context);
+
     return Container(
       height: 146.0,
       width: 110.0,
@@ -47,6 +52,23 @@ class _VideoTileState extends State<VideoTile> {
                     ),
             ),
           ),
+          if (superuser != null &&
+              !widget.video.viewerIds.contains(superuser.id))
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6.0),
+                child: Container(
+                  color: Colors.black.withOpacity(.6),
+                  child: Center(
+                    child: Icon(
+                      Icons.circle,
+                      size: 15.0,
+                      color: ConstantColors.PRIMARY,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           // Positioned(
           //   bottom: 0.0,
           //   child: Text(

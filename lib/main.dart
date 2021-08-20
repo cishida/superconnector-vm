@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,26 +22,82 @@ void main() async {
   cameras = await availableCameras();
 
   runApp(
-    SuperconnectorMessenger(),
+    SuperconnectorVM(),
   );
 }
 
-class SuperconnectorMessenger extends StatefulWidget {
-  @override
-  _SuperconnectorMessengerState createState() =>
-      _SuperconnectorMessengerState();
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
 }
 
-class _SuperconnectorMessengerState extends State<SuperconnectorMessenger> {
+class SuperconnectorVM extends StatefulWidget {
+  @override
+  _SuperconnectorVMState createState() => _SuperconnectorVMState();
+}
+
+class _SuperconnectorVMState extends State<SuperconnectorVM> {
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   final AuthServiceType initialAuthServiceType = AuthServiceType.firebase;
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
+  late final FirebaseMessaging _messaging;
 
   @override
   void initState() {
+    registerNotification();
+    checkForInitialMessage();
+
+    // For handling notification when the app is in background
+    // but not terminated
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print(
+        'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
+      );
+    });
+
     super.initState();
+  }
+
+  void registerNotification() async {
+    await Firebase.initializeApp();
+    _messaging = FirebaseMessaging.instance;
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    NotificationSettings settings = await _messaging.requestPermission(
+      alert: true,
+      badge: true,
+      provisional: false,
+      sound: true,
+    );
+
+    print('User granted permission: ${settings.authorizationStatus}');
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print(
+          'Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
+        );
+      });
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+  // For handling notification when the app is in terminated state
+  checkForInitialMessage() async {
+    await Firebase.initializeApp();
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      print(
+        'Message title: ${initialMessage.notification?.title}, body: ${initialMessage.notification?.body}, data: ${initialMessage.data}',
+      );
+    }
   }
 
   @override
