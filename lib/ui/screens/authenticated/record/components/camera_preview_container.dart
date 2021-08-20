@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 
@@ -151,6 +152,8 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
       return Container();
     }
 
+    Size size = MediaQuery.of(context).size;
+
     return GestureDetector(
       onTapDown: (_) async {
         widget._animationController.forward();
@@ -168,6 +171,13 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
         await _onStopButtonPressed();
         // HapticFeedback.lightImpact();
       },
+      // onTapCancel: () async {
+      //   if (widget._animationController.status == AnimationStatus.forward) {
+      //     widget._animationController.stop();
+      //   }
+
+      //   await _onStopButtonPressed();
+      // },
       child: Stack(
         alignment: FractionalOffset.center,
         children: [
@@ -194,6 +204,17 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
               ),
             ),
           ),
+          // Positioned(
+          //   bottom: 0.0,
+          //   child: Container(
+          //     width: size.width,
+          //     child: GradientProgressIndicator(
+          //       gradient: Gradients.rainbowBlue,
+          //       value: 0.65,
+          //     ),
+          //   ),
+          // ),
+
           Positioned(
             bottom: 50.0,
             child: AnimatedOpacity(

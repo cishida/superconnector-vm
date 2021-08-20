@@ -100,7 +100,7 @@ class _RecordState extends State<Record>
     _betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
         startAt: Duration(milliseconds: 50),
-        autoPlay: false,
+        autoPlay: true,
         looping: true,
         aspectRatio: 9 / 16,
         fit: BoxFit.cover,
