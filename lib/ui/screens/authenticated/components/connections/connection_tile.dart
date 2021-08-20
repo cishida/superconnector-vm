@@ -71,7 +71,7 @@ class _ConnectionTileState extends State<ConnectionTile> {
   void initState() {
     super.initState();
     _loadUsers();
-    _periodicUpdate = Timer.periodic(Duration(seconds: 10), (Timer t) {
+    _periodicUpdate = Timer.periodic(Duration(seconds: 30), (Timer t) {
       setState(() {});
     });
   }
@@ -84,135 +84,157 @@ class _ConnectionTileState extends State<ConnectionTile> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        if (widget.shouldIgnoreTaps) {
-          return;
-        }
+    final superuser = Provider.of<Superuser?>(context);
 
-        SuperNavigator.push(
-          context: context,
-          widget: ConnectionGrid(
-            connection: widget.connection,
-          ),
-          fullScreen: false,
-        );
-      },
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 12.0,
-            ),
-            child: Row(
+    if (superuser == null) {
+      return Container();
+    }
+
+    return StreamProvider<List<Video>>.value(
+      value: _videoService.getConnectionVideoStream(
+        widget.connection.id,
+      ),
+      initialData: [],
+      child: Consumer<List<Video>>(
+        builder: (context, videos, child) {
+          int unwatchedCount = videos
+              .where(
+                (element) => element.unwatchedIds.contains(
+                  superuser.id,
+                ),
+              )
+              .length;
+
+          Color textColor =
+              unwatchedCount > 0 ? ConstantColors.PRIMARY : Colors.black;
+          return InkWell(
+            onTap: () {
+              if (widget.shouldIgnoreTaps) {
+                return;
+              }
+
+              SuperNavigator.push(
+                context: context,
+                widget: ConnectionGrid(
+                  connection: widget.connection,
+                ),
+                fullScreen: false,
+              );
+            },
+            child: Column(
               children: [
-                ConnectionPhotos(
-                  photoUrls: _superusers.map((e) => e.photoUrl).toList(),
-                  emptyImageCount: widget.connection.phoneNumberNameMap.length,
-                ),
-                SizedBox(
-                  width: 9.0,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
+                  child: Row(
                     children: [
-                      ConnectionNames(
-                        names: widget.connection.isExampleConversation
-                            ? ['Example Connection']
-                            : _superusers.map((e) => e.fullName).toList(),
-                        phoneNumberNameMap:
-                            widget.connection.phoneNumberNameMap,
+                      ConnectionPhotos(
+                        photoUrls: _superusers.map((e) => e.photoUrl).toList(),
+                        emptyImageCount:
+                            widget.connection.phoneNumberNameMap.length,
                       ),
-                      // Text('Names broken if seeing this'),
-                      Text(
-                        TimestampFormatter().getChatTileTime(
-                          Timestamp.fromDate(
-                            widget.connection.mostRecentActivity!,
+                      SizedBox(
+                        width: 9.0,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ConnectionNames(
+                              names: widget.connection.isExampleConversation
+                                  ? ['Example Connection']
+                                  : _superusers.map((e) => e.fullName).toList(),
+                              phoneNumberNameMap:
+                                  widget.connection.phoneNumberNameMap,
+                              unwatchedCount: unwatchedCount,
+                            ),
+                            // Text('Names broken if seeing this'),
+                            Text(
+                              TimestampFormatter().getChatTileTime(
+                                Timestamp.fromDate(
+                                  widget.connection.mostRecentActivity!,
+                                ),
+                              ),
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                                color: textColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            widget.connection.streakCount.toString(),
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: 17.0,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                        ),
+                          SizedBox(
+                            width: 4.0,
+                          ),
+                          Image.asset(
+                            'assets/images/authenticated/streak-icon.png',
+                            width: 10.0,
+                            color: textColor,
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      widget.connection.streakCount.toString(),
-                      style: TextStyle(
-                        color: Colors.black.withOpacity(.87),
-                        fontSize: 17.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 4.0,
-                    ),
-                    Image.asset(
-                      'assets/images/authenticated/streak-icon.png',
-                      width: 10.0,
-                    ),
-                  ],
+                Container(
+                  height: 146.0,
+                  padding: const EdgeInsets.only(
+                    left: 16.0,
+                  ),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: min(videos.length, 5),
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        behavior: widget.shouldIgnoreTaps
+                            ? HitTestBehavior.translucent
+                            : HitTestBehavior.opaque,
+                        onTap: () {
+                          if (widget.shouldIgnoreTaps) {
+                            return;
+                          }
+
+                          SuperNavigator.push(
+                            context: context,
+                            widget: ConnectionCarousel(
+                              connection: widget.connection,
+                              videos: videos,
+                              initialIndex: index,
+                            ),
+                            fullScreen: false,
+                          );
+                        },
+                        child: VideoTile(
+                          video: videos[index],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  height: 1.0,
+                  margin: const EdgeInsets.only(
+                    top: 15.0,
+                  ),
+                  color: ConstantColors.DIVIDER_GRAY,
                 ),
               ],
             ),
-          ),
-          Container(
-            height: 146.0,
-            padding: const EdgeInsets.only(
-              left: 16.0,
-            ),
-            child: StreamProvider<List<Video>>.value(
-              value: _videoService.getConnectionVideoStream(
-                widget.connection.id,
-              ),
-              initialData: [],
-              child: Consumer<List<Video>>(builder: (context, videos, child) {
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: min(videos.length, 5),
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      behavior: widget.shouldIgnoreTaps
-                          ? HitTestBehavior.translucent
-                          : HitTestBehavior.opaque,
-                      onTap: () {
-                        if (widget.shouldIgnoreTaps) {
-                          return;
-                        }
-
-                        SuperNavigator.push(
-                          context: context,
-                          widget: ConnectionCarousel(
-                            connection: widget.connection,
-                            videos: videos,
-                            initialIndex: index,
-                          ),
-                          fullScreen: false,
-                        );
-                      },
-                      child: VideoTile(
-                        video: videos[index],
-                      ),
-                    );
-                  },
-                );
-              }),
-            ),
-          ),
-          Container(
-            height: 1.0,
-            margin: const EdgeInsets.only(
-              top: 15.0,
-            ),
-            color: ConstantColors.DIVIDER_GRAY,
-          ),
-        ],
+          );
+        },
       ),
     );
   }
