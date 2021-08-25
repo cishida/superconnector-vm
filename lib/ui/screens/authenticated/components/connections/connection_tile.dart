@@ -12,6 +12,7 @@ import 'package:superconnector_vm/core/services/video/video_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_names.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/video_tile.dart';
@@ -224,13 +225,10 @@ class _ConnectionTileState extends State<ConnectionTile> {
                     },
                   ),
                 ),
-                Container(
-                  height: 1.0,
-                  margin: const EdgeInsets.only(
-                    top: 15.0,
-                  ),
-                  color: ConstantColors.DIVIDER_GRAY,
+                SizedBox(
+                  height: 15.0,
                 ),
+                Underline(),
               ],
             ),
           );
