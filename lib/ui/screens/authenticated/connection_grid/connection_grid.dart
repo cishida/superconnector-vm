@@ -7,11 +7,11 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/services/video/video_service.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
-import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
+import 'package:superconnector_vm/ui/components/app_bars/light_app_bar.dart';
+import 'package:superconnector_vm/ui/components/buttons/new_vm_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/components/connection_grid_header.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/components/video_grid_tile.dart';
 
 class ConnectionGrid extends StatefulWidget {
@@ -86,16 +86,6 @@ class _ConnectionGridState extends State<ConnectionGrid> {
 
   @override
   Widget build(BuildContext context) {
-    // Video video = Video(
-    //   created: DateTime.now(),
-    // );
-    // var newVideoDoc = FirebaseFirestore.instance
-    //     .collection('connections')
-    //     .doc(widget.userConnection.connection!.id)
-    //     .collection('videos')
-    //     .doc()
-    //     .set(video.toJson());
-
     var size = MediaQuery.of(context).size;
 
     final double itemHeight = 182;
@@ -118,74 +108,21 @@ class _ConnectionGridState extends State<ConnectionGrid> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        brightness: Brightness.light,
-        elevation: 0.0,
-        toolbarHeight: 0.0,
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-        ),
+      appBar: LightAppBar(),
+      floatingActionButton: NewVMButton(
         onPressed: () {
           selectedContacts.setContactsFromConnection(
               connection: widget.connection, supercontacts: supercontacts);
-
           SuperNavigator.handleRecordNavigation(context);
         },
       ),
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              color: Colors.white,
-              height: 55.0,
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: ChevronBackButton(
-                      color: ConstantColors.PRIMARY,
-                      onBack: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () async {
-                      print('username tapped');
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 19),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text(
-                              nameText,
-                              style: TextStyle(
-                                color: ConstantColors.PRIMARY,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          ConnectionPhotos(
-                            photoUrls:
-                                _superusers.map((e) => e.photoUrl).toList(),
-                            emptyImageCount:
-                                widget.connection.phoneNumberNameMap.length,
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
+            ConnectionGridHeader(
+              nameText: nameText,
+              superusers: _superusers,
+              connection: widget.connection,
             ),
             Expanded(
               child: StreamProvider<List<Video>>.value(

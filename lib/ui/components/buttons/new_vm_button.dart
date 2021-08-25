@@ -5,9 +5,11 @@ import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 class NewVMButton extends StatelessWidget {
   const NewVMButton({
     Key? key,
+    required this.onPressed,
     this.isInverted = false,
   }) : super(key: key);
 
+  final Function onPressed;
   final bool isInverted;
 
   @override
@@ -18,7 +20,7 @@ class NewVMButton extends StatelessWidget {
         Icons.add,
         color: isInverted ? ConstantColors.PRIMARY : Colors.white,
       ),
-      onPressed: () => SuperNavigator.handleRecordNavigation(context),
+      onPressed: () => onPressed(),
     );
   }
 }

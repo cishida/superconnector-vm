@@ -4,6 +4,7 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
+import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/app_bars/light_app_bar.dart';
 import 'package:superconnector_vm/ui/components/buttons/new_vm_button.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
@@ -179,6 +180,9 @@ class _HomeState extends State<Home> {
             bottom: 16.0,
             child: NewVMButton(
               isInverted: true,
+              onPressed: () {
+                SuperNavigator.handleRecordNavigation(context);
+              },
             ),
           ),
         );
@@ -206,7 +210,11 @@ class _HomeState extends State<Home> {
       builder: (context, constraints) {
         return Scaffold(
           appBar: LightAppBar(),
-          floatingActionButton: NewVMButton(),
+          floatingActionButton: NewVMButton(
+            onPressed: () {
+              SuperNavigator.handleRecordNavigation(context);
+            },
+          ),
           body: SafeArea(
             child: Container(
               color: ConstantColors.OFF_WHITE,
