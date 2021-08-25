@@ -14,7 +14,19 @@ class ConnectionGridMenu extends StatelessWidget {
 
   final Connection connection;
 
-  Future _block(BuildContext context) async {
+  Future _blockUser({
+    required Superuser superuser,
+    required BuildContext context,
+  }) async {
+    String blockedUserId =
+        connection.userIds.firstWhere((userId) => userId != superuser.id);
+    superuser.blockedUserIds.add(blockedUserId);
+    superuser.blockedUserIds = superuser.blockedUserIds.toSet().toList();
+    await superuser.update();
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  Future _blockPressed(BuildContext context) async {
     Superuser? superuser = Provider.of<Superuser?>(
       context,
       listen: false,
@@ -27,7 +39,7 @@ class ConnectionGridMenu extends StatelessWidget {
     Navigator.pop(context);
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (context) {
         return Stack(
           children: [
@@ -36,15 +48,10 @@ class ConnectionGridMenu extends StatelessWidget {
               subtitle:
                   'This stops you from receiving this person’s VMs. You can unblock them later if you want.',
               primaryActionTitle: 'Continue',
-              primaryAction: () {
-                superuser.blockedUserIds.add(
-                  connection.userIds
-                      .firstWhere((userId) => userId != superuser.id),
-                );
-
-                superuser.update();
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
+              primaryAction: () => _blockUser(
+                superuser: superuser,
+                context: context,
+              ),
               secondaryActionTitle: 'Cancel',
               secondaryAction: () {
                 Navigator.pop(context);
@@ -89,7 +96,7 @@ class ConnectionGridMenu extends StatelessWidget {
                   ),
                   children: [
                     MenuChip(
-                      onPressed: () => _block(context),
+                      onPressed: () => _blockPressed(context),
                       title: 'Block',
                     ),
                   ],
