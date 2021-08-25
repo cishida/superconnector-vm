@@ -20,6 +20,7 @@ class ConnectionGridHeader extends StatelessWidget {
   final Connection connection;
 
   void _onTapName(BuildContext context) {
+    // Only for 1 on 1 connections (for now)
     if (connection.userIds.length != 2) {
       return;
     }

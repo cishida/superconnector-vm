@@ -5,6 +5,7 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/ui/components/chips/menu_chip.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
+import 'package:superconnector_vm/ui/components/snack_bars/dark_snack_bar.dart';
 
 class ConnectionGridMenu extends StatelessWidget {
   const ConnectionGridMenu({
@@ -14,6 +15,24 @@ class ConnectionGridMenu extends StatelessWidget {
 
   final Connection connection;
 
+  void _showSnackbar(
+    BuildContext context,
+    String message,
+  ) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      DarkSnackBar.createSnackBar(
+        text: message,
+      ),
+    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(message),
+    //     backgroundColor: ConstantColors.DARK_BLUE,
+    //     elevation: 0.0,
+    //   ),
+    // );
+  }
+
   Future _blockUser({
     required Superuser superuser,
     required BuildContext context,
@@ -21,9 +40,16 @@ class ConnectionGridMenu extends StatelessWidget {
     String blockedUserId =
         connection.userIds.firstWhere((userId) => userId != superuser.id);
     superuser.blockedUserIds.add(blockedUserId);
+
+    // Use a set to prevent duplicates
     superuser.blockedUserIds = superuser.blockedUserIds.toSet().toList();
     await superuser.update();
     Navigator.of(context).popUntil((route) => route.isFirst);
+
+    _showSnackbar(
+      context,
+      'You blocked them.',
+    );
   }
 
   Future _blockPressed(BuildContext context) async {
