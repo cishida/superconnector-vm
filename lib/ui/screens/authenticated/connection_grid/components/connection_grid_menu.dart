@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/ui/components/chips/menu_chip.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 
@@ -13,6 +15,15 @@ class ConnectionGridMenu extends StatelessWidget {
   final Connection connection;
 
   Future _block(BuildContext context) async {
+    Superuser? superuser = Provider.of<Superuser?>(
+      context,
+      listen: false,
+    );
+
+    if (superuser == null) {
+      return;
+    }
+
     Navigator.pop(context);
     showDialog(
       context: context,
@@ -26,7 +37,13 @@ class ConnectionGridMenu extends StatelessWidget {
                   'This stops you from receiving this person’s VMs. You can unblock them later if you want.',
               primaryActionTitle: 'Continue',
               primaryAction: () {
-                print('Block');
+                superuser.blockedUserIds.add(
+                  connection.userIds
+                      .firstWhere((userId) => userId != superuser.id),
+                );
+
+                superuser.update();
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
               secondaryActionTitle: 'Cancel',
               secondaryAction: () {

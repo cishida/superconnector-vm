@@ -20,6 +20,10 @@ class ConnectionGridHeader extends StatelessWidget {
   final Connection connection;
 
   void _onTapName(BuildContext context) {
+    if (connection.userIds.length != 2) {
+      return;
+    }
+
     Navigator.of(context).push(
       PageRouteBuilder(
         opaque: false,

@@ -29,6 +29,10 @@ Superuser _$SuperuserFromJson(Map<String, dynamic> json) {
         HomeOnboardingStage.completed,
     recordOnboarding: json['recordOnboarding'] as bool? ?? false,
     contactsOnboarding: json['contactsOnboarding'] as bool? ?? false,
+    blockedUserIds: (json['blockedUserIds'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList() ??
+        [],
     created: Superuser._dateTimeFromTimestamp(json['created'] as Timestamp),
   );
 }
@@ -48,6 +52,7 @@ Map<String, dynamic> _$SuperuserToJson(Superuser instance) => <String, dynamic>{
           _$HomeOnboardingStageEnumMap[instance.homeOnboardingStage],
       'recordOnboarding': instance.recordOnboarding,
       'contactsOnboarding': instance.contactsOnboarding,
+      'blockedUserIds': instance.blockedUserIds,
       'created': Superuser._dateTimeAsIs(instance.created),
     };
 

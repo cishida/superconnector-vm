@@ -41,7 +41,8 @@ class _AccountState extends State<Account> {
     // superuser.fcmTokens = [];
     // await superuser.update();
     _auth.signOut();
-    Navigator.of(context, rootNavigator: true).pop();
+    // Navigator.of(context, rootNavigator: true).pop();
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Future getImage(String uid) async {

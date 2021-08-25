@@ -58,17 +58,14 @@ class Superuser {
   String username;
   @JsonKey(defaultValue: '')
   String photoUrl;
-
   @JsonKey(defaultValue: {})
   Map<String, String> socialLinks;
-
   @JsonKey(defaultValue: [])
   List<String> fcmTokens;
   @JsonKey(defaultValue: 0)
   int unseenNotificationCount;
   @JsonKey(defaultValue: 0)
   int numContacts;
-
   @JsonKey(defaultValue: false)
   bool onboarded;
   @JsonKey(defaultValue: HomeOnboardingStage.completed)
@@ -77,6 +74,8 @@ class Superuser {
   bool recordOnboarding;
   @JsonKey(defaultValue: false)
   bool contactsOnboarding;
+  @JsonKey(defaultValue: [])
+  List<String> blockedUserIds;
 
   @JsonKey(
     fromJson: _dateTimeFromTimestamp,
@@ -106,6 +105,7 @@ class Superuser {
     this.homeOnboardingStage = HomeOnboardingStage.completed,
     this.recordOnboarding = false,
     this.contactsOnboarding = false,
+    this.blockedUserIds = const [],
     required this.created,
   });
 
