@@ -117,7 +117,7 @@ class _OnboardingPagesState extends State<OnboardingPages> {
       {
         'title': 'Welcome',
         'subtitle':
-            'Superconnector helps you quickly video\nmessage (VM) with your friends.',
+            'Superconnector helps you video\nmessage (VM) your extended family.\nVMs are a minute or less so they’re\nshort and sweet.',
         'widget': OnboardingWelcome(),
       },
       {

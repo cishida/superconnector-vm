@@ -12,7 +12,7 @@ class OnboardingWelcome extends StatelessWidget {
             left: 19.0,
             right: 44.0,
             top: 49.0,
-            bottom: 47.0,
+            bottom: 0.0,
           ),
           child: Image.asset(
             'assets/images/authenticated/onboarding-welcome.png',

@@ -31,7 +31,10 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
   // bool _wasCropped = false;
 
   Future getImage(String uid) async {
-    var pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    var pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 90,
+    );
 
     if (pickedFile != null) {
       setState(() {
@@ -103,6 +106,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
             child: GestureDetector(
               onTap: () async {
                 superuser.photoUrl = await getImage(superuser.id);
+                await superuser.update();
               },
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

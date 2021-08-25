@@ -45,7 +45,7 @@ class _SuperconnectorVMState extends State<SuperconnectorVM> {
 
   @override
   void initState() {
-    registerNotification();
+    // registerNotification();
     checkForInitialMessage();
 
     // For handling notification when the app is in background
@@ -59,33 +59,33 @@ class _SuperconnectorVMState extends State<SuperconnectorVM> {
     super.initState();
   }
 
-  void registerNotification() async {
-    await Firebase.initializeApp();
-    _messaging = FirebaseMessaging.instance;
+  // void registerNotification() async {
+  //   await Firebase.initializeApp();
+  //   _messaging = FirebaseMessaging.instance;
 
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  //   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    NotificationSettings settings = await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      provisional: false,
-      sound: true,
-    );
+  //   NotificationSettings settings = await _messaging.requestPermission(
+  //     alert: true,
+  //     badge: true,
+  //     provisional: false,
+  //     sound: true,
+  //   );
 
-    print('User granted permission: ${settings.authorizationStatus}');
+  //   print('User granted permission: ${settings.authorizationStatus}');
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
+  //   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+  //     print('User granted permission');
 
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        print(
-          'OnMessageListen Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
-        );
-      });
-    } else {
-      print('User declined or has not accepted permission');
-    }
-  }
+  //     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //       print(
+  //         'OnMessageListen Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
+  //       );
+  //     });
+  //   } else {
+  //     print('User declined or has not accepted permission');
+  //   }
+  // }
 
   // For handling notification when the app is in terminated state
   checkForInitialMessage() async {

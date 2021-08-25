@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
@@ -22,6 +24,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   bool _isShowingDialog = false;
+  late final FirebaseMessaging _messaging;
 
   // bool _isValidContact(Contact contact) {
   //   bool hasName = contact.displayName != null && contact.displayName != '';
@@ -45,6 +48,44 @@ class _HomeState extends State<Home> {
   //     );
   //   }
   // }
+
+  @override
+  initState() {
+    super.initState();
+    registerNotification();
+  }
+
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    print("Handling a background message: ${message.messageId}");
+  }
+
+  void registerNotification() async {
+    _messaging = FirebaseMessaging.instance;
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    NotificationSettings settings = await _messaging.requestPermission(
+      alert: true,
+      badge: true,
+      provisional: false,
+      sound: true,
+    );
+
+    print('User granted permission: ${settings.authorizationStatus}');
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print(
+          'OnMessageListen Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
+        );
+      });
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
 
   Future goToOnboardingStage(
     HomeOnboardingStage stage,
