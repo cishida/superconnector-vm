@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/models/video/video.dart';
+import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 
 class SuperuserService {
   final String? id;
@@ -106,6 +108,8 @@ class SuperuserService {
   }
 
   Future<int> syncNotifications(Superuser superuser) async {
+    List<Video> videos = [];
+
     final videoSnap = await videoCollection
         .where(
           'unwatchedIds',
@@ -113,7 +117,13 @@ class SuperuserService {
         )
         .get();
 
-    superuser.unseenNotificationCount = videoSnap.docs.length;
+    videoSnap.docs.forEach((videoDoc) {
+      videos.add(Video.fromJson(videoDoc.id, videoDoc.data()));
+    });
+
+    videos = BlockUtility.unblockedVideos(superuser: superuser, videos: videos);
+
+    superuser.unseenNotificationCount = videos.length;
     await superuser.update();
     return superuser.unseenNotificationCount;
   }
