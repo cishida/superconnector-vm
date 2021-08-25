@@ -37,13 +37,9 @@ class ConnectionGridMenu extends StatelessWidget {
     required Superuser superuser,
     required BuildContext context,
   }) async {
-    String blockedUserId =
+    String toBlockId =
         connection.userIds.firstWhere((userId) => userId != superuser.id);
-    superuser.blockedUserIds.add(blockedUserId);
-
-    // Use a set to prevent duplicates
-    superuser.blockedUserIds = superuser.blockedUserIds.toSet().toList();
-    await superuser.update();
+    await superuser.block(toBlockId);
     Navigator.of(context).popUntil((route) => route.isFirst);
 
     _showSnackbar(
@@ -87,10 +83,9 @@ class ConnectionGridMenu extends StatelessWidget {
     required BuildContext context,
     required Superuser superuser,
   }) async {
-    String blockedUserId =
+    String toUnblockId =
         connection.userIds.firstWhere((userId) => userId != superuser.id);
-    superuser.blockedUserIds.remove(blockedUserId);
-    await superuser.update();
+    await superuser.unblock(toUnblockId);
 
     Navigator.of(context).popUntil((route) => route.isFirst);
 

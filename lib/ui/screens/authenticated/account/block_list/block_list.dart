@@ -71,9 +71,7 @@ class BlockList extends StatelessWidget {
                   return BlockedTile(
                     superuserId: superuser.blockedUserIds[index],
                     unblock: () async {
-                      superuser.blockedUserIds
-                          .remove(superuser.blockedUserIds[index]);
-                      await superuser.update();
+                      await superuser.unblock(superuser.blockedUserIds[index]);
                       ScaffoldMessenger.of(context).showSnackBar(
                         DarkSnackBar.createSnackBar(
                           text: 'You unblocked them.',
