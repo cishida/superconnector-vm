@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 
 class NewVMButton extends StatelessWidget {
   const NewVMButton({

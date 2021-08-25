@@ -3,8 +3,6 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:gradient_widgets/gradient_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 
@@ -151,8 +149,6 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
     if (widget.isResetting) {
       return Container();
     }
-
-    Size size = MediaQuery.of(context).size;
 
     return GestureDetector(
       onTapDown: (_) async {

@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/ui/components/chips/menu_chip.dart';
+import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 
 class ConnectionGridMenu extends StatelessWidget {
   const ConnectionGridMenu({
     Key? key,
+    required this.connection,
   }) : super(key: key);
 
-  Future _block() async {
-    print('Block');
+  final Connection connection;
+
+  Future _block(BuildContext context) async {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Stack(
+          children: [
+            SuperDialog(
+              title: 'Block',
+              subtitle:
+                  'This stops you from receiving this person’s VMs. You can unblock them later if you want.',
+              primaryActionTitle: 'Continue',
+              primaryAction: () {
+                print('Block');
+              },
+              secondaryActionTitle: 'Cancel',
+              secondaryAction: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -44,7 +72,7 @@ class ConnectionGridMenu extends StatelessWidget {
                   ),
                   children: [
                     MenuChip(
-                      onPressed: _block,
+                      onPressed: () => _block(context),
                       title: 'Block',
                     ),
                   ],

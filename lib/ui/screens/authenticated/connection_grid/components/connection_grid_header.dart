@@ -23,8 +23,11 @@ class ConnectionGridHeader extends StatelessWidget {
     Navigator.of(context).push(
       PageRouteBuilder(
         opaque: false,
+        reverseTransitionDuration: Duration(milliseconds: 0),
         pageBuilder: (BuildContext context, _, __) {
-          return ConnectionGridMenu();
+          return ConnectionGridMenu(
+            connection: connection,
+          );
         },
       ),
     );
