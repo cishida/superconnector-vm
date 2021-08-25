@@ -143,10 +143,14 @@ class _ConnectionGridState extends State<ConnectionGrid> {
                 ),
                 initialData: [],
                 child: Consumer<List<Video>>(builder: (context, videos, child) {
-                  List<Video> filteredVideos = BlockUtility.unblockedVideos(
-                    superuser: superuser,
-                    videos: videos,
-                  );
+                  List<Video> filteredVideos = videos;
+
+                  if (widget.connection.userIds.length == 2) {
+                    filteredVideos = BlockUtility.unblockedVideos(
+                      superuser: superuser,
+                      videos: videos,
+                    );
+                  }
 
                   return GridView.count(
                     crossAxisCount: 3,

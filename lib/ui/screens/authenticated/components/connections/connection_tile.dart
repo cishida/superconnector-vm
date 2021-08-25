@@ -101,10 +101,14 @@ class _ConnectionTileState extends State<ConnectionTile> {
       initialData: [],
       child: Consumer<List<Video>>(
         builder: (context, videos, child) {
-          List<Video> filteredVideos = BlockUtility.unblockedVideos(
-            superuser: superuser,
-            videos: videos,
-          );
+          List<Video> filteredVideos = videos;
+
+          if (widget.connection.userIds.length == 2) {
+            filteredVideos = BlockUtility.unblockedVideos(
+              superuser: superuser,
+              videos: videos,
+            );
+          }
           int unwatchedCount = filteredVideos
               .where(
                 (element) => element.unwatchedIds.contains(
