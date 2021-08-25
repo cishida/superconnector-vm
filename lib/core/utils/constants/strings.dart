@@ -4,7 +4,7 @@ class ConstantStrings {
   // Home onboarding strings
   static const String ONBOARDING_CONNECTIONS_TITLE = 'Connections';
   static const String ONBOARDING_CONNECTIONS_SUBTITLE =
-      'The first time you VM someone, a private connection opens. Your connection stores VMs and shows your streak of consecutive days sharing a VM.';
+      'The first time you VM someone, a private connection opens. Your connection stores VMs and shows your streak of consecutive weeks sharing a VM.';
   static const String ONBOARDING_CONTACTS_TITLE = 'Search Contacts';
   static const String ONBOARDING_CONTACTS_SUBTITLE =
       'Use the search button to find people and view your VM history with them.';

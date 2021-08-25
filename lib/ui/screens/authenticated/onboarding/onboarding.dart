@@ -121,9 +121,9 @@ class _OnboardingPagesState extends State<OnboardingPages> {
         'widget': OnboardingWelcome(),
       },
       {
-        'title': 'Background Info',
+        'title': 'Account Info',
         'subtitle':
-            'This helps people identify you so you\ncan start making connections.',
+            'This helps set up your account and\nlabel your VMs. You can use VMs as a\nfaster, more convenient alternative to\nvideo calls.',
         'widget': OnboardingBackground(
           formKey: _formKey,
           attemptedSubmission: _attemptedSubmission,
@@ -132,7 +132,7 @@ class _OnboardingPagesState extends State<OnboardingPages> {
       {
         'title': 'Notifications',
         'subtitle':
-            'These tell you when someone VMs you so you can reply quickly.',
+            'These tell you when someone VMs you\nso you can reply quickly.',
         'widget': OnboardingNotifications(),
       },
     ];

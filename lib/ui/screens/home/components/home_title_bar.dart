@@ -22,7 +22,7 @@ class HomeTitleBar extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 18.0),
               child: Text(
-                'VMs',
+                'Family',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 40.0,
