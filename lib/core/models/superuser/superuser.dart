@@ -118,6 +118,22 @@ class Superuser {
     await SuperuserService(id: this.id).updateSuperuser(this.toJson());
   }
 
+  Future block(String id) async {
+    blockedUserIds.add(id);
+
+    // Use a set to prevent duplicates
+    blockedUserIds = blockedUserIds.toSet().toList();
+    await update();
+  }
+
+  Future unblock(String id) async {
+    blockedUserIds.remove(id);
+
+    // Use a set to prevent duplicates
+    blockedUserIds = blockedUserIds.toSet().toList();
+    await update();
+  }
+
   Future decrementUnseenNotificationCount() async {
     if (unseenNotificationCount > 0) {
       await FirebaseFirestore.instance.collection('superusers').doc(id).update({

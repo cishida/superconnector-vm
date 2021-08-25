@@ -4,10 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
+import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/carousel_video_player.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
 
@@ -28,6 +30,80 @@ class ConnectionCarousel extends StatefulWidget {
 }
 
 class _ConnectionCarouselState extends State<ConnectionCarousel> {
+  void _showBlockedCard({
+    required Superuser superuser,
+    required String blockedId,
+  }) async {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Stack(
+          children: [
+            SuperDialog(
+              title: 'Blocked',
+              subtitle:
+                  'If you continue, you’ll unblock them so you can send a reply.',
+              primaryActionTitle: 'Continue',
+              primaryAction: () async {
+                await superuser.unblock(blockedId);
+                Navigator.pop(context);
+                _toRecord();
+              },
+              secondaryActionTitle: 'Cancel',
+              secondaryAction: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _handleReply() {
+    Superuser? superuser = Provider.of<Superuser?>(
+      context,
+      listen: false,
+    );
+
+    if (superuser == null) {
+      return;
+    }
+
+    String targetUserId =
+        widget.connection.userIds.firstWhere((e) => e != superuser.id);
+
+    // if 1 on 1 connection and blocked user
+    if (widget.connection.userIds.length == 2 &&
+        superuser.blockedUserIds.contains(targetUserId)) {
+      _showBlockedCard(
+        superuser: superuser,
+        blockedId: targetUserId,
+      );
+      return;
+    }
+
+    _toRecord();
+  }
+
+  void _toRecord() {
+    var selectedContacts = Provider.of<SelectedContacts>(
+      context,
+      listen: false,
+    );
+    var supercontacts = Provider.of<List<Supercontact>>(
+      context,
+      listen: false,
+    );
+
+    selectedContacts.setContactsFromConnection(
+      connection: widget.connection,
+      supercontacts: supercontacts,
+    );
+    SuperNavigator.handleRecordNavigation(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     TextStyle bottomNavStyle = TextStyle(
@@ -108,13 +184,7 @@ class _ConnectionCarouselState extends State<ConnectionCarousel> {
               ),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  selectedContacts.setContactsFromConnection(
-                    connection: widget.connection,
-                    supercontacts: supercontacts,
-                  );
-                  SuperNavigator.handleRecordNavigation(context);
-                },
+                onTap: () => _handleReply(),
                 child: Text(
                   'Send Reply',
                   style: bottomNavStyle,
