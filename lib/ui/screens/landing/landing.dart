@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/go_back.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // class Landing extends StatefulWidget {
 //   const Landing({Key? key}) : super(key: key);
@@ -221,15 +223,74 @@ class _LandingState extends State<Landing> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 38.0),
-              child: Text(
-                'By signing in you agree to our Terms & Privacy Policy.',
-                style: TextStyle(
-                  fontSize: 16.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  // fontFamily: 'SourceSerifPro',
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: TextStyle(
+                    height: 1.5,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'By signing in you agree to our ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white.withOpacity(.87),
+                      ),
+                    ),
+                    TextSpan(
+                      text: '\nTerms',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white.withOpacity(.87),
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          const url = 'https://www.superconnector.com/terms';
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                    ),
+                    TextSpan(
+                      text: ' & ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white.withOpacity(.87),
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'Privacy Policy.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white.withOpacity(.87),
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          const url = 'https://www.superconnector.com/privacy';
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                    ),
+                  ],
                 ),
               ),
+
+              // Text(
+              //   'By signing in you agree to our Terms & Privacy Policy.',
+              //   style: TextStyle(
+              //     fontSize: 16.0,
+              //     color: Colors.white,
+              //     fontWeight: FontWeight.w400,
+              //     // fontFamily: 'SourceSerifPro',
+              //   ),
+              // ),
             ),
           ],
         ),
