@@ -106,7 +106,7 @@ class ConnectionGridMenu extends StatelessWidget {
     bool shouldBlock = true;
     String targetUserId =
         connection.userIds.firstWhere((userId) => userId != superuser.id);
-    if (superuser.blockedUserIds.contains(targetUserId)) {
+    if (superuser.blockedUsers.keys.toList().contains(targetUserId)) {
       shouldBlock = false;
     }
 

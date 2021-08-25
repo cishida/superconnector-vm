@@ -47,9 +47,9 @@ class _SupercontactSelectionState extends State<SupercontactSelection> {
 
         filteredSupercontacts = filteredSupercontacts
             .where(
-              (supercontact) => !superuser.blockedUserIds.contains(
-                supercontact.targetUserId,
-              ),
+              (supercontact) => !superuser.blockedUsers.keys.toList().contains(
+                    supercontact.targetUserId,
+                  ),
             )
             .toList();
 

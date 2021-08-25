@@ -74,8 +74,8 @@ class Superuser {
   bool recordOnboarding;
   @JsonKey(defaultValue: false)
   bool contactsOnboarding;
-  @JsonKey(defaultValue: [])
-  List<String> blockedUserIds;
+  @JsonKey(defaultValue: {})
+  Map<String, DateTime> blockedUsers;
 
   @JsonKey(
     fromJson: _dateTimeFromTimestamp,
@@ -105,7 +105,7 @@ class Superuser {
     this.homeOnboardingStage = HomeOnboardingStage.completed,
     this.recordOnboarding = false,
     this.contactsOnboarding = false,
-    this.blockedUserIds = const [],
+    this.blockedUsers = const {},
     required this.created,
   });
 
@@ -119,18 +119,20 @@ class Superuser {
   }
 
   Future block(String id) async {
-    blockedUserIds.add(id);
+    blockedUsers[id] = DateTime.now();
+    // blockedUserIds.add(id);
 
     // Use a set to prevent duplicates
-    blockedUserIds = blockedUserIds.toSet().toList();
+    // blockedUserIds = blockedUserIds.toSet().toList();
     await update();
   }
 
   Future unblock(String id) async {
-    blockedUserIds.remove(id);
+    // blockedUserIds.remove(id);
+    blockedUsers.remove(id);
 
     // Use a set to prevent duplicates
-    blockedUserIds = blockedUserIds.toSet().toList();
+    // blockedUserIds = blockedUserIds.toSet().toList();
     await update();
   }
 

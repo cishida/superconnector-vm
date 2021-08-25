@@ -65,7 +65,7 @@ class BlockUtility {
 
     // if 1 on 1 connection and blocked user
     if (connection.userIds.length == 2 &&
-        superuser.blockedUserIds.contains(targetUserId)) {
+        superuser.blockedUsers.keys.contains(targetUserId)) {
       await _showBlockedCard(
         blockedId: targetUserId,
       );
