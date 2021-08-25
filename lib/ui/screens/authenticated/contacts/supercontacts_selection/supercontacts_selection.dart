@@ -45,6 +45,14 @@ class _SupercontactSelectionState extends State<SupercontactSelection> {
                       .contains(widget.filter.toLowerCase()));
         }).toList();
 
+        filteredSupercontacts = filteredSupercontacts
+            .where(
+              (supercontact) => !superuser.blockedUserIds.contains(
+                supercontact.targetUserId,
+              ),
+            )
+            .toList();
+
         if (filteredSupercontacts.length == 0) {
           return SingleChildScrollView(
             child: Column(
