@@ -3,6 +3,7 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 
@@ -20,6 +21,18 @@ class BlockUtility {
   final Connection connection;
   final List<Supercontact> supercontacts;
   final SelectedContacts selectedContacts;
+
+  static List<Video> unblockedVideos({
+    required Superuser superuser,
+    required List<Video> videos,
+  }) {
+    return videos.where((video) {
+      bool unblocked = !superuser.blockedUsers.containsKey(video.superuserId);
+      bool beforeBlock = superuser.blockedUsers[video.superuserId] != null &&
+          video.created.isBefore(superuser.blockedUsers[video.superuserId]!);
+      return unblocked || beforeBlock;
+    }).toList();
+  }
 
   void _toRecord() {
     selectedContacts.setContactsFromConnection(

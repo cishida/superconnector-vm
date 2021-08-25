@@ -9,6 +9,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/services/video/video_service.dart';
+import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
@@ -56,9 +57,11 @@ class _ConnectionTileState extends State<ConnectionTile> {
       }
     }
 
-    setState(() {
-      _superusers = tempSuperusers;
-    });
+    if (mounted) {
+      setState(() {
+        _superusers = tempSuperusers;
+      });
+    }
   }
 
   @override
@@ -98,7 +101,11 @@ class _ConnectionTileState extends State<ConnectionTile> {
       initialData: [],
       child: Consumer<List<Video>>(
         builder: (context, videos, child) {
-          int unwatchedCount = videos
+          List<Video> filteredVideos = BlockUtility.unblockedVideos(
+            superuser: superuser,
+            videos: videos,
+          );
+          int unwatchedCount = filteredVideos
               .where(
                 (element) => element.unwatchedIds.contains(
                   superuser.id,
@@ -197,7 +204,7 @@ class _ConnectionTileState extends State<ConnectionTile> {
                   ),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: min(videos.length, 5),
+                    itemCount: min(filteredVideos.length, 5),
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         behavior: widget.shouldIgnoreTaps
@@ -212,14 +219,14 @@ class _ConnectionTileState extends State<ConnectionTile> {
                             context: context,
                             widget: ConnectionCarousel(
                               connection: widget.connection,
-                              videos: videos,
+                              videos: filteredVideos,
                               initialIndex: index,
                             ),
                             fullScreen: false,
                           );
                         },
                         child: VideoTile(
-                          video: videos[index],
+                          video: filteredVideos[index],
                         ),
                       );
                     },

@@ -143,12 +143,17 @@ class _ConnectionGridState extends State<ConnectionGrid> {
                 ),
                 initialData: [],
                 child: Consumer<List<Video>>(builder: (context, videos, child) {
+                  List<Video> filteredVideos = BlockUtility.unblockedVideos(
+                    superuser: superuser,
+                    videos: videos,
+                  );
+
                   return GridView.count(
                     crossAxisCount: 3,
                     childAspectRatio: itemWidth / itemHeight,
                     mainAxisSpacing: 1.0,
                     crossAxisSpacing: 1.0,
-                    children: _buildVideoGridTiles(videos),
+                    children: _buildVideoGridTiles(filteredVideos),
                   );
                 }),
               ),
