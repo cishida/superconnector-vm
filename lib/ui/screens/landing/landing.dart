@@ -99,8 +99,6 @@ class _LandingState extends State<Landing> {
   }
 
   Future _createUserProfile(User user) async {
-    final analytics = Provider.of<FirebaseAnalytics>(context);
-
     var batch = FirebaseFirestore.instance.batch();
     final superuserDoc = await superuserCollection.doc(user.uid).get();
     final phoneNumber = user.phoneNumber ?? '';
@@ -133,9 +131,11 @@ class _LandingState extends State<Landing> {
         superuserDoc.reference,
         superuser.toJson(),
       );
-      analytics.logSignUp(signUpMethod: 'phone_authentication');
+      // final analytics = Provider.of<FirebaseAnalytics>(context);
+      // analytics.logSignUp(signUpMethod: 'phone_authentication');
     } else {
-      analytics.logLogin();
+      // final analytics = Provider.of<FirebaseAnalytics>(context);
+      // analytics.logLogin();
     }
 
     return batch.commit();

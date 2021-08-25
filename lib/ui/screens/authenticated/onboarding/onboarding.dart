@@ -24,6 +24,8 @@ class _OnboardingState extends State<Onboarding> {
       FirebaseFirestore.instance.collection('connections');
   final CollectionReference videoCollection =
       FirebaseFirestore.instance.collection('videos');
+  final CollectionReference exampleVideoCollection =
+      FirebaseFirestore.instance.collection('exampleVideos');
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class _OnboardingState extends State<Onboarding> {
     }
 
     return OnboardingPages(
-      completePages: () {
+      completePages: () async {
         var batch = FirebaseFirestore.instance.batch();
 
         var newConnectionDoc = connectionCollection.doc();
@@ -55,24 +57,28 @@ class _OnboardingState extends State<Onboarding> {
         );
 
         var newVideoDoc = videoCollection.doc();
-        Video video = Video(
-          assetId: 'REqrunEiKGAt3uN9702vFe9p02hlWw8WYD3BIQ8nG73AE',
-          connectionId: newConnectionDoc.id,
-          uploadId: 'tD5Q6m01UeiwymSr4c01SGoTgqkkJ8Z3aMVtZ1IuzsJP00',
-          superuserId: ConstantStrings.SUPERCONNECTOR_ID,
-          playbackIds: ['Qn9yxlnOkkHBlPN028lAdZds48UkZ55ERm4Q02xtKoNFQ'],
-          status: 'ready',
-          caption: '',
-          created: DateTime.now(),
-          duration: 4.133333,
-          views: 0,
-          deleted: false,
-        );
+        var exampleVideoSnap = await exampleVideoCollection.get();
 
-        batch.set(
-          newVideoDoc,
-          video.toJson(),
-        );
+        exampleVideoSnap.docs.forEach((exampleVideo) {
+          Video video = Video(
+            assetId: exampleVideo['assetId'],
+            connectionId: newConnectionDoc.id,
+            uploadId: exampleVideo["uploadId"],
+            superuserId: ConstantStrings.SUPERCONNECTOR_ID,
+            playbackIds: [exampleVideo["playbackIds"].first],
+            status: 'ready',
+            caption: '',
+            created: DateTime.now(),
+            duration: 4.133333,
+            views: 0,
+            deleted: false,
+          );
+
+          batch.set(
+            newVideoDoc,
+            video.toJson(),
+          );
+        });
 
         batch.commit();
         superuser.onboarded = true;
