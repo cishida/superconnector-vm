@@ -17,8 +17,8 @@ class AccountItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
+    return InkWell(
+      // behavior: HitTestBehavior.translucent,
       onTap: () => onPressed(),
       child: Column(
         children: [

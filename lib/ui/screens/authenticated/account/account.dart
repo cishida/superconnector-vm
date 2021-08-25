@@ -9,10 +9,12 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/auth/auth_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
 import 'package:superconnector_vm/ui/components/overlay_input.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/account/block_list/block_list.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/components/account_item.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -344,7 +346,13 @@ class _AccountState extends State<Account> {
                         '🚫',
                       ),
                       title: 'Block List',
-                      onPressed: () {},
+                      onPressed: () {
+                        SuperNavigator.push(
+                          context: context,
+                          widget: BlockList(),
+                          fullScreen: false,
+                        );
+                      },
                     ),
                     AccountItem(
                       leading: Text(
