@@ -52,16 +52,10 @@ class ConnectionGridMenu extends StatelessWidget {
     );
   }
 
-  Future _blockPressed(BuildContext context) async {
-    Superuser? superuser = Provider.of<Superuser?>(
-      context,
-      listen: false,
-    );
-
-    if (superuser == null) {
-      return;
-    }
-
+  Future _blockPressed({
+    required BuildContext context,
+    required Superuser superuser,
+  }) async {
     Navigator.pop(context);
     showDialog(
       context: context,
@@ -89,8 +83,38 @@ class ConnectionGridMenu extends StatelessWidget {
     );
   }
 
+  Future _unblockPressed({
+    required BuildContext context,
+    required Superuser superuser,
+  }) async {
+    String blockedUserId =
+        connection.userIds.firstWhere((userId) => userId != superuser.id);
+    superuser.blockedUserIds.remove(blockedUserId);
+    await superuser.update();
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
+
+    _showSnackbar(
+      context,
+      'You unblocked them.',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Superuser? superuser = Provider.of<Superuser?>(context);
+
+    if (superuser == null) {
+      return Container();
+    }
+
+    bool shouldBlock = true;
+    String targetUserId =
+        connection.userIds.firstWhere((userId) => userId != superuser.id);
+    if (superuser.blockedUserIds.contains(targetUserId)) {
+      shouldBlock = false;
+    }
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: false,
@@ -121,10 +145,21 @@ class ConnectionGridMenu extends StatelessWidget {
                     ),
                   ),
                   children: [
-                    MenuChip(
-                      onPressed: () => _blockPressed(context),
-                      title: 'Block',
-                    ),
+                    shouldBlock
+                        ? MenuChip(
+                            onPressed: () => _blockPressed(
+                              context: context,
+                              superuser: superuser,
+                            ),
+                            title: 'Block',
+                          )
+                        : MenuChip(
+                            onPressed: () => _unblockPressed(
+                              context: context,
+                              superuser: superuser,
+                            ),
+                            title: 'Unblock',
+                          ),
                   ],
                 ),
               ),
