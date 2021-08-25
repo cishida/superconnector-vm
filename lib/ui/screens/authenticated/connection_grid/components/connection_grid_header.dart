@@ -4,6 +4,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/components/connection_grid_menu.dart';
 
 class ConnectionGridHeader extends StatelessWidget {
   const ConnectionGridHeader({
@@ -18,10 +19,21 @@ class ConnectionGridHeader extends StatelessWidget {
   final List<Superuser> _superusers;
   final Connection connection;
 
+  void _onTapName(BuildContext context) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return ConnectionGridMenu();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: ConstantColors.OFF_WHITE,
       height: 55.0,
       width: MediaQuery.of(context).size.width,
       child: Row(
@@ -38,9 +50,7 @@ class ConnectionGridHeader extends StatelessWidget {
           ),
           GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () async {
-              print('username tapped');
-            },
+            onTap: () => _onTapName(context),
             child: Padding(
               padding: const EdgeInsets.only(right: 19),
               child: Row(
@@ -63,7 +73,7 @@ class ConnectionGridHeader extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
