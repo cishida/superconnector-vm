@@ -7,6 +7,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/services/video/video_service.dart';
+import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/app_bars/light_app_bar.dart';
 import 'package:superconnector_vm/ui/components/buttons/new_vm_button.dart';
@@ -91,6 +92,12 @@ class _ConnectionGridState extends State<ConnectionGrid> {
     final double itemHeight = 182;
     final double itemWidth = size.width / _crossAxisCount;
 
+    Superuser? superuser = Provider.of<Superuser?>(context);
+
+    if (superuser == null) {
+      return Container();
+    }
+
     var selectedContacts = Provider.of<SelectedContacts>(context);
     var supercontacts = Provider.of<List<Supercontact>>(context);
 
@@ -111,9 +118,14 @@ class _ConnectionGridState extends State<ConnectionGrid> {
       appBar: LightAppBar(),
       floatingActionButton: NewVMButton(
         onPressed: () {
-          selectedContacts.setContactsFromConnection(
-              connection: widget.connection, supercontacts: supercontacts);
-          SuperNavigator.handleRecordNavigation(context);
+          BlockUtility blockUtility = BlockUtility(
+            context: context,
+            superuser: superuser,
+            connection: widget.connection,
+            supercontacts: supercontacts,
+            selectedContacts: selectedContacts,
+          );
+          blockUtility.handleBlockedRecordNavigation();
         },
       ),
       body: SafeArea(

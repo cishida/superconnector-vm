@@ -40,48 +40,6 @@ class SuperNavigator {
           );
         },
       );
-      // showGeneralDialog(
-      //   context: context,
-      //   barrierColor:
-      //       Colors.grey.shade900.withOpacity(0.95), // Background color
-      //   barrierDismissible: false,
-      //   barrierLabel: 'Dialog',
-      //   transitionDuration: Duration(milliseconds: 200),
-      //   transitionBuilder: (context, a1, a2, widget) {
-      //     return Transform.scale(
-      //       scale: a1.value,
-      //       child: Opacity(
-      //         opacity: a1.value,
-      //         child: Dismissible(
-      //           direction: DismissDirection.vertical,
-      //           resizeDuration: Duration(milliseconds: 1),
-      //           onDismissed: (_) {
-      //             Navigator.of(context).pop();
-      //           },
-      //           key: Key("key"),
-      //           child: Contacts(),
-      //         ),
-      //       ),
-      //     );
-      //   },
-      //   pageBuilder: (context, __, ___) {
-      //     // Makes widget fullscreen
-      //     return Dismissible(
-      //       direction: DismissDirection.vertical,
-      //       resizeDuration: Duration(milliseconds: 1),
-      //       onDismissed: (_) {
-      //         Navigator.of(context).pop();
-      //       },
-      //       key: Key("key"),
-      //       child: Contacts(),
-      //     );
-      //   },
-      // );
-      // SuperNavigator.push(
-      //   context: context,
-      //   widget: Contacts(),
-      //   fullScreen: false,
-      // );
     } else {
       SuperNavigator.push(
         context: context,
