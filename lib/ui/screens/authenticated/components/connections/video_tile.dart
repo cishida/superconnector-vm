@@ -22,7 +22,7 @@ class _VideoTileState extends State<VideoTile> {
   Superuser? _owner;
 
   Future _loadUser(Superuser superuser) async {
-    if (widget.video.superuserId == superuser.id) {
+    if (widget.video.superuserId == superuser.id && mounted) {
       setState(() {
         _owner = superuser;
       });

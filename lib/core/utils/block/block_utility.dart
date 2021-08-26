@@ -73,6 +73,11 @@ class BlockUtility {
   }
 
   Future handleBlockedRecordNavigation() async {
+    if (connection.userIds.length == 1) {
+      _toRecord();
+      return;
+    }
+
     String targetUserId =
         connection.userIds.firstWhere((e) => e != superuser.id);
 

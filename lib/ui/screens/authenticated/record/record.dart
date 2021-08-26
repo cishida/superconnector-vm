@@ -19,6 +19,7 @@ import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
 import 'package:superconnector_vm/core/utils/video/video_player_helper.dart';
 import 'package:superconnector_vm/core/utils/video/video_uploader.dart';
 import 'package:superconnector_vm/main.dart';
+import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/camera_preview_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_bottom_nav.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_overlay.dart';
@@ -105,38 +106,10 @@ class _RecordState extends State<Record>
       await temp.dispose();
     }
     await initCamera();
-    // _cameraController = CameraController(
-    //   cameraDescription,
-    //   ResolutionPreset.veryHigh,
-    //   enableAudio: true,
-    // );
-
-    // // If the controller is updated then update the UI.
-    // _cameraController!.addListener(() {
-    //   _safeSetState();
-    //   if (_cameraController!.value.hasError) {
-    //     print('Camera error ${_cameraController!.value.errorDescription}');
-    //   }
-    // });
-
-    // try {
-    //   await _cameraController!.initialize();
-    // } on CameraException catch (e) {
-    //   _showCameraException(e);
-    // }
-
     _safeSetState();
   }
 
   Future _onResetPressed() async {
-    // _cameraController = null;
-    // initCamera();
-    // var selectedContacts = Provider.of<SelectedContacts>(
-    //   context,
-    //   listen: false,
-    // );
-    // selectedContacts.reset();
-
     if (mounted) {
       setState(() {
         _isResetting = true;
@@ -318,20 +291,46 @@ class _RecordState extends State<Record>
     Navigator.of(context).popUntil((route) => route.isFirst);
 
     if (connection.phoneNumberNameMap.isNotEmpty) {
-      String phone = connection.phoneNumberNameMap.keys.first;
+      List<String> phoneNumbers = connection.phoneNumberNameMap.keys.toList();
 
-      if (Platform.isAndroid) {
-        String uri =
-            'sms:$phone?body=Hey%20I%20just%20sent%20you%20a%20VM%20in%20Superconnector,%20get%20the%20app%20so%20we%20can%20VM%20each%20other%20faster%20https://www.superconnector.com/';
-        await launch(uri);
-      } else if (Platform.isIOS) {
-        // iOS
-        String uri =
-            'sms:$phone&body=Hey%20I%20just%20sent%20you%20a%20VM%20in%20Superconnector,%20get%20the%20app%20so%20we%20can%20VM%20each%20other%20faster%20https://www.superconnector.com/';
-        await launch(uri);
-      }
+      _showInviteCard(phoneNumbers);
     }
     return;
+  }
+
+  Future _showInviteCard(
+    List<String> phoneNumbers,
+  ) async {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Stack(
+          children: [
+            SuperDialog(
+              title: 'Invitation',
+              subtitle:
+                  'They need a Superconnector invitation to connect with you and share VMs.',
+              primaryActionTitle: 'Continue',
+              primaryAction: () async {
+                String separator = Platform.isAndroid ? '?' : '&';
+                String phones = phoneNumbers.join(';');
+                String body =
+                    'Hey%20I%20just%20sent%20you%20a%20VM%20in%20Superconnector,%20get%20the%20app%20so%20we%20can%20VM%20each%20other%20faster%20https://www.superconnector.com/';
+                await launch(
+                    'sms:/open?addresses=$phones${separator}body=$body');
+
+                Navigator.pop(context);
+              },
+              secondaryActionTitle: 'Cancel',
+              secondaryAction: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -423,15 +422,6 @@ class _RecordState extends State<Record>
 
                 // Video player after VM recorded
                 if (shouldShowVideo)
-                  // BetterPlayerMultipleGestureDetector(
-                  //   child: AspectRatio(
-                  //     aspectRatio: 16 / 9,
-                  //     child: BetterPlayer(controller: _betterPlayerController!),
-                  //   ),
-                  //   onTap: () {
-                  //     print("Tap!");
-                  //   },
-                  // ),
                   Stack(
                     children: [
                       Transform.scale(
