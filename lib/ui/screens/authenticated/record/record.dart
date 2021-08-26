@@ -14,6 +14,7 @@ import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
 import 'package:superconnector_vm/core/utils/video/video_player_helper.dart';
@@ -313,13 +314,10 @@ class _RecordState extends State<Record>
                   'They need a Superconnector invitation to connect with you and share VMs.',
               primaryActionTitle: 'Continue',
               primaryAction: () async {
-                String separator = Platform.isAndroid ? '?' : '&';
-                String phones = phoneNumbers.join(';');
                 String body =
-                    'Hey%20I%20just%20sent%20you%20a%20VM%20in%20Superconnector,%20get%20the%20app%20so%20we%20can%20VM%20each%20other%20faster%20https://www.superconnector.com/';
-                await launch(
-                    'sms:/open?addresses=$phones${separator}body=$body');
+                    'Hey I just sent you a VM in Superconnector, get the app so we can VM each other faster https://www.superconnector.com/';
 
+                await SMSUtility.send(body, phoneNumbers);
                 Navigator.pop(context);
               },
               secondaryActionTitle: 'Cancel',
