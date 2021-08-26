@@ -146,7 +146,7 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isResetting) {
+    if (widget.isResetting || !widget._cameraController.value.isInitialized) {
       return Container();
     }
 

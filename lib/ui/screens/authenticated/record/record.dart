@@ -14,6 +14,8 @@ import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
+import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
 import 'package:superconnector_vm/core/utils/video/video_player_helper.dart';
 import 'package:superconnector_vm/core/utils/video/video_uploader.dart';
 import 'package:superconnector_vm/main.dart';
@@ -49,39 +51,29 @@ class _RecordState extends State<Record>
   bool _isRecording = false;
   bool _isResetting = false;
 
+  void _safeSetState() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   Future initCamera() async {
     var status = await Permission.camera.status;
 
-    print('init');
-
     if (status.isGranted && cameras.isNotEmpty) {
-      _cameraController = CameraController(
-        cameras.firstWhere((description) =>
-            description.lensDirection == CameraLensDirection.front),
-        ResolutionPreset.veryHigh,
-        enableAudio: true,
+      _cameraController = await CameraUtility.initializeController(
+        cameras,
       );
-      await _cameraController!.initialize();
-      await _cameraController!.prepareForVideoRecording();
-      if (mounted) {
-        setState(() {});
-      }
-
-      print('prepared');
-      // .then((_) {
-      //   if (!mounted) {
-      //     return;
-      //   }
-      //   setState(() {});
-      // });
+      _safeSetState();
     }
   }
 
   Future<void> _setVideoFile(XFile file) async {
-    print('here');
-    setState(() {
-      _videoFile = file;
-    });
+    if (mounted) {
+      setState(() {
+        _videoFile = file;
+      });
+    }
     await initializeVideo();
     await _uploadFile();
   }
@@ -91,92 +83,49 @@ class _RecordState extends State<Record>
       return;
     }
 
-    BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
-      BetterPlayerDataSourceType.file,
-      _videoFile!.path,
-      subtitles: [],
+    _betterPlayerController = BetterPlayerUtility.initializeFromVideoFile(
+      videoFile: _videoFile!,
+      onEvent: () {
+        if (_betterPlayerController != null) {
+          _safeSetState();
+        }
+      },
     );
 
-    _betterPlayerController = BetterPlayerController(
-      BetterPlayerConfiguration(
-        startAt: Duration(milliseconds: 50),
-        autoPlay: true,
-        looping: true,
-        aspectRatio: 9 / 16,
-        fit: BoxFit.cover,
-        controlsConfiguration: BetterPlayerControlsConfiguration(
-          showControls: false,
-        ),
-        placeholder: Center(
-          child: CircularProgressIndicator(),
-          // Text(
-          //   'Broken',
-          //   style: TextStyle(
-          //     color: Colors.white,
-          //   ),
-          // ),
-        ),
-      ),
-      betterPlayerDataSource: betterPlayerDataSource,
-    );
-
-    _betterPlayerController!.addEventsListener((event) {
-      print("Better player event: ${event.betterPlayerEventType}");
-      if (mounted && _betterPlayerController != null) {
-        setState(() {});
-      }
-    });
-
-    _betterPlayerController!.videoPlayerController?.addListener(() {
-      if (mounted && _betterPlayerController != null) {
-        setState(() {});
-      }
-    });
-
-    if (mounted) {
-      setState(() {});
-    }
+    _safeSetState();
   }
 
-  void toggleVideo() {
-    print('toggle');
-    // if (_betterPlayerController == null) {
-    //   return;
-    // }
-    // _betterPlayerController!.value.isPlaying
-    //     ? _betterPlayerController!.pause()
-    //     : _betterPlayerController!.play();
-
-    setState(() {});
-  }
-
-  Future onNewCameraSelected(CameraDescription cameraDescription) async {
+  Future onNewCameraSelected(
+    CameraDescription cameraDescription,
+  ) async {
     if (_cameraController != null) {
-      await _cameraController!.dispose();
+      CameraController temp = _cameraController!;
+      _cameraController = null;
+      _safeSetState();
+      await temp.dispose();
     }
-    _cameraController = CameraController(
-      cameraDescription,
-      ResolutionPreset.veryHigh,
-      enableAudio: true,
-    );
+    await initCamera();
+    // _cameraController = CameraController(
+    //   cameraDescription,
+    //   ResolutionPreset.veryHigh,
+    //   enableAudio: true,
+    // );
 
-    // If the controller is updated then update the UI.
-    _cameraController!.addListener(() {
-      if (mounted) setState(() {});
-      if (_cameraController!.value.hasError) {
-        print('Camera error ${_cameraController!.value.errorDescription}');
-      }
-    });
+    // // If the controller is updated then update the UI.
+    // _cameraController!.addListener(() {
+    //   _safeSetState();
+    //   if (_cameraController!.value.hasError) {
+    //     print('Camera error ${_cameraController!.value.errorDescription}');
+    //   }
+    // });
 
-    try {
-      await _cameraController!.initialize();
-    } on CameraException catch (e) {
-      _showCameraException(e);
-    }
+    // try {
+    //   await _cameraController!.initialize();
+    // } on CameraException catch (e) {
+    //   _showCameraException(e);
+    // }
 
-    if (mounted) {
-      setState(() {});
-    }
+    _safeSetState();
   }
 
   Future _onResetPressed() async {
@@ -188,9 +137,11 @@ class _RecordState extends State<Record>
     // );
     // selectedContacts.reset();
 
-    setState(() {
-      _isResetting = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isResetting = true;
+      });
+    }
 
     if (_cameraController != null) {
       await onNewCameraSelected(_cameraController!.description);
@@ -208,25 +159,16 @@ class _RecordState extends State<Record>
 
     _animationController.reset();
 
-    setState(() {
-      _betterPlayerController = null;
-      _videoFile = null;
-      _uploadCompleted = false;
-      _sendPressed = false;
-      _videoDoc = FirebaseFirestore.instance.collection('videos').doc();
-      _progress = 0;
-      _isResetting = false;
-    });
-  }
-
-  double _getVideoDuration() {
-    double? duration = (_betterPlayerController!
-        .videoPlayerController?.value.duration!.inMilliseconds
-        .toDouble());
-    if (duration != null) {
-      return double.parse((duration / 1000).toStringAsFixed(2));
-    } else {
-      return 0.0;
+    if (mounted) {
+      setState(() {
+        _betterPlayerController = null;
+        _videoFile = null;
+        _uploadCompleted = false;
+        _sendPressed = false;
+        _videoDoc = FirebaseFirestore.instance.collection('videos').doc();
+        _progress = 0;
+        _isResetting = false;
+      });
     }
   }
 
@@ -253,9 +195,11 @@ class _RecordState extends State<Record>
         if (_upchunk != null && _videoFile == null) {
           _upchunk!.stop();
         }
-        setState(() {
-          _progress = progress.floor();
-        });
+        if (mounted) {
+          setState(() {
+            _progress = progress.floor();
+          });
+        }
       }
       ..onError = (
         String message,
@@ -274,7 +218,9 @@ class _RecordState extends State<Record>
           'superuserId': superuser.id,
           'caption': video.caption,
           'created': Timestamp.now(),
-          'duration': _getVideoDuration(),
+          'duration': BetterPlayerUtility.getVideoDuration(
+            _betterPlayerController,
+          ),
           'views': 0,
           'deleted': false,
         });
@@ -286,17 +232,11 @@ class _RecordState extends State<Record>
         }
 
         if (_sendPressed) {
-          print('UploadComplete -> Send');
           await _sendVM();
-          // Navigator.of(context).popUntil((route) => route.isFirst);
-        } else {
-          print('UploadComplete -> No Send');
         }
       };
 
     _upchunk = UpChunk.createUpload(uploadOptions);
-
-    // print(UpChunk.createUpload(uploadOptions));
   }
 
   Future<void> _onSendPressed() async {
@@ -322,10 +262,7 @@ class _RecordState extends State<Record>
     });
 
     if (_uploadCompleted) {
-      print('SendPressed -> Complete');
       await _sendVM();
-    } else {
-      print('SendPressed -> Incomplete');
     }
   }
 
@@ -371,7 +308,9 @@ class _RecordState extends State<Record>
         'id': _videoDoc.id,
         'senderId': superuser.id,
         'connectionId': connection.id,
-        'duration': _getVideoDuration(),
+        'duration': BetterPlayerUtility.getVideoDuration(
+          _betterPlayerController,
+        ),
       },
     );
 
@@ -408,9 +347,7 @@ class _RecordState extends State<Record>
       ),
     );
     _animationController.addListener(() {
-      if (mounted) {
-        setState(() {});
-      }
+      _safeSetState();
     });
   }
 
@@ -440,10 +377,6 @@ class _RecordState extends State<Record>
         });
       }
     }
-  }
-
-  void _showCameraException(CameraException e) {
-    print('Error: ${e.code}\n${e.description}');
   }
 
   @override
