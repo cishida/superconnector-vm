@@ -22,6 +22,7 @@ class ConnectionPhotos extends StatelessWidget {
             child: SuperuserImage(
               url: i < photoUrls.length ? photoUrls[i] : '',
               radius: 16.0,
+              bordered: false,
             ),
           ),
         ),

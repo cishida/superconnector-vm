@@ -259,22 +259,20 @@ class _HomeState extends State<Home> {
               SuperNavigator.handleRecordNavigation(context);
             },
           ),
-          body: SafeArea(
-            child: Container(
-              color: ConstantColors.OFF_WHITE,
-              child: Column(
-                children: [
-                  HomeTitleBar(
-                    superuser: superuser,
+          body: Container(
+            color: ConstantColors.OFF_WHITE,
+            child: Column(
+              children: [
+                HomeTitleBar(
+                  superuser: superuser,
+                ),
+                Expanded(
+                  child: Container(
+                    color: Colors.white,
+                    child: ConnectionList(),
                   ),
-                  Expanded(
-                    child: Container(
-                      color: Colors.white,
-                      child: ConnectionList(),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );

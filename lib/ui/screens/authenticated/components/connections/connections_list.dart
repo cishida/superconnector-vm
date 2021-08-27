@@ -22,6 +22,9 @@ class _ConnectionListState extends State<ConnectionList> {
       return Consumer<List<Connection>>(
         builder: (context, connections, child) {
           return ListView.builder(
+            padding: const EdgeInsets.only(
+              bottom: 200.0,
+            ),
             itemCount: connections.length,
             itemBuilder: (context, index) {
               return ConnectionTile(

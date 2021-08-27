@@ -27,6 +27,7 @@ class HomeTitleBar extends StatelessWidget {
                   color: Colors.black,
                   fontSize: 40.0,
                   fontWeight: FontWeight.w700,
+                  letterSpacing: -.5,
                 ),
               ),
             ),
@@ -62,6 +63,7 @@ class HomeTitleBar extends StatelessWidget {
                 child: SuperuserImage(
                   url: superuser.photoUrl,
                   radius: 21.0,
+                  bordered: false,
                 ),
               ),
             ),

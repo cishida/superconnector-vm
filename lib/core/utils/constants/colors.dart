@@ -21,6 +21,9 @@ class ConstantColors {
   static const Color CONTACTS_GROUP_BACKGROUND = Color(0xFFF5F6F6);
   static const Color CONTACT_SELECTION_CIRCLE_BORDER = Color(0xFFC7C6CB);
 
+  // Buttons
+  static const Color FAB_BACKGROUND = Color(0xFF0AA7FF);
+
   // Errors
   static const Color ERROR_RED = Color(0xFFA22027);
 }

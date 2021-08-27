@@ -13,13 +13,20 @@ class NewVMButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor: isInverted ? Colors.white : ConstantColors.PRIMARY,
-      child: Icon(
-        Icons.add,
-        color: isInverted ? ConstantColors.PRIMARY : Colors.white,
+    return Container(
+      width: 64.0,
+      height: 64.0,
+      child: FittedBox(
+        child: FloatingActionButton(
+          backgroundColor:
+              isInverted ? Colors.white : ConstantColors.FAB_BACKGROUND,
+          child: Icon(
+            Icons.add,
+            color: isInverted ? ConstantColors.FAB_BACKGROUND : Colors.white,
+          ),
+          onPressed: () => onPressed(),
+        ),
       ),
-      onPressed: () => onPressed(),
     );
   }
 }

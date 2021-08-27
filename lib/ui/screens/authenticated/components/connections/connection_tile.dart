@@ -178,25 +178,28 @@ class _ConnectionTileState extends State<ConnectionTile> {
                           ],
                         ),
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            widget.connection.streakCount.toString(),
-                            style: TextStyle(
-                              color: textColor,
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.w700,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 17.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              widget.connection.streakCount.toString(),
+                              style: TextStyle(
+                                color: textColor,
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 4.0,
-                          ),
-                          Image.asset(
-                            'assets/images/authenticated/streak-icon.png',
-                            width: 10.0,
-                            color: textColor,
-                          ),
-                        ],
+                            SizedBox(
+                              width: 4.0,
+                            ),
+                            Image.asset(
+                              'assets/images/authenticated/streak-icon.png',
+                              width: 10.0,
+                              color: textColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
