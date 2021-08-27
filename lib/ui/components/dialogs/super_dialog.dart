@@ -80,6 +80,7 @@ class _SuperDialogState extends State<SuperDialog>
                     color: Colors.black,
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
+                    letterSpacing: .15,
                   ),
                 ),
                 SizedBox(
@@ -88,9 +89,11 @@ class _SuperDialogState extends State<SuperDialog>
                 Text(
                   widget.subtitle,
                   style: TextStyle(
-                    color: Colors.black.withOpacity(0.87),
+                    color: Colors.black.withOpacity(0.5),
                     fontSize: 17.0,
                     fontWeight: FontWeight.w400,
+                    letterSpacing: .15,
+                    height: 24 / 17,
                   ),
                 ),
                 SizedBox(
@@ -118,13 +121,25 @@ class _SuperDialogState extends State<SuperDialog>
                       onTap: () {
                         widget.primaryAction();
                       },
-                      child: Text(
-                        widget.primaryActionTitle,
-                        style: TextStyle(
-                          color: ConstantColors.PRIMARY,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      child: Row(
+                        children: [
+                          Text(
+                            widget.primaryActionTitle,
+                            style: TextStyle(
+                              color: ConstantColors.PRIMARY,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 3.0, left: 6.0),
+                            child: Image.asset(
+                              'assets/images/authenticated/onboarding/right-arrow-icon.png',
+                              width: 18.0,
+                              height: 13.0,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
