@@ -61,7 +61,7 @@ class RecordOverlay extends StatelessWidget {
     return Stack(
       children: [
         Positioned(
-          top: 50.0,
+          top: 71.0,
           left: 0.0,
           child: ChevronBackButton(
             onBack: () {
@@ -72,7 +72,7 @@ class RecordOverlay extends StatelessWidget {
         ),
         if (!selectedContacts.isEmpty())
           Positioned.fill(
-            top: 50.0,
+            top: 71.0,
             right: 62.0,
             left: 62.0,
             child: Align(
@@ -108,7 +108,7 @@ class RecordOverlay extends StatelessWidget {
           ),
         // if (!isRecording)
         Positioned(
-          top: 60.0,
+          top: 75.0,
           right: 10.0,
           child: AnimatedOpacity(
             opacity: !isRecording ? 1.0 : 0.0,
