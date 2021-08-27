@@ -121,6 +121,7 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 27.0),
               child: TextFormField(
+                autofocus: true,
                 autocorrect: false,
                 keyboardAppearance: Brightness.dark,
                 keyboardType: TextInputType.phone,

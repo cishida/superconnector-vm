@@ -49,11 +49,11 @@ class _PhoneNumberEntryState extends State<PhoneNumberEntry> {
 
     //Callback for when the code is sent
     PhoneCodeSent codeSent = (String verificationId, int? forceResendingToken) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        DarkSnackBar.createSnackBar(
-          text: 'Please check your phone for the verification code.',
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   DarkSnackBar.createSnackBar(
+      //     text: 'Please check your phone for the verification code.',
+      //   ),
+      // );
       // showSnackbar('Please check your phone for the verification code.');
       widget.setVerificationId(verificationId);
     };
@@ -156,6 +156,7 @@ class _PhoneNumberEntryState extends State<PhoneNumberEntry> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 27.0),
             child: TextFormField(
+              autofocus: true,
               autocorrect: false,
               keyboardAppearance: Brightness.dark,
               keyboardType: TextInputType.phone,
