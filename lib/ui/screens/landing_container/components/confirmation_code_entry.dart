@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
 import 'package:superconnector_vm/ui/components/go_back.dart';
 
 class ConfirmationCodeEntry extends StatefulWidget {
@@ -94,21 +95,26 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(height: 22.0),
           GoBack(
             action: widget.goBack,
           ),
           SizedBox(
-            height: 92.0,
+            height: 182.0,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Text(
               'Please enter your confirmation code.',
               textAlign: TextAlign.center,
+              style: TextStyle(
+                color: ConstantColors.ONBOARDING_TEXT,
+                fontSize: 17.0,
+              ),
             ),
           ),
           SizedBox(
-            height: 33.0,
+            height: 42.0,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 27.0),
@@ -145,17 +151,28 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(
-              top: 16.0,
+            padding: const EdgeInsets.symmetric(
+              vertical: 50.0,
+              horizontal: 45.0,
             ),
             alignment: Alignment.center,
-            child: ElevatedButton(
-              onPressed: () async {
-                _signInWithPhoneNumber();
-              },
-              child: Text("Sign in"),
+            child: BarButton(
+              title: 'Continue',
+              onPressed: _signInWithPhoneNumber,
             ),
           ),
+          // Container(
+          //   padding: const EdgeInsets.only(
+          //     top: 50.0,
+          //   ),
+          //   alignment: Alignment.center,
+          //   child: ElevatedButton(
+          //     onPressed: () async {
+          //       _signInWithPhoneNumber();
+          //     },
+          //     child: Text("Sign in"),
+          //   ),
+          // ),
         ],
       ),
     );
