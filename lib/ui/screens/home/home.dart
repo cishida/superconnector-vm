@@ -152,6 +152,10 @@ class _HomeState extends State<Home> {
                 ),
             overlayWidget: Consumer<List<Connection>>(
               builder: (context, connections, child) {
+                if (connections.length == 0) {
+                  return Container();
+                }
+
                 return Positioned(
                   top: 60.0,
                   left: 0.0,

@@ -76,25 +76,14 @@ class _SuperDialogState extends State<SuperDialog>
               children: [
                 Text(
                   widget.title,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: .15,
-                  ),
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(
                   height: 8.0,
                 ),
                 Text(
                   widget.subtitle,
-                  style: TextStyle(
-                    color: Colors.black.withOpacity(0.5),
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: .15,
-                    height: 24 / 17,
-                  ),
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
                 SizedBox(
                   height: 17.0,

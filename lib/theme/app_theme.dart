@@ -15,15 +15,29 @@ ThemeData appTheme() {
         fontSize: 18.0,
         fontWeight: FontWeight.w600,
       ),
-      headline6: TextStyle(
+      headline5: TextStyle(
         fontSize: 22.0,
         fontWeight: FontWeight.w600,
         color: ConstantColors.DARK_TEXT,
+      ),
+      headline6: TextStyle(
+        color: Colors.black,
+        fontSize: 20.0,
+        fontWeight: FontWeight.w600,
+        letterSpacing: .15,
       ),
       subtitle1: TextStyle(
         fontSize: 18.0,
         fontWeight: FontWeight.w400,
         color: Colors.black.withOpacity(.5),
+        height: 24 / 17,
+      ),
+      subtitle2: TextStyle(
+        color: Colors.black.withOpacity(0.5),
+        fontSize: 17.0,
+        fontWeight: FontWeight.w400,
+        letterSpacing: .15,
+        height: 24 / 17,
       ),
     ),
     // accentColor: Colors.orange,
