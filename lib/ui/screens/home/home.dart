@@ -144,36 +144,37 @@ class _HomeState extends State<Home> {
     switch (superuser.homeOnboardingStage) {
       case HomeOnboardingStage.connections:
         await _showOnboardingDialog(
-            title: ConstantStrings.ONBOARDING_CONNECTIONS_TITLE,
-            subtitle: ConstantStrings.ONBOARDING_CONNECTIONS_SUBTITLE,
-            onTap: () => goToOnboardingStage(
-                  HomeOnboardingStage.contacts,
-                  superuser,
-                ),
-            overlayWidget: Consumer<List<Connection>>(
-              builder: (context, connections, child) {
-                if (connections.length == 0) {
-                  return Container();
-                }
+          title: ConstantStrings.ONBOARDING_CONNECTIONS_TITLE,
+          subtitle: ConstantStrings.ONBOARDING_CONNECTIONS_SUBTITLE,
+          onTap: () => goToOnboardingStage(
+            HomeOnboardingStage.contacts,
+            superuser,
+          ),
+          overlayWidget: Consumer<List<Connection>>(
+            builder: (context, connections, child) {
+              if (connections.length == 0) {
+                return Container();
+              }
 
-                return Positioned(
-                  top: 60.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Card(
-                    elevation: 0.0,
-                    margin: const EdgeInsets.all(0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0.0),
-                    ),
-                    child: ConnectionTile(
-                      shouldIgnoreTaps: true,
-                      connection: connections[0],
-                    ),
+              return Positioned(
+                top: 60.0,
+                left: 0.0,
+                right: 0.0,
+                child: Card(
+                  elevation: 0.0,
+                  margin: const EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0.0),
                   ),
-                );
-              },
-            ));
+                  child: ConnectionTile(
+                    shouldIgnoreTaps: true,
+                    connection: connections[0],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
         break;
       case HomeOnboardingStage.contacts:
         await _showOnboardingDialog(

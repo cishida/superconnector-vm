@@ -71,6 +71,8 @@ class Superuser {
   @JsonKey(defaultValue: HomeOnboardingStage.completed)
   HomeOnboardingStage homeOnboardingStage;
   @JsonKey(defaultValue: false)
+  bool videoPlayerOnboarding;
+  @JsonKey(defaultValue: false)
   bool recordOnboarding;
   @JsonKey(defaultValue: false)
   bool contactsOnboarding;
@@ -103,6 +105,7 @@ class Superuser {
     this.numContacts = 0,
     this.onboarded = false,
     this.homeOnboardingStage = HomeOnboardingStage.completed,
+    this.videoPlayerOnboarding = false,
     this.recordOnboarding = false,
     this.contactsOnboarding = false,
     this.blockedUsers = const {},

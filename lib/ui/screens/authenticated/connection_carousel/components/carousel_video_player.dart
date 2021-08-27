@@ -6,6 +6,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/utils/video/video_player_helper.dart';
+import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/custom_controls_widget.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 
@@ -28,6 +29,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
   VideoPlayerHelper _videoPlayerHelper = VideoPlayerHelper();
   BetterPlayerTheme _playerTheme = BetterPlayerTheme.custom;
   late BetterPlayerController _betterPlayerController;
+  bool _showedCard = false;
 
   void _initializeVideo() async {
     BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
@@ -96,8 +98,6 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
       return;
     }
 
-    print('here');
-
     if (widget.video.unwatchedIds.contains(currentSuperuser.id)) {
       widget.video.unwatchedIds.remove(currentSuperuser.id);
       widget.video.update();
@@ -118,6 +118,22 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
     );
   }
 
+  Future _showCard() async {
+    await showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return SuperDialog(
+          title: 'VM Player',
+          subtitle:
+              'When you select a video message, it plays automatically on repeat. Tap to pause it or swipe up to watch the previous VM.',
+          primaryActionTitle: 'Continue',
+          primaryAction: () => Navigator.of(context).pop(),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -133,6 +149,23 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     var aspectRatio = _betterPlayerController.getAspectRatio();
+
+    Superuser? superuser = Provider.of<Superuser?>(context);
+
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
+      if (superuser != null &&
+          !superuser.videoPlayerOnboarding &&
+          !_showedCard) {
+        if (mounted) {
+          setState(() {
+            _showedCard = true;
+          });
+        }
+        await _showCard();
+        superuser.videoPlayerOnboarding = true;
+        await superuser.update();
+      }
+    });
 
     return Container(
       color: Colors.blue,

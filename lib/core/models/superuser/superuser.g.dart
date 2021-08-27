@@ -27,6 +27,7 @@ Superuser _$SuperuserFromJson(Map<String, dynamic> json) {
     homeOnboardingStage: _$enumDecodeNullable(
             _$HomeOnboardingStageEnumMap, json['homeOnboardingStage']) ??
         HomeOnboardingStage.completed,
+    videoPlayerOnboarding: json['videoPlayerOnboarding'] as bool? ?? false,
     recordOnboarding: json['recordOnboarding'] as bool? ?? false,
     contactsOnboarding: json['contactsOnboarding'] as bool? ?? false,
     blockedUsers: (json['blockedUsers'] as Map<String, dynamic>?)?.map(
@@ -50,6 +51,7 @@ Map<String, dynamic> _$SuperuserToJson(Superuser instance) => <String, dynamic>{
       'onboarded': instance.onboarded,
       'homeOnboardingStage':
           _$HomeOnboardingStageEnumMap[instance.homeOnboardingStage],
+      'videoPlayerOnboarding': instance.videoPlayerOnboarding,
       'recordOnboarding': instance.recordOnboarding,
       'contactsOnboarding': instance.contactsOnboarding,
       'blockedUsers':
