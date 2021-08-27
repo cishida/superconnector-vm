@@ -49,19 +49,41 @@ class _OnboardingBackgroundState extends State<OnboardingBackground> {
     }
 
     return Stack(
+      alignment: Alignment.center,
       children: [
         Positioned(
-          top: 28.0,
+          top: 148.0,
           left: 0.0,
           child: Image.asset(
-            'assets/images/authenticated/left-leaves.png',
-            width: MediaQuery.of(context).size.width * .24,
+            'assets/images/authenticated/onboarding/left-leaves.png',
+            width: 67.0,
+          ),
+        ),
+        Positioned(
+          top: 59.0,
+          right: 0.0,
+          child: Image.asset(
+            'assets/images/authenticated/onboarding/right-leaves.png',
+            width: 44.0,
+          ),
+        ),
+        Positioned(
+          top: -40.0,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Image.asset(
+              'assets/images/authenticated/onboarding/hanging-lamps.png',
+              width: 123.0,
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 27.0),
           child: Column(
             children: [
+              SizedBox(
+                height: 146.0,
+              ),
               ProfileImagePicker(
                 superuser: superuser,
                 width: 100.0,
