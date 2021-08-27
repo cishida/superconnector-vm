@@ -20,8 +20,10 @@ class GoBack extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 26.0,
+        padding: const EdgeInsets.only(
+          left: 26.0,
+          right: 26.0,
+          top: 22.0,
         ),
         child: Row(
           children: [

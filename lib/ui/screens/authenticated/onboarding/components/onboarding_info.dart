@@ -23,11 +23,7 @@ class OnboardingInfo extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12.0),
             child: Text(
               title,
-              style: TextStyle(
-                fontSize: 22.0,
-                fontWeight: FontWeight.w600,
-                color: ConstantColors.ONBOARDING_TEXT,
-              ),
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
           Padding(
@@ -35,11 +31,7 @@ class OnboardingInfo extends StatelessWidget {
             child: Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.black.withOpacity(.5),
-              ),
+              style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
         ],

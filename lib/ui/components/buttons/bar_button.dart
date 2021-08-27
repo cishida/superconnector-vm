@@ -15,11 +15,7 @@ class BarButton extends StatelessWidget {
     return ElevatedButton(
       child: Text(
         title,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w600,
-        ),
+        style: Theme.of(context).textTheme.button,
       ),
       style: ElevatedButton.styleFrom(
         minimumSize: Size(double.infinity, 50),

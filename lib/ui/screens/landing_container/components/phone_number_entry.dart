@@ -92,7 +92,6 @@ class _PhoneNumberEntryState extends State<PhoneNumberEntry> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          SizedBox(height: 22.0),
           GoBack(
             action: widget.goBack,
           ),

@@ -9,6 +9,23 @@ ThemeData appTheme() {
     fontFamily: 'SourceSansPro',
     brightness: Brightness.light,
     errorColor: ConstantColors.ERROR_RED,
+    textTheme: TextTheme(
+      button: TextStyle(
+        color: Colors.white,
+        fontSize: 18.0,
+        fontWeight: FontWeight.w600,
+      ),
+      headline6: TextStyle(
+        fontSize: 22.0,
+        fontWeight: FontWeight.w600,
+        color: ConstantColors.DARK_TEXT,
+      ),
+      subtitle1: TextStyle(
+        fontSize: 18.0,
+        fontWeight: FontWeight.w400,
+        color: Colors.black.withOpacity(.5),
+      ),
+    ),
     // accentColor: Colors.orange,
     // hintColor: Colors.white,
     // dividerColor: Colors.white,

@@ -43,10 +43,14 @@ class RecordPermission extends StatelessWidget {
   Widget build(BuildContext context) {
     return PermissionsTemplate(
       imageName: 'assets/images/authenticated/a-sitting-person.png',
-      imageHeight: 376.0,
+      imagePadding: const EdgeInsets.only(
+        left: 16.0,
+        right: 38.0,
+        bottom: 53.0,
+      ),
       title: 'Camera Access',
       subheader:
-          'This helps you record VMs and share them with people you know.',
+          'This helps you record video messages\nand share them with people.',
       buttonText: 'Allow Camera Access',
       onAllowAccess: () => _checkPermissions(context),
     );

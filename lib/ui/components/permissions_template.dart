@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
 import 'package:superconnector_vm/ui/components/go_back.dart';
 
 class PermissionsTemplate extends StatelessWidget {
   const PermissionsTemplate({
     Key? key,
     required this.imageName,
-    required this.imageHeight,
+    required this.imagePadding,
     required this.title,
     required this.subheader,
     required this.buttonText,
@@ -14,7 +14,7 @@ class PermissionsTemplate extends StatelessWidget {
   }) : super(key: key);
 
   final String imageName;
-  final double imageHeight;
+  final EdgeInsets imagePadding;
   final String title;
   final String subheader;
   final String buttonText;
@@ -23,6 +23,9 @@ class PermissionsTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        backgroundColor: Colors.white,
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
@@ -33,16 +36,11 @@ class PermissionsTemplate extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                      left: 65.0,
-                      right: 65.0,
-                      top: 66.0,
-                      bottom: 45.0,
-                    ),
+                    padding: imagePadding,
                     child: Center(
                       child: Image.asset(
                         imageName,
-                        height: imageHeight,
+                        // height: imageHeight,
                         // width: size.width * 0.686,
                       ),
                     ),
@@ -55,11 +53,7 @@ class PermissionsTemplate extends StatelessWidget {
                         ),
                         child: Text(
                           title,
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w600,
-                            color: ConstantColors.DARK_TEXT,
-                          ),
+                          style: Theme.of(context).textTheme.headline6,
                         ),
                       ),
                       Padding(
@@ -70,10 +64,7 @@ class PermissionsTemplate extends StatelessWidget {
                         child: Text(
                           subheader,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                       ),
                       Padding(
@@ -85,12 +76,8 @@ class PermissionsTemplate extends StatelessWidget {
                         ),
                         child: ElevatedButton(
                           child: Text(
-                            'Allow access',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            buttonText,
+                            style: Theme.of(context).textTheme.button,
                           ),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(double.infinity, 50),
