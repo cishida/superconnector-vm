@@ -70,41 +70,42 @@ class RecordOverlay extends StatelessWidget {
             },
           ),
         ),
-        Positioned.fill(
-          top: 50.0,
-          right: 62.0,
-          left: 62.0,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                SuperNavigator.handleContactsNavigation(
-                  context: context,
-                );
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
-                  vertical: 6.0,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(32.0),
-                  color: Colors.black.withOpacity(.20),
-                ),
-                child: Text(
-                  _getNamesFromContacts(context, selectedContacts),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w600,
+        if (!selectedContacts.isEmpty())
+          Positioned.fill(
+            top: 50.0,
+            right: 62.0,
+            left: 62.0,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  SuperNavigator.handleContactsNavigation(
+                    context: context,
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                    vertical: 6.0,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(32.0),
+                    color: Colors.white.withOpacity(.20),
+                  ),
+                  child: Text(
+                    _getNamesFromContacts(context, selectedContacts),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
         // if (!isRecording)
         Positioned(
           top: 60.0,
@@ -122,30 +123,30 @@ class RecordOverlay extends StatelessWidget {
                       'assets/images/authenticated/record/camera-flip-icon.png',
                   onPress: () {},
                 ),
-                CameraIcon(
-                  title: 'Attach',
-                  imageName:
-                      'assets/images/authenticated/record/camera-attachment-icon.png',
-                  onPress: () {},
-                ),
-                CameraIcon(
-                  title: 'Link',
-                  imageName:
-                      'assets/images/authenticated/record/camera-link-icon.png',
-                  onPress: () {},
-                ),
-                CameraIcon(
-                  title: 'Caption',
-                  imageName:
-                      'assets/images/authenticated/record/camera-caption-icon.png',
-                  onPress: () {},
-                ),
-                CameraIcon(
-                  title: 'Filters',
-                  imageName:
-                      'assets/images/authenticated/record/camera-filter-icon.png',
-                  onPress: () {},
-                ),
+                // CameraIcon(
+                //   title: 'Attach',
+                //   imageName:
+                //       'assets/images/authenticated/record/camera-attachment-icon.png',
+                //   onPress: () {},
+                // ),
+                // CameraIcon(
+                //   title: 'Link',
+                //   imageName:
+                //       'assets/images/authenticated/record/camera-link-icon.png',
+                //   onPress: () {},
+                // ),
+                // CameraIcon(
+                //   title: 'Caption',
+                //   imageName:
+                //       'assets/images/authenticated/record/camera-caption-icon.png',
+                //   onPress: () {},
+                // ),
+                // CameraIcon(
+                //   title: 'Filters',
+                //   imageName:
+                //       'assets/images/authenticated/record/camera-filter-icon.png',
+                //   onPress: () {},
+                // ),
               ],
             ),
           ),

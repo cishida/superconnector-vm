@@ -24,6 +24,7 @@ import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/camera_preview_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_bottom_nav.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_overlay.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
 // import 'package:video_player/video_player.dart';
 
 class Record extends StatefulWidget {
@@ -43,7 +44,6 @@ class _RecordState extends State<Record>
       FirebaseFirestore.instance.collection('videos').doc();
   XFile? _videoFile;
   BetterPlayerController? _betterPlayerController;
-  VideoPlayerHelper _videoPlayerHelper = VideoPlayerHelper();
   // VoidCallback? _videoPlayerListener;
   int _progress = 0;
   UpChunk? _upchunk;
@@ -407,7 +407,8 @@ class _RecordState extends State<Record>
                   CameraPreviewContainer(
                     cameraController: _cameraController!,
                     animationController: _animationController,
-                    ratio: size.aspectRatio,
+                    ratio: 9 / 16,
+                    constraints: constraints,
                     setVideoFile: _setVideoFile,
                     setIsRecording: (isRecording) {
                       setState(() {
@@ -419,49 +420,10 @@ class _RecordState extends State<Record>
 
                 // Video player after VM recorded
                 if (shouldShowVideo)
-                  Stack(
-                    children: [
-                      Transform.scale(
-                        scale:
-                            aspectRatio! / (size.width / constraints.maxHeight),
-                        child: BetterPlayerMultipleGestureDetector(
-                          onTap: () {
-                            _videoPlayerHelper
-                                .toggleVideo(_betterPlayerController);
-                          },
-                          child: AspectRatio(
-                            aspectRatio: aspectRatio,
-                            child: BetterPlayer(
-                              controller: _betterPlayerController!,
-                            ),
-                          ),
-                        ),
-                        // VideoPlayer(_betterPlayerController!),
-                      ),
-                      Positioned.fill(
-                        bottom: 50.0,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () {
-                            _videoPlayerHelper
-                                .toggleVideo(_betterPlayerController);
-                          },
-                          child: Container(
-                            height: constraints.maxHeight,
-                            width: constraints.maxWidth,
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: isPlaying != null && !isPlaying
-                                  ? Image.asset(
-                                      'assets/images/authenticated/record/play-button.png',
-                                      width: 80.0,
-                                    )
-                                  : Container(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  VideoPreview(
+                    aspectRatio: aspectRatio!,
+                    betterPlayerController: _betterPlayerController!,
+                    constraints: constraints,
                   ),
 
                 RecordOverlay(
