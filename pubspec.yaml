@@ -107,6 +107,7 @@ flutter:
     - assets/images/unauthenticated/
     - assets/images/authenticated/
     - assets/images/authenticated/record/
+    - assets/images/authenticated/onboarding/
     - .env
 
   fonts:

@@ -145,9 +145,6 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
                 ).applyDefaults(
                   Theme.of(context).inputDecorationTheme,
                 ),
-                onChanged: (value) {
-                  print(value);
-                },
               ),
             ),
           ),

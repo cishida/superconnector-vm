@@ -24,7 +24,7 @@ class OnboardingInfo extends StatelessWidget {
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 22.0,
                 fontWeight: FontWeight.w600,
                 color: ConstantColors.ONBOARDING_TEXT,
               ),
@@ -38,6 +38,7 @@ class OnboardingInfo extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w400,
+                color: Colors.black.withOpacity(.5),
               ),
             ),
           ),

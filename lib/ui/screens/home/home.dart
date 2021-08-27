@@ -6,7 +6,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
-import 'package:superconnector_vm/ui/components/app_bars/light_app_bar.dart';
+import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
 import 'package:superconnector_vm/ui/components/buttons/new_vm_button.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
@@ -249,7 +249,7 @@ class _HomeState extends State<Home> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
-          appBar: LightAppBar(),
+          appBar: CustomAppBar(),
           floatingActionButton: NewVMButton(
             onPressed: () {
               SuperNavigator.handleRecordNavigation(context);

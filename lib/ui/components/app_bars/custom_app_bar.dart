@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
-class LightAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const LightAppBar({
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({
     Key? key,
+    this.backgroundColor = ConstantColors.OFF_WHITE,
+    this.brightness = Brightness.light,
   }) : super(key: key);
+
+  final Color backgroundColor;
+  final Brightness brightness;
 
   @override
   Size get preferredSize => Size(double.infinity, 0.0);
@@ -12,8 +17,8 @@ class LightAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: ConstantColors.OFF_WHITE,
-      brightness: Brightness.light,
+      backgroundColor: backgroundColor,
+      brightness: brightness,
       elevation: 0.0,
       toolbarHeight: 0.0,
     );

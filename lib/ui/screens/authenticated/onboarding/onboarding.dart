@@ -6,6 +6,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
+import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/components/onboarding_footer.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/components/onboarding_info.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_background/onboarding_background.dart';
@@ -117,7 +118,7 @@ class _OnboardingPagesState extends State<OnboardingPages> {
       {
         'title': 'Welcome',
         'subtitle':
-            'Superconnector helps you video\nmessage (VM) your extended family.\nVMs are a minute or less so they’re\nshort and sweet.',
+            'Superconnector helps you video\nmessage (VM) your extended family.\nVMs are 30 seconds or less so they’re\nshort and sweet.',
         'widget': OnboardingWelcome(),
       },
       {
@@ -192,11 +193,8 @@ class _OnboardingPagesState extends State<OnboardingPages> {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: ConstantColors.DARK_BLUE,
-        toolbarHeight: 0.0,
-        elevation: 0.0,
-        brightness: Brightness.dark,
+      appBar: CustomAppBar(
+        backgroundColor: Colors.white,
       ),
       body: SafeArea(
         child: SingleChildScrollView(

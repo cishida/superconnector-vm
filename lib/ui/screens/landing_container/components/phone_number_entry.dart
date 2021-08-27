@@ -187,9 +187,6 @@ class _PhoneNumberEntryState extends State<PhoneNumberEntry> {
               ).applyDefaults(
                 Theme.of(context).inputDecorationTheme,
               ),
-              onChanged: (value) {
-                print(value);
-              },
             ),
           ),
           Container(
