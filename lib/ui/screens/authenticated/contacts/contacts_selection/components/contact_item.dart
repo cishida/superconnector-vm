@@ -2,6 +2,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/images/empty_image.dart';
+import 'package:superconnector_vm/ui/components/underline.dart';
 
 class ContactItem extends StatelessWidget {
   const ContactItem({
@@ -28,9 +29,14 @@ class ContactItem extends StatelessWidget {
                   left: 19.0,
                   right: 12.0,
                 ),
-                child: EmptyImage(
-                  size: 38.0,
-                ),
+                child: contact.avatar != null
+                    ? CircleAvatar(
+                        backgroundImage: MemoryImage(contact.avatar!),
+                        radius: 19.0,
+                      )
+                    : EmptyImage(
+                        size: 38.0,
+                      ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,6 +51,7 @@ class ContactItem extends StatelessWidget {
                     contact.phones!.first.value!,
                     style: TextStyle(
                       fontSize: 15.0,
+                      color: ConstantColors.CONTACT_SUBTITLE,
                     ),
                   ),
                 ],
@@ -75,14 +82,17 @@ class ContactItem extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          height: 1.0,
-          // width: MediaQuery.of(context).size.width,
-          color: ConstantColors.CONTACTS_GROUP_BACKGROUND,
-          margin: const EdgeInsets.only(
-            left: 69.0,
-          ),
+        Underline(
+          margin: const EdgeInsets.only(left: 69.0),
         ),
+        // Container(
+        //   height: 1.0,
+        //   // width: MediaQuery.of(context).size.width,
+        //   color: ConstantColors.CONTACTS_GROUP_BACKGROUND,
+        //   margin: const EdgeInsets.only(
+        //     left: 69.0,
+        //   ),
+        // ),
       ],
     );
   }

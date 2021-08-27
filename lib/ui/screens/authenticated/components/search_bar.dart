@@ -26,7 +26,7 @@ class SearchBar extends StatelessWidget {
     return Container(
       // color: Colors.white,
       padding: const EdgeInsets.fromLTRB(
-        18.0,
+        0.0,
         0.0,
         18.0,
         0.0,

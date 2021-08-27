@@ -148,13 +148,17 @@ class _ContactsState extends State<Contacts> {
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              width: 40.0,
-              height: 6.0,
-              margin: const EdgeInsets.only(top: 60.0, bottom: 19.0),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(.20),
-                borderRadius: BorderRadius.circular(3.0),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => Navigator.of(context).pop(),
+              child: Container(
+                width: 40.0,
+                height: 6.0,
+                margin: const EdgeInsets.only(top: 60.0, bottom: 19.0),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(.20),
+                  borderRadius: BorderRadius.circular(3.0),
+                ),
               ),
             ),
             Container(

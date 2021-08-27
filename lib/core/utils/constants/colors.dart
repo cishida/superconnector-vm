@@ -20,6 +20,7 @@ class ConstantColors {
   static const Color SEARCH_BAR_BACKGROUND = Color(0xFFECECEE);
   static const Color CONTACTS_GROUP_BACKGROUND = Color(0xFFF5F6F6);
   static const Color CONTACT_SELECTION_CIRCLE_BORDER = Color(0xFFC7C6CB);
+  static const Color CONTACT_SUBTITLE = Color(0xFF8996A2);
 
   // Buttons
   static const Color FAB_BACKGROUND = Color(0xFF0AA7FF);

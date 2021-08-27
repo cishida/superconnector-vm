@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
+import 'package:superconnector_vm/ui/components/underline.dart';
 
 class SupercontactItem extends StatefulWidget {
   const SupercontactItem({
@@ -51,6 +52,7 @@ class _SupercontactItemState extends State<SupercontactItem> {
                     '@' + widget.supercontact.username,
                     style: TextStyle(
                       fontSize: 15.0,
+                      color: ConstantColors.CONTACT_SUBTITLE,
                     ),
                   ),
                 ],
@@ -81,13 +83,8 @@ class _SupercontactItemState extends State<SupercontactItem> {
             ],
           ),
         ),
-        Container(
-          height: 1.0,
-          // width: MediaQuery.of(context).size.width,
-          color: ConstantColors.DIVIDER_GRAY,
-          margin: const EdgeInsets.only(
-            left: 69.0,
-          ),
+        Underline(
+          margin: const EdgeInsets.only(left: 69.0),
         ),
       ],
     );
