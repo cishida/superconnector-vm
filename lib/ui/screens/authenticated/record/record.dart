@@ -24,7 +24,6 @@ import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/camera_preview_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_bottom_nav.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_overlay.dart';
-import 'package:url_launcher/url_launcher.dart';
 // import 'package:video_player/video_player.dart';
 
 class Record extends StatefulWidget {

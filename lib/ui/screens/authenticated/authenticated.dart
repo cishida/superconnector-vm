@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/services/auth/auth_service.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding.dart';
 import 'package:superconnector_vm/ui/screens/home/home.dart';
