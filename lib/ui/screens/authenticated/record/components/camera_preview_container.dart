@@ -171,13 +171,13 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
         await _onStopButtonPressed();
         // HapticFeedback.lightImpact();
       },
-      // onTapCancel: () async {
-      //   if (widget.animationController.status == AnimationStatus.forward) {
-      //     widget.animationController.stop();
-      //   }
+      onTapCancel: () async {
+        if (widget.animationController.status == AnimationStatus.forward) {
+          widget.animationController.stop();
+        }
 
-      //   await _onStopButtonPressed();
-      // },
+        await _onStopButtonPressed();
+      },
       child: Container(
         height: widget.constraints.maxHeight,
         width: widget.constraints.maxWidth,
