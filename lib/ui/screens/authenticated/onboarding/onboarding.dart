@@ -134,7 +134,9 @@ class _OnboardingPagesState extends State<OnboardingPages> {
         'title': 'Notifications',
         'subtitle':
             'These tell you when someone VMs you\nso you can reply quickly.',
-        'widget': OnboardingNotifications(),
+        'widget': OnboardingNotifications(
+          onSkip: widget.completePages,
+        ),
       },
     ];
   }
@@ -230,25 +232,8 @@ class _OnboardingPagesState extends State<OnboardingPages> {
                     return;
                   }
 
-                  // // Industry page
-                  // if (_currentIndex.round() == 2) {
-                  //   setState(() {
-                  //     _industrySubmissionAttempted = true;
-                  //   });
-                  //   if (superuser.industries.length > 0 &&
-                  //       superuser.industries.length <= 3) {
-                  //     _goToNextPage();
-                  //   }
-                  //   return;
-                  // }
-
                   if (_currentIndex.round() == 2) {
                     widget.completePages();
-                    // SuperNavigator.push(
-                    //   context: context,
-                    //   widget: OnboardingSettings(),
-                    //   fullScreen: false,
-                    // );
                   }
 
                   _goToNextPage();

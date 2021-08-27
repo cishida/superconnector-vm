@@ -44,7 +44,7 @@ class OnboardingFooter extends StatelessWidget {
               right: 45.0,
             ),
             child: BarButton(
-              title: 'Continue',
+              title: currentIndex == 2 ? 'Turn On Notifications' : 'Continue',
               onPressed: onContinue,
             ),
           )
