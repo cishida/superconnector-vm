@@ -14,6 +14,7 @@ import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
 import 'package:superconnector_vm/ui/components/overlay_input.dart';
+import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/block_list/block_list.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/components/account_item.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -110,6 +111,10 @@ class _AccountState extends State<Account> {
       );
     }
 
+    final TextStyle emojiStyle = TextStyle(
+      fontSize: 18.0,
+    );
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -130,12 +135,15 @@ class _AccountState extends State<Account> {
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: ChevronBackButton(
-                      color: ConstantColors.PRIMARY,
-                      onBack: () {
-                        superuser.update();
-                        Navigator.pop(context);
-                      },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: ChevronBackButton(
+                        color: ConstantColors.PRIMARY,
+                        onBack: () {
+                          superuser.update();
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                   ),
                   GestureDetector(
@@ -152,14 +160,20 @@ class _AccountState extends State<Account> {
                         await launch(uri);
                       }
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 19),
-                      child: Text(
-                        'Invite',
-                        style: TextStyle(
-                          color: ConstantColors.PRIMARY,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 19,
+                          bottom: 9.0,
+                        ),
+                        child: Text(
+                          'Invite',
+                          style: TextStyle(
+                            color: ConstantColors.PRIMARY,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
@@ -167,6 +181,7 @@ class _AccountState extends State<Account> {
                 ],
               ),
             ),
+            Underline(),
             Expanded(
               child: SingleChildScrollView(
                 controller: _scrollController,
@@ -176,6 +191,7 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '✒️️',
+                        style: emojiStyle,
                       ),
                       title: 'Full Name',
                       subtitle: superuser.fullName,
@@ -208,9 +224,10 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '✒️️',
+                        style: emojiStyle,
                       ),
                       title: 'Username',
-                      subtitle: superuser.username,
+                      subtitle: '@' + superuser.username,
                       onPressed: () {
                         Navigator.of(context).push(
                           PageRouteBuilder(
@@ -238,9 +255,18 @@ class _AccountState extends State<Account> {
                       },
                     ),
                     AccountItem(
+                      leading: Image.asset(
+                        'assets/images/authenticated/phone-icon.png',
+                        width: 18.0,
+                      ),
+                      title: 'Phone Number',
+                      subtitle: superuser.phoneNumber,
+                      onPressed: () async {},
+                    ),
+                    AccountItem(
                       leading: SuperuserImage(
                         url: superuser.photoUrl,
-                        radius: 22 / 2,
+                        radius: 20 / 2,
                         bordered: false,
                       ),
                       title: 'Profile Picture',
@@ -251,6 +277,7 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '🔔',
+                        style: emojiStyle,
                       ),
                       title: 'Notifications',
                       onPressed: () {
@@ -260,6 +287,7 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '❓',
+                        style: emojiStyle,
                       ),
                       title: 'Support',
                       onPressed: () {
@@ -276,6 +304,7 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '🔐',
+                        style: emojiStyle,
                       ),
                       title: 'Privacy',
                       onPressed: () async {
@@ -290,6 +319,7 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '📁️',
+                        style: emojiStyle,
                       ),
                       title: 'Report Someone',
                       onPressed: () async {
@@ -308,6 +338,7 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '📑',
+                        style: emojiStyle,
                       ),
                       title: 'Export Data',
                       onPressed: () async {
@@ -326,6 +357,7 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '⛔️',
+                        style: emojiStyle,
                       ),
                       title: 'Deativate Account',
                       onPressed: () async {
@@ -344,6 +376,7 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '🚫',
+                        style: emojiStyle,
                       ),
                       title: 'Block List',
                       onPressed: () {
@@ -357,6 +390,7 @@ class _AccountState extends State<Account> {
                     AccountItem(
                       leading: Text(
                         '🚪',
+                        style: emojiStyle,
                       ),
                       title: 'Log Out',
                       onPressed: () {

@@ -18,53 +18,55 @@ class AccountItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      // behavior: HitTestBehavior.translucent,
-      onTap: () => onPressed(),
-      child: Column(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.all(22),
-                child: Row(
-                  children: [
-                    leading,
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 17.0,
-                      ),
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
-                          color: ConstantColors.DARK_TEXT,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 12.0,
-                      ),
-                      child: Text(
-                        subtitle,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w400,
-                          color: ConstantColors.DARK_TEXT.withOpacity(.5),
-                        ),
-                      ),
-                    ),
-                  ],
+    return Container(
+      height: 60.0,
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 1.0,
+            color: ConstantColors.DIVIDER_GRAY,
+          ),
+        ),
+      ),
+      child: InkWell(
+        // behavior: HitTestBehavior.translucent,
+        onTap: () => onPressed(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 22,
+          ),
+          child: Row(
+            children: [
+              leading,
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 17.0,
+                ),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600,
+                    color: ConstantColors.DARK_TEXT,
+                  ),
                 ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 12.0,
+                ),
+                child: Text(
+                  subtitle,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w400,
+                    color: ConstantColors.DARK_TEXT.withOpacity(.5),
+                  ),
+                ),
+              ),
+            ],
           ),
-          Underline(),
-        ],
+        ),
       ),
     );
   }
