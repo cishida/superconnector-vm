@@ -1,5 +1,6 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
 
@@ -69,6 +70,12 @@ class SelectedContacts extends ChangeNotifier {
         addSupercontact(tempSupercontacts.first);
       }
     });
+
+    var status = await Permission.contacts.status;
+
+    if (!status.isGranted) {
+      return;
+    }
 
     Iterable<Contact> contacts = await ContactsService.getContacts();
     connection.phoneNumberNameMap.forEach((key, value) async {
