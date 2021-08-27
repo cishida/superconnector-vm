@@ -216,7 +216,7 @@ class _ConnectionTileState extends State<ConnectionTile> {
                   ),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: min(filteredVideos.length + 1, 5),
+                    itemCount: min(filteredVideos.length + 1, 6),
                     itemBuilder: (context, index) {
                       if (index == 0) {
                         return VMConnectionTile(

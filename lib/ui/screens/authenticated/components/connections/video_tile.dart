@@ -73,15 +73,34 @@ class _VideoTileState extends State<VideoTile> {
                       ),
                     )
                   : (_owner != null
-                      ? Stack(
+                      ?
+                      // Stack(
+                      //   children: [
+                      //     Image(
+                      //       fit: BoxFit.fitHeight,
+                      //       image: CachedNetworkImageProvider(
+                      //         _owner!.photoUrl,
+                      //       ),
+                      //     ),
+                      //     VideoTileLinearProgress(),
+                      //   ],
+                      // )
+                      Stack(
                           children: [
-                            Image(
-                              fit: BoxFit.fitHeight,
-                              image: CachedNetworkImageProvider(
-                                _owner!.photoUrl,
+                            Positioned(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(6.0),
+                                child: Image.asset(
+                                  'assets/images/authenticated/vm_connection_gradient.png',
+                                ),
                               ),
                             ),
-                            VideoTileLinearProgress(),
+                            Container(
+                              color: Colors.black.withOpacity(.5),
+                            ),
+                            Center(
+                              child: VideoTileLinearProgress(),
+                            )
                           ],
                         )
                       : VideoTileLinearProgress()),
