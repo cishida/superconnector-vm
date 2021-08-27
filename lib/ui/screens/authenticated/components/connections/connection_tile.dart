@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/core/models/selected_contacts.dart';
+import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
@@ -16,6 +18,7 @@ import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_names.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/vm_connection_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/video_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
@@ -89,6 +92,8 @@ class _ConnectionTileState extends State<ConnectionTile> {
   @override
   Widget build(BuildContext context) {
     final superuser = Provider.of<Superuser?>(context);
+    var selectedContacts = Provider.of<SelectedContacts>(context);
+    var supercontacts = Provider.of<List<Supercontact>>(context);
 
     if (superuser == null) {
       return Container();
@@ -211,8 +216,25 @@ class _ConnectionTileState extends State<ConnectionTile> {
                   ),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: min(filteredVideos.length, 5),
+                    itemCount: min(filteredVideos.length + 1, 5),
                     itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return VMConnectionTile(
+                          onPressed: () {
+                            BlockUtility blockUtility = BlockUtility(
+                              context: context,
+                              superuser: superuser,
+                              connection: widget.connection,
+                              supercontacts: supercontacts,
+                              selectedContacts: selectedContacts,
+                            );
+                            blockUtility.handleBlockedRecordNavigation();
+                          },
+                        );
+                      }
+
+                      int effectiveIndex = index - 1;
+
                       return GestureDetector(
                         behavior: widget.shouldIgnoreTaps
                             ? HitTestBehavior.translucent
@@ -227,13 +249,13 @@ class _ConnectionTileState extends State<ConnectionTile> {
                             widget: ConnectionCarousel(
                               connection: widget.connection,
                               videos: filteredVideos,
-                              initialIndex: index,
+                              initialIndex: effectiveIndex,
                             ),
                             fullScreen: false,
                           );
                         },
                         child: VideoTile(
-                          video: filteredVideos[index],
+                          video: filteredVideos[effectiveIndex],
                         ),
                       );
                     },
