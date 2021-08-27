@@ -52,64 +52,11 @@ class _SupercontactSelectionState extends State<SupercontactSelection> {
                   ),
             )
             .toList();
+        filteredSupercontacts.sort((a, b) => b.fullName.compareTo(a.fullName));
 
         if (filteredSupercontacts.length == 0) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: 67.0),
-                Text(
-                  'Want more connections?',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(
-                  height: 6.0,
-                ),
-                Text(
-                  'You can VM anyone in your phone contacts\nto connect with them.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(
-                  height: 32.0,
-                ),
-                ElevatedButton(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 38.0),
-                    child: Text(
-                      'View Phone Contacts',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(0, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        8.0,
-                      ),
-                    ),
-                  ),
-                  onPressed: () => widget.toContacts(),
-                ),
-                SizedBox(
-                  height: 38.0,
-                ),
-                Image.asset(
-                  'assets/images/authenticated/sitting-people.png',
-                  height: 331.0,
-                ),
-              ],
-            ),
+          return ContactsRedirectGraphic(
+            toContacts: widget.toContacts,
           );
         }
 
@@ -124,22 +71,32 @@ class _SupercontactSelectionState extends State<SupercontactSelection> {
               text: groupByValue,
             ),
             itemBuilder: (context, supercontact) {
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  if (selectedContacts.containsSupercontact(supercontact)) {
-                    selectedContacts.removeSupercontact(
-                      supercontact.phoneNumber,
-                    );
-                  } else {
-                    selectedContacts.addSupercontact(supercontact);
-                  }
-                },
-                child: SupercontactItem(
-                  supercontact: supercontact,
-                  isSelected:
-                      selectedContacts.containsSupercontact(supercontact),
-                ),
+              supercontact = supercontact as Supercontact;
+
+              return Column(
+                children: [
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      if (selectedContacts.containsSupercontact(supercontact)) {
+                        selectedContacts.removeSupercontact(
+                          supercontact.phoneNumber,
+                        );
+                      } else {
+                        selectedContacts.addSupercontact(supercontact);
+                      }
+                    },
+                    child: SupercontactItem(
+                      supercontact: supercontact,
+                      isSelected:
+                          selectedContacts.containsSupercontact(supercontact),
+                    ),
+                  ),
+                  if (supercontact.id == filteredSupercontacts.last.id)
+                    ContactsRedirectGraphic(
+                      toContacts: widget.toContacts,
+                    ),
+                ],
               );
             },
             itemComparator: (supercontact1, supercontact2) =>
@@ -151,6 +108,74 @@ class _SupercontactSelectionState extends State<SupercontactSelection> {
           ),
         );
       },
+    );
+  }
+}
+
+class ContactsRedirectGraphic extends StatelessWidget {
+  const ContactsRedirectGraphic({
+    Key? key,
+    required this.toContacts,
+  }) : super(key: key);
+
+  final Function toContacts;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 67.0),
+        Text(
+          'Want more connections?',
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        SizedBox(
+          height: 6.0,
+        ),
+        Text(
+          'You can VM anyone in your phone contacts\nto connect with them.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 17.0,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        SizedBox(
+          height: 32.0,
+        ),
+        ElevatedButton(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 38.0),
+            child: Text(
+              'View Phone Contacts',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(0, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                8.0,
+              ),
+            ),
+          ),
+          onPressed: () => toContacts(),
+        ),
+        SizedBox(
+          height: 38.0,
+        ),
+        Image.asset(
+          'assets/images/authenticated/sitting-people.png',
+          height: 331.0,
+        ),
+      ],
     );
   }
 }
