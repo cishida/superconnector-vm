@@ -1,5 +1,6 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
 
 class OnboardingFooter extends StatelessWidget {
   const OnboardingFooter({
@@ -42,26 +43,9 @@ class OnboardingFooter extends StatelessWidget {
               left: 45.0,
               right: 45.0,
             ),
-            child: ElevatedButton(
-              child: Text(
-                'Continue',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                    8.0,
-                  ),
-                ),
-              ),
-              onPressed: () {
-                onContinue();
-              },
+            child: BarButton(
+              title: 'Continue',
+              onPressed: onContinue,
             ),
           )
         ],

@@ -40,7 +40,7 @@ class GoBack extends StatelessWidget {
                 left: 10.0,
               ),
               child: Text(
-                'Go Back',
+                'Go back',
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w600,

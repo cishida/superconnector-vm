@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
 import 'package:superconnector_vm/ui/components/go_back.dart';
 import 'package:superconnector_vm/ui/components/snack_bars/dark_snack_bar.dart';
 
@@ -91,6 +92,7 @@ class _PhoneNumberEntryState extends State<PhoneNumberEntry> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          SizedBox(height: 22.0),
           GoBack(
             action: widget.goBack,
           ),
@@ -102,71 +104,102 @@ class _PhoneNumberEntryState extends State<PhoneNumberEntry> {
             child: Text(
               'Enter your phone number to receive your\ntemporary confirmation code via text.',
               textAlign: TextAlign.center,
+              style: TextStyle(
+                color: ConstantColors.ONBOARDING_TEXT,
+                fontSize: 17.0,
+              ),
             ),
           ),
           SizedBox(
-            height: 33.0,
+            height: 21.0,
           ),
           Stack(
             children: [
               Positioned(
-                left: 45.0,
-                top: 22.0,
-                child: Text(
-                  '+1',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400,
-                  ),
+                top: 28.0,
+                right: 53.0,
+                child: Image.asset(
+                  'assets/images/unauthenticated/united-states-flag.png',
+                  width: 25,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 27.0),
                 child: TextFormField(
-                  autocorrect: false,
-                  keyboardAppearance: Brightness.dark,
-                  keyboardType: TextInputType.phone,
-                  inputFormatters: [
-                    MaskedInputFormatter('(###) ###-####'),
-                  ],
-                  controller: _phoneNumberController,
+                  enabled: false,
+                  initialValue: 'United States (+1)',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
+                  ),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(
-                      left: 45,
+                      left: 27,
                       top: 23,
                       bottom: 23,
                     ),
-                    labelText: 'Phone Number',
+                    labelText: 'Country Code',
                     labelStyle: TextStyle(
-                      color: ConstantColors.PRIMARY,
                       fontSize: 16.0,
                       fontWeight: FontWeight.w400,
-                    ),
-                    errorStyle: TextStyle(
-                      color: ConstantColors.ERROR_RED,
-                      height: 0.6,
                     ),
                   ).applyDefaults(
                     Theme.of(context).inputDecorationTheme,
                   ),
-                  onChanged: (value) {
-                    print(value);
-                  },
                 ),
               ),
             ],
           ),
+          SizedBox(
+            height: 12.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 27.0),
+            child: TextFormField(
+              autocorrect: false,
+              keyboardAppearance: Brightness.dark,
+              keyboardType: TextInputType.phone,
+              inputFormatters: [
+                MaskedInputFormatter('(###) ###-####'),
+              ],
+              controller: _phoneNumberController,
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+              ),
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.only(
+                  left: 27,
+                  top: 23,
+                  bottom: 23,
+                ),
+                labelText: 'Phone Number',
+                labelStyle: TextStyle(
+                  color: ConstantColors.PRIMARY,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w400,
+                ),
+                errorStyle: TextStyle(
+                  color: ConstantColors.ERROR_RED,
+                  height: 0.6,
+                ),
+              ).applyDefaults(
+                Theme.of(context).inputDecorationTheme,
+              ),
+              onChanged: (value) {
+                print(value);
+              },
+            ),
+          ),
           Container(
             padding: const EdgeInsets.symmetric(
-              vertical: 16.0,
+              vertical: 40.0,
+              horizontal: 45.0,
             ),
             alignment: Alignment.center,
-            child: ElevatedButton(
-              child: Text("Verify Number"),
-              onPressed: () async {
-                _verifyPhoneNumber();
-              },
+            child: BarButton(
+              title: 'Continue',
+              onPressed: _verifyPhoneNumber,
             ),
           ),
         ],
