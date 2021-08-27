@@ -17,7 +17,6 @@ import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
-import 'package:superconnector_vm/core/utils/video/video_player_helper.dart';
 import 'package:superconnector_vm/core/utils/video/video_uploader.dart';
 import 'package:superconnector_vm/main.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
@@ -377,16 +376,13 @@ class _RecordState extends State<Record>
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     bool shouldShowVideo = false;
     double? aspectRatio;
-    bool? isPlaying = false;
 
     if (_betterPlayerController != null) {
       bool? isInitialized = _betterPlayerController!.isVideoInitialized();
       shouldShowVideo = isInitialized != null && isInitialized;
       aspectRatio = _betterPlayerController!.getAspectRatio();
-      isPlaying = _betterPlayerController!.isPlaying();
     }
 
     return GestureDetector(

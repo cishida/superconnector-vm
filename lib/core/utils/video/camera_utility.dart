@@ -10,6 +10,7 @@ class CameraUtility {
       ResolutionPreset.veryHigh,
       enableAudio: true,
     );
+
     await controller.initialize();
     await controller.prepareForVideoRecording();
 
