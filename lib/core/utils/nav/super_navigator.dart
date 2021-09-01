@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_permission/contacts_permission.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relationships/relationships.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/record_permission/record_permission.dart';
 
@@ -33,11 +34,14 @@ class SuperNavigator {
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          // Makes widget fullscreen
-          return Contacts(
-            shouldShowHistory: shouldShowHistory,
-            primaryAction: primaryAction,
+          return FractionallySizedBox(
+            heightFactor: 0.9,
+            child: Relationships(),
           );
+          // return Relationships(
+          //     // shouldShowHistory: shouldShowHistory,
+          //     // primaryAction: primaryAction,
+          //     );
         },
       );
     } else {

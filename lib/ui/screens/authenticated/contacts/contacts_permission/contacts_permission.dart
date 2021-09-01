@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/permissions_template.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relationships/relationships.dart';
 
 class ContactsPermission extends StatefulWidget {
   const ContactsPermission({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _ContactsPermissionState extends State<ContactsPermission> {
     Navigator.of(context).pop();
     SuperNavigator.push(
       context: context,
-      widget: Contacts(),
+      widget: Relationships(),
       fullScreen: false,
     );
   }

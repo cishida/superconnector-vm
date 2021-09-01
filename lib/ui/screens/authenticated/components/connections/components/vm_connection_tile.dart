@@ -25,7 +25,7 @@ class VMConnectionTile extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6.0),
                 child: Image.asset(
-                  'assets/images/authenticated/vm_connection_gradient.png',
+                  'assets/images/authenticated/vm-connection-gradient.png',
                 ),
               ),
             ),

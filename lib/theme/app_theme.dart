@@ -9,6 +9,7 @@ ThemeData appTheme() {
     fontFamily: 'SourceSansPro',
     brightness: Brightness.light,
     errorColor: ConstantColors.ERROR_RED,
+    bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent),
     textTheme: TextTheme(
       button: TextStyle(
         color: Colors.white,
@@ -38,6 +39,12 @@ ThemeData appTheme() {
         fontWeight: FontWeight.w400,
         letterSpacing: .15,
         height: 24 / 17,
+      ),
+      bodyText1: TextStyle(
+        color: Colors.white,
+        fontSize: 16.0,
+        fontWeight: FontWeight.w400,
+        height: 22 / 16,
       ),
     ),
     // accentColor: Colors.orange,

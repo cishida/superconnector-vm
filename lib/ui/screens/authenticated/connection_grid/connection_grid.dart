@@ -10,7 +10,7 @@ import 'package:superconnector_vm/core/services/video/video_service.dart';
 import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
-import 'package:superconnector_vm/ui/components/buttons/new_vm_button.dart';
+import 'package:superconnector_vm/ui/components/buttons/new_connection_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/components/connection_grid_header.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/components/video_grid_tile.dart';
@@ -116,7 +116,7 @@ class _ConnectionGridState extends State<ConnectionGrid> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(),
-      floatingActionButton: NewVMButton(
+      floatingActionButton: NewConnectionButton(
         onPressed: () {
           BlockUtility blockUtility = BlockUtility(
             context: context,

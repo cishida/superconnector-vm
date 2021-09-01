@@ -27,4 +27,17 @@ class ConstantColors {
 
   // Errors
   static const Color ERROR_RED = Color(0xFFA22027);
+
+  // Primary Gradient
+  static const List<Color> PRIMARY_GRADIENT_COLORS = [
+    Color(0xFF0AD3FF),
+    Color(0xFFA132F5),
+    Color(0xFFF46F66),
+    Color(0xFFF1943B),
+  ];
+
+  static const Color GRADIENT_BLUE = Color(0xFF0AD3FF);
+  static const Color GRADIENT_PURPLE = Color(0xFFA132F5);
+  static const Color GRADIENT_RED = Color(0xFFF46F66);
+  static const Color GRADIENT_ORANGE = Color(0xFFF1943B);
 }

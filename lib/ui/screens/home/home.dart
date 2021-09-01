@@ -7,7 +7,7 @@ import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
-import 'package:superconnector_vm/ui/components/buttons/new_vm_button.dart';
+import 'package:superconnector_vm/ui/components/buttons/new_connection_button.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/connection_tile.dart';
@@ -223,7 +223,7 @@ class _HomeState extends State<Home> {
           overlayWidget: Positioned(
             right: 16.0,
             bottom: 16.0,
-            child: NewVMButton(
+            child: NewConnectionButton(
               isInverted: true,
               onPressed: () {
                 SuperNavigator.handleRecordNavigation(context);
@@ -255,9 +255,9 @@ class _HomeState extends State<Home> {
       builder: (context, constraints) {
         return Scaffold(
           appBar: CustomAppBar(),
-          floatingActionButton: NewVMButton(
+          floatingActionButton: NewConnectionButton(
             onPressed: () {
-              SuperNavigator.handleRecordNavigation(context);
+              SuperNavigator.handleContactsNavigation(context: context);
             },
           ),
           body: Container(
