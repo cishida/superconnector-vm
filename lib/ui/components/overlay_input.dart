@@ -7,6 +7,7 @@ class OverlayInput extends StatefulWidget {
     required this.fieldName,
     required this.exampleText,
     required this.onSubmit,
+    this.explanation,
     this.textCapitalization = TextCapitalization.sentences,
     this.onChanged,
     this.textInputAction = TextInputAction.send,
@@ -16,6 +17,7 @@ class OverlayInput extends StatefulWidget {
   final String fieldName;
   final String exampleText;
   final Function onSubmit;
+  final Widget? explanation;
   final TextCapitalization textCapitalization;
   final Function? onChanged;
   final TextInputAction textInputAction;
@@ -32,7 +34,10 @@ class _OverlayInputState extends State<OverlayInput> {
   //   print(text);
   // }
 
-  _validate(text) {
+  _validate(String? text) {
+    // if (text == null || text.length == 0) {
+    //   return null;
+    // }
     print(text);
   }
 
@@ -49,13 +54,17 @@ class _OverlayInputState extends State<OverlayInput> {
           },
           child: Container(
             color: Colors.black.withOpacity(0.7),
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 17.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    if (widget.explanation != null) widget.explanation!,
                     Builder(
                       builder: (context) => Form(
                         key: _formKey,
@@ -75,6 +84,10 @@ class _OverlayInputState extends State<OverlayInput> {
                             }
                           },
                           onSaved: (String? text) {
+                            if (text == null || text.length == 0) {
+                              return;
+                            }
+
                             Navigator.pop(context);
                             widget.onSubmit(text);
                           },
@@ -89,9 +102,7 @@ class _OverlayInputState extends State<OverlayInput> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: 25.0,
-                      ),
+                      padding: const EdgeInsets.only(left: 25.0, bottom: 10.0),
                       child: Text(
                         widget.exampleText,
                         style: TextStyle(

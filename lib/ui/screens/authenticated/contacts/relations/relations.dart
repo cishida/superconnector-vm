@@ -104,10 +104,42 @@ class _RelationsState extends State<Relations> {
                           PageRouteBuilder(
                             opaque: false,
                             pageBuilder: (BuildContext context, _, __) {
+                              // 'Custom Relation'
+                              // 'Pick a name for your relation.'
                               return OverlayInput(
                                 fieldName: 'Relation',
                                 exampleText:
                                     _customRelation.length.toString() + ' / 50',
+                                explanation: Center(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Custom Relation',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5!
+                                            .copyWith(
+                                              color: Colors.white,
+                                            ),
+                                      ),
+                                      SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Text(
+                                        'Pick a name for your relation.',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1!
+                                            .copyWith(
+                                              color: Colors.white,
+                                            ),
+                                      ),
+                                      SizedBox(
+                                        height: 92.0,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 textCapitalization: TextCapitalization.words,
                                 textInputAction: TextInputAction.done,
                                 onChanged: (text) {
