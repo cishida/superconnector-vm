@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 
 class VideoTile extends StatefulWidget {
   const VideoTile({
@@ -122,19 +124,22 @@ class _VideoTileState extends State<VideoTile> {
                 ),
               ),
             ),
-          // Positioned(
-          //   bottom: 0.0,
-          //   child: Text(
-          //     TimestampFormatter().getChatTileTime(
-          //       Timestamp.fromDate(
-          //         widget.video.created,
-          //       ),
-          //     ),
-          //     style: TextStyle(
-          //       color: Colors.white,
-          //     ),
-          //   ),
-          // ),
+          Positioned(
+            bottom: 3.0,
+            left: 8.0,
+            child: Text(
+              TimestampFormatter().getChatTileTime(
+                Timestamp.fromDate(
+                  widget.video.created,
+                ),
+              ),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
         ],
       ),
     );

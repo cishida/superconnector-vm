@@ -132,13 +132,13 @@ class _ContactsState extends State<Contacts> {
         return Stack(
           children: [
             SuperDialog(
-              title: 'Invitation',
+              title: 'Confirmation',
               subtitle:
-                  'They need a Superconnector invitation to connect with you and share VMs.',
+                  'Send them a Superconnector invitation so they can connect with you.',
               primaryActionTitle: 'Continue',
               primaryAction: () async {
                 String body =
-                    'Hey I just sent you a VM in Superconnector, get the app so we can VM each other faster https://www.superconnector.com/';
+                    "Just added you to my family in Superconnector! Let's connect: https://www.superconnector.com/";
 
                 await SMSUtility.send(body, phoneNumbers);
                 Navigator.pop(context);
