@@ -55,17 +55,19 @@ class Superuser {
   @JsonKey(defaultValue: '')
   String fullName;
   @JsonKey(defaultValue: '')
-  String username;
-  @JsonKey(defaultValue: '')
   String photoUrl;
   @JsonKey(defaultValue: {})
   Map<String, String> socialLinks;
+
   @JsonKey(defaultValue: [])
   List<String> fcmTokens;
   @JsonKey(defaultValue: 0)
   int unseenNotificationCount;
   @JsonKey(defaultValue: 0)
   int numContacts;
+  @JsonKey(defaultValue: {})
+  Map<String, DateTime> blockedUsers;
+
   @JsonKey(defaultValue: false)
   bool onboarded;
   @JsonKey(defaultValue: HomeOnboardingStage.completed)
@@ -76,8 +78,6 @@ class Superuser {
   bool recordOnboarding;
   @JsonKey(defaultValue: false)
   bool contactsOnboarding;
-  @JsonKey(defaultValue: {})
-  Map<String, DateTime> blockedUsers;
 
   @JsonKey(
     fromJson: _dateTimeFromTimestamp,
@@ -97,18 +97,17 @@ class Superuser {
     this.phoneNumber = '',
     this.displayName = '',
     this.fullName = '',
-    this.username = '',
     this.photoUrl = '',
     this.socialLinks = const {},
     this.fcmTokens = const [],
     this.unseenNotificationCount = 0,
     this.numContacts = 0,
+    this.blockedUsers = const {},
     this.onboarded = false,
     this.homeOnboardingStage = HomeOnboardingStage.completed,
     this.videoPlayerOnboarding = false,
     this.recordOnboarding = false,
     this.contactsOnboarding = false,
-    this.blockedUsers = const {},
     required this.created,
   });
 
@@ -151,8 +150,8 @@ class Superuser {
     switch (key) {
       case 'fullName':
         return fullName;
-      case 'username':
-        return username;
+      // case 'username':
+      //   return username;
       case 'photoUrl':
         return photoUrl;
       default:
@@ -165,9 +164,9 @@ class Superuser {
       case 'fullName':
         fullName = value;
         break;
-      case 'username':
-        username = value;
-        break;
+      // case 'username':
+      //   username = value;
+      //   break;
       case 'photoUrl':
         photoUrl = value;
         break;

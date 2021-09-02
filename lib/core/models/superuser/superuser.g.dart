@@ -11,7 +11,6 @@ Superuser _$SuperuserFromJson(Map<String, dynamic> json) {
     phoneNumber: json['phoneNumber'] as String? ?? '',
     displayName: json['displayName'] as String? ?? '',
     fullName: json['fullName'] as String? ?? '',
-    username: json['username'] as String? ?? '',
     photoUrl: json['photoUrl'] as String? ?? '',
     socialLinks: (json['socialLinks'] as Map<String, dynamic>?)?.map(
           (k, e) => MapEntry(k, e as String),
@@ -23,6 +22,10 @@ Superuser _$SuperuserFromJson(Map<String, dynamic> json) {
         [],
     unseenNotificationCount: json['unseenNotificationCount'] as int? ?? 0,
     numContacts: json['numContacts'] as int? ?? 0,
+    blockedUsers: (json['blockedUsers'] as Map<String, dynamic>?)?.map(
+          (k, e) => MapEntry(k, DateTime.parse(e as String)),
+        ) ??
+        {},
     onboarded: json['onboarded'] as bool? ?? false,
     homeOnboardingStage: _$enumDecodeNullable(
             _$HomeOnboardingStageEnumMap, json['homeOnboardingStage']) ??
@@ -30,10 +33,6 @@ Superuser _$SuperuserFromJson(Map<String, dynamic> json) {
     videoPlayerOnboarding: json['videoPlayerOnboarding'] as bool? ?? false,
     recordOnboarding: json['recordOnboarding'] as bool? ?? false,
     contactsOnboarding: json['contactsOnboarding'] as bool? ?? false,
-    blockedUsers: (json['blockedUsers'] as Map<String, dynamic>?)?.map(
-          (k, e) => MapEntry(k, DateTime.parse(e as String)),
-        ) ??
-        {},
     created: Superuser._dateTimeFromTimestamp(json['created'] as Timestamp),
   );
 }
@@ -42,20 +41,19 @@ Map<String, dynamic> _$SuperuserToJson(Superuser instance) => <String, dynamic>{
       'phoneNumber': instance.phoneNumber,
       'displayName': instance.displayName,
       'fullName': instance.fullName,
-      'username': instance.username,
       'photoUrl': instance.photoUrl,
       'socialLinks': instance.socialLinks,
       'fcmTokens': instance.fcmTokens,
       'unseenNotificationCount': instance.unseenNotificationCount,
       'numContacts': instance.numContacts,
+      'blockedUsers':
+          instance.blockedUsers.map((k, e) => MapEntry(k, e.toIso8601String())),
       'onboarded': instance.onboarded,
       'homeOnboardingStage':
           _$HomeOnboardingStageEnumMap[instance.homeOnboardingStage],
       'videoPlayerOnboarding': instance.videoPlayerOnboarding,
       'recordOnboarding': instance.recordOnboarding,
       'contactsOnboarding': instance.contactsOnboarding,
-      'blockedUsers':
-          instance.blockedUsers.map((k, e) => MapEntry(k, e.toIso8601String())),
       'created': Superuser._dateTimeAsIs(instance.created),
     };
 

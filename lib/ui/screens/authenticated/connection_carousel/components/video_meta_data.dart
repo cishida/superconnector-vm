@@ -47,10 +47,10 @@ class VideoMetaData extends StatelessWidget {
             superuser.fullName,
             style: textStyle,
           ),
-          Text(
-            '@' + superuser.username,
-            style: textStyle,
-          ),
+          // Text(
+          //   '@' + superuser.username,
+          //   style: textStyle,
+          // ),
           Text(
             TimestampFormatter.getDateFromTimestamp(
               Timestamp.fromDate(

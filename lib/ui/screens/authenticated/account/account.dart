@@ -213,36 +213,36 @@ class _AccountState extends State<Account> {
                         );
                       },
                     ),
-                    AccountItem(
-                      leading: Text(
-                        '✒️️',
-                        style: emojiStyle,
-                      ),
-                      title: 'Username',
-                      subtitle: '@' + superuser.username,
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (BuildContext context, _, __) {
-                              return OverlayInput(
-                                fieldName: 'Username',
-                                textCapitalization: TextCapitalization.none,
-                                textInputAction: TextInputAction.done,
-                                value: superuser.username,
-                                onChanged: (text) {
-                                  superuser.username = text;
-                                },
-                                onSubmit: (text) async {
-                                  superuser.username = text;
-                                  superuser.update();
-                                },
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                    // AccountItem(
+                    //   leading: Text(
+                    //     '✒️️',
+                    //     style: emojiStyle,
+                    //   ),
+                    //   title: 'Username',
+                    //   subtitle: '@' + superuser.username,
+                    //   onPressed: () {
+                    //     Navigator.of(context).push(
+                    //       PageRouteBuilder(
+                    //         opaque: false,
+                    //         pageBuilder: (BuildContext context, _, __) {
+                    //           return OverlayInput(
+                    //             fieldName: 'Username',
+                    //             textCapitalization: TextCapitalization.none,
+                    //             textInputAction: TextInputAction.done,
+                    //             value: superuser.username,
+                    //             onChanged: (text) {
+                    //               superuser.username = text;
+                    //             },
+                    //             onSubmit: (text) async {
+                    //               superuser.username = text;
+                    //               superuser.update();
+                    //             },
+                    //           );
+                    //         },
+                    //       ),
+                    //     );
+                    //   },
+                    // ),
                     AccountItem(
                       leading: Image.asset(
                         'assets/images/authenticated/phone-icon.png',

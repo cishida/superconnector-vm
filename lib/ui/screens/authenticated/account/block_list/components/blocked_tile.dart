@@ -69,7 +69,7 @@ class _BlockedTileState extends State<BlockedTile> {
               ),
             ),
             subtitle: Text(
-              '@' + _superuser!.username,
+              _superuser!.phoneNumber,
               style: TextStyle(
                 color: ConstantColors.DARK_TEXT,
                 fontWeight: FontWeight.w400,

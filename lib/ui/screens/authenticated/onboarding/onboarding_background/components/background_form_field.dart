@@ -63,12 +63,12 @@ class _BackgroundFormFieldState extends State<BackgroundFormField> {
           superuser.fullName != '' ? superuser.fullName : superuser.displayName;
     }
 
-    if (widget.fieldKey == 'username') {
-      placeholder = superuser.displayName.replaceAll(' ', '').toLowerCase();
-      placeholder = superuser.username != ''
-          ? superuser.username
-          : superuser.displayName.replaceAll(' ', '').toLowerCase();
-    }
+    // if (widget.fieldKey == 'username') {
+    //   placeholder = superuser.displayName.replaceAll(' ', '').toLowerCase();
+    //   placeholder = superuser.username != ''
+    //       ? superuser.username
+    //       : superuser.displayName.replaceAll(' ', '').toLowerCase();
+    // }
 
     return placeholder;
   }
