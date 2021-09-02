@@ -15,10 +15,15 @@ class ContactsPermission extends StatefulWidget {
 class _ContactsPermissionState extends State<ContactsPermission> {
   void _navigateToContacts(BuildContext context) {
     Navigator.of(context).pop();
-    SuperNavigator.push(
+    showModalBottomSheet(
       context: context,
-      widget: Relations(),
-      fullScreen: false,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.93,
+          child: Relations(),
+        );
+      },
     );
   }
 
