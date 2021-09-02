@@ -2,8 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
-import 'package:superconnector_vm/core/models/selected_contacts.dart';
-import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/block/block_utility.dart';
@@ -37,9 +35,6 @@ class _ConnectionCarouselState extends State<ConnectionCarousel> {
     if (superuser == null) {
       return Container();
     }
-
-    var selectedContacts = Provider.of<SelectedContacts>(context);
-    var supercontacts = Provider.of<List<Supercontact>>(context);
 
     TextStyle bottomNavStyle = TextStyle(
       color: ConstantColors.TURQUOISE,

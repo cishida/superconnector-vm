@@ -4,8 +4,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
-import 'package:superconnector_vm/core/models/selected_contacts.dart';
-import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
@@ -139,7 +137,6 @@ class _ConnectionTileState extends State<ConnectionTile> {
             .then(
               (value) => onComplete(),
             );
-        ;
       } else {
         showModalBottomSheet(
           context: context,
@@ -164,9 +161,6 @@ class _ConnectionTileState extends State<ConnectionTile> {
   @override
   Widget build(BuildContext context) {
     final superuser = Provider.of<Superuser?>(context);
-    var selectedContacts = Provider.of<SelectedContacts>(context);
-    var supercontacts = Provider.of<List<Supercontact>>(context);
-
     if (superuser == null) {
       return Container();
     }

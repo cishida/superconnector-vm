@@ -8,7 +8,6 @@ import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/services/supercontact/supercontact_service.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
@@ -57,13 +56,13 @@ class _ContactsState extends State<Contacts> {
       listen: false,
     );
 
-    if (selectedContacts.containsContact(contact)) {
-      selectedContacts.removeContact(contact);
+    if (selectedContacts.contains(contact)) {
+      selectedContacts.remove(contact);
     } else {
-      selectedContacts.addContact(contact);
+      selectedContacts.add(contact);
     }
 
-    print(selectedContacts.getSelectedContacts);
+    print(selectedContacts.contacts);
 
     setState(() {});
   }
@@ -128,10 +127,10 @@ class _ContactsState extends State<Contacts> {
       listen: false,
     );
 
-    if (selectedContacts.containsContact(contact)) {
-      selectedContacts.removeContact(contact);
+    if (selectedContacts.contains(contact)) {
+      selectedContacts.remove(contact);
     } else {
-      selectedContacts.addContact(contact);
+      selectedContacts.add(contact);
     }
 
     _setOrCreateConnection();

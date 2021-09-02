@@ -32,8 +32,7 @@ class ConnectionService {
     for (var i = 0; i < connection.userIds.length; i++) {
       List<String> ids = superusers.map((e) => e.id).toList();
 
-      if (currentSuperuser != null &&
-          connection.userIds[i] != currentSuperuser.id) {
+      if (connection.userIds[i] != currentSuperuser.id) {
         Superuser? superuser = await SuperuserService().getSuperuserFromId(
           connection.userIds[i],
         );
@@ -118,7 +117,7 @@ class ConnectionService {
     var connectionDoc = connectionCollection.doc();
     Map<String, String> phoneNumberNameMap = {};
 
-    for (var contact in selectedContacts.getSelectedContacts) {
+    for (var contact in selectedContacts.contacts) {
       String formattedPhone = contact.phones!.first.value!.replaceAll(
         RegExp(r"\D"),
         "",

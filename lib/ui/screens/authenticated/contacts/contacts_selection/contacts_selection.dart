@@ -59,7 +59,7 @@ class _ContactsSelectionState extends State<ContactsSelection> {
             child: ContactItem(
               contact: filteredContacts[index],
               isSelectable: widget.isSelectable,
-              isSelected: selectedContacts.containsContact(
+              isSelected: selectedContacts.contains(
                 filteredContacts[index],
               ),
             ),

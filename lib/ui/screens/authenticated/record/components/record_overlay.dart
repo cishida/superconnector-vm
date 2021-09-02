@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
-import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 
 class RecordOverlay extends StatefulWidget {
@@ -64,44 +62,44 @@ class _RecordOverlayState extends State<RecordOverlay> {
     );
   }
 
-  String _getNamesFromContacts(
-      BuildContext context, SelectedContacts selectedContacts) {
-    String names = '';
+  // String _getNamesFromContacts(
+  //     BuildContext context, SelectedContacts selectedContacts) {
+  //   String names = '';
 
-    // selectedContacts.getSelectedSupercontacts.forEach((element) {
-    //   if (names.isEmpty) {
-    //     names += element.fullName;
-    //   } else {
-    //     names += ', ' + element.fullName;
-    //   }
-    // });
-    // selectedContacts.getSelectedContacts.forEach((element) {
-    //   String contactName = '';
-    //   if (element.givenName != null && element.givenName!.isNotEmpty) {
-    //     contactName += element.givenName!;
-    //   }
-    //   if (element.familyName != null && element.familyName!.isNotEmpty) {
-    //     if (contactName.isNotEmpty) {
-    //       contactName += ' ';
-    //     }
-    //     contactName += element.familyName!;
-    //   }
+  // selectedContacts.getSelectedSupercontacts.forEach((element) {
+  //   if (names.isEmpty) {
+  //     names += element.fullName;
+  //   } else {
+  //     names += ', ' + element.fullName;
+  //   }
+  // });
+  // selectedContacts.getSelectedContacts.forEach((element) {
+  //   String contactName = '';
+  //   if (element.givenName != null && element.givenName!.isNotEmpty) {
+  //     contactName += element.givenName!;
+  //   }
+  //   if (element.familyName != null && element.familyName!.isNotEmpty) {
+  //     if (contactName.isNotEmpty) {
+  //       contactName += ' ';
+  //     }
+  //     contactName += element.familyName!;
+  //   }
 
-    //   if (names.isEmpty) {
-    //     names += contactName;
-    //   } else {
-    //     names += ', ' + contactName;
-    //   }
-    // });
+  //   if (names.isEmpty) {
+  //     names += contactName;
+  //   } else {
+  //     names += ', ' + contactName;
+  //   }
+  // });
 
-    // if (names.isEmpty) {
-    //   names = 'Add Recipient(s)';
-    // } else {
-    //   names = 'To ' + names;
-    // }
+  // if (names.isEmpty) {
+  //   names = 'Add Recipient(s)';
+  // } else {
+  //   names = 'To ' + names;
+  // }
 
-    return names;
-  }
+  //   return names;
+  // }
 
   @override
   void initState() {

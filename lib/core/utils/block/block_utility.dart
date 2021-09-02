@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
-import 'package:superconnector_vm/core/models/selected_contacts.dart';
-import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';

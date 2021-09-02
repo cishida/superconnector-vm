@@ -1,8 +1,5 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:superconnector_vm/core/models/connection/connection.dart';
-import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
 
 class SelectedContacts extends ChangeNotifier {
   // List<Supercontact> _selectedSupercontacts = [];
@@ -12,7 +9,7 @@ class SelectedContacts extends ChangeNotifier {
   //   return _selectedSupercontacts;
   // }
 
-  List<Contact> get getSelectedContacts {
+  List<Contact> get contacts {
     return _selectedContacts;
   }
 
@@ -21,7 +18,7 @@ class SelectedContacts extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addContact(Contact contact) {
+  void add(Contact contact) {
     _selectedContacts.add(contact);
     notifyListeners();
   }
@@ -32,7 +29,7 @@ class SelectedContacts extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void removeContact(Contact contact) {
+  void remove(Contact contact) {
     _selectedContacts.remove(contact);
     notifyListeners();
   }
@@ -44,7 +41,7 @@ class SelectedContacts extends ChangeNotifier {
   //       0;
   // }
 
-  bool containsContact(Contact contact) {
+  bool contains(Contact contact) {
     return _selectedContacts.contains(contact);
   }
 

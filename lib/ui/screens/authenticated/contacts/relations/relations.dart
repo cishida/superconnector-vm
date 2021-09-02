@@ -23,8 +23,6 @@ class Relations extends StatefulWidget {
 }
 
 class _RelationsState extends State<Relations> {
-  String _customRelation = '';
-
   void _toContacts({
     required String tag,
     bool isGroup = false,
@@ -76,37 +74,8 @@ class _RelationsState extends State<Relations> {
               title: title,
               subtitle: subtitle,
             ),
-            // Center(
-            //   child: Column(
-            //     children: [
-            //       Text(
-            //         title,
-            //         style: Theme.of(context).textTheme.headline5!.copyWith(
-            //               color: Colors.white,
-            //             ),
-            //       ),
-            //       SizedBox(
-            //         height: 10.0,
-            //       ),
-            //       Text(
-            //         subtitle,
-            //         style: Theme.of(context).textTheme.subtitle1!.copyWith(
-            //               color: Colors.white,
-            //             ),
-            //       ),
-            //       SizedBox(
-            //         height: 92.0,
-            //       ),
-            //     ],
-            //   ),
-            // ),
             textCapitalization: TextCapitalization.words,
             textInputAction: TextInputAction.done,
-            onChanged: (text) {
-              setState(() {
-                _customRelation = text;
-              });
-            },
             onSubmit: (text) async {
               _toContacts(
                 tag: text,

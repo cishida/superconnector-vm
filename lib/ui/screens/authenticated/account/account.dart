@@ -154,16 +154,6 @@ class _AccountState extends State<Account> {
                         'Hey check out this app Superconnector https://superconnector.com',
                         [],
                       );
-                      // if (Platform.isAndroid) {
-                      //   const uri =
-                      //       'sms:?body=Hey check out this app Superconnector https://superconnector.com';
-                      //   await launch(uri);
-                      // } else if (Platform.isIOS) {
-                      //   // iOS
-                      //   const uri =
-                      //       'sms:&body=Hey check out this app Superconnector https://superconnector.com';
-                      //   await launch(uri);
-                      // }
                     },
                     child: Align(
                       alignment: Alignment.centerLeft,
