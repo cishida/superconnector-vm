@@ -174,9 +174,11 @@ class _ConnectionTileState extends State<ConnectionTile> {
                               //     widget.connection.mostRecentActivity!,
                               //   ),
                               // ),
-                              (widget.connection.tags[superuser.id] ??
-                                      'Add a tag')
-                                  .toString(),
+                              videos.length == 0
+                                  ? 'Send a welcome message'
+                                  : (widget.connection.tags[superuser.id] ??
+                                          'Add a tag')
+                                      .toString(),
                               style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w400,
