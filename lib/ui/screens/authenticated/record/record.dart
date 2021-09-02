@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_upchunk/flutter_upchunk.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -366,76 +367,79 @@ class _RecordState extends State<Record>
       aspectRatio = _betterPlayerController!.getAspectRatio();
     }
 
-    return GestureDetector(
-      onTap: () {
-        print('Record container');
-      },
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Scaffold(
-            backgroundColor: Colors.black,
-            body: Stack(
-              alignment: Alignment.center,
-              children: [
-                // Camera preview for recording VM
-                if (_cameraController != null &&
-                    _cameraController!.value.isInitialized &&
-                    !shouldShowVideo)
-                  CameraPreviewContainer(
-                    cameraController: _cameraController!,
-                    animationController: _animationController,
-                    ratio: 9 / 16,
-                    constraints: constraints,
-                    setVideoFile: _setVideoFile,
-                    setIsRecording: (isRecording) {
-                      setState(() {
-                        _isRecording = isRecording;
-                      });
-                    },
-                    isResetting: _isResetting,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: GestureDetector(
+        onTap: () {
+          print('Record container');
+        },
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Scaffold(
+              backgroundColor: Colors.black,
+              body: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Camera preview for recording VM
+                  if (_cameraController != null &&
+                      _cameraController!.value.isInitialized &&
+                      !shouldShowVideo)
+                    CameraPreviewContainer(
+                      cameraController: _cameraController!,
+                      animationController: _animationController,
+                      ratio: 9 / 16,
+                      constraints: constraints,
+                      setVideoFile: _setVideoFile,
+                      setIsRecording: (isRecording) {
+                        setState(() {
+                          _isRecording = isRecording;
+                        });
+                      },
+                      isResetting: _isResetting,
+                    ),
+
+                  // Video player after VM recorded
+                  if (shouldShowVideo)
+                    VideoPreview(
+                      aspectRatio: aspectRatio!,
+                      betterPlayerController: _betterPlayerController!,
+                      constraints: constraints,
+                    ),
+
+                  RecordOverlay(
+                    isRecording: _isRecording,
+                    connection: widget.connection,
                   ),
 
-                // Video player after VM recorded
-                if (shouldShowVideo)
-                  VideoPreview(
-                    aspectRatio: aspectRatio!,
-                    betterPlayerController: _betterPlayerController!,
-                    constraints: constraints,
-                  ),
-
-                RecordOverlay(
-                  isRecording: _isRecording,
-                  connection: widget.connection,
-                ),
-
-                if (_sendPressed && !_uploadCompleted)
-                  Container(
-                    color: Colors.black.withOpacity(0.65),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          Text(
-                            _progress.toString() + '%',
-                            style: TextStyle(
-                              color: Colors.white,
+                  if (_sendPressed && !_uploadCompleted)
+                    Container(
+                      color: Colors.black.withOpacity(0.65),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                            Text(
+                              _progress.toString() + '%',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-              ],
-            ),
-            bottomNavigationBar: RecordBottomNav(
-              shouldShowSendVM: _betterPlayerController != null,
-              onResetPressed: _onResetPressed,
-              onSendPressed: _onSendPressed,
-            ),
-          );
-        },
+                ],
+              ),
+              bottomNavigationBar: RecordBottomNav(
+                shouldShowSendVM: _betterPlayerController != null,
+                onResetPressed: _onResetPressed,
+                onSendPressed: _onSendPressed,
+              ),
+            );
+          },
+        ),
       ),
     );
   }
