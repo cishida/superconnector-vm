@@ -16,7 +16,10 @@ class Relations extends StatefulWidget {
 class _RelationsState extends State<Relations> {
   String _customRelation = '';
 
-  void _toContacts(String tag) {
+  void _toContacts({
+    required String tag,
+    bool isGroup = false,
+  }) {
     Navigator.of(context).pop();
     showModalBottomSheet(
       context: context,
@@ -26,11 +29,68 @@ class _RelationsState extends State<Relations> {
           heightFactor: 0.93,
           child: Contacts(
             tag: tag,
+            isGroup: isGroup,
           ),
         );
       },
     );
     // Navigator.of(context).pop();
+  }
+
+  void _onCustom(String relation) {
+    final String title = relation == 'Group' ? 'Group Name' : 'Custom Relation';
+    final String subtitle = relation == 'Group'
+        ? 'Only you can see your group names.'
+        : 'Pick a name for your relation.';
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return OverlayInput(
+            fieldName: 'Relation',
+            exampleText: _customRelation.length.toString() + ' / 50',
+            explanation: Center(
+              child: Column(
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Colors.white,
+                        ),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text(
+                    subtitle,
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          color: Colors.white,
+                        ),
+                  ),
+                  SizedBox(
+                    height: 92.0,
+                  ),
+                ],
+              ),
+            ),
+            textCapitalization: TextCapitalization.words,
+            textInputAction: TextInputAction.done,
+            onChanged: (text) {
+              setState(() {
+                _customRelation = text;
+              });
+            },
+            onSubmit: (text) async {
+              _toContacts(
+                tag: text,
+                isGroup: relation == 'Group',
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -99,63 +159,15 @@ class _RelationsState extends State<Relations> {
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      if (relations[index] == 'Custom') {
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (BuildContext context, _, __) {
-                              // 'Custom Relation'
-                              // 'Pick a name for your relation.'
-                              return OverlayInput(
-                                fieldName: 'Relation',
-                                exampleText:
-                                    _customRelation.length.toString() + ' / 50',
-                                explanation: Center(
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'Custom Relation',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5!
-                                            .copyWith(
-                                              color: Colors.white,
-                                            ),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Text(
-                                        'Pick a name for your relation.',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1!
-                                            .copyWith(
-                                              color: Colors.white,
-                                            ),
-                                      ),
-                                      SizedBox(
-                                        height: 92.0,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                textCapitalization: TextCapitalization.words,
-                                textInputAction: TextInputAction.done,
-                                onChanged: (text) {
-                                  setState(() {
-                                    _customRelation = text;
-                                  });
-                                },
-                                onSubmit: (text) async {
-                                  _toContacts(text);
-                                },
-                              );
-                            },
-                          ),
+                      if (relations[index] == 'Custom' ||
+                          relations[index] == 'Group') {
+                        _onCustom(
+                          relations[index],
                         );
                       } else {
-                        _toContacts(relations[index]);
+                        _toContacts(
+                          tag: relations[index],
+                        );
                       }
                     },
                     child: RelationTile(

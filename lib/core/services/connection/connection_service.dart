@@ -14,12 +14,14 @@ class ConnectionService {
   // Collection references
   final CollectionReference connectionCollection =
       FirebaseFirestore.instance.collection('connections');
+  final SuperuserService _superuserService = SuperuserService();
 
-  Future<Connection?> getConnectionFromSelected({
-    required SelectedContacts selectedContacts,
-  }) async {
-    return null;
-  }
+  // Future<Connection?> getConnectionFromSelected({
+  //   required SelectedContacts selectedContacts,
+  //   required List<Connection> connections,
+  // }) async {
+  //   return null;
+  // }
 
   Future<List<Superuser>> getConnectionUsers({
     required Connection connection,
@@ -44,7 +46,64 @@ class ConnectionService {
     return superusers;
   }
 
-  Future<Connection> getOrCreateConnection({
+  // Future<Connection> createConnection({
+  //   required String currentUserId,
+  //   required SelectedContacts selectedContacts,
+  //   required FirebaseAnalytics analytics,
+  //   required String tag,
+  // }) async {
+  //   var connectionDoc = connectionCollection.doc();
+
+  //   List<String> userIds = [];
+  //   userIds.add(currentUserId);
+
+  //   Map<String, String> phoneNumberNameMap = {};
+  //   selectedContacts.getSelectedContacts.forEach((contact) {
+  //     String formattedPhone = contact.phones!.first.value!.replaceAll(
+  //       RegExp(r"\D"),
+  //       "",
+  //     );
+
+  //     if (formattedPhone.length == 10) {
+  //       formattedPhone = '1' + formattedPhone;
+  //     }
+  //     formattedPhone = '+' + formattedPhone;
+
+  //     String givenName = contact.givenName != null ? contact.givenName! : '';
+  //     String familyName = contact.familyName != null ? contact.familyName! : '';
+
+  //     String name = givenName +
+  //         (givenName.isNotEmpty && familyName.isNotEmpty ? ' ' : '') +
+  //         familyName;
+
+  //     phoneNumberNameMap[formattedPhone] = name;
+  //   });
+
+  //   Connection connection = Connection(
+  //     id: connectionDoc.id,
+  //     userIds: userIds,
+  //     tags: {
+  //       currentUserId: tag,
+  //     },
+  //     phoneNumberNameMap: phoneNumberNameMap,
+  //     streakCount: 1,
+  //     created: DateTime.now(),
+  //     mostRecentActivity: DateTime.now(),
+  //   );
+
+  //   await connectionDoc.set(connection.toJson());
+  //   analytics.logEvent(
+  //     name: 'connection_created',
+  //     parameters: <String, dynamic>{
+  //       'id': connectionDoc.id,
+  //       'userIds': connection.userIds,
+  //     },
+  //   );
+
+  //   return connection;
+  // }
+
+  Future<Map<String, dynamic>> getOrCreateConnection({
     required String currentUserId,
     required SelectedContacts selectedContacts,
     required List<Connection> connections,
@@ -58,7 +117,8 @@ class ConnectionService {
     userIds.add(currentUserId);
     var connectionDoc = connectionCollection.doc();
     Map<String, String> phoneNumberNameMap = {};
-    selectedContacts.getSelectedContacts.forEach((contact) {
+
+    for (var contact in selectedContacts.getSelectedContacts) {
       String formattedPhone = contact.phones!.first.value!.replaceAll(
         RegExp(r"\D"),
         "",
@@ -76,8 +136,15 @@ class ConnectionService {
           (givenName.isNotEmpty && familyName.isNotEmpty ? ' ' : '') +
           familyName;
 
-      phoneNumberNameMap[formattedPhone] = name;
-    });
+      final Superuser? superuser =
+          await _superuserService.getSuperuserFromPhone(formattedPhone);
+
+      if (superuser == null) {
+        phoneNumberNameMap[formattedPhone] = name;
+      } else {
+        userIds.add(superuser.id);
+      }
+    }
 
     Connection connection = Connection(
       id: connectionDoc.id,
@@ -110,12 +177,15 @@ class ConnectionService {
               cKeys,
               connectionKeys,
             )) {
-          connection.id = c.id;
-          connection.tags.addAll({
+          // connection.id = c.id;
+          c.tags.addAll({
             currentUserId: tag,
           });
-          connection.update();
-          return connection;
+          c.update();
+          return {
+            'connection': c,
+            'wasCreated': false,
+          };
         }
       }
     }
@@ -129,7 +199,10 @@ class ConnectionService {
       },
     );
 
-    return connection;
+    return {
+      'connection': connection,
+      'wasCreated': true,
+    };
   }
 
   // Connection from snapshot

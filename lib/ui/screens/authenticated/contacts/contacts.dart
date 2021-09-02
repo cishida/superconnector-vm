@@ -16,15 +16,18 @@ import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/search_bar.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/components/group_selection_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/contacts_selection.dart';
 
 class Contacts extends StatefulWidget {
   const Contacts({
     Key? key,
     required this.tag,
+    required this.isGroup,
   }) : super(key: key);
 
   final String tag;
+  final bool isGroup;
 
   @override
   _ContactsState createState() => _ContactsState();
@@ -36,11 +39,11 @@ class _ContactsState extends State<Contacts> {
   Iterable<Contact>? _contacts;
   String _filter = '';
 
-  void _toggleContact({
+  Future _toggleContact({
     required Contact contact,
     required BuildContext context,
     int phoneIndex = 0,
-  }) {
+  }) async {
     if (contact.phones == null || contact.phones!.length == 0) {
       return;
     }
@@ -65,19 +68,7 @@ class _ContactsState extends State<Contacts> {
     setState(() {});
   }
 
-  Future _onTapContact({
-    required Contact contact,
-    required BuildContext context,
-    int phoneIndex = 0,
-  }) async {
-    if (contact.phones == null || contact.phones!.length == 0) {
-      return;
-    }
-    String? phoneNumber = contact.phones!.toList()[phoneIndex].value;
-    if (phoneNumber == null) {
-      return;
-    }
-
+  Future _setOrCreateConnection() async {
     final superuser = Provider.of<Superuser?>(context, listen: false);
     final connections = Provider.of<List<Connection>>(context, listen: false);
     var selectedContacts = Provider.of<SelectedContacts>(
@@ -93,13 +84,7 @@ class _ContactsState extends State<Contacts> {
       return;
     }
 
-    if (selectedContacts.containsContact(contact)) {
-      selectedContacts.removeContact(contact);
-    } else {
-      selectedContacts.addContact(contact);
-    }
-
-    Connection connection = await ConnectionService().getOrCreateConnection(
+    Map connectionMap = await ConnectionService().getOrCreateConnection(
       currentUserId: superuser.id,
       selectedContacts: selectedContacts,
       connections: connections,
@@ -107,10 +92,13 @@ class _ContactsState extends State<Contacts> {
       tag: widget.tag,
     );
 
+    Connection connection = connectionMap['connection'];
+    bool wasCreated = connectionMap['wasCreated'];
+
     selectedContacts.reset();
     Navigator.of(context).pop();
 
-    if (connection.phoneNumberNameMap.isNotEmpty) {
+    if (connection.phoneNumberNameMap.isNotEmpty && wasCreated) {
       List<String> phoneNumbers = connection.phoneNumberNameMap.keys.toList();
 
       _showInviteCard(phoneNumbers);
@@ -120,6 +108,33 @@ class _ContactsState extends State<Contacts> {
         widget: ConnectionGrid(connection: connection),
       );
     }
+  }
+
+  Future _onTapContact({
+    required Contact contact,
+    required BuildContext context,
+    int phoneIndex = 0,
+  }) async {
+    if (contact.phones == null || contact.phones!.length == 0) {
+      return;
+    }
+    String? phoneNumber = contact.phones!.toList()[phoneIndex].value;
+    if (phoneNumber == null) {
+      return;
+    }
+
+    var selectedContacts = Provider.of<SelectedContacts>(
+      context,
+      listen: false,
+    );
+
+    if (selectedContacts.containsContact(contact)) {
+      selectedContacts.removeContact(contact);
+    } else {
+      selectedContacts.addContact(contact);
+    }
+
+    _setOrCreateConnection();
   }
 
   Future _showInviteCard(
@@ -217,12 +232,14 @@ class _ContactsState extends State<Contacts> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-    );
 
     return Scaffold(
       backgroundColor: Colors.transparent,
+      floatingActionButton: widget.isGroup
+          ? GroupSelectionButton(onPressed: () {
+              _setOrCreateConnection();
+            })
+          : Container(),
       body: Container(
         width: size.width,
         decoration: BoxDecoration(
@@ -264,9 +281,11 @@ class _ContactsState extends State<Contacts> {
                       top: 5.0,
                     ),
                     child: Text(
-                      'Invite your ' +
-                          widget.tag.toLowerCase() +
-                          ' to connect.',
+                      widget.isGroup
+                          ? 'Add people to your family group.'
+                          : 'Invite your ' +
+                              widget.tag.toLowerCase() +
+                              ' to connect.',
                       style: Theme.of(context).textTheme.bodyText1!,
                     ),
                   ),
@@ -291,11 +310,16 @@ class _ContactsState extends State<Contacts> {
             if (_contacts != null && _contacts!.length > 0)
               Expanded(
                 child: ContactsSelection(
-                  onTapContact: (contact) => _onTapContact(
-                    contact: contact,
-                    context: context,
-                  ),
-                  isSelectable: widget.tag == 'Group',
+                  onTapContact: (contact) => widget.isGroup
+                      ? _toggleContact(
+                          contact: contact,
+                          context: context,
+                        )
+                      : _onTapContact(
+                          contact: contact,
+                          context: context,
+                        ),
+                  isSelectable: widget.isGroup,
                   filter: _filter,
                   contacts: _contacts!,
                 ),
@@ -437,59 +461,59 @@ class _ContactsState extends State<Contacts> {
   }
 }
 
-class ViewHistoryButton extends StatefulWidget {
-  const ViewHistoryButton({
-    Key? key,
-    required this.bottomNavStyle,
-  }) : super(key: key);
+// class ViewHistoryButton extends StatefulWidget {
+//   const ViewHistoryButton({
+//     Key? key,
+//     required this.bottomNavStyle,
+//   }) : super(key: key);
 
-  final TextStyle bottomNavStyle;
+//   final TextStyle bottomNavStyle;
 
-  @override
-  _ViewHistoryButtonState createState() => _ViewHistoryButtonState();
-}
+//   @override
+//   _ViewHistoryButtonState createState() => _ViewHistoryButtonState();
+// }
 
-class _ViewHistoryButtonState extends State<ViewHistoryButton> {
-  ConnectionService _connectionService = ConnectionService();
-  Connection? _connection;
+// class _ViewHistoryButtonState extends State<ViewHistoryButton> {
+//   ConnectionService _connectionService = ConnectionService();
+//   Connection? _connection;
 
-  @override
-  Widget build(BuildContext context) {
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-    );
+//   @override
+//   Widget build(BuildContext context) {
+//     var selectedContacts = Provider.of<SelectedContacts>(
+//       context,
+//     );
 
-    TextStyle disabledStyle = TextStyle(
-      color: ConstantColors.GRAY_TEXT,
-      fontSize: widget.bottomNavStyle.fontSize,
-      fontWeight: widget.bottomNavStyle.fontWeight,
-    );
+//     TextStyle disabledStyle = TextStyle(
+//       color: ConstantColors.GRAY_TEXT,
+//       fontSize: widget.bottomNavStyle.fontSize,
+//       fontWeight: widget.bottomNavStyle.fontWeight,
+//     );
 
-    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
-      _connection = await _connectionService.getConnectionFromSelected(
-        selectedContacts: selectedContacts,
-      );
-    });
+//     WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
+//       _connection = await _connectionService.getConnectionFromSelected(
+//         selectedContacts: selectedContacts,
+//       );
+//     });
 
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: () {
-        if (_connection == null) {
-          return;
-        }
+//     return GestureDetector(
+//       behavior: HitTestBehavior.opaque,
+//       onTap: () {
+//         if (_connection == null) {
+//           return;
+//         }
 
-        SuperNavigator.push(
-          context: context,
-          widget: ConnectionGrid(
-            connection: _connection!,
-          ),
-          fullScreen: true,
-        );
-      },
-      child: Text(
-        'View History',
-        style: _connection == null ? disabledStyle : widget.bottomNavStyle,
-      ),
-    );
-  }
-}
+//         SuperNavigator.push(
+//           context: context,
+//           widget: ConnectionGrid(
+//             connection: _connection!,
+//           ),
+//           fullScreen: true,
+//         );
+//       },
+//       child: Text(
+//         'View History',
+//         style: _connection == null ? disabledStyle : widget.bottomNavStyle,
+//       ),
+//     );
+//   }
+// }

@@ -76,6 +76,22 @@ class SuperuserService {
     }
   }
 
+  Future<Superuser?> getSuperuserFromPhone(String phone) async {
+    final snapshot = await superuserCollection
+        .where('phoneNumber', isEqualTo: phone)
+        .limit(1)
+        .get();
+
+    if (snapshot.docs.length > 0) {
+      final data = snapshot.docs.first.data();
+      return Superuser.fromJson(
+        snapshot.docs.first.id,
+        data,
+      );
+    }
+    return null;
+  }
+
   // Superusers list from snapshot
   List<Superuser> _superuserListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {

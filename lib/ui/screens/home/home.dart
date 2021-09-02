@@ -251,7 +251,6 @@ class _HomeState extends State<Home> {
     var selectedContacts = Provider.of<SelectedContacts>(
       context,
     );
-    selectedContacts.reset();
 
     // Start onboarding cards after building
     // will use the stage a user left off at
@@ -265,6 +264,7 @@ class _HomeState extends State<Home> {
           appBar: CustomAppBar(),
           floatingActionButton: NewConnectionButton(
             onPressed: () {
+              selectedContacts.reset();
               SuperNavigator.handleContactsNavigation(context: context);
             },
           ),
