@@ -275,46 +275,46 @@ class _RecordState extends State<Record>
 
     Navigator.of(context).popUntil((route) => route.isFirst);
 
-    if (widget.connection.phoneNumberNameMap.isNotEmpty) {
-      List<String> phoneNumbers =
-          widget.connection.phoneNumberNameMap.keys.toList();
+    // if (widget.connection.phoneNumberNameMap.isNotEmpty) {
+    //   List<String> phoneNumbers =
+    //       widget.connection.phoneNumberNameMap.keys.toList();
 
-      _showInviteCard(phoneNumbers);
-    }
+    //   _showInviteCard(phoneNumbers);
+    // }
     return;
   }
 
-  Future _showInviteCard(
-    List<String> phoneNumbers,
-  ) async {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return Stack(
-          children: [
-            SuperDialog(
-              title: 'Invitation',
-              subtitle:
-                  'They need a Superconnector invitation to connect with you and share VMs.',
-              primaryActionTitle: 'Continue',
-              primaryAction: () async {
-                String body =
-                    'Hey I just sent you a VM in Superconnector, get the app so we can VM each other faster https://www.superconnector.com/';
+  // Future _showInviteCard(
+  //   List<String> phoneNumbers,
+  // ) async {
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: true,
+  //     builder: (context) {
+  //       return Stack(
+  //         children: [
+  //           SuperDialog(
+  //             title: 'Invitation',
+  //             subtitle:
+  //                 'They need a Superconnector invitation to connect with you and share VMs.',
+  //             primaryActionTitle: 'Continue',
+  //             primaryAction: () async {
+  //               String body =
+  //                   'Hey I just sent you a VM in Superconnector, get the app so we can VM each other faster https://www.superconnector.com/';
 
-                await SMSUtility.send(body, phoneNumbers);
-                Navigator.pop(context);
-              },
-              secondaryActionTitle: 'Cancel',
-              secondaryAction: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //               await SMSUtility.send(body, phoneNumbers);
+  //               Navigator.pop(context);
+  //             },
+  //             secondaryActionTitle: 'Cancel',
+  //             secondaryAction: () {
+  //               Navigator.pop(context);
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   void initState() {

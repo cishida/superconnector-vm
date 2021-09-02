@@ -46,6 +46,9 @@ class _OnboardingState extends State<Onboarding> {
             superuser.id,
             ConstantStrings.SUPERCONNECTOR_ID,
           ],
+          tags: {
+            superuser.id: 'Parent',
+          },
           isExampleConversation: true,
           created: DateTime.now(),
           mostRecentActivity: DateTime.now(),

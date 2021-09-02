@@ -11,14 +11,21 @@ class SuperNavigator {
     required BuildContext context,
     required Widget widget,
     bool fullScreen = true,
+    Function? callback,
   }) {
-    Navigator.of(context).push(
+    Navigator.of(context)
+        .push(
       MaterialPageRoute<String>(
         builder: (BuildContext context) {
           return widget;
         },
         fullscreenDialog: fullScreen,
       ),
+    )
+        .then(
+      (value) {
+        if (callback != null) callback();
+      },
     );
   }
 

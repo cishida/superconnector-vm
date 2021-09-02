@@ -15,6 +15,7 @@ import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/ui/components/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_names.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
@@ -22,6 +23,7 @@ import 'package:superconnector_vm/ui/screens/authenticated/components/connection
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/video_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 
 class ConnectionTile extends StatefulWidget {
   const ConnectionTile({
@@ -42,6 +44,7 @@ class _ConnectionTileState extends State<ConnectionTile> {
   SuperuserService _superuserService = SuperuserService();
   List<Superuser> _superusers = [];
   late Timer _periodicUpdate;
+  String _groupName = '';
 
   Future _loadUsers() async {
     List<Superuser> tempSuperusers = [];
@@ -89,6 +92,99 @@ class _ConnectionTileState extends State<ConnectionTile> {
     super.dispose();
   }
 
+  void _handleNav({
+    required Function onComplete,
+  }) {
+    final superuser = Provider.of<Superuser?>(
+      context,
+      listen: false,
+    );
+    if (superuser == null) {
+      return;
+    }
+
+    final String? tag = widget.connection.tags[superuser.id];
+
+    if ((tag == null || tag.isEmpty) &&
+        !widget.connection.isExampleConversation) {
+      if (widget.connection.userIds.length +
+              widget.connection.phoneNumberNameMap.length >
+          2) {
+        Navigator.of(context)
+            .push(
+              PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (BuildContext context, _, __) {
+                  return OverlayInput(
+                    fieldName: 'Relation',
+                    exampleText: _groupName.length.toString() + ' / 50',
+                    explanation: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            'Group Name',
+                            style:
+                                Theme.of(context).textTheme.headline5!.copyWith(
+                                      color: Colors.white,
+                                    ),
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          Text(
+                            'Only you can see your group names.',
+                            style:
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      color: Colors.white,
+                                    ),
+                          ),
+                          SizedBox(
+                            height: 92.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                    textCapitalization: TextCapitalization.words,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (text) {
+                      setState(() {
+                        _groupName = text;
+                      });
+                    },
+                    onSubmit: (text) async {
+                      // onComplete();
+                      widget.connection.tags[superuser.id] = _groupName;
+                      widget.connection.update();
+                    },
+                  );
+                },
+              ),
+            )
+            .then(
+              (value) => onComplete(),
+            );
+        ;
+      } else {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) {
+            return FractionallySizedBox(
+              heightFactor: 0.93,
+              child: Relations(
+                connection: widget.connection,
+              ),
+            );
+          },
+        ).then(
+          (value) => onComplete(),
+        );
+      }
+    } else {
+      onComplete();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final superuser = Provider.of<Superuser?>(context);
@@ -130,12 +226,16 @@ class _ConnectionTileState extends State<ConnectionTile> {
                 return;
               }
 
-              SuperNavigator.push(
-                context: context,
-                widget: ConnectionGrid(
-                  connection: widget.connection,
-                ),
-                fullScreen: false,
+              _handleNav(
+                onComplete: () {
+                  SuperNavigator.push(
+                    context: context,
+                    widget: ConnectionGrid(
+                      connection: widget.connection,
+                    ),
+                    fullScreen: false,
+                  );
+                },
               );
             },
             child: Column(
@@ -174,11 +274,13 @@ class _ConnectionTileState extends State<ConnectionTile> {
                               //     widget.connection.mostRecentActivity!,
                               //   ),
                               // ),
-                              videos.length == 0
-                                  ? 'Send a welcome message'
-                                  : (widget.connection.tags[superuser.id] ??
-                                          'Add a tag')
-                                      .toString(),
+                              widget.connection.isExampleConversation
+                                  ? 'Parent'
+                                  : (videos.length == 0
+                                      ? 'Send a welcome message'
+                                      : (widget.connection.tags[superuser.id] ??
+                                              'Choose your family relation')
+                                          .toString()),
                               style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w400,
@@ -226,12 +328,16 @@ class _ConnectionTileState extends State<ConnectionTile> {
                       if (index == 0) {
                         return VMConnectionTile(
                           onPressed: () {
-                            BlockUtility blockUtility = BlockUtility(
-                              context: context,
-                              superuser: superuser,
-                              connection: widget.connection,
+                            _handleNav(
+                              onComplete: () {
+                                BlockUtility blockUtility = BlockUtility(
+                                  context: context,
+                                  superuser: superuser,
+                                  connection: widget.connection,
+                                );
+                                blockUtility.handleBlockedRecordNavigation();
+                              },
                             );
-                            blockUtility.handleBlockedRecordNavigation();
                           },
                         );
                       }
@@ -247,14 +353,18 @@ class _ConnectionTileState extends State<ConnectionTile> {
                             return;
                           }
 
-                          SuperNavigator.push(
-                            context: context,
-                            widget: ConnectionCarousel(
-                              connection: widget.connection,
-                              videos: filteredVideos,
-                              initialIndex: effectiveIndex,
-                            ),
-                            fullScreen: false,
+                          _handleNav(
+                            onComplete: () {
+                              SuperNavigator.push(
+                                context: context,
+                                widget: ConnectionCarousel(
+                                  connection: widget.connection,
+                                  videos: filteredVideos,
+                                  initialIndex: effectiveIndex,
+                                ),
+                                fullScreen: false,
+                              );
+                            },
                           );
                         },
                         child: VideoTile(

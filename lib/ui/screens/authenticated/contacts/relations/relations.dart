@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
 import 'package:superconnector_vm/ui/components/overlay_input.dart';
@@ -7,7 +10,12 @@ import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dar
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/components/relation_tile.dart';
 
 class Relations extends StatefulWidget {
-  const Relations({Key? key}) : super(key: key);
+  const Relations({
+    Key? key,
+    this.connection,
+  }) : super(key: key);
+
+  final Connection? connection;
 
   @override
   _RelationsState createState() => _RelationsState();
@@ -21,19 +29,33 @@ class _RelationsState extends State<Relations> {
     bool isGroup = false,
   }) {
     Navigator.of(context).pop();
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.93,
-          child: Contacts(
-            tag: tag,
-            isGroup: isGroup,
-          ),
-        );
-      },
-    );
+
+    if (widget.connection == null) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return FractionallySizedBox(
+            heightFactor: 0.93,
+            child: Contacts(
+              tag: tag,
+              isGroup: isGroup,
+            ),
+          );
+        },
+      );
+    } else {
+      final superuser = Provider.of<Superuser?>(
+        context,
+        listen: false,
+      );
+      if (superuser != null) {
+        widget.connection!.tags.addAll({
+          superuser.id: tag,
+        });
+        widget.connection!.update();
+      }
+    }
     // Navigator.of(context).pop();
   }
 
@@ -97,6 +119,11 @@ class _RelationsState extends State<Relations> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
+    final List<String> addedItems = ['Custom'];
+    if (widget.connection == null) {
+      addedItems.add('Group');
+    }
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -152,10 +179,11 @@ class _RelationsState extends State<Relations> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: ConstantStrings.FAMILY_RELATIONS.length + 2,
+                itemCount:
+                    ConstantStrings.FAMILY_RELATIONS.length + addedItems.length,
                 itemBuilder: (context, index) {
                   final List<String> relations =
-                      ConstantStrings.FAMILY_RELATIONS + ['Custom', 'Group'];
+                      ConstantStrings.FAMILY_RELATIONS + addedItems;
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
