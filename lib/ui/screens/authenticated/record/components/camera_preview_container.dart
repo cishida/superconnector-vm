@@ -116,12 +116,11 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
                   ConstantValues.VIDEO_OVERFLOW_LIMIT) {
             _onStopButtonPressed();
           } else {
-            _currentVideoSeconds = _currentVideoSeconds + 1;
-            // if (mounted) {
-            //   setState(() {
-
-            //   });
-            // }
+            if (mounted) {
+              setState(() {
+                _currentVideoSeconds = _currentVideoSeconds + 1;
+              });
+            }
           }
         },
       );
@@ -381,7 +380,7 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
                       ),
                     ),
                     child: Text(
-                      '10s overflow',
+                      '${((ConstantValues.VIDEO_TIME_LIMIT + ConstantValues.VIDEO_OVERFLOW_LIMIT) - _currentVideoSeconds).toString()} overflow',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,

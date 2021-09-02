@@ -66,7 +66,10 @@ class _RecordState extends State<Record>
     if (status.isGranted && cameras.isNotEmpty) {
       _cameraController = await CameraUtility.initializeController(
         cameras,
-      );
+      )
+        ..addListener(() {
+          _safeSetState();
+        });
       _safeSetState();
     }
   }
