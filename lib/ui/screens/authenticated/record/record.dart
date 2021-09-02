@@ -19,7 +19,6 @@ import 'package:superconnector_vm/ui/screens/authenticated/record/components/cam
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_bottom_nav.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
-// import 'package:video_player/video_player.dart';
 
 class Record extends StatefulWidget {
   const Record({
