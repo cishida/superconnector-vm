@@ -11,6 +11,10 @@ Connection _$ConnectionFromJson(Map<String, dynamic> json) {
     userIds:
         (json['userIds'] as List<dynamic>?)?.map((e) => e as String).toList() ??
             [],
+    tags: (json['tags'] as Map<String, dynamic>?)?.map(
+          (k, e) => MapEntry(k, e as String),
+        ) ??
+        [],
     phoneNumberNameMap:
         (json['phoneNumberNameMap'] as Map<String, dynamic>?)?.map(
               (k, e) => MapEntry(k, e as String),
@@ -27,6 +31,7 @@ Connection _$ConnectionFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ConnectionToJson(Connection instance) =>
     <String, dynamic>{
       'userIds': instance.userIds,
+      'tags': instance.tags,
       'phoneNumberNameMap': instance.phoneNumberNameMap,
       'streakCount': instance.streakCount,
       'isExampleConversation': instance.isExampleConversation,

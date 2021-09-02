@@ -10,6 +10,8 @@ class Connection {
   String id;
   @JsonKey(defaultValue: [])
   List<String> userIds;
+  @JsonKey(defaultValue: [])
+  Map<String, String> tags;
   @JsonKey(defaultValue: {})
   Map<String, String> phoneNumberNameMap;
   @JsonKey(defaultValue: 0)
@@ -39,6 +41,7 @@ class Connection {
   Connection({
     this.id = '',
     this.userIds = const [],
+    this.tags = const {},
     this.phoneNumberNameMap = const {},
     this.streakCount = 0,
     this.isExampleConversation = false,
