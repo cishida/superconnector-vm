@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
@@ -13,9 +12,9 @@ import 'package:superconnector_vm/core/services/superuser/superuser_service.dart
 import 'package:superconnector_vm/core/services/video/video_service.dart';
 import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
-import 'package:superconnector_vm/ui/components/overlay_input.dart';
+import 'package:superconnector_vm/ui/components/overlays/overlay_explanation.dart';
+import 'package:superconnector_vm/ui/components/overlays/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_names.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
@@ -117,32 +116,9 @@ class _ConnectionTileState extends State<ConnectionTile> {
                 pageBuilder: (BuildContext context, _, __) {
                   return OverlayInput(
                     fieldName: 'Relation',
-                    exampleText: _groupName.length.toString() + ' / 50',
-                    explanation: Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Group Name',
-                            style:
-                                Theme.of(context).textTheme.headline5!.copyWith(
-                                      color: Colors.white,
-                                    ),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text(
-                            'Only you can see your group names.',
-                            style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      color: Colors.white,
-                                    ),
-                          ),
-                          SizedBox(
-                            height: 92.0,
-                          ),
-                        ],
-                      ),
+                    explanation: OverlayExplanation(
+                      title: 'Group Name',
+                      subtitle: 'Only you can see your group names.',
                     ),
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.done,

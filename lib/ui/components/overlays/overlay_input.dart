@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:superconnector_vm/ui/components/overlay_text_form_field.dart';
+import 'package:superconnector_vm/ui/components/overlays/overlay_text_form_field.dart';
 
 class OverlayInput extends StatefulWidget {
   OverlayInput({
     Key? key,
     required this.fieldName,
-    required this.exampleText,
     required this.onSubmit,
     this.explanation,
     this.textCapitalization = TextCapitalization.sentences,
     this.onChanged,
     this.textInputAction = TextInputAction.send,
     this.value = '',
+    this.characterLimit = 50,
   }) : super(key: key);
 
   final String fieldName;
-  final String exampleText;
   final Function onSubmit;
   final Widget? explanation;
   final TextCapitalization textCapitalization;
   final Function? onChanged;
   final TextInputAction textInputAction;
   final String value;
+  final int characterLimit;
 
   @override
   _OverlayInputState createState() => _OverlayInputState();
@@ -29,6 +29,7 @@ class OverlayInput extends StatefulWidget {
 
 class _OverlayInputState extends State<OverlayInput> {
   final _formKey = GlobalKey<FormState>();
+  late String _value;
 
   // _onChanged(text) {
   //   print(text);
@@ -39,6 +40,15 @@ class _OverlayInputState extends State<OverlayInput> {
     //   return null;
     // }
     print(text);
+  }
+
+  @override
+  initState() {
+    super.initState();
+
+    setState(() {
+      _value = widget.value;
+    });
   }
 
   @override
@@ -71,7 +81,7 @@ class _OverlayInputState extends State<OverlayInput> {
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: OverlayTextFormField(
                           fieldKey: widget.fieldName,
-                          value: widget.value,
+                          value: _value,
                           autofocus: true,
                           cursorColor: Colors.white,
                           focusedBorderColor: Colors.white,
@@ -93,6 +103,13 @@ class _OverlayInputState extends State<OverlayInput> {
                           },
                           validate: (String? text) => _validate(text),
                           onChanged: (String? text) {
+                            if (text == null) {
+                              return;
+                            }
+
+                            setState(() {
+                              _value = text;
+                            });
                             if (widget.onChanged != null) {
                               widget.onChanged!(text);
                             }
@@ -104,7 +121,8 @@ class _OverlayInputState extends State<OverlayInput> {
                     Padding(
                       padding: const EdgeInsets.only(left: 25.0, bottom: 10.0),
                       child: Text(
-                        widget.exampleText,
+                        _value.length.toString() +
+                            ' / ${widget.characterLimit}',
                         style: TextStyle(
                           fontSize: 14.0,
                           color: Colors.white,

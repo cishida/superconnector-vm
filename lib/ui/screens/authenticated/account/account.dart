@@ -14,7 +14,7 @@ import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
-import 'package:superconnector_vm/ui/components/overlay_input.dart';
+import 'package:superconnector_vm/ui/components/overlays/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/block_list/block_list.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/components/account_item.dart';
@@ -207,9 +207,6 @@ class _AccountState extends State<Account> {
                             pageBuilder: (BuildContext context, _, __) {
                               return OverlayInput(
                                 fieldName: 'Full Name',
-                                exampleText:
-                                    superuser.fullName.length.toString() +
-                                        ' / 50',
                                 textCapitalization: TextCapitalization.words,
                                 textInputAction: TextInputAction.done,
                                 value: superuser.fullName,
@@ -240,9 +237,6 @@ class _AccountState extends State<Account> {
                             pageBuilder: (BuildContext context, _, __) {
                               return OverlayInput(
                                 fieldName: 'Username',
-                                exampleText:
-                                    superuser.username.length.toString() +
-                                        ' / 50',
                                 textCapitalization: TextCapitalization.none,
                                 textInputAction: TextInputAction.done,
                                 value: superuser.username,

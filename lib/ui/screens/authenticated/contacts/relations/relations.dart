@@ -4,7 +4,8 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
-import 'package:superconnector_vm/ui/components/overlay_input.dart';
+import 'package:superconnector_vm/ui/components/overlays/overlay_explanation.dart';
+import 'package:superconnector_vm/ui/components/overlays/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/components/relation_tile.dart';
@@ -71,31 +72,34 @@ class _RelationsState extends State<Relations> {
         pageBuilder: (BuildContext context, _, __) {
           return OverlayInput(
             fieldName: 'Relation',
-            exampleText: _customRelation.length.toString() + ' / 50',
-            explanation: Center(
-              child: Column(
-                children: [
-                  Text(
-                    title,
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    subtitle,
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                  SizedBox(
-                    height: 92.0,
-                  ),
-                ],
-              ),
+            explanation: OverlayExplanation(
+              title: title,
+              subtitle: subtitle,
             ),
+            // Center(
+            //   child: Column(
+            //     children: [
+            //       Text(
+            //         title,
+            //         style: Theme.of(context).textTheme.headline5!.copyWith(
+            //               color: Colors.white,
+            //             ),
+            //       ),
+            //       SizedBox(
+            //         height: 10.0,
+            //       ),
+            //       Text(
+            //         subtitle,
+            //         style: Theme.of(context).textTheme.subtitle1!.copyWith(
+            //               color: Colors.white,
+            //             ),
+            //       ),
+            //       SizedBox(
+            //         height: 92.0,
+            //       ),
+            //     ],
+            //   ),
+            // ),
             textCapitalization: TextCapitalization.words,
             textInputAction: TextInputAction.done,
             onChanged: (text) {
