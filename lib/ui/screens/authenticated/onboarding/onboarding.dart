@@ -31,6 +31,7 @@ class _OnboardingState extends State<Onboarding> {
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = context.watch<Superuser?>();
+    List<Connection> connections = context.watch<List<Connection>>();
 
     if (superuser == null) {
       return Container();
@@ -38,53 +39,63 @@ class _OnboardingState extends State<Onboarding> {
 
     return OnboardingPages(
       completePages: () async {
-        var batch = FirebaseFirestore.instance.batch();
+        bool needsExample = true;
+        connections.forEach((connection) {
+          if (connection.isExampleConversation) {
+            needsExample = false;
+          }
+        });
 
-        var newConnectionDoc = connectionCollection.doc();
-        Connection connection = Connection(
-          id: newConnectionDoc.id,
-          userIds: [
-            superuser.id,
-            ConstantStrings.SUPERCONNECTOR_ID,
-          ],
-          tags: {
-            superuser.id: 'Parent',
-          },
-          isExampleConversation: true,
-          created: DateTime.now(),
-          mostRecentActivity: DateTime.now(),
-        );
+        if (needsExample) {
+          var batch = FirebaseFirestore.instance.batch();
 
-        batch.set(
-          newConnectionDoc,
-          connection.toJson(),
-        );
-
-        var newVideoDoc = videoCollection.doc();
-        var exampleVideoSnap = await exampleVideoCollection.get();
-
-        exampleVideoSnap.docs.forEach((exampleVideo) {
-          Video video = Video(
-            assetId: exampleVideo['assetId'],
-            connectionId: newConnectionDoc.id,
-            uploadId: exampleVideo["uploadId"],
-            superuserId: ConstantStrings.SUPERCONNECTOR_ID,
-            playbackIds: [exampleVideo["playbackIds"].first],
-            status: 'ready',
-            caption: '',
+          var newConnectionDoc = connectionCollection.doc();
+          Connection connection = Connection(
+            id: newConnectionDoc.id,
+            userIds: [
+              superuser.id,
+              ConstantStrings.SUPERCONNECTOR_ID,
+            ],
+            tags: {
+              superuser.id: 'Parent',
+            },
+            isExampleConversation: true,
             created: DateTime.now(),
-            duration: 4.133333,
-            views: 0,
-            deleted: false,
+            mostRecentActivity: DateTime.now(),
           );
 
           batch.set(
-            newVideoDoc,
-            video.toJson(),
+            newConnectionDoc,
+            connection.toJson(),
           );
-        });
 
-        batch.commit();
+          var newVideoDoc = videoCollection.doc();
+          var exampleVideoSnap = await exampleVideoCollection.get();
+
+          exampleVideoSnap.docs.forEach((exampleVideo) {
+            Video video = Video(
+              assetId: exampleVideo['assetId'],
+              connectionId: newConnectionDoc.id,
+              uploadId: exampleVideo["uploadId"],
+              superuserId: ConstantStrings.SUPERCONNECTOR_ID,
+              playbackIds: [exampleVideo["playbackIds"].first],
+              status: 'ready',
+              caption: '',
+              created: DateTime.now(),
+              duration: 4.133333,
+              views: 0,
+              deleted: false,
+            );
+
+            batch.set(
+              newVideoDoc,
+              video.toJson(),
+            );
+          });
+
+          batch.commit();
+        }
+
         superuser.onboarded = true;
         superuser.update();
       },
@@ -236,8 +247,7 @@ class _OnboardingPagesState extends State<OnboardingPages> {
                   }
 
                   if (_currentIndex.round() == 2) {
-                    NotificationSettings settings =
-                        await FirebaseMessaging.instance.requestPermission(
+                    await FirebaseMessaging.instance.requestPermission(
                       alert: true,
                       badge: true,
                       provisional: false,
