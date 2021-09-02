@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
@@ -219,7 +220,7 @@ class _OnboardingPagesState extends State<OnboardingPages> {
               ),
               OnboardingFooter(
                 currentIndex: _currentIndex,
-                onContinue: () {
+                onContinue: () async {
                   // Background page
                   if (_currentIndex.round() == 1) {
                     setState(() {
@@ -235,6 +236,13 @@ class _OnboardingPagesState extends State<OnboardingPages> {
                   }
 
                   if (_currentIndex.round() == 2) {
+                    NotificationSettings settings =
+                        await FirebaseMessaging.instance.requestPermission(
+                      alert: true,
+                      badge: true,
+                      provisional: false,
+                      sound: true,
+                    );
                     widget.completePages();
                   }
 

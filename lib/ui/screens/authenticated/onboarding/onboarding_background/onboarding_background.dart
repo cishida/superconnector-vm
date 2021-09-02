@@ -21,7 +21,7 @@ class OnboardingBackground extends StatefulWidget {
 class _OnboardingBackgroundState extends State<OnboardingBackground> {
   final _fieldMap = {
     'fullName': 'Full Name',
-    'username': 'Username',
+    // 'username': 'Username',
   };
 
   List<Widget> _buildForm() {
