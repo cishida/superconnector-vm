@@ -23,61 +23,57 @@ class SearchBar extends StatelessWidget {
       ),
       borderRadius: BorderRadius.circular(10.0),
     );
-    return Container(
-      // color: Colors.white,
-      padding: const EdgeInsets.fromLTRB(
-        0.0,
-        0.0,
-        18.0,
-        0.0,
+    return TextField(
+      autofocus: shouldAutofocus,
+      autocorrect: false,
+      enabled: enabled,
+      keyboardAppearance: Brightness.dark,
+      style: TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.normal,
+        fontSize: 18.0,
+        // backgroundColor: ConstantColors.SECONDARY,
       ),
-      child: TextFormField(
-        autofocus: shouldAutofocus,
-        autocorrect: false,
-        enabled: enabled,
-        keyboardAppearance: Brightness.dark,
-        style: TextStyle(
-          color: ConstantColors.SEARCH_BAR_TEXT,
-          fontWeight: FontWeight.normal,
-          fontSize: 18.0,
-          // backgroundColor: ConstantColors.SECONDARY,
+      decoration: InputDecoration(
+        isDense: true,
+        hintText: "Search",
+        hintStyle: TextStyle(
+          color: Colors.white,
         ),
-        decoration: InputDecoration(
-          isDense: true,
-          hintText: "Search",
-          hintStyle: TextStyle(
-            color: ConstantColors.SEARCH_BAR_TEXT,
-          ),
-          contentPadding: EdgeInsets.fromLTRB(
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-          ),
-          disabledBorder: border,
-          enabledBorder: border,
-          border: border,
-          focusedBorder: border,
-          filled: true,
-          fillColor: ConstantColors.SEARCH_BAR_BACKGROUND,
-          prefixIcon: Container(
-            width: 18.0,
-            margin: EdgeInsets.only(left: 12.0, right: 8.0),
-            child: Padding(
-              padding: const EdgeInsets.all(3.0),
-              child: Image.asset(
-                'assets/images/authenticated/search-icon-gray.png',
-                height: 18,
-                width: 18,
-              ),
+        contentPadding: EdgeInsets.fromLTRB(
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+        ),
+        disabledBorder: border,
+        enabledBorder: border,
+        border: border,
+        focusedBorder: border,
+        filled: true,
+        fillColor: Colors.white.withOpacity(.24),
+        prefixIcon: Container(
+          width: 18.0,
+          margin: EdgeInsets.only(left: 12.0, right: 8.0),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 7.0,
+              right: 5.0,
+              left: 5.0,
+              bottom: 5.0,
+            ),
+            child: Image.asset(
+              'assets/images/authenticated/search-icon-gray.png',
+              height: 18,
+              width: 18,
             ),
           ),
         ),
-        controller: _controller,
-        onEditingComplete: () {
-          FocusScope.of(context).unfocus();
-        },
       ),
+      controller: _controller,
+      onEditingComplete: () {
+        FocusScope.of(context).unfocus();
+      },
     );
   }
 }

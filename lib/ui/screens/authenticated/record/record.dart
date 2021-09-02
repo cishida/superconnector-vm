@@ -29,7 +29,10 @@ import 'package:superconnector_vm/ui/screens/authenticated/record/components/vid
 class Record extends StatefulWidget {
   const Record({
     Key? key,
+    required this.connection,
   }) : super(key: key);
+
+  final Connection connection;
 
   @override
   _RecordState createState() => _RecordState();
@@ -258,28 +261,28 @@ class _RecordState extends State<Record>
       listen: false,
     );
 
-    Connection connection = await ConnectionService().getOrCreateConnection(
-      currentUserId: superuser.id,
-      selectedContacts: selectedContacts,
-      connections: connections,
-      analytics: analytics,
-    );
+    // Connection connection = await ConnectionService().getOrCreateConnection(
+    //   currentUserId: superuser.id,
+    //   selectedContacts: selectedContacts,
+    //   connections: connections,
+    //   analytics: analytics,
+    // );
     await _videoDoc.update({
-      'connectionId': connection.id,
-      'unwatchedIds': connection.userIds
+      'connectionId': widget.connection.id,
+      'unwatchedIds': widget.connection.userIds
           .where((element) => element != superuser.id)
           .toList(),
     });
 
-    connection.mostRecentActivity = DateTime.now();
-    await connection.update();
+    widget.connection.mostRecentActivity = DateTime.now();
+    await widget.connection.update();
 
     analytics.logEvent(
       name: 'vm_sent',
       parameters: <String, dynamic>{
         'id': _videoDoc.id,
         'senderId': superuser.id,
-        'connectionId': connection.id,
+        'connectionId': widget.connection.id,
         'duration': BetterPlayerUtility.getVideoDuration(
           _betterPlayerController,
         ),
@@ -289,8 +292,9 @@ class _RecordState extends State<Record>
     selectedContacts.reset();
     Navigator.of(context).popUntil((route) => route.isFirst);
 
-    if (connection.phoneNumberNameMap.isNotEmpty) {
-      List<String> phoneNumbers = connection.phoneNumberNameMap.keys.toList();
+    if (widget.connection.phoneNumberNameMap.isNotEmpty) {
+      List<String> phoneNumbers =
+          widget.connection.phoneNumberNameMap.keys.toList();
 
       _showInviteCard(phoneNumbers);
     }

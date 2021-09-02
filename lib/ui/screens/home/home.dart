@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
@@ -226,7 +227,9 @@ class _HomeState extends State<Home> {
             child: NewConnectionButton(
               isInverted: true,
               onPressed: () {
-                SuperNavigator.handleRecordNavigation(context);
+                SuperNavigator.handleContactsNavigation(
+                  context: context,
+                );
               },
             ),
           ),
@@ -244,6 +247,11 @@ class _HomeState extends State<Home> {
     if (superuser == null) {
       return Container();
     }
+
+    var selectedContacts = Provider.of<SelectedContacts>(
+      context,
+    );
+    selectedContacts.reset();
 
     // Start onboarding cards after building
     // will use the stage a user left off at

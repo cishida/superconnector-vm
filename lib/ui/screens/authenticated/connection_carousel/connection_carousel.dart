@@ -115,8 +115,6 @@ class _ConnectionCarouselState extends State<ConnectionCarousel> {
                     context: context,
                     superuser: superuser,
                     connection: widget.connection,
-                    supercontacts: supercontacts,
-                    selectedContacts: selectedContacts,
                   );
                   blockUtility.handleBlockedRecordNavigation();
                 },

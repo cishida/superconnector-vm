@@ -169,11 +169,14 @@ class _ConnectionTileState extends State<ConnectionTile> {
                             ),
                             // Text('Names broken if seeing this'),
                             Text(
-                              TimestampFormatter().getChatTileTime(
-                                Timestamp.fromDate(
-                                  widget.connection.mostRecentActivity!,
-                                ),
-                              ),
+                              // TimestampFormatter().getChatTileTime(
+                              //   Timestamp.fromDate(
+                              //     widget.connection.mostRecentActivity!,
+                              //   ),
+                              // ),
+                              (widget.connection.tags[superuser.id] ??
+                                      'Add a tag')
+                                  .toString(),
                               style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w400,
@@ -225,8 +228,6 @@ class _ConnectionTileState extends State<ConnectionTile> {
                               context: context,
                               superuser: superuser,
                               connection: widget.connection,
-                              supercontacts: supercontacts,
-                              selectedContacts: selectedContacts,
                             );
                             blockUtility.handleBlockedRecordNavigation();
                           },

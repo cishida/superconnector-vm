@@ -6,12 +6,17 @@ class EmptyImage extends StatelessWidget {
   const EmptyImage({
     Key? key,
     required this.size,
+    this.isReversed = false,
   }) : super(key: key);
+
+  final bool isReversed;
 
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'assets/images/authenticated/photo-placeholder.png',
+      isReversed
+          ? 'assets/images/authenticated/empty-contact-photo.png'
+          : 'assets/images/authenticated/photo-placeholder.png',
       height: size,
       width: size,
     );

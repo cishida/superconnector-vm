@@ -10,7 +10,7 @@ class Connection {
   String id;
   @JsonKey(defaultValue: [])
   List<String> userIds;
-  @JsonKey(defaultValue: [])
+  @JsonKey(defaultValue: {})
   Map<String, String> tags;
   @JsonKey(defaultValue: {})
   Map<String, String> phoneNumberNameMap;

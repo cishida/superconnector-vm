@@ -1,4 +1,5 @@
 import 'package:contacts_service/contacts_service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,21 +10,21 @@ import 'package:superconnector_vm/core/services/connection/connection_service.da
 import 'package:superconnector_vm/core/services/supercontact/supercontact_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/core/utils/sms_utility.dart';
+import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
+import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
+import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/search_bar.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/contacts_selection.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/supercontacts_selection/supercontacts_selection.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
 
 class Contacts extends StatefulWidget {
   const Contacts({
     Key? key,
-    this.primaryAction,
-    this.shouldShowHistory = false,
+    required this.relation,
   }) : super(key: key);
 
-  final Function? primaryAction;
-  final bool shouldShowHistory;
+  final String relation;
 
   @override
   _ContactsState createState() => _ContactsState();
@@ -33,8 +34,6 @@ class _ContactsState extends State<Contacts> {
   SupercontactService _supercontactService = SupercontactService();
   TextEditingController _controller = TextEditingController();
   Iterable<Contact>? _contacts;
-  // List<Contact> _selectedContacts = [];
-  int _segmentedControlValue = 0;
   String _filter = '';
 
   void _toggleContact({
@@ -66,31 +65,120 @@ class _ContactsState extends State<Contacts> {
     setState(() {});
   }
 
-  Future _sendVM() async {
+  Future _onTapContact({
+    required Contact contact,
+    required BuildContext context,
+    int phoneIndex = 0,
+  }) async {
+    if (contact.phones == null || contact.phones!.length == 0) {
+      return;
+    }
+    String? phoneNumber = contact.phones!.toList()[phoneIndex].value;
+    if (phoneNumber == null) {
+      return;
+    }
+
+    final superuser = Provider.of<Superuser?>(context, listen: false);
+    final connections = Provider.of<List<Connection>>(context, listen: false);
     var selectedContacts = Provider.of<SelectedContacts>(
       context,
       listen: false,
     );
+    final analytics = Provider.of<FirebaseAnalytics>(
+      context,
+      listen: false,
+    );
 
-    if (selectedContacts.isEmpty()) {
+    if (superuser == null) {
       return;
     }
 
-    if (widget.primaryAction != null) {
-      widget.primaryAction!();
-      Navigator.of(context).pop();
-      return;
+    if (selectedContacts.containsContact(contact)) {
+      selectedContacts.removeContact(contact);
+    } else {
+      selectedContacts.addContact(contact);
     }
 
-    if (widget.shouldShowHistory) {
+    Connection connection = await ConnectionService().getOrCreateConnection(
+      currentUserId: superuser.id,
+      selectedContacts: selectedContacts,
+      connections: connections,
+      analytics: analytics,
+      tag: widget.relation,
+    );
+
+    selectedContacts.reset();
+    Navigator.of(context).pop();
+
+    if (connection.phoneNumberNameMap.isNotEmpty) {
+      List<String> phoneNumbers = connection.phoneNumberNameMap.keys.toList();
+
+      _showInviteCard(phoneNumbers);
+    } else {
       SuperNavigator.push(
         context: context,
-        widget: Record(),
+        widget: ConnectionGrid(connection: connection),
       );
-    } else {
-      Navigator.of(context).pop();
     }
   }
+
+  Future _showInviteCard(
+    List<String> phoneNumbers,
+  ) async {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Stack(
+          children: [
+            SuperDialog(
+              title: 'Invitation',
+              subtitle:
+                  'They need a Superconnector invitation to connect with you and share VMs.',
+              primaryActionTitle: 'Continue',
+              primaryAction: () async {
+                String body =
+                    'Hey I just sent you a VM in Superconnector, get the app so we can VM each other faster https://www.superconnector.com/';
+
+                await SMSUtility.send(body, phoneNumbers);
+                Navigator.pop(context);
+              },
+              secondaryActionTitle: 'Cancel',
+              secondaryAction: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Future _sendVM() async {
+  //   var selectedContacts = Provider.of<SelectedContacts>(
+  //     context,
+  //     listen: false,
+  //   );
+
+  //   if (selectedContacts.isEmpty()) {
+  //     return;
+  //   }
+
+  //   if (widget.primaryAction != null) {
+  //     widget.primaryAction!();
+  //     Navigator.of(context).pop();
+  //     return;
+  //   }
+
+  //   if (widget.shouldShowHistory) {
+  //     SuperNavigator.push(
+  //       context: context,
+  //       widget: Record(),
+  //     );
+  //   } else {
+  //     Navigator.of(context).pop();
+  //   }
+  // }
 
   @override
   void initState() {
@@ -128,151 +216,224 @@ class _ContactsState extends State<Contacts> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle bottomNavStyle = TextStyle(
-      color: ConstantColors.PRIMARY,
-      fontSize: 18.0,
-      fontWeight: FontWeight.w600,
-    );
-
-    TextStyle segmentStyle = TextStyle(
-      color: Colors.black,
-      fontSize: 15.0,
-      fontWeight: FontWeight.w600,
-    );
-
+    final Size size = MediaQuery.of(context).size;
     var selectedContacts = Provider.of<SelectedContacts>(
       context,
     );
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => Navigator.of(context).pop(),
-              child: Container(
-                width: 40.0,
-                height: 6.0,
-                margin: const EdgeInsets.only(top: 60.0, bottom: 19.0),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(.20),
-                  borderRadius: BorderRadius.circular(3.0),
-                ),
-              ),
+      backgroundColor: Colors.transparent,
+      body: Container(
+        width: size.width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage(
+              'assets/images/authenticated/gradient-background-reversed.png',
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 18.0,
-              ),
-              decoration: BoxDecoration(
-                color: ConstantColors.SEARCH_BAR_BACKGROUND,
-                borderRadius: BorderRadius.circular(6.0),
+          ),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30.0),
+            topRight: Radius.circular(30.0),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: BottomSheetTab(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 20.0,
+                bottom: 19.0,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SearchBar(
-                    controller: _controller,
-                    enabled: true,
+                  Text(
+                    'Send Request',
+                    style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20.0,
+                        ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: CupertinoColors.systemFill,
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(6.0),
-                        bottomRight: Radius.circular(6.0),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 5.0,
                     ),
-                    child: CupertinoSlidingSegmentedControl(
-                      groupValue: _segmentedControlValue,
-                      // backgroundColor: Colors.blue.shade200,
-                      children: <int, Widget>{
-                        0: Text(
-                          'Connections',
-                          style: segmentStyle,
-                        ),
-                        1: Text(
-                          'Phone Contacts',
-                          style: segmentStyle,
-                        ),
-                      },
-                      onValueChanged: (value) {
-                        setState(() {
-                          _segmentedControlValue = value as int;
-                        });
-                      },
+                    child: Text(
+                      'Invite your ' +
+                          widget.relation.toLowerCase() +
+                          ' to connect.',
+                      style: Theme.of(context).textTheme.bodyText1!,
                     ),
                   ),
                 ],
               ),
             ),
+            Underline(
+              color: Colors.white.withOpacity(.2),
+            ),
             SizedBox(
-              height: 9.0,
+              height: 7.0,
             ),
-            Expanded(
-              child: _segmentedControlValue == 0
-                  ? SupercontactSelection(
-                      filter: _filter,
-                      toContacts: () {
-                        setState(() {
-                          _segmentedControlValue = 1;
-                        });
-                      })
-                  : ContactsSelection(
-                      toggleContact: (contact) => _toggleContact(
-                        contact: contact,
-                        context: context,
-                      ),
-                      filter: _filter,
-                      contacts: _contacts,
-                    ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 18.0,
+              ),
+              child: SearchBar(
+                controller: _controller,
+                enabled: true,
+              ),
             ),
+            if (_contacts != null)
+              Expanded(
+                child: ContactsSelection(
+                  onTapContact: (contact) => _onTapContact(
+                    contact: contact,
+                    context: context,
+                  ),
+                  isSelectable: widget.relation == 'Group',
+                  filter: _filter,
+                  contacts: _contacts!,
+                ),
+              ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          height: 55.0,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              widget.shouldShowHistory
-                  ? ViewHistoryButton(
-                      bottomNavStyle: bottomNavStyle,
-                    )
-                  : GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        'Go Back',
-                        style: bottomNavStyle,
-                      ),
-                    ),
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: _sendVM,
-                child: Text(
-                  'Send VM',
-                  style: TextStyle(
-                    color: selectedContacts.isEmpty()
-                        ? ConstantColors.GRAY_TEXT
-                        : ConstantColors.PRIMARY,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
+
+    // return Scaffold(
+    //   body: SafeArea(
+    //     child: Column(
+    //       children: [
+    //         GestureDetector(
+    //           behavior: HitTestBehavior.opaque,
+    //           onTap: () => Navigator.of(context).pop(),
+    //           child: Container(
+    //             width: 40.0,
+    //             height: 6.0,
+    //             margin: const EdgeInsets.only(top: 60.0, bottom: 19.0),
+    //             decoration: BoxDecoration(
+    //               color: Colors.black.withOpacity(.20),
+    //               borderRadius: BorderRadius.circular(3.0),
+    //             ),
+    //           ),
+    //         ),
+    //         Container(
+    //           margin: const EdgeInsets.symmetric(
+    //             horizontal: 18.0,
+    //           ),
+    //           decoration: BoxDecoration(
+    //             color: ConstantColors.SEARCH_BAR_BACKGROUND,
+    //             borderRadius: BorderRadius.circular(6.0),
+    //           ),
+    //           child: Column(
+    //             children: [
+    //               SearchBar(
+    //                 controller: _controller,
+    //                 enabled: true,
+    //               ),
+    //               Container(
+    //                 width: MediaQuery.of(context).size.width,
+    //                 decoration: BoxDecoration(
+    //                   color: CupertinoColors.systemFill,
+    //                   borderRadius: BorderRadius.only(
+    //                     bottomLeft: Radius.circular(6.0),
+    //                     bottomRight: Radius.circular(6.0),
+    //                   ),
+    //                 ),
+    //                 child: CupertinoSlidingSegmentedControl(
+    //                   groupValue: _segmentedControlValue,
+    //                   // backgroundColor: Colors.blue.shade200,
+    //                   children: <int, Widget>{
+    //                     0: Text(
+    //                       'Connections',
+    //                       style: segmentStyle,
+    //                     ),
+    //                     1: Text(
+    //                       'Phone Contacts',
+    //                       style: segmentStyle,
+    //                     ),
+    //                   },
+    //                   onValueChanged: (value) {
+    //                     setState(() {
+    //                       _segmentedControlValue = value as int;
+    //                     });
+    //                   },
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //         SizedBox(
+    //           height: 9.0,
+    //         ),
+    //         Expanded(
+    //           child: _segmentedControlValue == 0
+    //               ? SupercontactSelection(
+    //                   filter: _filter,
+    //                   toContacts: () {
+    //                     setState(() {
+    //                       _segmentedControlValue = 1;
+    //                     });
+    //                   })
+    //               : ContactsSelection(
+    //                   toggleContact: (contact) => _toggleContact(
+    //                     contact: contact,
+    //                     context: context,
+    //                   ),
+    //                   filter: _filter,
+    //                   contacts: _contacts,
+    //                 ),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    //   bottomNavigationBar: BottomAppBar(
+    //     child: Container(
+    //       height: 55.0,
+    //       padding: const EdgeInsets.symmetric(
+    //         horizontal: 20.0,
+    //       ),
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           widget.shouldShowHistory
+    //               ? ViewHistoryButton(
+    //                   bottomNavStyle: bottomNavStyle,
+    //                 )
+    //               : GestureDetector(
+    //                   behavior: HitTestBehavior.opaque,
+    //                   onTap: () {
+    //                     Navigator.of(context).pop();
+    //                   },
+    //                   child: Text(
+    //                     'Go Back',
+    //                     style: bottomNavStyle,
+    //                   ),
+    //                 ),
+    //           GestureDetector(
+    //             behavior: HitTestBehavior.opaque,
+    //             onTap: _sendVM,
+    //             child: Text(
+    //               'Send VM',
+    //               style: TextStyle(
+    //                 color: selectedContacts.isEmpty()
+    //                     ? ConstantColors.GRAY_TEXT
+    //                     : ConstantColors.PRIMARY,
+    //                 fontSize: 18.0,
+    //                 fontWeight: FontWeight.w600,
+    //               ),
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }
 

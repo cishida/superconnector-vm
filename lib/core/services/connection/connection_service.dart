@@ -24,12 +24,13 @@ class ConnectionService {
     required SelectedContacts selectedContacts,
     required List<Connection> connections,
     required FirebaseAnalytics analytics,
+    required String tag,
   }) async {
-    List<String> userIds = selectedContacts.getSelectedSupercontacts
-        .map((supercontact) => supercontact.targetUserId)
-        .toList();
+    List<String> userIds = [];
+    //selectedContacts.getSelectedSupercontacts
+    // .map((supercontact) => supercontact.targetUserId)
+    // .toList();
     userIds.add(currentUserId);
-    // Connection? connection = connectionCollection.where('userIds', )
     var connectionDoc = connectionCollection.doc();
     Map<String, String> phoneNumberNameMap = {};
     selectedContacts.getSelectedContacts.forEach((contact) {
@@ -56,21 +57,10 @@ class ConnectionService {
     Connection connection = Connection(
       id: connectionDoc.id,
       userIds: userIds,
+      tags: {
+        currentUserId: tag,
+      },
       phoneNumberNameMap: phoneNumberNameMap,
-      // selectedContacts.getSelectedContacts.map(
-      //   (contact) {
-      //     String formattedPhone = contact.phones!.first.value!.replaceAll(
-      //       RegExp(r"\D"),
-      //       "",
-      //     );
-
-      //     if (formattedPhone.length == 10) {
-      //       formattedPhone = '1' + formattedPhone;
-      //     }
-      //     formattedPhone = '+' + formattedPhone;
-      //     return formattedPhone;
-      //   },
-      // ).toList(),
       streakCount: 1,
       created: DateTime.now(),
       mostRecentActivity: DateTime.now(),
@@ -96,6 +86,10 @@ class ConnectionService {
               connectionKeys,
             )) {
           connection.id = c.id;
+          connection.tags.addAll({
+            currentUserId: tag,
+          });
+          connection.update();
           return connection;
         }
       }

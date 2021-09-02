@@ -14,7 +14,7 @@ Connection _$ConnectionFromJson(Map<String, dynamic> json) {
     tags: (json['tags'] as Map<String, dynamic>?)?.map(
           (k, e) => MapEntry(k, e as String),
         ) ??
-        [],
+        {},
     phoneNumberNameMap:
         (json['phoneNumberNameMap'] as Map<String, dynamic>?)?.map(
               (k, e) => MapEntry(k, e as String),

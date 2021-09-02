@@ -14,4 +14,17 @@ class ConstantStrings {
   static const String ONBOARDING_NEW_VM_TITLE = 'New VM';
   static const String ONBOARDING_NEW_VM_SUBTITLE =
       'To quickly record and send a video message,\ntap the button in the bottom corner.';
+
+  // Family
+  static const List<String> FAMILY_RELATIONS = [
+    'Mom',
+    'Dad',
+    'Brother',
+    'Sister',
+    'Cousin',
+    'Aunt',
+    'Uncle',
+    'Grandmother',
+    'Grandfather',
+  ];
 }

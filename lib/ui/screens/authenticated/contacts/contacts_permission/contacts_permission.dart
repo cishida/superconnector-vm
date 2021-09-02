@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/permissions_template.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/relationships/relationships.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 
 class ContactsPermission extends StatefulWidget {
   const ContactsPermission({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class _ContactsPermissionState extends State<ContactsPermission> {
     Navigator.of(context).pop();
     SuperNavigator.push(
       context: context,
-      widget: Relationships(),
+      widget: Relations(),
       fullScreen: false,
     );
   }
@@ -51,7 +51,7 @@ class _ContactsPermissionState extends State<ContactsPermission> {
       ),
       title: 'Contacts Access',
       subheader:
-          'This helps you browse your contacts\nand share VMs with them.',
+          'This helps you browse your contacts and add them to your family.',
       buttonText: 'Allow Contacts Access',
       onAllowAccess: () => _checkPermissions(),
     );

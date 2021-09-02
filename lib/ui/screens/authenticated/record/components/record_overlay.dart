@@ -17,37 +17,37 @@ class RecordOverlay extends StatelessWidget {
       BuildContext context, SelectedContacts selectedContacts) {
     String names = '';
 
-    selectedContacts.getSelectedSupercontacts.forEach((element) {
-      if (names.isEmpty) {
-        names += element.fullName;
-      } else {
-        names += ', ' + element.fullName;
-      }
-    });
-    selectedContacts.getSelectedContacts.forEach((element) {
-      String contactName = '';
-      if (element.givenName != null && element.givenName!.isNotEmpty) {
-        contactName += element.givenName!;
-      }
-      if (element.familyName != null && element.familyName!.isNotEmpty) {
-        if (contactName.isNotEmpty) {
-          contactName += ' ';
-        }
-        contactName += element.familyName!;
-      }
+    // selectedContacts.getSelectedSupercontacts.forEach((element) {
+    //   if (names.isEmpty) {
+    //     names += element.fullName;
+    //   } else {
+    //     names += ', ' + element.fullName;
+    //   }
+    // });
+    // selectedContacts.getSelectedContacts.forEach((element) {
+    //   String contactName = '';
+    //   if (element.givenName != null && element.givenName!.isNotEmpty) {
+    //     contactName += element.givenName!;
+    //   }
+    //   if (element.familyName != null && element.familyName!.isNotEmpty) {
+    //     if (contactName.isNotEmpty) {
+    //       contactName += ' ';
+    //     }
+    //     contactName += element.familyName!;
+    //   }
 
-      if (names.isEmpty) {
-        names += contactName;
-      } else {
-        names += ', ' + contactName;
-      }
-    });
+    //   if (names.isEmpty) {
+    //     names += contactName;
+    //   } else {
+    //     names += ', ' + contactName;
+    //   }
+    // });
 
-    if (names.isEmpty) {
-      names = 'Add Recipient(s)';
-    } else {
-      names = 'To ' + names;
-    }
+    // if (names.isEmpty) {
+    //   names = 'Add Recipient(s)';
+    // } else {
+    //   names = 'To ' + names;
+    // }
 
     return names;
   }

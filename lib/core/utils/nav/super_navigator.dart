@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_permission/contacts_permission.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/relationships/relationships.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/record_permission/record_permission.dart';
 
@@ -35,8 +35,8 @@ class SuperNavigator {
         isScrollControlled: true,
         builder: (context) {
           return FractionallySizedBox(
-            heightFactor: 0.9,
-            child: Relationships(),
+            heightFactor: 0.93,
+            child: Relations(),
           );
           // return Relationships(
           //     // shouldShowHistory: shouldShowHistory,
@@ -53,20 +53,27 @@ class SuperNavigator {
     }
   }
 
-  static void handleRecordNavigation(BuildContext context) async {
+  static void handleRecordNavigation({
+    required BuildContext context,
+    required Connection connection,
+  }) async {
     var cameraStatus = await Permission.camera.status;
     var microphoneStatus = await Permission.microphone.status;
 
     if (cameraStatus.isGranted && microphoneStatus.isGranted) {
       SuperNavigator.push(
         context: context,
-        widget: Record(),
+        widget: Record(
+          connection: connection,
+        ),
         fullScreen: false,
       );
     } else {
       SuperNavigator.push(
         context: context,
-        widget: RecordPermission(),
+        widget: RecordPermission(
+          connection: connection,
+        ),
         fullScreen: false,
       );
     }

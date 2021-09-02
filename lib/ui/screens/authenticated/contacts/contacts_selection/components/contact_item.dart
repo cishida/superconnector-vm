@@ -2,16 +2,17 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/images/empty_image.dart';
-import 'package:superconnector_vm/ui/components/underline.dart';
 
 class ContactItem extends StatelessWidget {
   const ContactItem({
     Key? key,
     required this.contact,
+    required this.isSelectable,
     this.isSelected = false,
   }) : super(key: key);
 
   final Contact contact;
+  final bool isSelectable;
   final bool isSelected;
 
   @override
@@ -36,6 +37,7 @@ class ContactItem extends StatelessWidget {
                       )
                     : EmptyImage(
                         size: 38.0,
+                        isReversed: true,
                       ),
               ),
               Column(
@@ -45,46 +47,48 @@ class ContactItem extends StatelessWidget {
                     contact.displayName!,
                     style: TextStyle(
                       fontSize: 18.0,
+                      color: Colors.white,
                     ),
                   ),
                   Text(
                     contact.phones!.first.value!,
                     style: TextStyle(
                       fontSize: 15.0,
-                      color: ConstantColors.CONTACT_SUBTITLE,
+                      color: Colors.white.withOpacity(.5),
                     ),
                   ),
                 ],
               ),
               Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 22.0,
-                ),
-                child: isSelected
-                    ? Image.asset(
-                        'assets/images/authenticated/contacts-check-mark.png',
-                        width: 24.0,
-                        height: 24.0,
-                      )
-                    : Container(
-                        width: 24.0,
-                        height: 24.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color:
-                                ConstantColors.CONTACT_SELECTION_CIRCLE_BORDER,
+              if (isSelectable)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 22.0,
+                  ),
+                  child: isSelected
+                      ? Image.asset(
+                          'assets/images/authenticated/contacts-check-mark.png',
+                          width: 24.0,
+                          height: 24.0,
+                        )
+                      : Container(
+                          width: 24.0,
+                          height: 24.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: ConstantColors
+                                  .CONTACT_SELECTION_CIRCLE_BORDER,
+                            ),
                           ),
                         ),
-                      ),
-              ),
+                ),
             ],
           ),
         ),
-        Underline(
-          margin: const EdgeInsets.only(left: 69.0),
-        ),
+        // Underline(
+        //   margin: const EdgeInsets.only(left: 69.0),
+        // ),
         // Container(
         //   height: 1.0,
         //   // width: MediaQuery.of(context).size.width,

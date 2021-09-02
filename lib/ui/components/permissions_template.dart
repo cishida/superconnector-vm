@@ -60,7 +60,7 @@ class PermissionsTemplate extends StatelessWidget {
                     height: 9,
                   ),
                   Text(
-                    'Contacts Access',
+                    title,
                     style: Theme.of(context).textTheme.headline5!.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
@@ -73,7 +73,7 @@ class PermissionsTemplate extends StatelessWidget {
                       bottom: 30.0,
                     ),
                     child: Text(
-                      'This helps you browse your contacts and add them to your family.',
+                      subheader,
                       style: Theme.of(context).textTheme.bodyText1!,
                     ),
                   ),

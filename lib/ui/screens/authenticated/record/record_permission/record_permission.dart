@@ -1,18 +1,28 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/permissions_template.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
 
 class RecordPermission extends StatelessWidget {
-  const RecordPermission({Key? key}) : super(key: key);
+  const RecordPermission({
+    Key? key,
+    required this.connection,
+  }) : super(key: key);
 
-  void _navigateToRecord(BuildContext context) {
+  final Connection connection;
+
+  void _navigateToRecord({
+    required BuildContext context,
+  }) {
     Navigator.of(context).pop();
     SuperNavigator.push(
       context: context,
-      widget: Record(),
+      widget: Record(
+        connection: connection,
+      ),
       fullScreen: false,
     );
   }
@@ -30,7 +40,7 @@ class RecordPermission extends StatelessWidget {
       AppSettings.openAppSettings();
     } else {
       // if (statuses.values.first.isGranted || statuses.values.first.isLimited) {
-      _navigateToRecord(context);
+      _navigateToRecord(context: context);
       return;
     }
 

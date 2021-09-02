@@ -11,6 +11,7 @@ import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
 import 'package:superconnector_vm/ui/components/buttons/new_connection_button.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/vm_connection_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/components/connection_grid_header.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/components/video_grid_tile.dart';
@@ -58,9 +59,32 @@ class _ConnectionGridState extends State<ConnectionGrid> {
   }
 
   List<Widget> _buildVideoGridTiles(List<Video> videos) {
+    final superuser = Provider.of<Superuser?>(context, listen: false);
+    if (superuser == null) {
+      return [];
+    }
+
     List<Widget> gridTiles = [];
 
-    for (var i = 0; i < videos.length; i++) {
+    for (var i = 0; i < videos.length + 1; i++) {
+      if (i == 0) {
+        gridTiles.add(
+          VMConnectionTile(
+            isGrid: true,
+            onPressed: () {
+              BlockUtility blockUtility = BlockUtility(
+                context: context,
+                superuser: superuser,
+                connection: widget.connection,
+              );
+              blockUtility.handleBlockedRecordNavigation();
+            },
+          ),
+        );
+        continue;
+      }
+
+      int effectiveIndex = i - 1;
       gridTiles.add(
         GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -70,13 +94,13 @@ class _ConnectionGridState extends State<ConnectionGrid> {
               widget: ConnectionCarousel(
                 videos: videos,
                 connection: widget.connection,
-                initialIndex: i,
+                initialIndex: effectiveIndex,
               ),
               fullScreen: false,
             );
           },
           child: VideoGridTile(
-            video: videos[i],
+            video: videos[effectiveIndex],
           ),
         ),
       );
@@ -122,8 +146,6 @@ class _ConnectionGridState extends State<ConnectionGrid> {
             context: context,
             superuser: superuser,
             connection: widget.connection,
-            supercontacts: supercontacts,
-            selectedContacts: selectedContacts,
           );
           blockUtility.handleBlockedRecordNavigation();
         },

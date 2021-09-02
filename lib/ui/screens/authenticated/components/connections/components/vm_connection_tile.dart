@@ -4,9 +4,11 @@ class VMConnectionTile extends StatelessWidget {
   const VMConnectionTile({
     Key? key,
     required this.onPressed,
+    this.isGrid = false,
   }) : super(key: key);
 
   final Function onPressed;
+  final bool isGrid;
 
   @override
   Widget build(BuildContext context) {
@@ -14,18 +16,19 @@ class VMConnectionTile extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: () => onPressed(),
       child: Container(
-        height: 146.0,
-        width: 110.0,
-        margin: const EdgeInsets.only(
-          right: 1.0,
+        height: isGrid ? double.infinity : 146.0,
+        width: isGrid ? double.infinity : 110.0,
+        margin: EdgeInsets.only(
+          right: isGrid ? 0.0 : 1.0,
         ),
         child: Stack(
           children: [
-            Positioned(
+            Positioned.fill(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(6.0),
+                borderRadius: BorderRadius.circular(isGrid ? 3.0 : 6.0),
                 child: Image.asset(
                   'assets/images/authenticated/vm-connection-gradient.png',
+                  fit: BoxFit.cover,
                 ),
               ),
             ),

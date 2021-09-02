@@ -10,6 +10,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/auth/auth_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
@@ -149,16 +150,20 @@ class _AccountState extends State<Account> {
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () async {
-                      if (Platform.isAndroid) {
-                        const uri =
-                            'sms:?body=Hey%20check%20out%20this%20app%20Superconnector%20https://superconnector.com';
-                        await launch(uri);
-                      } else if (Platform.isIOS) {
-                        // iOS
-                        const uri =
-                            'sms:&body=Hey%20check%20out%20this%20app%20Superconnector%20https://superconnector.com';
-                        await launch(uri);
-                      }
+                      await SMSUtility.send(
+                        'Hey check out this app Superconnector https://superconnector.com',
+                        [],
+                      );
+                      // if (Platform.isAndroid) {
+                      //   const uri =
+                      //       'sms:?body=Hey check out this app Superconnector https://superconnector.com';
+                      //   await launch(uri);
+                      // } else if (Platform.isIOS) {
+                      //   // iOS
+                      //   const uri =
+                      //       'sms:&body=Hey check out this app Superconnector https://superconnector.com';
+                      //   await launch(uri);
+                      // }
                     },
                     child: Align(
                       alignment: Alignment.centerLeft,

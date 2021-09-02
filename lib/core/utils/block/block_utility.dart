@@ -12,15 +12,11 @@ class BlockUtility {
     required this.context,
     required this.superuser,
     required this.connection,
-    required this.supercontacts,
-    required this.selectedContacts,
   });
 
   final BuildContext context;
   final Superuser superuser;
   final Connection connection;
-  final List<Supercontact> supercontacts;
-  final SelectedContacts selectedContacts;
 
   static List<Video> unblockedVideos({
     required Superuser superuser,
@@ -35,11 +31,14 @@ class BlockUtility {
   }
 
   void _toRecord() {
-    selectedContacts.setContactsFromConnection(
+    // selectedContacts.setContactsFromConnection(
+    //   connection: connection,
+    //   supercontacts: supercontacts,
+    // );
+    SuperNavigator.handleRecordNavigation(
+      context: context,
       connection: connection,
-      supercontacts: supercontacts,
     );
-    SuperNavigator.handleRecordNavigation(context);
   }
 
   Future _showBlockedCard({
