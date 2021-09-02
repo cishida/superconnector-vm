@@ -1,17 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 
-class RecordOverlay extends StatelessWidget {
+class RecordOverlay extends StatefulWidget {
   const RecordOverlay({
     Key? key,
     this.isRecording = false,
+    required this.connection,
   }) : super(key: key);
 
   final bool isRecording;
+  final Connection connection;
+
+  @override
+  _RecordOverlayState createState() => _RecordOverlayState();
+}
+
+class _RecordOverlayState extends State<RecordOverlay> {
+  final ConnectionService _connectionService = ConnectionService();
+  late List<Superuser> _superusers = [];
+
+  String _formatNames() {
+    if (widget.connection.isExampleConversation) {
+      return 'To Example Connection';
+    }
+
+    String names = '';
+
+    _superusers.forEach((element) {
+      if (names.isEmpty) {
+        names += element.fullName;
+      } else {
+        names += ', ' + element.fullName;
+      }
+    });
+
+    widget.connection.phoneNumberNameMap.values.forEach((element) {
+      if (names.isEmpty) {
+        names += element;
+      } else {
+        names += ', ' + element;
+      }
+    });
+
+    return 'To ' + names;
+  }
+
+  Future _loadUserNames() async {
+    final currentSuperuser = Provider.of<Superuser?>(context, listen: false);
+    if (currentSuperuser == null) {
+      return;
+    }
+
+    _superusers = await _connectionService.getConnectionUsers(
+      connection: widget.connection,
+      currentSuperuser: currentSuperuser,
+    );
+  }
 
   String _getNamesFromContacts(
       BuildContext context, SelectedContacts selectedContacts) {
@@ -53,11 +104,14 @@ class RecordOverlay extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-    );
+  void initState() {
+    super.initState();
 
+    _loadUserNames();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Positioned(
@@ -65,53 +119,43 @@ class RecordOverlay extends StatelessWidget {
           left: 0.0,
           child: ChevronBackButton(
             onBack: () {
-              selectedContacts.reset();
               Navigator.pop(context);
             },
           ),
         ),
-        if (!selectedContacts.isEmpty())
-          Positioned.fill(
-            top: 71.0,
-            right: 62.0,
-            left: 62.0,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  SuperNavigator.handleContactsNavigation(
-                    context: context,
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15.0,
-                    vertical: 6.0,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(32.0),
-                    color: Colors.white.withOpacity(.20),
-                  ),
-                  child: Text(
-                    _getNamesFromContacts(context, selectedContacts),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+        Positioned.fill(
+          top: 71.0,
+          right: 62.0,
+          left: 62.0,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15.0,
+                vertical: 6.0,
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(32.0),
+                color: Colors.white.withOpacity(.20),
+              ),
+              child: Text(
+                _formatNames(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
           ),
+        ),
         // if (!isRecording)
         Positioned(
           top: 75.0,
           right: 10.0,
           child: AnimatedOpacity(
-            opacity: !isRecording ? 1.0 : 0.0,
+            opacity: !widget.isRecording ? 1.0 : 0.0,
             duration: const Duration(
               milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
             ),

@@ -75,8 +75,8 @@ class _OverlayInputState extends State<OverlayInput> {
                             }
                           },
                           onSaved: (String? text) {
-                            widget.onSubmit(text);
                             Navigator.pop(context);
+                            widget.onSubmit(text);
                           },
                           validate: (String? text) => _validate(text),
                           onChanged: (String? text) {

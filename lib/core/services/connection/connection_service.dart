@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 
 class ConnectionService {
   final String? id;
@@ -17,6 +19,29 @@ class ConnectionService {
     required SelectedContacts selectedContacts,
   }) async {
     return null;
+  }
+
+  Future<List<Superuser>> getConnectionUsers({
+    required Connection connection,
+    required Superuser currentSuperuser,
+  }) async {
+    List<Superuser> superusers = [];
+
+    for (var i = 0; i < connection.userIds.length; i++) {
+      List<String> ids = superusers.map((e) => e.id).toList();
+
+      if (currentSuperuser != null &&
+          connection.userIds[i] != currentSuperuser.id) {
+        Superuser? superuser = await SuperuserService().getSuperuserFromId(
+          connection.userIds[i],
+        );
+        if (superuser != null && !ids.contains(superuser.id)) {
+          superusers.add(superuser);
+        }
+      }
+    }
+
+    return superusers;
   }
 
   Future<Connection> getOrCreateConnection({

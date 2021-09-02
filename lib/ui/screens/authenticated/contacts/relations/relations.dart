@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
+import 'package:superconnector_vm/ui/components/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/components/relation_tile.dart';
@@ -13,6 +14,25 @@ class Relations extends StatefulWidget {
 }
 
 class _RelationsState extends State<Relations> {
+  String _customRelation = '';
+
+  void _toContacts(String tag) {
+    Navigator.of(context).pop();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.93,
+          child: Contacts(
+            tag: tag,
+          ),
+        );
+      },
+    );
+    // Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -79,19 +99,32 @@ class _RelationsState extends State<Relations> {
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      Navigator.of(context).pop();
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (context) {
-                          return FractionallySizedBox(
-                            heightFactor: 0.93,
-                            child: Contacts(
-                              relation: relations[index],
-                            ),
-                          );
-                        },
-                      );
+                      if (relations[index] == 'Custom') {
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (BuildContext context, _, __) {
+                              return OverlayInput(
+                                fieldName: 'Relation',
+                                exampleText:
+                                    _customRelation.length.toString() + ' / 50',
+                                textCapitalization: TextCapitalization.words,
+                                textInputAction: TextInputAction.done,
+                                onChanged: (text) {
+                                  setState(() {
+                                    _customRelation = text;
+                                  });
+                                },
+                                onSubmit: (text) async {
+                                  _toContacts(text);
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        _toContacts(relations[index]);
+                      }
                     },
                     child: RelationTile(
                       relation: relations[index],

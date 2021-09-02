@@ -30,6 +30,17 @@ class SuperNavigator {
     var status = await Permission.contacts.status;
 
     if (status.isGranted) {
+      // Navigator.of(context).push(
+      //   MaterialWithModalsPageRoute(
+      //     builder: (context) {
+      //       return FractionallySizedBox(
+      //         heightFactor: 0.93,
+      //         child: Relations(),
+      //       );
+      //     },
+      //   ),
+      // );
+
       showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -38,10 +49,6 @@ class SuperNavigator {
             heightFactor: 0.93,
             child: Relations(),
           );
-          // return Relationships(
-          //     // shouldShowHistory: shouldShowHistory,
-          //     // primaryAction: primaryAction,
-          //     );
         },
       );
     } else {

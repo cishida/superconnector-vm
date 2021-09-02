@@ -21,10 +21,10 @@ import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_sel
 class Contacts extends StatefulWidget {
   const Contacts({
     Key? key,
-    required this.relation,
+    required this.tag,
   }) : super(key: key);
 
-  final String relation;
+  final String tag;
 
   @override
   _ContactsState createState() => _ContactsState();
@@ -104,7 +104,7 @@ class _ContactsState extends State<Contacts> {
       selectedContacts: selectedContacts,
       connections: connections,
       analytics: analytics,
-      tag: widget.relation,
+      tag: widget.tag,
     );
 
     selectedContacts.reset();
@@ -265,7 +265,7 @@ class _ContactsState extends State<Contacts> {
                     ),
                     child: Text(
                       'Invite your ' +
-                          widget.relation.toLowerCase() +
+                          widget.tag.toLowerCase() +
                           ' to connect.',
                       style: Theme.of(context).textTheme.bodyText1!,
                     ),
@@ -288,14 +288,14 @@ class _ContactsState extends State<Contacts> {
                 enabled: true,
               ),
             ),
-            if (_contacts != null)
+            if (_contacts != null && _contacts!.length > 0)
               Expanded(
                 child: ContactsSelection(
                   onTapContact: (contact) => _onTapContact(
                     contact: contact,
                     context: context,
                   ),
-                  isSelectable: widget.relation == 'Group',
+                  isSelectable: widget.tag == 'Group',
                   filter: _filter,
                   contacts: _contacts!,
                 ),

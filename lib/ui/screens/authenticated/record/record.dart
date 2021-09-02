@@ -219,19 +219,6 @@ class _RecordState extends State<Record>
       return;
     }
 
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-      listen: false,
-    );
-
-    if (selectedContacts.isEmpty()) {
-      SuperNavigator.handleContactsNavigation(
-        context: context,
-        primaryAction: _sendVM,
-      );
-      return;
-    }
-
     setState(() {
       _sendPressed = true;
     });
@@ -246,12 +233,6 @@ class _RecordState extends State<Record>
       _sendPressed = true;
     });
     final superuser = Provider.of<Superuser?>(context, listen: false);
-    final connections = Provider.of<List<Connection>>(context, listen: false);
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-      listen: false,
-    );
-
     if (superuser == null) {
       return;
     }
@@ -289,7 +270,6 @@ class _RecordState extends State<Record>
       },
     );
 
-    selectedContacts.reset();
     Navigator.of(context).popUntil((route) => route.isFirst);
 
     if (widget.connection.phoneNumberNameMap.isNotEmpty) {
@@ -428,6 +408,7 @@ class _RecordState extends State<Record>
 
                 RecordOverlay(
                   isRecording: _isRecording,
+                  connection: widget.connection,
                 ),
 
                 if (_sendPressed && !_uploadCompleted)
