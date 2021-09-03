@@ -69,7 +69,7 @@ class BetterPlayerUtility {
                     )
                   ],
                 )
-              : CircularProgressIndicator(),
+              : Container(),
         ),
       ),
       betterPlayerDataSource: betterPlayerDataSource,

@@ -18,7 +18,7 @@ class CameraPreviewContainer extends StatefulWidget {
     this.isResetting = false,
   }) : super(key: key);
 
-  final CameraController cameraController;
+  final CameraController? cameraController;
   final AnimationController animationController;
   final Function setVideoFile;
   final double ratio;
@@ -87,18 +87,19 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 
   Future<String?> startVideoRecording() async {
-    if (!widget.cameraController.value.isInitialized) {
+    if (widget.cameraController == null ||
+        !widget.cameraController!.value.isInitialized) {
       print('Error: select a camera first.');
       return null;
     }
 
-    if (widget.cameraController.value.isRecordingVideo) {
+    if (widget.cameraController!.value.isRecordingVideo) {
       // A recording is already started, do nothing.
       return null;
     }
 
     try {
-      widget.cameraController.startVideoRecording();
+      widget.cameraController!.startVideoRecording();
 
       widget.setIsRecording(true);
       if (mounted) {
@@ -132,12 +133,13 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
   }
 
   Future<void> stopVideoRecording() async {
-    if (!widget.cameraController.value.isRecordingVideo) {
+    if (widget.cameraController == null ||
+        !widget.cameraController!.value.isRecordingVideo) {
       return null;
     }
 
     try {
-      XFile videoFile = await widget.cameraController.stopVideoRecording();
+      XFile videoFile = await widget.cameraController!.stopVideoRecording();
       widget.setVideoFile(videoFile);
     } on CameraException catch (e) {
       _showCameraException(e);
@@ -147,7 +149,18 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isResetting || !widget.cameraController.value.isInitialized) {
+    if (widget.isResetting ||
+        widget.cameraController == null ||
+        !widget.cameraController!.value.isInitialized) {
+      if (_timer != null) {
+        _timer!.cancel();
+      }
+
+      setState(() {
+        _isRecording = false;
+        _currentVideoSeconds = 0;
+        _shouldShowOnboardingChip = true;
+      });
       return Container();
     }
 
@@ -183,13 +196,13 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            if (widget.cameraController.value.isInitialized &&
+            if (widget.cameraController!.value.isInitialized &&
                 !widget.isResetting)
               Transform.scale(
                 scale: widget.ratio /
                     (widget.constraints.maxWidth /
                         widget.constraints.maxHeight),
-                child: CameraPreview(widget.cameraController),
+                child: CameraPreview(widget.cameraController!),
               ),
             // Positioned(
             //   bottom: 52.5,

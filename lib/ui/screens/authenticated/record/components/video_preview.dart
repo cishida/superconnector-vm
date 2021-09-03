@@ -10,8 +10,8 @@ class VideoPreview extends StatefulWidget {
     required this.constraints,
   }) : super(key: key);
 
-  final double aspectRatio;
-  final BetterPlayerController betterPlayerController;
+  final double? aspectRatio;
+  final BetterPlayerController? betterPlayerController;
   final BoxConstraints constraints;
 
   @override
@@ -23,19 +23,23 @@ class _VideoPreviewState extends State<VideoPreview> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.betterPlayerController == null || widget.aspectRatio == null) {
+      return Container();
+    }
+
     return Stack(
       children: [
         Transform.scale(
-          scale: widget.aspectRatio /
+          scale: widget.aspectRatio! /
               (widget.constraints.maxWidth / widget.constraints.maxHeight),
           child: BetterPlayerMultipleGestureDetector(
             onTap: () {
               _videoPlayerHelper.toggleVideo(widget.betterPlayerController);
             },
             child: AspectRatio(
-              aspectRatio: widget.aspectRatio,
+              aspectRatio: widget.aspectRatio!,
               child: BetterPlayer(
-                controller: widget.betterPlayerController,
+                controller: widget.betterPlayerController!,
               ),
             ),
           ),

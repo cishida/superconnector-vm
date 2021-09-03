@@ -48,6 +48,8 @@ class _RecordState extends State<Record>
   bool _sendPressed = false;
   bool _isRecording = false;
   bool _isResetting = false;
+  bool _shouldShowVideo = false;
+  double? _aspectRatio;
 
   void _safeSetState() {
     if (mounted) {
@@ -61,10 +63,7 @@ class _RecordState extends State<Record>
     if (status.isGranted && cameras.isNotEmpty) {
       _cameraController = await CameraUtility.initializeController(
         cameras,
-      )
-        ..addListener(() {
-          _safeSetState();
-        });
+      );
       _safeSetState();
     }
   }
@@ -93,6 +92,16 @@ class _RecordState extends State<Record>
         }
       },
     );
+    _betterPlayerController!.addEventsListener((event) {
+      if (_betterPlayerController != null) {
+        bool? isInitialized = _betterPlayerController!.isVideoInitialized();
+        // bool? isPlaying = _betterPlayerController!.isPlaying();
+        _shouldShowVideo = isInitialized != null && isInitialized; //&&
+        // isPlaying != null &&
+        // isPlaying;
+        _aspectRatio = _betterPlayerController!.getAspectRatio();
+      }
+    });
 
     _safeSetState();
   }
@@ -102,8 +111,11 @@ class _RecordState extends State<Record>
   ) async {
     if (_cameraController != null) {
       CameraController temp = _cameraController!;
-      _cameraController = null;
-      _safeSetState();
+      if (mounted) {
+        setState(() {
+          _cameraController = null;
+        });
+      }
       await temp.dispose();
     }
     await initCamera();
@@ -135,6 +147,8 @@ class _RecordState extends State<Record>
 
     if (mounted) {
       setState(() {
+        _shouldShowVideo = false;
+        _isRecording = false;
         _betterPlayerController = null;
         _videoFile = null;
         _uploadCompleted = false;
@@ -359,92 +373,88 @@ class _RecordState extends State<Record>
 
   @override
   Widget build(BuildContext context) {
-    bool shouldShowVideo = false;
-    double? aspectRatio;
-
-    if (_betterPlayerController != null) {
-      bool? isInitialized = _betterPlayerController!.isVideoInitialized();
-      bool? isPlaying = _betterPlayerController!.isPlaying();
-      shouldShowVideo = isInitialized != null &&
-          isInitialized &&
-          isPlaying != null &&
-          isPlaying;
-      aspectRatio = _betterPlayerController!.getAspectRatio();
-    }
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: GestureDetector(
-        onTap: () {
-          print('Record container');
-        },
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Scaffold(
-              backgroundColor: Colors.black,
-              body: Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Camera preview for recording VM
-                  if (_cameraController != null &&
-                      _cameraController!.value.isInitialized &&
-                      !shouldShowVideo)
-                    CameraPreviewContainer(
-                      cameraController: _cameraController!,
-                      animationController: _animationController,
-                      ratio: 9 / 16,
-                      constraints: constraints,
-                      setVideoFile: _setVideoFile,
-                      setIsRecording: (isRecording) {
-                        setState(() {
-                          _isRecording = isRecording;
-                        });
-                      },
-                      isResetting: _isResetting,
-                    ),
-
-                  // Video player after VM recorded
-                  if (shouldShowVideo)
-                    VideoPreview(
-                      aspectRatio: aspectRatio!,
-                      betterPlayerController: _betterPlayerController!,
-                      constraints: constraints,
-                    ),
-
-                  RecordOverlay(
-                    isRecording: _isRecording,
-                    connection: widget.connection,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Camera preview for recording VM
+                // if (_cameraController != null &&
+                //     _cameraController!.value.isInitialized &&
+                //     !_shouldShowVideo)
+                AnimatedOpacity(
+                  opacity: !_shouldShowVideo ? 1.0 : 0.0,
+                  duration: const Duration(
+                    milliseconds:
+                        ConstantValues.CAMERA_TO_VIDEO_PLAYER_MILLISECONDS,
                   ),
+                  child: CameraPreviewContainer(
+                    cameraController: _cameraController,
+                    animationController: _animationController,
+                    ratio: 9 / 16,
+                    constraints: constraints,
+                    setVideoFile: _setVideoFile,
+                    setIsRecording: (isRecording) {
+                      setState(() {
+                        _isRecording = isRecording;
+                      });
+                    },
+                    isResetting: _isResetting,
+                  ),
+                ),
 
-                  if (_sendPressed && !_uploadCompleted)
-                    Container(
-                      color: Colors.black.withOpacity(0.65),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircularProgressIndicator(),
-                            Text(
-                              _progress.toString() + '%',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                // Video player after VM recorded
+                // if (_shouldShowVideo)
+                AnimatedOpacity(
+                  opacity: _shouldShowVideo ? 1.0 : 0.0,
+                  duration: const Duration(
+                    milliseconds:
+                        ConstantValues.CAMERA_TO_VIDEO_PLAYER_MILLISECONDS,
+                  ),
+                  child: VideoPreview(
+                    aspectRatio: _aspectRatio,
+                    betterPlayerController: _betterPlayerController,
+                    constraints: constraints,
+                  ),
+                ),
+
+                RecordOverlay(
+                  isRecording: _isRecording,
+                  connection: widget.connection,
+                ),
+
+                if (_sendPressed && !_uploadCompleted)
+                  Container(
+                    color: Colors.black.withOpacity(0.65),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          Text(
+                            _progress.toString() + '%',
+                            style: TextStyle(
+                              color: Colors.white,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                ],
-              ),
-              bottomNavigationBar: RecordBottomNav(
-                shouldShowSendVM: _betterPlayerController != null,
-                onResetPressed: _onResetPressed,
-                onSendPressed: _onSendPressed,
-              ),
-            );
-          },
-        ),
+                  ),
+              ],
+            ),
+            bottomNavigationBar: RecordBottomNav(
+              shouldShowSendVM: _betterPlayerController != null,
+              onResetPressed: _onResetPressed,
+              onSendPressed: _onSendPressed,
+            ),
+          );
+        },
       ),
     );
   }
