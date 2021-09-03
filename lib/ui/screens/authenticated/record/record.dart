@@ -84,7 +84,8 @@ class _RecordState extends State<Record>
       return;
     }
 
-    _betterPlayerController = BetterPlayerUtility.initializeFromVideoFile(
+    _betterPlayerController = await BetterPlayerUtility.initializeFromVideoFile(
+      size: MediaQuery.of(context).size,
       videoFile: _videoFile!,
       onEvent: () {
         if (_betterPlayerController != null) {
@@ -363,7 +364,11 @@ class _RecordState extends State<Record>
 
     if (_betterPlayerController != null) {
       bool? isInitialized = _betterPlayerController!.isVideoInitialized();
-      shouldShowVideo = isInitialized != null && isInitialized;
+      bool? isPlaying = _betterPlayerController!.isPlaying();
+      shouldShowVideo = isInitialized != null &&
+          isInitialized &&
+          isPlaying != null &&
+          isPlaying;
       aspectRatio = _betterPlayerController!.getAspectRatio();
     }
 

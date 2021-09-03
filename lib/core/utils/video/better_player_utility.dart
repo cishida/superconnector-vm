@@ -1,6 +1,8 @@
 import 'package:better_player/better_player.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:video_thumbnail/video_thumbnail.dart' as thumb;
+import 'dart:ui' as ui;
 
 class BetterPlayerUtility {
   static double getVideoDuration(
@@ -19,20 +21,30 @@ class BetterPlayerUtility {
     }
   }
 
-  static BetterPlayerController initializeFromVideoFile({
+  static Future<BetterPlayerController> initializeFromVideoFile({
+    required Size size,
     required XFile videoFile,
     required Function onEvent,
-  }) {
+  }) async {
     BetterPlayerDataSource betterPlayerDataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.file,
       videoFile.path,
       subtitles: [],
     );
 
+    final uint8list = await thumb.VideoThumbnail.thumbnailData(
+      video: videoFile.path,
+      imageFormat: thumb.ImageFormat.JPEG,
+      maxWidth: size.width.toInt(),
+      maxHeight: size.height.toInt(),
+      quality: 1,
+    );
+
     BetterPlayerController betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
         startAt: Duration(milliseconds: 50),
         autoPlay: true,
+        showPlaceholderUntilPlay: true,
         looping: true,
         aspectRatio: 9 / 16,
         fit: BoxFit.cover,
@@ -40,7 +52,24 @@ class BetterPlayerUtility {
           showControls: false,
         ),
         placeholder: Center(
-          child: CircularProgressIndicator(),
+          child: uint8list != null
+              ? Stack(
+                  children: [
+                    Image.memory(
+                      uint8list,
+                    ),
+                    BackdropFilter(
+                      filter: ui.ImageFilter.blur(
+                        sigmaX: 8.0,
+                        sigmaY: 8.0,
+                      ),
+                      child: Container(
+                        color: Colors.transparent,
+                      ),
+                    )
+                  ],
+                )
+              : CircularProgressIndicator(),
         ),
       ),
       betterPlayerDataSource: betterPlayerDataSource,
