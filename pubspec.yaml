@@ -59,13 +59,14 @@ dependencies:
 
   # UI
   grouped_list: ^4.1.0
-  preload_page_view: ^0.1.6
+  # preload_page_view: ^0.1.6
   dots_indicator: ^2.0.0
   carousel_slider: ^4.0.0
-  sliding_up_panel: ^2.0.0+1
+  # sliding_up_panel: ^2.0.0+1
   flutter_multi_formatter: ^2.3.3
   flutter_staggered_animations: ^1.0.0
   modal_bottom_sheet: ^2.0.0
+  flutter_sequence_animation: ^4.0.0-nullsafety
 
   #
   flutter_dotenv: ^5.0.0
