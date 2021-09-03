@@ -29,9 +29,9 @@ void main() async {
   );
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print("Handling a background message: ${message.messageId}");
-}
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   print("Handling a background message: ${message.messageId}");
+// }
 
 class SuperconnectorVM extends StatefulWidget {
   @override
@@ -44,7 +44,7 @@ class _SuperconnectorVMState extends State<SuperconnectorVM> {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
-  late final FirebaseMessaging _messaging;
+  // late final FirebaseMessaging _messaging;
 
   @override
   void initState() {

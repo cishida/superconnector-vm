@@ -207,24 +207,83 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
             //     ),
             //   ),
             // ),
+
+            // Using mask over white progress indicator for gradient
             Positioned(
               bottom: 0,
               child: Container(
                 width: size.width,
-                child: LinearProgressIndicator(
-                  color: Colors.transparent,
-                  minHeight: 4.0,
-                  backgroundColor: Colors.transparent,
-                  value: widget.animationController.value,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Colors.white,
-                  ),
+                child: Stack(
+                  children: [
+                    ShaderMask(
+                      shaderCallback: (rect) {
+                        return LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          stops: [
+                            0.0,
+                            .33,
+                            .66,
+                            1.0,
+                          ],
+                          colors: [
+                            Color(0xFF0AD3FF),
+                            Color(0xFFA132F5),
+                            Color(0xFFF46F66),
+                            Color(0xFFF1943B),
+                          ],
+                        ).createShader(rect);
+                      },
+                      child: LinearProgressIndicator(
+                        color: Colors.transparent,
+                        minHeight: 4.0,
+                        backgroundColor: Colors.transparent,
+                        value: widget.animationController.value,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
             // Positioned(
-            //   bottom: 0.0,
-            //   child: Container(
+            //   bottom: 200.0,
+            //   child:
+            //   // Container(
+            //   //   width: 500,
+            //   //   height: 500,
+            //   //   child: Stack(
+            //   //     children: [
+            //   //       ShaderMask(
+            //   //         shaderCallback: (rect) {
+            //   //           return LinearGradient(
+            //   //             begin: Alignment.centerLeft,
+            //   //             end: Alignment.centerRight,
+            //   //             stops: [
+            //   //               widget.animationController.value,
+            //   //               widget.animationController.value
+            //   //             ],
+            //   //             colors: [Colors.blue, Colors.red.withAlpha(100)],
+            //   //           ).createShader(rect);
+            //   //         },
+            //   //         child: Container(
+            //   //           width: 500,
+            //   //           height: 500,
+            //   //           decoration: BoxDecoration(
+            //   //             image: DecorationImage(
+            //   //                 image: Image.asset(
+            //   //               "assets/images/authenticated/gradient-background.png",
+            //   //             ).image),
+            //   //           ),
+            //   //         ),
+            //   //       ),
+            //   //     ],
+            //   //   ),
+            //   // ),
+
+            //   Container(
             //     width: size.width,
             //     child: GradientProgressIndicator(
             //       gradient: LinearGradient(
