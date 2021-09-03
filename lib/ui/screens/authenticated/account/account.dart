@@ -144,6 +144,34 @@ class _AccountState extends State<Account> {
                     ),
                   ),
                 ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: _logout,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0,
+                      vertical: 6.0,
+                    ),
+                    margin: const EdgeInsets.only(
+                      right: 20.0,
+                    ),
+                    height: 36.0,
+                    width: 95.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(32.0),
+                      color: Colors.white.withOpacity(.20),
+                    ),
+                    child: Text(
+                      'Sign out',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
                 // GestureDetector(
                 //   behavior: HitTestBehavior.opaque,
                 //   onTap: () async {
