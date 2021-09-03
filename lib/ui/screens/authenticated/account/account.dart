@@ -10,14 +10,10 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/auth/auth_service.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
-import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/gradient_background.dart';
-import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
-import 'package:superconnector_vm/ui/components/overlays/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/block_list/block_list.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/components/account_info/account_info.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/account/components/account_item.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/components/account_tile.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -121,9 +117,9 @@ class _AccountState extends State<Account> {
       );
     }
 
-    final TextStyle emojiStyle = TextStyle(
-      fontSize: 18.0,
-    );
+    // final TextStyle emojiStyle = TextStyle(
+    //   fontSize: 18.0,
+    // );
 
     return GradientBackground(
       child: Column(

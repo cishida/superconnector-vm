@@ -66,7 +66,6 @@ dependencies:
   flutter_multi_formatter: ^2.3.3
   flutter_staggered_animations: ^1.0.0
   modal_bottom_sheet: ^2.0.0
-  flutter_sequence_animation: ^4.0.0-nullsafety
 
   #
   flutter_dotenv: ^5.0.0

@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
-import 'package:superconnector_vm/core/models/connection_search_string.dart';
+import 'package:superconnector_vm/core/models/connection_search_term.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
@@ -166,20 +166,20 @@ class _ConnectionTileState extends State<ConnectionTile> {
       return Container();
     }
 
-    ConnectionSearchString connectionSearchString =
-        Provider.of<ConnectionSearchString>(context);
+    ConnectionSearchTerm connectionSearchTerm =
+        Provider.of<ConnectionSearchTerm>(context);
 
     List<String> filteredNames =
         _superusers.map((e) => e.fullName).toList().where((fullName) {
-      return connectionSearchString.string == '' ||
-          (connectionSearchString.string != '' &&
+      return connectionSearchTerm.get() == '' ||
+          (connectionSearchTerm.get() != '' &&
               fullName.toLowerCase().contains(
-                    connectionSearchString.string.toLowerCase(),
+                    connectionSearchTerm.get().toLowerCase(),
                   )) ||
           (widget.connection.tags[superuser.id] != null &&
               widget.connection.tags[superuser.id]!
                   .toLowerCase()
-                  .contains(connectionSearchString.string.toLowerCase()));
+                  .contains(connectionSearchTerm.get().toLowerCase()));
     }).toList();
 
     if (filteredNames.length == 0 && _superusers.length > 0) {

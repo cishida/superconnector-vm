@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
-import 'package:superconnector_vm/core/models/connection_search_string.dart';
+import 'package:superconnector_vm/core/models/connection_search_term.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/supercontact/supercontact.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
@@ -39,7 +39,7 @@ class AuthWidgetBuilder extends StatelessWidget {
               create: (_) => SelectedContacts(),
             ),
             ChangeNotifierProvider(
-              create: (_) => ConnectionSearchString(),
+              create: (_) => ConnectionSearchTerm(),
             ),
             StreamProvider<Superuser?>.value(
               initialData: Superuser(created: DateTime.now()),
