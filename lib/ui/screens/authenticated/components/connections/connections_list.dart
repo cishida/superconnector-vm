@@ -10,6 +10,20 @@ class ConnectionList extends StatefulWidget {
 }
 
 class _ConnectionListState extends State<ConnectionList> {
+  List<ConnectionTile> _buildTiles(List<Connection> connections) {
+    List<ConnectionTile> tiles = [];
+
+    connections.forEach((connection) {
+      tiles.add(
+        ConnectionTile(
+          connection: connection,
+        ),
+      );
+    });
+
+    return tiles;
+  }
+
   @override
   Widget build(BuildContext context) {
     final superuser = context.watch<Superuser?>();
@@ -21,16 +35,18 @@ class _ConnectionListState extends State<ConnectionList> {
     } else {
       return Consumer<List<Connection>>(
         builder: (context, connections, child) {
-          return ListView.builder(
+          return ListView(
+            addAutomaticKeepAlives: true,
             padding: const EdgeInsets.only(
               bottom: 200.0,
             ),
-            itemCount: connections.length,
-            itemBuilder: (context, index) {
-              return ConnectionTile(
-                connection: connections[index],
-              );
-            },
+            children: _buildTiles(connections),
+            // itemCount: connections.length,
+            // itemBuilder: (context, index) {
+            //   return ConnectionTile(
+            //     connection: connections[index],
+            //   );
+            // },
           );
         },
       );

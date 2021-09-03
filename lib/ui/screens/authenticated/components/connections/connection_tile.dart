@@ -37,22 +37,27 @@ class ConnectionTile extends StatefulWidget {
   _ConnectionTileState createState() => _ConnectionTileState();
 }
 
-class _ConnectionTileState extends State<ConnectionTile> {
+class _ConnectionTileState extends State<ConnectionTile>
+    with AutomaticKeepAliveClientMixin {
   VideoService _videoService = VideoService();
   SuperuserService _superuserService = SuperuserService();
   List<Superuser> _superusers = [];
   late Timer _periodicUpdate;
   String _groupName = '';
+  List<String> _filteredNames = [];
 
   Future _loadUsers() async {
     List<Superuser> tempSuperusers = [];
     final currentSuperuser = Provider.of<Superuser?>(context, listen: false);
 
+    if (currentSuperuser == null) {
+      return;
+    }
+
     for (var i = 0; i < widget.connection.userIds.length; i++) {
       List<String> ids = tempSuperusers.map((e) => e.id).toList();
 
-      if (currentSuperuser != null &&
-          widget.connection.userIds[i] != currentSuperuser.id) {
+      if (widget.connection.userIds[i] != currentSuperuser.id) {
         Superuser? superuser = await _superuserService
             .getSuperuserFromId(widget.connection.userIds[i]);
         if (superuser != null && !ids.contains(superuser.id)) {
@@ -72,7 +77,9 @@ class _ConnectionTileState extends State<ConnectionTile> {
   void didUpdateWidget(ConnectionTile oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    _loadUsers();
+    if (oldWidget.connection.id != widget.connection.id) {
+      _loadUsers();
+    }
   }
 
   @override
@@ -80,7 +87,9 @@ class _ConnectionTileState extends State<ConnectionTile> {
     super.initState();
     _loadUsers();
     _periodicUpdate = Timer.periodic(Duration(seconds: 30), (Timer t) {
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 
@@ -122,9 +131,11 @@ class _ConnectionTileState extends State<ConnectionTile> {
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.done,
                     onChanged: (text) {
-                      setState(() {
-                        _groupName = text;
-                      });
+                      if (mounted) {
+                        setState(() {
+                          _groupName = text;
+                        });
+                      }
                     },
                     onSubmit: (text) async {
                       // onComplete();
@@ -161,17 +172,23 @@ class _ConnectionTileState extends State<ConnectionTile> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final superuser = Provider.of<Superuser?>(context);
     if (superuser == null) {
       return Container();
     }
 
     ConnectionSearchTerm connectionSearchTerm =
-        Provider.of<ConnectionSearchTerm>(context);
+        Provider.of<ConnectionSearchTerm>(
+      context,
+      // listen: false,
+    );
 
-    List<String> filteredNames =
-        _superusers.map((e) => e.fullName).toList().where((fullName) {
-      return connectionSearchTerm.get() == '' ||
+    _filteredNames = []; //_superusers.map((e) => e.fullName).toList();
+
+    _superusers.map((e) => e.fullName).toList().forEach((fullName) {
+      if (connectionSearchTerm.get() == '' ||
           (connectionSearchTerm.get() != '' &&
               fullName.toLowerCase().contains(
                     connectionSearchTerm.get().toLowerCase(),
@@ -179,10 +196,26 @@ class _ConnectionTileState extends State<ConnectionTile> {
           (widget.connection.tags[superuser.id] != null &&
               widget.connection.tags[superuser.id]!
                   .toLowerCase()
-                  .contains(connectionSearchTerm.get().toLowerCase()));
-    }).toList();
+                  .contains(connectionSearchTerm.get().toLowerCase()))) {
+        _filteredNames.add(fullName);
+      }
+    });
 
-    if (filteredNames.length == 0 && _superusers.length > 0) {
+    widget.connection.phoneNumberNameMap.values.toList().forEach((fullName) {
+      if (connectionSearchTerm.get() == '' ||
+          (connectionSearchTerm.get() != '' &&
+              fullName.toLowerCase().contains(
+                    connectionSearchTerm.get().toLowerCase(),
+                  )) ||
+          (widget.connection.tags[superuser.id] != null &&
+              widget.connection.tags[superuser.id]!
+                  .toLowerCase()
+                  .contains(connectionSearchTerm.get().toLowerCase()))) {
+        _filteredNames.add(fullName);
+      }
+    });
+
+    if (_filteredNames.length == 0) {
       return Container();
     }
 
@@ -376,4 +409,8 @@ class _ConnectionTileState extends State<ConnectionTile> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
