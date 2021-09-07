@@ -41,7 +41,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
           child: Stack(
             children: [
               AnimatedPositioned(
-                duration: const Duration(milliseconds: 350),
+                duration: const Duration(milliseconds: 150),
                 left: _isSearching ? -200 : 0.0,
                 bottom: 7.0,
                 child: Padding(
@@ -62,7 +62,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                 right: 22 + 42 + 12 - 8,
                 bottom: 8.0,
                 child: AnimatedOpacity(
-                  duration: Duration(milliseconds: _isSearching ? 0 : 800),
+                  duration: Duration(milliseconds: _isSearching ? 0 : 600),
                   opacity: _isSearching ? 0 : 1,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
@@ -85,7 +85,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                 ),
               ),
               AnimatedPositioned(
-                duration: const Duration(milliseconds: 350),
+                duration: const Duration(milliseconds: 150),
                 right: 60.0,
                 left: _isSearching ? 0 : MediaQuery.of(context).size.width,
                 bottom: 8.0,
@@ -117,7 +117,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                   right: 74.0,
                   top: 8.0,
                   child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 350),
+                    duration: const Duration(milliseconds: 150),
                     opacity: _isSearching ? 1 : 0,
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,

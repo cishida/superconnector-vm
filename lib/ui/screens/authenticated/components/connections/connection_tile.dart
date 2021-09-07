@@ -411,6 +411,5 @@ class _ConnectionTileState extends State<ConnectionTile>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

@@ -62,7 +62,6 @@ class ConnectionSearchBar extends StatelessWidget {
       },
       onChanged: (text) {
         connectionSearchTerm.set(text);
-        print(connectionSearchTerm.get());
       },
     );
   }

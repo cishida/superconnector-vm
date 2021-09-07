@@ -37,9 +37,10 @@ class _AccountTileState extends State<AccountTile> {
         });
       },
       onTapCancel: () {
-        setState(() {
-          _isPressed = false;
-        });
+        Future.delayed(Duration(milliseconds: 100))
+            .then((value) => setState(() {
+                  _isPressed = false;
+                }));
       },
       child: Stack(
         children: [
