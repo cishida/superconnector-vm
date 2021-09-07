@@ -10,6 +10,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/auth/auth_service.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
+import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/gradient_background.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/block_list/block_list.dart';
@@ -146,7 +147,21 @@ class _AccountState extends State<Account> {
                 ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: _logout,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SuperDialog(
+                          title: 'Sign out',
+                          subtitle: 'Are you sure you want to sign out?',
+                          primaryActionTitle: 'Continue',
+                          primaryAction: _logout,
+                          secondaryActionTitle: 'Cancel',
+                          secondaryAction: () => Navigator.of(context).pop(),
+                        );
+                      },
+                    );
+                  },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 15.0,
