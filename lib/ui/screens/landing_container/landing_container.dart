@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:superconnector_vm/ui/screens/landing_container/components/confirmation_code_entry.dart';
 import 'package:superconnector_vm/ui/screens/landing_container/components/initial_landing.dart';
@@ -20,6 +21,9 @@ class _LandingContainerState extends State<LandingContainer> {
     initialPage: 0,
   );
   double _currentIndex = 0;
+  final whiteNavTheme = SystemUiOverlayStyle.light.copyWith(
+    systemNavigationBarColor: Colors.white,
+  );
 
   @override
   void initState() {
@@ -80,15 +84,18 @@ class _LandingContainerState extends State<LandingContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        child: PageView(
-          physics: NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          children: _buildPages(),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: whiteNavTheme,
+      child: Scaffold(
+        key: _scaffoldKey,
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: PageView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            children: _buildPages(),
+          ),
         ),
       ),
     );

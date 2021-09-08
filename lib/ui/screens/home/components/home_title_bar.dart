@@ -22,7 +22,6 @@ class HomeTitleBar extends StatefulWidget {
 
 class _HomeTitleBarState extends State<HomeTitleBar>
     with SingleTickerProviderStateMixin {
-  late AnimationController controller;
   bool _isSearching = false;
   TextEditingController _searchController = TextEditingController();
   FocusNode _focusNode = FocusNode();
