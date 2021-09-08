@@ -136,12 +136,34 @@ class _HomeState extends State<Home> {
     Superuser superuser,
   ) async {
     switch (superuser.homeOnboardingStage) {
+      case HomeOnboardingStage.connect:
+        await _showOnboardingDialog(
+          title: ConstantStrings.ONBOARDING_CONNECT_TITLE,
+          subtitle: ConstantStrings.ONBOARDING_CONNECT_SUBTITLE,
+          onTap: () => goToOnboardingStage(
+            HomeOnboardingStage.connections,
+            superuser,
+          ),
+          overlayWidget: Positioned(
+            right: 16.0,
+            bottom: 16.0,
+            child: NewConnectionButton(
+              isInverted: true,
+              onPressed: () {
+                SuperNavigator.handleContactsNavigation(
+                  context: context,
+                );
+              },
+            ),
+          ),
+        );
+        break;
       case HomeOnboardingStage.connections:
         await _showOnboardingDialog(
           title: ConstantStrings.ONBOARDING_CONNECTIONS_TITLE,
           subtitle: ConstantStrings.ONBOARDING_CONNECTIONS_SUBTITLE,
           onTap: () => goToOnboardingStage(
-            HomeOnboardingStage.contacts,
+            HomeOnboardingStage.search,
             superuser,
           ),
           overlayWidget: Consumer<List<Connection>>(
@@ -170,17 +192,17 @@ class _HomeState extends State<Home> {
           ),
         );
         break;
-      case HomeOnboardingStage.contacts:
+      case HomeOnboardingStage.search:
         await _showOnboardingDialog(
-          title: ConstantStrings.ONBOARDING_CONTACTS_TITLE,
-          subtitle: ConstantStrings.ONBOARDING_CONTACTS_SUBTITLE,
+          title: ConstantStrings.ONBOARDING_SEARCH_TITLE,
+          subtitle: ConstantStrings.ONBOARDING_SEARCH_SUBTITLE,
           onTap: () => goToOnboardingStage(
-            HomeOnboardingStage.settings,
+            HomeOnboardingStage.completed,
             superuser,
           ),
           overlayWidget: Positioned(
-            right: 73.0,
-            top: 12.0,
+            right: 76.0,
+            top: 13.0,
             child: Image.asset(
               'assets/images/authenticated/search-icon-white.png',
               width: 26.0,
@@ -188,46 +210,46 @@ class _HomeState extends State<Home> {
           ),
         );
         break;
-      case HomeOnboardingStage.settings:
-        await _showOnboardingDialog(
-          title: ConstantStrings.ONBOARDING_SETTINGS_TITLE,
-          subtitle: ConstantStrings.ONBOARDING_SETTINGS_SUBTITLE,
-          onTap: () => goToOnboardingStage(
-            HomeOnboardingStage.newVM,
-            superuser,
-          ),
-          overlayWidget: Positioned(
-            right: 9.0,
-            top: 4.0,
-            child: SuperuserImage(
-              url: superuser.photoUrl,
-              radius: 21.0,
-            ),
-          ),
-        );
-        break;
-      case HomeOnboardingStage.newVM:
-        await _showOnboardingDialog(
-          title: ConstantStrings.ONBOARDING_NEW_VM_TITLE,
-          subtitle: ConstantStrings.ONBOARDING_NEW_VM_SUBTITLE,
-          onTap: () => goToOnboardingStage(
-            HomeOnboardingStage.completed,
-            superuser,
-          ),
-          overlayWidget: Positioned(
-            right: 16.0,
-            bottom: 16.0,
-            child: NewConnectionButton(
-              isInverted: true,
-              onPressed: () {
-                SuperNavigator.handleContactsNavigation(
-                  context: context,
-                );
-              },
-            ),
-          ),
-        );
-        break;
+      // case HomeOnboardingStage.settings:
+      //   await _showOnboardingDialog(
+      //     title: ConstantStrings.ONBOARDING_SETTINGS_TITLE,
+      //     subtitle: ConstantStrings.ONBOARDING_SETTINGS_SUBTITLE,
+      //     onTap: () => goToOnboardingStage(
+      //       HomeOnboardingStage.newVM,
+      //       superuser,
+      //     ),
+      //     overlayWidget: Positioned(
+      //       right: 9.0,
+      //       top: 4.0,
+      //       child: SuperuserImage(
+      //         url: superuser.photoUrl,
+      //         radius: 21.0,
+      //       ),
+      //     ),
+      //   );
+      //   break;
+      // case HomeOnboardingStage.newVM:
+      //   await _showOnboardingDialog(
+      //     title: ConstantStrings.ONBOARDING_NEW_VM_TITLE,
+      //     subtitle: ConstantStrings.ONBOARDING_NEW_VM_SUBTITLE,
+      //     onTap: () => goToOnboardingStage(
+      //       HomeOnboardingStage.completed,
+      //       superuser,
+      //     ),
+      //     overlayWidget: Positioned(
+      //       right: 16.0,
+      //       bottom: 16.0,
+      //       child: NewConnectionButton(
+      //         isInverted: true,
+      //         onPressed: () {
+      //           SuperNavigator.handleContactsNavigation(
+      //             context: context,
+      //           );
+      //         },
+      //       ),
+      //     ),
+      //   );
+      //   break;
       default:
         break;
     }

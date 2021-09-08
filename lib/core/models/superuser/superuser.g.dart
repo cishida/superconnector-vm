@@ -95,9 +95,8 @@ K? _$enumDecodeNullable<K, V>(
 }
 
 const _$HomeOnboardingStageEnumMap = {
+  HomeOnboardingStage.connect: 'connect',
   HomeOnboardingStage.connections: 'connections',
-  HomeOnboardingStage.contacts: 'contacts',
-  HomeOnboardingStage.settings: 'settings',
-  HomeOnboardingStage.newVM: 'newVM',
+  HomeOnboardingStage.search: 'search',
   HomeOnboardingStage.completed: 'completed',
 };

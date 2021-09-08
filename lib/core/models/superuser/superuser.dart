@@ -13,10 +13,9 @@ class SuperFirebaseUser {
 }
 
 enum HomeOnboardingStage {
+  connect,
   connections,
-  contacts,
-  settings,
-  newVM,
+  search,
   completed,
 }
 
@@ -24,13 +23,11 @@ extension HomeOnboardingStageExtension on HomeOnboardingStage {
   static HomeOnboardingStage fromString(String string) {
     switch (string) {
       case 'connections':
-        return HomeOnboardingStage.connections;
+        return HomeOnboardingStage.connect;
       case 'contacts':
-        return HomeOnboardingStage.contacts;
+        return HomeOnboardingStage.connections;
       case 'settings':
-        return HomeOnboardingStage.settings;
-      case 'newVM':
-        return HomeOnboardingStage.newVM;
+        return HomeOnboardingStage.search;
       case 'completed':
         return HomeOnboardingStage.completed;
       default:
