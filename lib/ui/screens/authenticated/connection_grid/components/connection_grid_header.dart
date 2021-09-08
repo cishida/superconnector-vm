@@ -49,11 +49,14 @@ class ConnectionGridHeader extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.centerLeft,
-            child: ChevronBackButton(
-              color: ConstantColors.PRIMARY,
-              onBack: () {
-                Navigator.pop(context);
-              },
+            child: Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: ChevronBackButton(
+                color: ConstantColors.PRIMARY,
+                onBack: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ),
           GestureDetector(
