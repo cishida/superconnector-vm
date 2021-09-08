@@ -17,6 +17,7 @@ class LandingContainer extends StatefulWidget {
 class _LandingContainerState extends State<LandingContainer> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String? _verificationId;
+  String _phoneNumber = '';
   final _pageController = PageController(
     initialPage: 0,
   );
@@ -47,6 +48,9 @@ class _LandingContainerState extends State<LandingContainer> {
           _verificationId = verificationId;
           _goToNextPage();
         },
+        setPhoneNumber: (String phoneNumber) {
+          _phoneNumber = phoneNumber;
+        },
       ),
     );
 
@@ -63,6 +67,7 @@ class _LandingContainerState extends State<LandingContainer> {
     pages.add(
       ConfirmationCodeEntry(
         verificationId: _verificationId,
+        phoneNumber: _phoneNumber,
         goBack: _goToPreviousPage,
       ),
     );

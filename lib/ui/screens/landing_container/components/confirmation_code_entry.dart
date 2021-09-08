@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
@@ -11,10 +14,12 @@ class ConfirmationCodeEntry extends StatefulWidget {
   const ConfirmationCodeEntry({
     Key? key,
     required this.verificationId,
+    required this.phoneNumber,
     required this.goBack,
   }) : super(key: key);
 
   final String? verificationId;
+  final String phoneNumber;
   final Function goBack;
 
   @override
@@ -26,8 +31,10 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference superuserCollection =
       FirebaseFirestore.instance.collection('superusers');
+  // StreamController<ErrorAnimationType> _errorController =
+  //     StreamController<ErrorAnimationType>();
 
-  void _signInWithPhoneNumber() async {
+  Future _signInWithPhoneNumber() async {
     try {
       if (widget.verificationId == null) {
         return;
@@ -92,6 +99,8 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return GestureDetector(
       onTap: () {
         if (FocusScope.of(context).hasPrimaryFocus) {
@@ -109,16 +118,112 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
         ),
         child: SafeArea(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: const EdgeInsets.only(top: 21.0, right: 8.0),
                 child: ChevronBackButton(
-                  // color: ConstantColors.PRIMARY,
                   onBack: () {
                     setState(() {
                       widget.goBack();
                     });
                   },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 41.0,
+                        right: 10.0,
+                      ),
+                      child: Text(
+                        'Enter the code we sent to your mobile number\n${widget.phoneNumber}',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20.0,
+                        bottom: 8.0,
+                      ),
+                      child: Text(
+                        'VERIFICATION CODE',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          letterSpacing: .2,
+                        ),
+                      ),
+                    ),
+                    PinCodeTextField(
+                      appContext: context,
+                      length: 6,
+                      obscureText: false,
+                      animationType: AnimationType.fade,
+                      keyboardType: TextInputType.phone,
+                      autoFocus: true,
+                      textStyle: TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black.withOpacity(.7),
+                      ),
+                      pinTheme: PinTheme(
+                        shape: PinCodeFieldShape.box,
+                        borderRadius: BorderRadius.circular(7),
+                        fieldHeight: 48,
+                        fieldWidth: 48,
+                        activeFillColor: Colors.white.withOpacity(.7),
+                        inactiveFillColor: Colors.white.withOpacity(.7),
+                        selectedColor: Colors.white.withOpacity(.7),
+                        activeColor: Colors.white.withOpacity(.7),
+                        inactiveColor: Colors.white.withOpacity(.7),
+                        selectedFillColor: Colors.white.withOpacity(.7),
+                        fieldOuterPadding: const EdgeInsets.all(2),
+                        borderWidth: 0.0,
+                      ),
+                      animationDuration: Duration(milliseconds: 300),
+                      backgroundColor: Colors.transparent,
+                      enableActiveFill: true,
+                      // errorAnimationController: _errorController,
+                      controller: _smsController,
+                      onCompleted: (v) async {
+                        await _signInWithPhoneNumber();
+                      },
+                      onChanged: (value) {
+                        print(value);
+                        // setState(() {
+                        //   currentText = value;
+                        // });
+                      },
+                      beforeTextPaste: (text) {
+                        print("Allowing to paste $text");
+                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                        return true;
+                      },
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: size.height * 0.1629),
+                      child: Text(
+                        'Having trouble? Email support@superconnector.com',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white.withOpacity(.7),
+                          letterSpacing: .2,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

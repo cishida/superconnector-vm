@@ -13,10 +13,12 @@ class InitialLanding extends StatefulWidget {
     Key? key,
     // required this.onButtonPress,
     required this.setVerificationId,
+    required this.setPhoneNumber,
   }) : super(key: key);
 
   // final Function onButtonPress;
   final Function setVerificationId;
+  final Function setPhoneNumber;
 
   @override
   _InitialLandingState createState() => _InitialLandingState();
@@ -43,11 +45,11 @@ class _InitialLandingState extends State<InitialLanding>
     //Listens for errors with verification, such as too many attempts
     PhoneVerificationFailed verificationFailed =
         (FirebaseAuthException authException) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        DarkSnackBar.createSnackBar(
-          text: 'Phone number verification failed.',
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   DarkSnackBar.createSnackBar(
+      //     text: 'Phone number verification failed.',
+      //   ),
+      // );
     };
 
     //Callback for when the code is sent
@@ -254,10 +256,12 @@ class _InitialLandingState extends State<InitialLanding>
                         },
                         behavior: HitTestBehavior.opaque,
                         child: OnboardingTextField(
-                          phoneNumberController: _phoneNumberController,
-                          focusNode: _focusNode,
-                          enabled: _isInputting,
-                        ),
+                            phoneNumberController: _phoneNumberController,
+                            focusNode: _focusNode,
+                            enabled: _isInputting,
+                            onChanged: (text) {
+                              widget.setPhoneNumber(text);
+                            }),
                       ),
                       AnimatedCrossFade(
                         crossFadeState: _isInputting
@@ -371,11 +375,13 @@ class OnboardingTextField extends StatelessWidget {
     Key? key,
     required this.phoneNumberController,
     required this.focusNode,
+    this.onChanged,
     this.enabled = false,
   }) : super(key: key);
 
   final TextEditingController phoneNumberController;
   final FocusNode focusNode;
+  final Function(String)? onChanged;
   final bool enabled;
 
   @override
@@ -432,7 +438,9 @@ class OnboardingTextField extends StatelessWidget {
             FocusScope.of(context).unfocus();
           },
           onChanged: (text) {
-            print(text);
+            if (onChanged != null) {
+              onChanged!(text);
+            }
           },
         ),
         Positioned(
