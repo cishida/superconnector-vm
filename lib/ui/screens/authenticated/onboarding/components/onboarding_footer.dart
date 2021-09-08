@@ -36,18 +36,18 @@ class OnboardingFooter extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 46.0,
-              bottom: 65.0,
-              left: 45.0,
-              right: 45.0,
-            ),
-            child: BarButton(
-              title: currentIndex == 2 ? 'Turn On Notifications' : 'Continue',
-              onPressed: onContinue,
-            ),
-          )
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     top: 46.0,
+          //     bottom: 65.0,
+          //     left: 45.0,
+          //     right: 45.0,
+          //   ),
+          //   child: BarButton(
+          //     title: currentIndex == 2 ? 'Turn On Notifications' : 'Continue',
+          //     onPressed: onContinue,
+          //   ),
+          // ),
         ],
       ),
     );

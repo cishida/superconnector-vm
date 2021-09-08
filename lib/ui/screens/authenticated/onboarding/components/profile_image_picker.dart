@@ -98,88 +98,83 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
     //   _cropImage();
     // }
 
-    return Center(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 26.0, bottom: 34.0),
-            child: GestureDetector(
-              onTap: () async {
-                superuser.photoUrl = await getImage(superuser.id);
-                await superuser.update();
-              },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  widget.showTitle
-                      ? Padding(
-                          padding: const EdgeInsets.only(bottom: 14.0),
-                          child: Text(
-                            'Profile Picture',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16.0,
-                              color: ConstantColors.GRAY_TEXT,
-                              // decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        )
-                      : Container(),
-                  // SizedBox(
-                  //   height: 14.0,
-                  // ),
-                  Stack(
-                    children: [
-                      _imageFile == null && superuser.photoUrl != ''
-                          ? SuperuserImage(
-                              url: superuser.photoUrl,
-                              radius: widget.width / 2,
-                            )
-                          : Container(
-                              width: widget.width,
-                              height: widget.width,
-                              padding: const EdgeInsets.all(3.0),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: ConstantColors.IMAGE_BORDER,
-                                border: _imageFile != null
-                                    ? Border.all(
-                                        width: 2,
-                                        color: ConstantColors.IMAGE_BORDER,
-                                      )
-                                    : Border.all(
-                                        width: 0,
-                                        color: ConstantColors.IMAGE_BORDER,
-                                      ),
-                                image: DecorationImage(
-                                  fit: BoxFit.fitWidth,
-                                  image: _imageFile == null
-                                      ? AssetImage(
-                                          'assets/images/authenticated/photo-placeholder.png',
-                                        )
-                                      : FileImage(_imageFile!) as ImageProvider,
-                                ),
-                              ),
-                            ),
-                      Positioned(
-                        right: 0.0,
-                        bottom: 0.0,
-                        child: Image(
-                          width: 36.0,
-                          image: AssetImage(
-                            'assets/images/authenticated/edit-photo-button.png',
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 19.0, bottom: 34.0),
+          child: GestureDetector(
+            onTap: () async {
+              superuser.photoUrl = await getImage(superuser.id);
+              await superuser.update();
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                widget.showTitle
+                    ? Padding(
+                        padding: const EdgeInsets.only(bottom: 11.0),
+                        child: Text(
+                          'Profile Picture',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: .2,
                           ),
                         ),
+                      )
+                    : Container(),
+                Stack(
+                  children: [
+                    _imageFile == null && superuser.photoUrl != ''
+                        ? SuperuserImage(
+                            url: superuser.photoUrl,
+                            radius: widget.width / 2,
+                          )
+                        : Container(
+                            width: widget.width,
+                            height: widget.width,
+                            padding: const EdgeInsets.all(3.0),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: ConstantColors.IMAGE_BORDER,
+                              border: _imageFile != null
+                                  ? Border.all(
+                                      width: 2,
+                                      color: ConstantColors.IMAGE_BORDER,
+                                    )
+                                  : Border.all(
+                                      width: 0,
+                                      color: ConstantColors.IMAGE_BORDER,
+                                    ),
+                              image: DecorationImage(
+                                fit: BoxFit.fitWidth,
+                                image: _imageFile == null
+                                    ? AssetImage(
+                                        'assets/images/authenticated/photo-placeholder.png',
+                                      )
+                                    : FileImage(_imageFile!) as ImageProvider,
+                              ),
+                            ),
+                          ),
+                    Positioned(
+                      right: 0.0,
+                      bottom: 0.0,
+                      child: Image(
+                        width: 28.0,
+                        image: AssetImage(
+                          'assets/images/authenticated/edit-photo-icon.png',
+                        ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
+import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/components/onboarding_footer.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/components/onboarding_info.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_background/onboarding_background.dart';
@@ -127,33 +131,33 @@ class _OnboardingPagesState extends State<OnboardingPages> {
   // late List<Map<String, dynamic>> _onboardingPageMaps;
   bool _attemptedSubmission = false;
 
-  List<Map<String, dynamic>> _getOnboardingPageMaps() {
-    return [
-      {
-        'title': 'Welcome',
-        'subtitle':
-            'Superconnector helps you video\nmessage (VM) your extended family.\nVMs are 30 seconds or less so they’re\nshort and sweet.',
-        'widget': OnboardingWelcome(),
-      },
-      {
-        'title': 'Account Info',
-        'subtitle':
-            'This helps set up your account and\nlabel your VMs. You can use VMs as a\nfaster, more convenient alternative to\nvideo calls.',
-        'widget': OnboardingBackground(
-          formKey: _formKey,
-          attemptedSubmission: _attemptedSubmission,
-        ),
-      },
-      {
-        'title': 'Notifications',
-        'subtitle':
-            'These tell you when someone VMs you\nso you can reply quickly.',
-        'widget': OnboardingNotifications(
-          onSkip: widget.completePages,
-        ),
-      },
-    ];
-  }
+  // List<Map<String, dynamic>> _getOnboardingPageMaps() {
+  //   return [
+  //     {
+  //       'title': 'Welcome',
+  //       'subtitle':
+  //           'Superconnector helps you video\nmessage (VM) your extended family.\nVMs are 30 seconds or less so they’re\nshort and sweet.',
+  //       'widget': OnboardingWelcome(),
+  //     },
+  //     {
+  //       'title': 'Account Info',
+  //       'subtitle':
+  //           'This helps set up your account and\nlabel your VMs. You can use VMs as a\nfaster, more convenient alternative to\nvideo calls.',
+  //       'widget': OnboardingBackground(
+  //         formKey: _formKey,
+  //         attemptedSubmission: _attemptedSubmission,
+  //       ),
+  //     },
+  //     {
+  //       'title': 'Notifications',
+  //       'subtitle':
+  //           'These tell you when someone VMs you\nso you can reply quickly.',
+  //       'widget': OnboardingNotifications(
+  //         onSkip: widget.completePages,
+  //       ),
+  //     },
+  //   ];
+  // }
 
   @override
   void initState() {
@@ -172,21 +176,31 @@ class _OnboardingPagesState extends State<OnboardingPages> {
 
   List<Widget> _buildPages() {
     List<Widget> pages = [];
-    _getOnboardingPageMaps().forEach((pageMap) {
-      pages.add(
-        Column(
-          children: [
-            Expanded(
-              child: pageMap['widget'],
-            ),
-            OnboardingInfo(
-              title: pageMap['title'],
-              subtitle: pageMap['subtitle'],
-            ),
-          ],
-        ),
-      );
-    });
+    // _getOnboardingPageMaps().forEach((pageMap) {
+    //   pages.add(
+    //     Column(
+    //       children: [
+    //         Expanded(
+    //           child: pageMap['widget'],
+    //         ),
+    //         OnboardingInfo(
+    //           title: pageMap['title'],
+    //           subtitle: pageMap['subtitle'],
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // });
+    pages.add(
+      OnboardingWelcome(
+        nextPage: _goToNextPage,
+      ),
+    );
+    pages.add(
+      OnboardingNotifications(
+        next: widget.completePages,
+      ),
+    );
     return pages;
   }
 
@@ -206,63 +220,138 @@ class _OnboardingPagesState extends State<OnboardingPages> {
       return Container();
     }
 
-    return Scaffold(
-      // resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      appBar: CustomAppBar(
-        backgroundColor: Colors.white,
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: _currentIndex.round() == 1.0
-              ? AlwaysScrollableScrollPhysics()
-              : NeverScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * .75,
-                child: PageView(
-                  // PageView(
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: _pageController,
-                  // preloadPagesCount: 1,
-                  children: _buildPages(),
-                ),
+    final Size size = MediaQuery.of(context).size;
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        // key: _scaffoldKey,
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                'assets/images/unauthenticated/landing-background.png',
               ),
-              OnboardingFooter(
-                currentIndex: _currentIndex,
-                onContinue: () async {
-                  // Background page
-                  if (_currentIndex.round() == 1) {
-                    setState(() {
-                      _attemptedSubmission = true;
-                    });
-                    if (_formKey.currentState != null &&
-                        _formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      _goToNextPage();
-                    }
-
-                    return;
-                  }
-
-                  if (_currentIndex.round() == 2) {
-                    await FirebaseMessaging.instance.requestPermission(
-                      alert: true,
-                      badge: true,
-                      provisional: false,
-                      sound: true,
-                    );
-                    widget.completePages();
-                  }
-
-                  _goToNextPage();
-                },
-              )
-            ],
+              fit: BoxFit.cover,
+            ),
+          ),
+          height: MediaQuery.of(context).size.height,
+          child: SafeArea(
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 48.0),
+                  child: PageView(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: _pageController,
+                    children: _buildPages(),
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 19.0,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: DotsIndicator(
+                      dotsCount: 2,
+                      position: _currentIndex,
+                      decorator: DotsDecorator(
+                        color: Colors.white.withOpacity(.32), // Inactive color
+                        activeColor: Colors.white,
+                        spacing: EdgeInsets.all(4.0),
+                        size: Size(
+                          6.0,
+                          6.0,
+                        ),
+                        activeSize: Size(
+                          6.0,
+                          6.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+
+    // return Scaffold(
+    //   // resizeToAvoidBottomInset: false,
+    //   backgroundColor: Colors.white,
+    //   appBar: CustomAppBar(
+    //     backgroundColor: Colors.white,
+    //   ),
+    //   body: SafeArea(
+    //     child: Stack(
+    //       children: [
+    //         Positioned(
+    //           top: 0.0,
+    //           child: Container(
+    //             child: PageView(
+    //               // PageView(
+    //               physics: NeverScrollableScrollPhysics(),
+    //               controller: _pageController,
+    //               // preloadPagesCount: 1,
+    //               children: _buildPages(),
+    //             ),
+    //           ),
+    //         ),
+    //         Positioned(
+    //           bottom: 100,
+    //           child: DotsIndicator(
+    //             dotsCount: 2,
+    //             position: _currentIndex,
+    //             decorator: DotsDecorator(
+    //               color: Colors.black.withOpacity(.32), // Inactive color
+    //               activeColor: Colors.black,
+    //               spacing: EdgeInsets.all(4.0),
+    //               size: Size(
+    //                 6.0,
+    //                 6.0,
+    //               ),
+    //               activeSize: Size(
+    //                 6.0,
+    //                 6.0,
+    //               ),
+    //             ),
+    //           ),
+    //         ),
+    //         // OnboardingFooter(
+    //         //   currentIndex: _currentIndex,
+    //         //   onContinue: () async {
+    //         //     // Background page
+    //         //     if (_currentIndex.round() == 1) {
+    //         //       setState(() {
+    //         //         _attemptedSubmission = true;
+    //         //       });
+    //         //       if (_formKey.currentState != null &&
+    //         //           _formKey.currentState!.validate()) {
+    //         //         _formKey.currentState!.save();
+    //         //         _goToNextPage();
+    //         //       }
+
+    //         //       return;
+    //         //     }
+
+    //         //     if (_currentIndex.round() == 2) {
+    //         //       await FirebaseMessaging.instance.requestPermission(
+    //         //         alert: true,
+    //         //         badge: true,
+    //         //         provisional: false,
+    //         //         sound: true,
+    //         //       );
+    //         //       widget.completePages();
+    //         //     }
+
+    //         //     _goToNextPage();
+    //         //   },
+    //         // )
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }
