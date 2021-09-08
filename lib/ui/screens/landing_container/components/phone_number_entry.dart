@@ -29,9 +29,6 @@ class _PhoneNumberEntryState extends State<PhoneNumberEntry> {
     PhoneVerificationCompleted verificationCompleted =
         (PhoneAuthCredential phoneAuthCredential) async {
       await _auth.signInWithCredential(phoneAuthCredential);
-      // showSnackbar(
-      //   "Phone number automatically verified and user signed in: ${_auth.currentUser!.uid}",
-      // );
     };
 
     //Listens for errors with verification, such as too many attempts
@@ -42,25 +39,15 @@ class _PhoneNumberEntryState extends State<PhoneNumberEntry> {
           text: 'Phone number verification failed.',
         ),
       );
-      // showSnackbar(
-      //   'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}',
-      // );
     };
 
     //Callback for when the code is sent
     PhoneCodeSent codeSent = (String verificationId, int? forceResendingToken) {
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   DarkSnackBar.createSnackBar(
-      //     text: 'Please check your phone for the verification code.',
-      //   ),
-      // );
-      // showSnackbar('Please check your phone for the verification code.');
       widget.setVerificationId(verificationId);
     };
 
     PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
         (String verificationId) {
-      // showSnackbar("verification code: " + verificationId);
       widget.setVerificationId(verificationId);
     };
 
@@ -79,7 +66,6 @@ class _PhoneNumberEntryState extends State<PhoneNumberEntry> {
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
       );
     } catch (e) {
-      // showSnackbar("Failed to Verify Phone Number: $e");
       debugPrint(e.toString());
     }
   }

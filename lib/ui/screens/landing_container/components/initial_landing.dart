@@ -3,34 +3,97 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
+import 'package:superconnector_vm/ui/components/snack_bars/dark_snack_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InitialLanding extends StatefulWidget {
   const InitialLanding({
     Key? key,
-    required this.onButtonPress,
+    // required this.onButtonPress,
+    required this.setVerificationId,
   }) : super(key: key);
 
-  final Function onButtonPress;
+  // final Function onButtonPress;
+  final Function setVerificationId;
 
   @override
   _InitialLandingState createState() => _InitialLandingState();
 }
 
-class _InitialLandingState extends State<InitialLanding> {
+class _InitialLandingState extends State<InitialLanding>
+    with AutomaticKeepAliveClientMixin {
   final TextEditingController _phoneNumberController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isInputting = false;
   FocusNode _focusNode = FocusNode();
-  final Duration _animationDuration = Duration(milliseconds: 275);
+  final Duration _animationDuration = Duration(milliseconds: 330);
+
+  @override
+  bool get wantKeepAlive => true;
+
+  void _verifyPhoneNumber() async {
+    //Callback for when the user has already previously signed in with this phone number on this device
+    PhoneVerificationCompleted verificationCompleted =
+        (PhoneAuthCredential phoneAuthCredential) async {
+      await _auth.signInWithCredential(phoneAuthCredential);
+    };
+
+    //Listens for errors with verification, such as too many attempts
+    PhoneVerificationFailed verificationFailed =
+        (FirebaseAuthException authException) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        DarkSnackBar.createSnackBar(
+          text: 'Phone number verification failed.',
+        ),
+      );
+    };
+
+    //Callback for when the code is sent
+    PhoneCodeSent codeSent = (String verificationId, int? forceResendingToken) {
+      widget.setVerificationId(verificationId);
+    };
+
+    PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verificationId) {
+      widget.setVerificationId(verificationId);
+    };
+
+    try {
+      String formattedPhoneNumber = _phoneNumberController.text.replaceAll(
+        RegExp(r"\D"),
+        "",
+      );
+
+      await _auth.verifyPhoneNumber(
+        phoneNumber: '+1' + formattedPhoneNumber,
+        timeout: const Duration(seconds: 5),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout,
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
     return GestureDetector(
-      onTap: () => _focusNode.unfocus(),
+      onTap: () {
+        setState(() {
+          _isInputting = false;
+        });
+        Future.delayed(
+          Duration(milliseconds: 20),
+        ).then((value) {
+          _focusNode.unfocus();
+        });
+      },
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -43,6 +106,34 @@ class _InitialLandingState extends State<InitialLanding> {
         child: SafeArea(
           child: Stack(
             children: [
+              AnimatedPositioned(
+                curve: Curves.easeOut,
+                duration: Duration(milliseconds: 50),
+                bottom: MediaQuery.of(context).viewInsets.bottom +
+                    (_isInputting ? 0 : -100),
+                child: AnimatedOpacity(
+                  curve: Curves.easeIn,
+                  duration: _isInputting
+                      ? _animationDuration
+                      : Duration(milliseconds: 100),
+                  opacity: _isInputting ? 1 : 0,
+                  child: Container(
+                    width: size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32.0,
+                        vertical: 24.0,
+                      ),
+                      child: BarButton(
+                        textColor: ConstantColors.PRIMARY,
+                        backgroundColor: Colors.white,
+                        title: 'Continue',
+                        onPressed: _verifyPhoneNumber,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               Positioned(
                 top: 21.0,
                 child: AnimatedOpacity(
@@ -150,7 +241,6 @@ class _InitialLandingState extends State<InitialLanding> {
                           ),
                         ),
                       ),
-
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -196,26 +286,10 @@ class _InitialLandingState extends State<InitialLanding> {
                           ),
                         ),
                       ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 5.0),
-                      //   child: TermsAgreement(),
-                      // ),
                     ],
                   ),
                 ),
               ),
-              // GestureDetector(
-              //   onTap: () {
-              //     onButtonPress();
-              //   },
-              //   child: Padding(
-              //     padding: const EdgeInsets.symmetric(horizontal: 45.0),
-              //     child: Image.asset(
-              //       'assets/images/unauthenticated/passwordless-button.png',
-              //       width: double.infinity,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),

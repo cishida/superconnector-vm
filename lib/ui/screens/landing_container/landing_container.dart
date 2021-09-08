@@ -43,19 +43,22 @@ class _LandingContainerState extends State<LandingContainer> {
     List<Widget> pages = [];
     pages.add(
       InitialLanding(
-        onButtonPress: _goToNextPage,
-      ),
-    );
-
-    pages.add(
-      PhoneNumberEntry(
         setVerificationId: (String verificationId) {
           _verificationId = verificationId;
           _goToNextPage();
         },
-        goBack: _goToPreviousPage,
       ),
     );
+
+    // pages.add(
+    //   PhoneNumberEntry(
+    //     setVerificationId: (String verificationId) {
+    //       _verificationId = verificationId;
+    //       _goToNextPage();
+    //     },
+    //     goBack: _goToPreviousPage,
+    //   ),
+    // );
 
     pages.add(
       ConfirmationCodeEntry(
