@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:superconnector_vm/ui/screens/landing_container/components/confirmation_code_entry.dart';
 import 'package:superconnector_vm/ui/screens/landing_container/components/initial_landing.dart';
-import 'package:superconnector_vm/ui/screens/landing_container/components/phone_number_entry.dart';
 
 class LandingContainer extends StatefulWidget {
   LandingContainer({

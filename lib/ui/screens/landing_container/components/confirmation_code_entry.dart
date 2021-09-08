@@ -5,10 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
-import 'package:superconnector_vm/ui/components/go_back.dart';
 
 class ConfirmationCodeEntry extends StatefulWidget {
   const ConfirmationCodeEntry({

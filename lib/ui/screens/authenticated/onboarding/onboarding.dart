@@ -1,19 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
-import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
-import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/onboarding/components/onboarding_footer.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/onboarding/components/onboarding_info.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_background/onboarding_background.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_notifications/onboarding_notification.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_welcome/onboarding_welcome.dart';
 
@@ -127,9 +120,9 @@ class _OnboardingPagesState extends State<OnboardingPages> {
   //   initialPage: 0,
   // );
   double _currentIndex = 0;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // late List<Map<String, dynamic>> _onboardingPageMaps;
-  bool _attemptedSubmission = false;
+  // bool _attemptedSubmission = false;
 
   // List<Map<String, dynamic>> _getOnboardingPageMaps() {
   //   return [
@@ -219,8 +212,6 @@ class _OnboardingPagesState extends State<OnboardingPages> {
     if (superuser == null) {
       return Container();
     }
-
-    final Size size = MediaQuery.of(context).size;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,

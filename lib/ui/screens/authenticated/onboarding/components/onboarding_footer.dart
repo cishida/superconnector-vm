@@ -1,6 +1,5 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
 
 class OnboardingFooter extends StatelessWidget {
   const OnboardingFooter({

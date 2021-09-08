@@ -82,6 +82,8 @@ class _InitialLandingState extends State<InitialLanding>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final Size size = MediaQuery.of(context).size;
 
     return GestureDetector(

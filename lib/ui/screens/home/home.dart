@@ -10,7 +10,6 @@ import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
 import 'package:superconnector_vm/ui/components/buttons/new_connection_button.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
-import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/connection_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/connections_list.dart';
 import 'package:superconnector_vm/ui/screens/home/components/home_title_bar.dart';
