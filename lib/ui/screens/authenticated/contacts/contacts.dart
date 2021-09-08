@@ -152,7 +152,7 @@ class _ContactsState extends State<Contacts> {
               primaryActionTitle: 'Continue',
               primaryAction: () async {
                 String body =
-                    "Just added you to my family in Superconnector! Let's connect: https://www.superconnector.com/";
+                    "Just added you to my family in Superconnector! Let's connect: https://testflight.apple.com/join/KLePjsGB";
 
                 await SMSUtility.send(body, phoneNumbers);
                 Navigator.pop(context);
