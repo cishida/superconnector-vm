@@ -29,5 +29,17 @@ class ConstantStrings {
     'Uncle',
     'Grandmother',
     'Grandfather',
+    'Niece',
+    'Nephew',
+    'Grandmother',
+    'Grandfather',
+    'Granddaughter',
+    'Grandson',
+    'Stepmother',
+    'Stepfather',
+    'Stepbrother ',
+    'Stepsister',
+    'Stepson',
+    'Stepdaughter',
   ];
 }
