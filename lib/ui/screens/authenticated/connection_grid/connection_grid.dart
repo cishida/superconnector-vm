@@ -124,10 +124,14 @@ class _ConnectionGridState extends State<ConnectionGrid> {
 
     String nameText = '';
     if (_superusers.length + widget.connection.phoneNumberNameMap.length > 1) {
-      nameText =
-          (_superusers.length + widget.connection.phoneNumberNameMap.length)
-                  .toString() +
-              ' people';
+      if (widget.connection.tags[superuser.id] != null) {
+        nameText = widget.connection.tags[superuser.id]!;
+      } else {
+        nameText =
+            (_superusers.length + widget.connection.phoneNumberNameMap.length)
+                    .toString() +
+                ' people';
+      }
     } else if (_superusers.length > 0) {
       nameText = _superusers.first.fullName;
     } else if (widget.connection.phoneNumberNameMap.isNotEmpty) {
