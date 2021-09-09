@@ -92,9 +92,10 @@ class _RelationsState extends State<Relations> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    final List<String> addedItems = ['Custom'];
+    final List<String> tags = ['Custom'];
+    tags.addAll(ConstantStrings.FAMILY_RELATIONS);
     if (widget.connection == null) {
-      addedItems.add('Group');
+      tags.add('Group');
     }
 
     return Scaffold(
@@ -152,27 +153,23 @@ class _RelationsState extends State<Relations> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount:
-                    ConstantStrings.FAMILY_RELATIONS.length + addedItems.length,
+                itemCount: tags.length,
                 itemBuilder: (context, index) {
-                  final List<String> relations =
-                      ConstantStrings.FAMILY_RELATIONS + addedItems;
                   return GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      if (relations[index] == 'Custom' ||
-                          relations[index] == 'Group') {
+                      if (tags[index] == 'Custom' || tags[index] == 'Group') {
                         _onCustom(
-                          relations[index],
+                          tags[index],
                         );
                       } else {
                         _toContacts(
-                          tag: relations[index],
+                          tag: tags[index],
                         );
                       }
                     },
                     child: RelationTile(
-                      relation: relations[index],
+                      relation: tags[index],
                     ),
                   );
                 },
