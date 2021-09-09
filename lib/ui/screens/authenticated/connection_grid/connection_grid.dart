@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -197,9 +199,12 @@ class _ConnectionGridState extends State<ConnectionGrid> {
                           ),
                         Container(
                           width: size.width,
-                          height: size.height -
-                              55 -
-                              MediaQuery.of(context).padding.top,
+                          height: max(
+                              size.height -
+                                  55 -
+                                  MediaQuery.of(context).padding.top -
+                                  (itemHeight * (videos.length / 3).ceil()),
+                              300),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 30.0, vertical: 38.0),
                           decoration: BoxDecoration(
