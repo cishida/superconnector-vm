@@ -222,6 +222,7 @@ class _ConnectionTileState extends State<ConnectionTile>
     return StreamProvider<List<Video>>.value(
       value: _videoService.getConnectionVideoStream(
         widget.connection.id,
+        limit: 5,
       ),
       initialData: [],
       child: Consumer<List<Video>>(

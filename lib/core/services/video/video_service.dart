@@ -34,12 +34,22 @@ class VideoService {
   // }
 
   // Get connection video stream
-  Stream<List<Video>>? getConnectionVideoStream(String connectionId) {
-    return videoCollection
-        .where('connectionId', isEqualTo: connectionId)
-        .orderBy('created', descending: true)
-        .snapshots()
-        .map(_videoListFromSnapshot);
+  Stream<List<Video>>? getConnectionVideoStream(
+    String connectionId, {
+    int? limit,
+  }) {
+    Query query;
+    if (limit == null) {
+      query = videoCollection
+          .where('connectionId', isEqualTo: connectionId)
+          .orderBy('created', descending: true);
+    } else {
+      query = videoCollection
+          .where('connectionId', isEqualTo: connectionId)
+          .orderBy('created', descending: true)
+          .limit(limit);
+    }
+    return query.snapshots().map(_videoListFromSnapshot);
   }
 
   Future<Video?> getVideo(String videoId) async {
