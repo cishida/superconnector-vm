@@ -237,7 +237,7 @@ class _InitialLandingState extends State<InitialLanding>
                           child: Text(
                             'MOBILE NUMBER *',
                             style: TextStyle(
-                              fontSize: 16.0,
+                              fontSize: 12.0,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                             ),

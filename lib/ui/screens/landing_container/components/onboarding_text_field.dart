@@ -27,7 +27,7 @@ class LandingTextField extends StatelessWidget {
     );
 
     TextStyle textFieldStyle = TextStyle(
-      color: Colors.black.withOpacity(.4),
+      color: Colors.black.withOpacity(.6),
       fontWeight: FontWeight.w600,
       fontSize: 17.0,
       // backgroundColor: ConstantColors.SECONDARY,
@@ -49,7 +49,9 @@ class LandingTextField extends StatelessWidget {
           ],
           decoration: InputDecoration(
             labelText: 'Mobile Number *',
-            labelStyle: textFieldStyle,
+            labelStyle: textFieldStyle.copyWith(
+              fontSize: 12.0,
+            ),
             floatingLabelBehavior: FloatingLabelBehavior.never,
             isDense: true,
             contentPadding: EdgeInsets.fromLTRB(
@@ -77,13 +79,13 @@ class LandingTextField extends StatelessWidget {
         ),
         Positioned(
           left: 21.0,
-          top: 17.0,
+          top: 15,
           child: Text(
             '+1',
             style: TextStyle(
               fontSize: 17.0,
               fontWeight: FontWeight.w600,
-              color: Colors.black.withOpacity(.4),
+              color: Colors.black.withOpacity(.6),
             ),
           ),
         ),
