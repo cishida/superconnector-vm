@@ -186,7 +186,7 @@ class _InitialLandingState extends State<InitialLanding>
                           ),
                         ),
                         Text(
-                          'Connect with your family',
+                          'Share videos with family',
                           style: TextStyle(
                             fontSize: 24.0,
                             color: Colors.white.withOpacity(.7),
@@ -318,10 +318,11 @@ class TermsAgreement extends StatelessWidget {
         ),
         children: [
           TextSpan(
-            text: 'By signing in you agree to our ',
+            text: 'By entering you agree to our ',
             style: TextStyle(
               fontSize: 16,
               color: Colors.white,
+              fontFamily: 'SourceSansPro',
             ),
           ),
           TextSpan(
@@ -330,6 +331,7 @@ class TermsAgreement extends StatelessWidget {
               fontSize: 16,
               color: Colors.white,
               decoration: TextDecoration.underline,
+              fontFamily: 'SourceSansPro',
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () async {
@@ -342,10 +344,11 @@ class TermsAgreement extends StatelessWidget {
               },
           ),
           TextSpan(
-            text: ' &\n',
+            text: ' & ',
             style: TextStyle(
               fontSize: 16,
               color: Colors.white,
+              fontFamily: 'SourceSansPro',
             ),
           ),
           TextSpan(
@@ -354,6 +357,7 @@ class TermsAgreement extends StatelessWidget {
               fontSize: 16,
               color: Colors.white,
               decoration: TextDecoration.underline,
+              fontFamily: 'SourceSansPro',
             ),
             recognizer: TapGestureRecognizer()
               ..onTap = () async {
