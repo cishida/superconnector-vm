@@ -42,28 +42,23 @@ class OnboardingNotifications extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 28.0,
+                height: 30.0,
               ),
               Container(
                 width: size.width,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 65.0,
-                  ),
-                  child: BarButton(
-                    textColor: ConstantColors.PRIMARY,
-                    backgroundColor: Colors.white,
-                    title: 'Turn On Notifications',
-                    onPressed: () async {
-                      await FirebaseMessaging.instance.requestPermission(
-                        alert: true,
-                        badge: true,
-                        provisional: false,
-                        sound: true,
-                      );
-                      next();
-                    },
-                  ),
+                child: BarButton(
+                  textColor: ConstantColors.PRIMARY,
+                  backgroundColor: Colors.white,
+                  title: 'Turn On Notifications',
+                  onPressed: () async {
+                    await FirebaseMessaging.instance.requestPermission(
+                      alert: true,
+                      badge: true,
+                      provisional: false,
+                      sound: true,
+                    );
+                    next();
+                  },
                 ),
               ),
             ],
