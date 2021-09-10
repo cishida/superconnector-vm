@@ -26,7 +26,7 @@ class SearchBar extends StatelessWidget {
       autofocus: shouldAutofocus,
       autocorrect: false,
       enabled: enabled,
-      keyboardAppearance: Brightness.dark,
+      keyboardAppearance: Brightness.light,
       style: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.normal,
@@ -63,6 +63,7 @@ class SearchBar extends StatelessWidget {
             ),
             child: Image.asset(
               'assets/images/authenticated/search-icon-gray.png',
+              color: Colors.white.withOpacity(.6),
               height: 18,
               width: 18,
             ),
