@@ -141,7 +141,7 @@ class _RelationsState extends State<Relations> {
                       top: 5.0,
                     ),
                     child: Text(
-                      'Choose your family relation',
+                      'Choose your family relation.',
                       style: Theme.of(context).textTheme.bodyText1!,
                     ),
                   ),
