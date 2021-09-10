@@ -53,7 +53,7 @@ class RecordBottomNav extends StatelessWidget {
                         color: ConstantColors.TURQUOISE,
                       ),
                       child: Text(
-                        'Send VM',
+                        'Send Video',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: ConstantColors.DARK_BLUE,
@@ -63,7 +63,7 @@ class RecordBottomNav extends StatelessWidget {
                       ),
                     )
                   : Text(
-                      'Send VM',
+                      'Send Video',
                       style: bottomNavStyle,
                     ),
             ),

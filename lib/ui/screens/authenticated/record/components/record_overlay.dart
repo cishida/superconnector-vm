@@ -159,12 +159,12 @@ class _RecordOverlayState extends State<RecordOverlay> {
             ),
             child: Column(
               children: [
-                CameraIcon(
-                  title: 'Flip',
-                  imageName:
-                      'assets/images/authenticated/record/camera-flip-icon.png',
-                  onPress: () {},
-                ),
+                // CameraIcon(
+                //   title: 'Flip',
+                //   imageName:
+                //       'assets/images/authenticated/record/camera-flip-icon.png',
+                //   onPress: () {},
+                // ),
                 // CameraIcon(
                 //   title: 'Attach',
                 //   imageName:
