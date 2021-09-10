@@ -155,23 +155,21 @@ class _RelationsState extends State<Relations> {
               child: ListView.builder(
                 itemCount: tags.length,
                 itemBuilder: (context, index) {
-                  return GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      if (tags[index] == 'Custom' || tags[index] == 'Group') {
-                        _onCustom(
-                          tags[index],
-                        );
-                      } else {
-                        _toContacts(
-                          tag: tags[index],
-                        );
-                      }
-                    },
-                    child: RelationTile(
+                  if (tags[index] == 'Custom' || tags[index] == 'Group') {
+                    return RelationTile(
                       relation: tags[index],
-                    ),
-                  );
+                      onPress: () => _onCustom(
+                        tags[index],
+                      ),
+                    );
+                  } else {
+                    return RelationTile(
+                      relation: tags[index],
+                      onPress: () => _toContacts(
+                        tag: tags[index],
+                      ),
+                    );
+                  }
                 },
               ),
             ),
