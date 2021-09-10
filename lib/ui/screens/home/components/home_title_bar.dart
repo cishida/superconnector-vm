@@ -150,10 +150,16 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      SuperNavigator.push(
-                        context: context,
-                        widget: Account(),
-                        fullScreen: false,
+                      // SuperNavigator.push(
+                      //   context: context,
+                      //   widget: Account(),
+                      //   fullScreen: false,
+                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Account(),
+                        ),
                       );
                     },
                     child: Padding(
