@@ -49,9 +49,7 @@ class LandingTextField extends StatelessWidget {
           ],
           decoration: InputDecoration(
             labelText: 'Mobile Number *',
-            labelStyle: textFieldStyle.copyWith(
-              fontSize: 12.0,
-            ),
+            labelStyle: textFieldStyle,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             isDense: true,
             contentPadding: EdgeInsets.fromLTRB(
