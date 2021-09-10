@@ -115,7 +115,7 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
                     ? Padding(
                         padding: const EdgeInsets.only(bottom: 11.0),
                         child: Text(
-                          'Profile Picture',
+                          'PROFILE PICTURE',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,
