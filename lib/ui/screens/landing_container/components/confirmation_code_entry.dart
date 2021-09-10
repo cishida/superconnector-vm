@@ -167,6 +167,7 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
                       obscureText: false,
                       animationType: AnimationType.fade,
                       keyboardType: TextInputType.phone,
+                      keyboardAppearance: Brightness.light,
                       autoFocus: true,
                       textStyle: TextStyle(
                         fontSize: 32.0,
