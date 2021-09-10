@@ -34,7 +34,7 @@ class _SuperDialogState extends State<SuperDialog>
   void initState() {
     super.initState();
     controller = AnimationController(
-        duration: Duration(milliseconds: widget.shouldAnimate ? 200 : 0),
+        duration: Duration(milliseconds: widget.shouldAnimate ? 175 : 0),
         vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
 
