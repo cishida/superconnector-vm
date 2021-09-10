@@ -300,9 +300,9 @@ class _ConnectionTileState extends State<ConnectionTile>
                               //   ),
                               // ),
                               widget.connection.isExampleConversation
-                                  ? 'Parent'
+                                  ? 'Tap to try features'
                                   : (videos.length == 0
-                                      ? 'Send a welcome message'
+                                      ? 'Send a welcome video'
                                       : (widget.connection.tags[superuser.id] ??
                                               'Choose your family relation')
                                           .toString()),

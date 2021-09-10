@@ -33,7 +33,7 @@ class ConnectionSearchBar extends StatelessWidget {
       autofocus: false,
       autocorrect: false,
       enabled: true,
-      keyboardAppearance: Brightness.dark,
+      keyboardAppearance: Brightness.light,
       style: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w600,
