@@ -41,5 +41,11 @@ class ConstantStrings {
     'Stepsister',
     'Stepson',
     'Stepdaughter',
+    'Mother-in-law',
+    'Father-in-law',
+    'Son-in-law',
+    'Daughter-in-law',
+    'Brother-in-law',
+    'Sister-in-law',
   ];
 }
