@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection_search_term.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/account.dart';
 import 'package:superconnector_vm/ui/screens/home/components/connection_search_bar.dart';

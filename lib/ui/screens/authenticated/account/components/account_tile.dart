@@ -6,11 +6,13 @@ class AccountTile extends StatefulWidget {
     Key? key,
     required this.title,
     this.subtitle,
+    this.showChevron = true,
     required this.onPress,
   }) : super(key: key);
 
   final String title;
   final String? subtitle;
+  final bool showChevron;
   final Function onPress;
 
   @override
@@ -83,6 +85,11 @@ class _AccountTileState extends State<AccountTile> {
                         ],
                       ),
                       Spacer(),
+                      if (widget.showChevron)
+                        Image.asset(
+                          'assets/images/authenticated/account-chevron-right.png',
+                          width: 7.0,
+                        ),
                     ],
                   ),
                 ),

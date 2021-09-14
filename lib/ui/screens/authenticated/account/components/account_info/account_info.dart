@@ -133,11 +133,13 @@ class _AccountInfoState extends State<AccountInfo> {
                   AccountTile(
                     title: 'FULL NAME',
                     subtitle: superuser.fullName,
+                    showChevron: false,
                     onPress: () {},
                   ),
                   AccountTile(
                     title: 'MOBILE PHONE',
                     subtitle: _formatPhone(superuser.phoneNumber),
+                    showChevron: false,
                     onPress: () {},
                   ),
                   AccountTile(
