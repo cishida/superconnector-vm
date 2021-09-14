@@ -1,6 +1,7 @@
 import 'package:better_player/better_player.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
@@ -168,31 +169,34 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
       }
     });
 
-    return Stack(
-      children: [
-        LayoutBuilder(
-          builder: (context, constraints) {
-            return Transform.scale(
-              scale: aspectRatio! / (size.width / size.height),
-              child: BetterPlayerMultipleGestureDetector(
-                onTap: () {
-                  _videoPlayerHelper.toggleVideo(_betterPlayerController);
-                },
-                child: BetterPlayer(
-                  controller: _betterPlayerController,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Stack(
+        children: [
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return Transform.scale(
+                scale: aspectRatio! / (size.width / size.height),
+                child: BetterPlayerMultipleGestureDetector(
+                  onTap: () {
+                    _videoPlayerHelper.toggleVideo(_betterPlayerController);
+                  },
+                  child: BetterPlayer(
+                    controller: _betterPlayerController,
+                  ),
                 ),
-              ),
-            );
-          },
-        ),
-        if (_videoSuperuser != null)
-          VideoMetaData(
-            video: widget.video,
-            superuser: _videoSuperuser!,
-            duration: _duration,
-            position: _position,
+              );
+            },
           ),
-      ],
+          if (_videoSuperuser != null)
+            VideoMetaData(
+              video: widget.video,
+              superuser: _videoSuperuser!,
+              duration: _duration,
+              position: _position,
+            ),
+        ],
+      ),
     );
   }
 }
