@@ -25,6 +25,8 @@ class _AccountTileState extends State<AccountTile> {
   @override
   Widget build(BuildContext context) {
     double tileHeight = widget.subtitle != null ? 90.0 : 65.0;
+    Size size = MediaQuery.of(context).size;
+    if (widget.subtitle != null) print(widget.subtitle!.length);
 
     return InkWell(
       onTap: () {
@@ -48,6 +50,7 @@ class _AccountTileState extends State<AccountTile> {
         children: [
           Container(
             height: tileHeight,
+            width: size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -75,9 +78,13 @@ class _AccountTileState extends State<AccountTile> {
                               padding: const EdgeInsets.only(top: 10.0),
                               child: Text(
                                 widget.subtitle!,
+                                textAlign: TextAlign.left,
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 16.0,
+                                  fontSize: widget.subtitle!.length > 50 &&
+                                          size.width < 400
+                                      ? 14.0
+                                      : 16.0,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
