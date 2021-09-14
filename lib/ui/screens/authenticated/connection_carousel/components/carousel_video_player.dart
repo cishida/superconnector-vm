@@ -149,6 +149,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     var aspectRatio = _betterPlayerController.getAspectRatio();
+    Size size = MediaQuery.of(context).size;
 
     Superuser? superuser = Provider.of<Superuser?>(context);
 
@@ -167,36 +168,31 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
       }
     });
 
-    return Container(
-      color: Colors.blue,
-      child: Stack(
-        children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return Transform.scale(
-                scale: aspectRatio! /
-                    (constraints.maxWidth / (constraints.maxHeight)),
-                child: BetterPlayerMultipleGestureDetector(
-                  onTap: () {
-                    print('test');
-                    _videoPlayerHelper.toggleVideo(_betterPlayerController);
-                  },
-                  child: BetterPlayer(
-                    controller: _betterPlayerController,
-                  ),
+    return Stack(
+      children: [
+        LayoutBuilder(
+          builder: (context, constraints) {
+            return Transform.scale(
+              scale: aspectRatio! / (size.width / size.height),
+              child: BetterPlayerMultipleGestureDetector(
+                onTap: () {
+                  _videoPlayerHelper.toggleVideo(_betterPlayerController);
+                },
+                child: BetterPlayer(
+                  controller: _betterPlayerController,
                 ),
-              );
-            },
+              ),
+            );
+          },
+        ),
+        if (_videoSuperuser != null)
+          VideoMetaData(
+            video: widget.video,
+            superuser: _videoSuperuser!,
+            duration: _duration,
+            position: _position,
           ),
-          if (_videoSuperuser != null)
-            VideoMetaData(
-              video: widget.video,
-              superuser: _videoSuperuser!,
-              duration: _duration,
-              position: _position,
-            ),
-        ],
-      ),
+      ],
     );
   }
 }
