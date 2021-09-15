@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:better_player/better_player.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -168,25 +170,35 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
         await superuser.update();
       }
     });
+    print(window.viewPadding);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Stack(
         children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              return Transform.scale(
-                scale: aspectRatio! / (size.width / size.height),
-                child: BetterPlayerMultipleGestureDetector(
-                  onTap: () {
-                    _videoPlayerHelper.toggleVideo(_betterPlayerController);
-                  },
-                  child: BetterPlayer(
-                    controller: _betterPlayerController,
+          Positioned.fill(
+            left: 0.0,
+            right: 0.0,
+            top: 0.0,
+            bottom: 0.0,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Transform.scale(
+                  scale: aspectRatio! /
+                      (window.viewPadding.top > 50
+                          ? constraints.maxWidth / (constraints.maxHeight)
+                          : size.width / size.height),
+                  child: BetterPlayerMultipleGestureDetector(
+                    onTap: () {
+                      _videoPlayerHelper.toggleVideo(_betterPlayerController);
+                    },
+                    child: BetterPlayer(
+                      controller: _betterPlayerController,
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
           if (_videoSuperuser != null)
             VideoMetaData(

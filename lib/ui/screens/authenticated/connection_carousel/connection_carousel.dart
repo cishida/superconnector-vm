@@ -46,25 +46,31 @@ class _ConnectionCarouselState extends State<ConnectionCarousel> {
       backgroundColor: ConstantColors.DARK_BLUE,
       body: Stack(
         children: [
-          CarouselSlider(
-            options: CarouselOptions(
-              height: double.infinity,
-              viewportFraction: 1.0,
-              scrollDirection: Axis.vertical,
-              enableInfiniteScroll: false,
-              initialPage: widget.initialIndex,
+          Positioned(
+            top: 0.0,
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: double.infinity,
+                viewportFraction: 1.0,
+                scrollDirection: Axis.vertical,
+                enableInfiniteScroll: false,
+                initialPage: widget.initialIndex,
+              ),
+              items: widget.videos.map(
+                (video) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return CarouselVideoPlayer(
+                        video: video,
+                      );
+                    },
+                  );
+                },
+              ).toList(),
             ),
-            items: widget.videos.map(
-              (video) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return CarouselVideoPlayer(
-                      video: video,
-                    );
-                  },
-                );
-              },
-            ).toList(),
           ),
           Positioned(
             top: 50.0,
