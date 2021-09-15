@@ -75,7 +75,7 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
         displayName: user.displayName ?? '',
         phoneNumber: phoneNumber,
         photoUrl: photoUrl,
-        homeOnboardingStage: HomeOnboardingStage.connections,
+        homeOnboardingStage: HomeOnboardingStage.connect,
         unseenNotificationCount: 1,
         created: DateTime.now(),
       );

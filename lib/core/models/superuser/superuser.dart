@@ -22,11 +22,11 @@ enum HomeOnboardingStage {
 extension HomeOnboardingStageExtension on HomeOnboardingStage {
   static HomeOnboardingStage fromString(String string) {
     switch (string) {
-      case 'connections':
+      case 'connect':
         return HomeOnboardingStage.connect;
-      case 'contacts':
+      case 'connections':
         return HomeOnboardingStage.connections;
-      case 'settings':
+      case 'search':
         return HomeOnboardingStage.search;
       case 'completed':
         return HomeOnboardingStage.completed;
