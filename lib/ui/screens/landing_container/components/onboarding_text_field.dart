@@ -45,7 +45,7 @@ class LandingTextField extends StatelessWidget {
           keyboardAppearance: Brightness.light,
           keyboardType: TextInputType.phone,
           inputFormatters: [
-            MaskedInputFormatter('(###) ###-####'),
+            MaskedInputFormatter('(###)###-####'),
           ],
           decoration: InputDecoration(
             labelText: 'Mobile Number *',
