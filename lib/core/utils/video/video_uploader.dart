@@ -8,8 +8,8 @@ class VideoUploader {
     String basicAuth = 'Basic ' +
         base64Encode(
           utf8.encode(
-            '${dotenv.env['MUX_TOKEN_ID_DEV']}:${dotenv.env['MUX_TOKEN_SECRET_DEV']}',
-            // '${dotenv.env['MUX_TOKEN_ID_PROD']}:${dotenv.env['MUX_TOKEN_SECRET_PROD']}',
+            // '${dotenv.env['MUX_TOKEN_ID_DEV']}:${dotenv.env['MUX_TOKEN_SECRET_DEV']}',
+            '${dotenv.env['MUX_TOKEN_ID_PROD']}:${dotenv.env['MUX_TOKEN_SECRET_PROD']}',
           ),
         );
     Map<String, String> headers = {

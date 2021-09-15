@@ -162,39 +162,42 @@ class _InitialLandingState extends State<InitialLanding>
                 child: AnimatedOpacity(
                   opacity: _isInputting ? 0 : 1,
                   duration: _animationDuration,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          'assets/images/unauthenticated/superconnector-icon-white.png',
-                          width: 70,
-                          height: 70,
-                        ),
-                        SizedBox(
-                          height: 7.0,
-                        ),
-                        Text(
-                          'Superconnector',
-                          style: TextStyle(
-                            fontSize: 36.0,
-                            color: Colors.white.withOpacity(.8),
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'SourceSerifPro',
-                            letterSpacing: -.85,
+                  child: Container(
+                    width: size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            'assets/images/unauthenticated/superconnector-icon-white.png',
+                            width: 70,
+                            height: 70,
                           ),
-                        ),
-                        Text(
-                          'Share videos with family',
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            color: Colors.white.withOpacity(.7),
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: .15,
+                          SizedBox(
+                            height: 7.0,
                           ),
-                        ),
-                      ],
+                          Text(
+                            'Superconnector',
+                            style: TextStyle(
+                              fontSize: 36.0,
+                              color: Colors.white.withOpacity(.8),
+                              fontWeight: FontWeight.w900,
+                              fontFamily: 'SourceSerifPro',
+                              letterSpacing: -.85,
+                            ),
+                          ),
+                          Text(
+                            'A video sharing app for family',
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              color: Colors.white.withOpacity(.7),
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: .15,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

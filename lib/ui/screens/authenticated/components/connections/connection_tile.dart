@@ -300,7 +300,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                               //   ),
                               // ),
                               widget.connection.isExampleConversation
-                                  ? 'Tap to try features'
+                                  ? 'Tap to try video sharing'
                                   : (videos.length == 0
                                       ? 'Send a welcome video'
                                       : (widget.connection.tags[superuser.id] ??

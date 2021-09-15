@@ -9,6 +9,7 @@ import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/services/video/video_service.dart';
 import 'package:superconnector_vm/core/utils/block/block_utility.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
 import 'package:superconnector_vm/ui/components/buttons/new_connection_button.dart';
@@ -145,9 +146,11 @@ class _ConnectionGridState extends State<ConnectionGrid> {
       child: Scaffold(
         extendBody: true,
         extendBodyBehindAppBar: true,
-        // backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar(),
+        appBar: CustomAppBar(
+          backgroundColor: ConstantColors.OFF_WHITE,
+        ),
         floatingActionButton: NewConnectionButton(
           isInverted: true,
           onPressed: () {
@@ -212,7 +215,10 @@ class _ConnectionGridState extends State<ConnectionGrid> {
                                   (itemHeight * (videos.length / 3).ceil()),
                               300),
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 38.0),
+                            horizontal: 30.0,
+                            vertical: 38.0,
+                          ),
+                          margin: const EdgeInsets.only(top: 1.0),
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               fit: BoxFit.cover,
@@ -236,7 +242,7 @@ class _ConnectionGridState extends State<ConnectionGrid> {
                                 height: 12,
                               ),
                               Text(
-                                'Your video history saves all the videos you share with each other. ',
+                                'This helps you browse all the videos you’ve shared with each other.',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
