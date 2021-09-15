@@ -1,5 +1,5 @@
 name: superconnector_vm
-description: Video Messaging.
+description: Video Sharing.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 0.7.0+149
+version: 0.8.0+155
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -25,25 +25,24 @@ dependencies:
     sdk: flutter
 
   # Firebase
-  firebase_core: ^1.1.1
-  firebase_auth: ^1.1.4
-  cloud_firestore: ^1.0.7
-  firebase_storage: ^8.0.5
+  firebase_core: ^1.6.0
+  firebase_auth: ^3.1.1
+  cloud_firestore: ^2.5.2
+  firebase_storage: ^10.0.3
   firebase_messaging: ^10.0.5
   firebase_analytics: ^8.0.3
-  cloud_functions: ^1.0.7
+  cloud_functions: ^3.0.3
 
   # State / models
-  provider: ^5.0.0
-  json_serializable: ^4.1.1
+  provider: ^6.0.0
+  json_serializable: ^5.0.0
 
   # Phone ops
-  sms_autofill: ^2.0.0
   permission_handler: ^8.1.2
   # notification_permissions: ^0.5.0
   contacts_service: ^0.6.1
   app_settings: ^4.1.1
-  camera: ^0.8.1+5
+  camera: ^0.9.3
   # video_player: ^2.1.12
   better_player: ^0.0.72
   path_provider: ^2.0.2
@@ -52,10 +51,15 @@ dependencies:
   cached_network_image: ^3.1.0
   visibility_detector: ^0.2.0
   url_launcher: ^6.0.9
-  flutter_app_badger: ^1.2.0
+  # flutter_app_badger: ^1.2.0
   holding_gesture: ^1.1.0
   flutter_sms: ^2.3.1
   video_thumbnail: ^0.4.3
+
+  flutter_app_badger:
+    git:
+      url: https://github.com/SuaMusica/flutter_app_badger.git
+      ref: feature/androidV2
 
   # UI
   grouped_list: ^4.1.0

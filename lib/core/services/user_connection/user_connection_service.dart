@@ -14,7 +14,10 @@ class UserConnectionService {
   // UserConnections list from snapshot
   List<UserConnection> _userConnectionListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return UserConnection.fromJson(doc.id, doc.data());
+      return UserConnection.fromJson(
+        doc.id,
+        doc.data() as Map<String, dynamic>,
+      );
     }).toList();
   }
 

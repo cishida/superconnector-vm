@@ -210,7 +210,7 @@ class ConnectionService {
     if (snapshot.exists && data != null) {
       return Connection.fromJson(
         snapshot.id,
-        Map<String, dynamic>.from(data),
+        Map<String, dynamic>.from(data as Map<String, dynamic>),
       );
     } else {
       return null;
@@ -246,7 +246,7 @@ class ConnectionService {
     if (snapshot.exists && data != null) {
       return Connection.fromJson(
         id,
-        data,
+        data as Map<String, dynamic>,
       );
     } else {
       return null;
@@ -256,7 +256,10 @@ class ConnectionService {
   // Connections list from snapshot
   List<Connection> _connectionListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return Connection.fromJson(doc.id, doc.data());
+      return Connection.fromJson(
+        doc.id,
+        doc.data() as Map<String, dynamic>,
+      );
     }).toList();
   }
 

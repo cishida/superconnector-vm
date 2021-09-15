@@ -19,7 +19,10 @@ class VideoService {
   // Superuser video list from snapshot
   List<Video> _videoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return Video.fromJson(doc.id, doc.data());
+      return Video.fromJson(
+        doc.id,
+        doc.data() as Map<String, dynamic>,
+      );
     }).toList();
   }
 
@@ -59,7 +62,7 @@ class VideoService {
     if (snapshot.exists && data != null) {
       return Video.fromJson(
         snapshot.id,
-        data,
+        data as Map<String, dynamic>,
       );
     } else {
       return null;

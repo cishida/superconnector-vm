@@ -83,7 +83,7 @@ class SupercontactService {
     if (snapshot.exists && data != null) {
       return Supercontact.fromJson(
         id,
-        data,
+        data as Map<String, dynamic>,
       );
     } else {
       return null;
@@ -93,7 +93,10 @@ class SupercontactService {
   // Supercontacts list from snapshot
   List<Supercontact> _supercontactListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      Supercontact supercontact = Supercontact.fromJson(doc.id, doc.data());
+      Supercontact supercontact = Supercontact.fromJson(
+        doc.id,
+        doc.data() as Map<String, dynamic>,
+      );
       // supercontact.setUser();
       return supercontact;
     }).toList();

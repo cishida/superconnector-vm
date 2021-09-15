@@ -33,7 +33,7 @@ class SuperuserService {
     if (snapshot.exists && data != null) {
       return Superuser.fromJson(
         snapshot.id,
-        Map<String, dynamic>.from(data),
+        Map<String, dynamic>.from(data as Map<String, dynamic>),
       );
     } else {
       return null;
@@ -69,7 +69,7 @@ class SuperuserService {
     if (snapshot.exists && data != null) {
       return Superuser.fromJson(
         id,
-        data,
+        data as Map<String, dynamic>,
       );
     } else {
       return null;
@@ -86,7 +86,7 @@ class SuperuserService {
       final data = snapshot.docs.first.data();
       return Superuser.fromJson(
         snapshot.docs.first.id,
-        data,
+        data as Map<String, dynamic>,
       );
     }
     return null;
@@ -95,7 +95,10 @@ class SuperuserService {
   // Superusers list from snapshot
   List<Superuser> _superuserListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return Superuser.fromJson(doc.id, doc.data());
+      return Superuser.fromJson(
+        doc.id,
+        doc.data() as Map<String, dynamic>,
+      );
     }).toList();
   }
 
@@ -134,7 +137,12 @@ class SuperuserService {
         .get();
 
     videoSnap.docs.forEach((videoDoc) {
-      videos.add(Video.fromJson(videoDoc.id, videoDoc.data()));
+      videos.add(
+        Video.fromJson(
+          videoDoc.id,
+          videoDoc.data() as Map<String, dynamic>,
+        ),
+      );
     });
 
     videos = BlockUtility.unblockedVideos(superuser: superuser, videos: videos);
