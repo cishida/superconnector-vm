@@ -26,7 +26,6 @@ class _AccountTileState extends State<AccountTile> {
   Widget build(BuildContext context) {
     double tileHeight = widget.subtitle != null ? 90.0 : 65.0;
     Size size = MediaQuery.of(context).size;
-    if (widget.subtitle != null) print(widget.subtitle!.length);
 
     return InkWell(
       onTap: () {

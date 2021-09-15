@@ -27,13 +27,13 @@ class _VideoGridTileState extends State<VideoGridTile> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.black,
-        borderRadius: BorderRadius.circular(3.0),
+        // borderRadius: BorderRadius.circular(3.0),
       ),
       child: Stack(
         children: [
           Positioned.fill(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(3.0),
+              // borderRadius: BorderRadius.circular(3.0),
               child: widget.video.playbackIds.length > 0
                   ? Image(
                       fit: BoxFit.fitWidth,
