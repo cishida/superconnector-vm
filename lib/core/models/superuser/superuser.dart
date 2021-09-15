@@ -15,7 +15,7 @@ class SuperFirebaseUser {
 enum HomeOnboardingStage {
   connect,
   connections,
-  search,
+  // search,
   completed,
 }
 
@@ -26,8 +26,8 @@ extension HomeOnboardingStageExtension on HomeOnboardingStage {
         return HomeOnboardingStage.connect;
       case 'connections':
         return HomeOnboardingStage.connections;
-      case 'search':
-        return HomeOnboardingStage.search;
+      // case 'search':
+      //   return HomeOnboardingStage.search;
       case 'completed':
         return HomeOnboardingStage.completed;
       default:

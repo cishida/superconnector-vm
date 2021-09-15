@@ -6,36 +6,34 @@ part of 'superuser.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Superuser _$SuperuserFromJson(Map<String, dynamic> json) {
-  return Superuser(
-    phoneNumber: json['phoneNumber'] as String? ?? '',
-    displayName: json['displayName'] as String? ?? '',
-    fullName: json['fullName'] as String? ?? '',
-    photoUrl: json['photoUrl'] as String? ?? '',
-    socialLinks: (json['socialLinks'] as Map<String, dynamic>?)?.map(
-          (k, e) => MapEntry(k, e as String),
-        ) ??
-        {},
-    fcmTokens: (json['fcmTokens'] as List<dynamic>?)
-            ?.map((e) => e as String)
-            .toList() ??
-        [],
-    unseenNotificationCount: json['unseenNotificationCount'] as int? ?? 0,
-    numContacts: json['numContacts'] as int? ?? 0,
-    blockedUsers: (json['blockedUsers'] as Map<String, dynamic>?)?.map(
-          (k, e) => MapEntry(k, DateTime.parse(e as String)),
-        ) ??
-        {},
-    onboarded: json['onboarded'] as bool? ?? false,
-    homeOnboardingStage: _$enumDecodeNullable(
-            _$HomeOnboardingStageEnumMap, json['homeOnboardingStage']) ??
-        HomeOnboardingStage.completed,
-    videoPlayerOnboarding: json['videoPlayerOnboarding'] as bool? ?? false,
-    recordOnboarding: json['recordOnboarding'] as bool? ?? false,
-    contactsOnboarding: json['contactsOnboarding'] as bool? ?? false,
-    created: Superuser._dateTimeFromTimestamp(json['created'] as Timestamp),
-  );
-}
+Superuser _$SuperuserFromJson(Map<String, dynamic> json) => Superuser(
+      phoneNumber: json['phoneNumber'] as String? ?? '',
+      displayName: json['displayName'] as String? ?? '',
+      fullName: json['fullName'] as String? ?? '',
+      photoUrl: json['photoUrl'] as String? ?? '',
+      socialLinks: (json['socialLinks'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, e as String),
+          ) ??
+          {},
+      fcmTokens: (json['fcmTokens'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      unseenNotificationCount: json['unseenNotificationCount'] as int? ?? 0,
+      numContacts: json['numContacts'] as int? ?? 0,
+      blockedUsers: (json['blockedUsers'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, DateTime.parse(e as String)),
+          ) ??
+          {},
+      onboarded: json['onboarded'] as bool? ?? false,
+      homeOnboardingStage: _$enumDecodeNullable(
+              _$HomeOnboardingStageEnumMap, json['homeOnboardingStage']) ??
+          HomeOnboardingStage.completed,
+      videoPlayerOnboarding: json['videoPlayerOnboarding'] as bool? ?? false,
+      recordOnboarding: json['recordOnboarding'] as bool? ?? false,
+      contactsOnboarding: json['contactsOnboarding'] as bool? ?? false,
+      created: Superuser._dateTimeFromTimestamp(json['created'] as Timestamp),
+    );
 
 Map<String, dynamic> _$SuperuserToJson(Superuser instance) => <String, dynamic>{
       'phoneNumber': instance.phoneNumber,
@@ -97,6 +95,5 @@ K? _$enumDecodeNullable<K, V>(
 const _$HomeOnboardingStageEnumMap = {
   HomeOnboardingStage.connect: 'connect',
   HomeOnboardingStage.connections: 'connections',
-  HomeOnboardingStage.search: 'search',
   HomeOnboardingStage.completed: 'completed',
 };

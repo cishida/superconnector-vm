@@ -162,7 +162,7 @@ class _HomeState extends State<Home> {
           title: ConstantStrings.ONBOARDING_CONNECTIONS_TITLE,
           subtitle: ConstantStrings.ONBOARDING_CONNECTIONS_SUBTITLE,
           onTap: () => goToOnboardingStage(
-            HomeOnboardingStage.search,
+            HomeOnboardingStage.completed,
             superuser,
           ),
           overlayWidget: Consumer<List<Connection>>(
@@ -191,24 +191,24 @@ class _HomeState extends State<Home> {
           ),
         );
         break;
-      case HomeOnboardingStage.search:
-        await _showOnboardingDialog(
-          title: ConstantStrings.ONBOARDING_SEARCH_TITLE,
-          subtitle: ConstantStrings.ONBOARDING_SEARCH_SUBTITLE,
-          onTap: () => goToOnboardingStage(
-            HomeOnboardingStage.completed,
-            superuser,
-          ),
-          overlayWidget: Positioned(
-            right: 76.0,
-            top: 13.0,
-            child: Image.asset(
-              'assets/images/authenticated/search-icon-white.png',
-              width: 26.0,
-            ),
-          ),
-        );
-        break;
+      // case HomeOnboardingStage.search:
+      //   await _showOnboardingDialog(
+      //     title: ConstantStrings.ONBOARDING_SEARCH_TITLE,
+      //     subtitle: ConstantStrings.ONBOARDING_SEARCH_SUBTITLE,
+      //     onTap: () => goToOnboardingStage(
+      //       HomeOnboardingStage.completed,
+      //       superuser,
+      //     ),
+      //     overlayWidget: Positioned(
+      //       right: 76.0,
+      //       top: 13.0,
+      //       child: Image.asset(
+      //         'assets/images/authenticated/search-icon-white.png',
+      //         width: 26.0,
+      //       ),
+      //     ),
+      //   );
+      //   break;
       // case HomeOnboardingStage.settings:
       //   await _showOnboardingDialog(
       //     title: ConstantStrings.ONBOARDING_SETTINGS_TITLE,

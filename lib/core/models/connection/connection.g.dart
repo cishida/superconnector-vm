@@ -6,27 +6,26 @@ part of 'connection.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Connection _$ConnectionFromJson(Map<String, dynamic> json) {
-  return Connection(
-    userIds:
-        (json['userIds'] as List<dynamic>?)?.map((e) => e as String).toList() ??
-            [],
-    tags: (json['tags'] as Map<String, dynamic>?)?.map(
-          (k, e) => MapEntry(k, e as String),
-        ) ??
-        {},
-    phoneNumberNameMap:
-        (json['phoneNumberNameMap'] as Map<String, dynamic>?)?.map(
-              (k, e) => MapEntry(k, e as String),
-            ) ??
-            {},
-    streakCount: json['streakCount'] as int? ?? 0,
-    isExampleConversation: json['isExampleConversation'] as bool? ?? false,
-    mostRecentActivity: Connection._dateTimeFromTimestamp(
-        json['mostRecentActivity'] as Timestamp?),
-    created: Connection._dateTimeFromTimestamp(json['created'] as Timestamp?),
-  );
-}
+Connection _$ConnectionFromJson(Map<String, dynamic> json) => Connection(
+      userIds: (json['userIds'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      tags: (json['tags'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, e as String),
+          ) ??
+          {},
+      phoneNumberNameMap:
+          (json['phoneNumberNameMap'] as Map<String, dynamic>?)?.map(
+                (k, e) => MapEntry(k, e as String),
+              ) ??
+              {},
+      streakCount: json['streakCount'] as int? ?? 0,
+      isExampleConversation: json['isExampleConversation'] as bool? ?? false,
+      mostRecentActivity: Connection._dateTimeFromTimestamp(
+          json['mostRecentActivity'] as Timestamp?),
+      created: Connection._dateTimeFromTimestamp(json['created'] as Timestamp?),
+    );
 
 Map<String, dynamic> _$ConnectionToJson(Connection instance) =>
     <String, dynamic>{
