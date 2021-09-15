@@ -378,19 +378,22 @@ class _ConnectionTileState extends State<ConnectionTile>
                             return;
                           }
 
-                          _handleNav(
-                            onComplete: () {
-                              SuperNavigator.push(
-                                context: context,
-                                widget: ConnectionCarousel(
-                                  connection: widget.connection,
-                                  videos: filteredVideos,
-                                  initialIndex: effectiveIndex,
-                                ),
-                                fullScreen: false,
-                              );
-                            },
-                          );
+                          if (filteredVideos[effectiveIndex].status ==
+                              'ready') {
+                            _handleNav(
+                              onComplete: () {
+                                SuperNavigator.push(
+                                  context: context,
+                                  widget: ConnectionCarousel(
+                                    connection: widget.connection,
+                                    videos: filteredVideos,
+                                    initialIndex: effectiveIndex,
+                                  ),
+                                  fullScreen: false,
+                                );
+                              },
+                            );
+                          }
                         },
                         child: VideoTile(
                           video: filteredVideos[effectiveIndex],

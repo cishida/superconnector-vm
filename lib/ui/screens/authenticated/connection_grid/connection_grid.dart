@@ -89,15 +89,17 @@ class _ConnectionGridState extends State<ConnectionGrid> {
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            SuperNavigator.push(
-              context: context,
-              widget: ConnectionCarousel(
-                videos: videos,
-                connection: widget.connection,
-                initialIndex: effectiveIndex,
-              ),
-              fullScreen: false,
-            );
+            if (videos[effectiveIndex].status == 'ready') {
+              SuperNavigator.push(
+                context: context,
+                widget: ConnectionCarousel(
+                  videos: videos,
+                  connection: widget.connection,
+                  initialIndex: effectiveIndex,
+                ),
+                fullScreen: false,
+              );
+            }
           },
           child: VideoGridTile(
             video: videos[effectiveIndex],
