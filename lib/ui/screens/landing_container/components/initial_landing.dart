@@ -6,6 +6,7 @@ import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/landing_container/components/onboarding_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
 
 class InitialLanding extends StatefulWidget {
   const InitialLanding({
@@ -30,11 +31,22 @@ class _InitialLandingState extends State<InitialLanding>
   bool _isInputting = false;
   FocusNode _focusNode = FocusNode();
   final Duration _animationDuration = Duration(milliseconds: 330);
+  bool _submitted = false;
+  String _errorMessage = '';
 
   @override
   bool get wantKeepAlive => true;
 
   void _verifyPhoneNumber() async {
+    print('here');
+
+    if (_submitted) {
+      return;
+    }
+    setState(() {
+      _submitted = true;
+      _errorMessage = '';
+    });
     //Callback for when the user has already previously signed in with this phone number on this device
     PhoneVerificationCompleted verificationCompleted =
         (PhoneAuthCredential phoneAuthCredential) async {
@@ -44,6 +56,12 @@ class _InitialLandingState extends State<InitialLanding>
     //Listens for errors with verification, such as too many attempts
     PhoneVerificationFailed verificationFailed =
         (FirebaseAuthException authException) {
+      setState(() {
+        _errorMessage = 'Verification failed: ' +
+            (authException.message != null
+                ? authException.message!.replaceAll('_', ' ').capitalize()
+                : '');
+      });
       // ScaffoldMessenger.of(context).showSnackBar(
       //   DarkSnackBar.createSnackBar(
       //     text: 'Phone number verification failed.',
@@ -78,6 +96,10 @@ class _InitialLandingState extends State<InitialLanding>
     } catch (e) {
       debugPrint(e.toString());
     }
+
+    setState(() {
+      _submitted = false;
+    });
   }
 
   @override
@@ -90,6 +112,7 @@ class _InitialLandingState extends State<InitialLanding>
       onTap: () {
         setState(() {
           _isInputting = false;
+          _errorMessage = '';
         });
         Future.delayed(
           Duration(milliseconds: 20),
@@ -284,13 +307,30 @@ class _InitialLandingState extends State<InitialLanding>
                             left: 5.0,
                             right: 10.0,
                           ),
-                          child: Text(
-                            'By providing your mobile number, you agree that it may be used to send you text messages to confirm your account.',
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (_errorMessage.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: Text(
+                                    _errorMessage,
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              Text(
+                                'By providing your mobile number, you agree that it may be used to send you text messages to confirm your account.',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

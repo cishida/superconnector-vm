@@ -24,7 +24,9 @@ class BarButton extends StatelessWidget {
       ),
       style: ElevatedButton.styleFrom(
         primary: backgroundColor,
-        onPrimary: backgroundColor.withOpacity(.8),
+        onPrimary: backgroundColor == Colors.white
+            ? ConstantColors.PRIMARY.withOpacity(.1)
+            : backgroundColor.withOpacity(.8),
         minimumSize: Size(double.infinity, 50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
