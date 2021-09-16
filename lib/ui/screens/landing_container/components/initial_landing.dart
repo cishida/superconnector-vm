@@ -61,6 +61,7 @@ class _InitialLandingState extends State<InitialLanding>
             (authException.message != null
                 ? authException.message!.replaceAll('_', ' ').capitalize()
                 : '');
+        _submitted = false;
       });
       // ScaffoldMessenger.of(context).showSnackBar(
       //   DarkSnackBar.createSnackBar(
@@ -72,11 +73,17 @@ class _InitialLandingState extends State<InitialLanding>
     //Callback for when the code is sent
     PhoneCodeSent codeSent = (String verificationId, int? forceResendingToken) {
       widget.setVerificationId(verificationId);
+      setState(() {
+        _submitted = false;
+      });
     };
 
     PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
         (String verificationId) {
       widget.setVerificationId(verificationId);
+      setState(() {
+        _submitted = false;
+      });
     };
 
     try {
@@ -96,10 +103,6 @@ class _InitialLandingState extends State<InitialLanding>
     } catch (e) {
       debugPrint(e.toString());
     }
-
-    setState(() {
-      _submitted = false;
-    });
   }
 
   @override
@@ -155,6 +158,7 @@ class _InitialLandingState extends State<InitialLanding>
                         backgroundColor: Colors.white,
                         title: 'Continue',
                         onPressed: _verifyPhoneNumber,
+                        showLoading: _submitted,
                       ),
                     ),
                   ),

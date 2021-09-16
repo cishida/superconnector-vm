@@ -71,6 +71,7 @@ dependencies:
   flutter_staggered_animations: ^1.0.0
   modal_bottom_sheet: ^2.0.0
   pin_code_fields: ^7.3.0
+  progress_indicators: ^1.0.0
 
   #
   flutter_dotenv: ^5.0.0
