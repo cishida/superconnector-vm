@@ -2,11 +2,11 @@ import 'package:camera/camera.dart';
 
 class CameraUtility {
   static Future<CameraController> initializeController(
-    List<CameraDescription> cameras,
+    // List<CameraDescription> cameras,
+    CameraDescription camera,
   ) async {
     CameraController controller = CameraController(
-      cameras.firstWhere((description) =>
-          description.lensDirection == CameraLensDirection.front),
+      camera,
       ResolutionPreset.veryHigh,
       enableAudio: true,
     );

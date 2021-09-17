@@ -57,14 +57,42 @@ class _RecordState extends State<Record>
     }
   }
 
-  Future initCamera() async {
+  Future initCamera({CameraDescription? description}) async {
     var status = await Permission.camera.status;
+
+    if (description == null) {
+      description = cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.front);
+    }
 
     if (status.isGranted && cameras.isNotEmpty) {
       _cameraController = await CameraUtility.initializeController(
-        cameras,
+        description,
       );
       _safeSetState();
+    }
+  }
+
+  void _toggleCameraLens() {
+    // get current lens direction (front / rear)
+    if (_cameraController == null) {
+      return;
+    }
+
+    final lensDirection = _cameraController!.description.lensDirection;
+    CameraDescription newDescription;
+    if (lensDirection == CameraLensDirection.front) {
+      newDescription = cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.back);
+    } else {
+      newDescription = cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.front);
+    }
+
+    if (newDescription != null) {
+      initCamera(description: newDescription);
+    } else {
+      print('Asked camera not available');
     }
   }
 
@@ -425,6 +453,7 @@ class _RecordState extends State<Record>
                 RecordOverlay(
                   isRecording: _isRecording,
                   connection: widget.connection,
+                  toggleCamera: () => _toggleCameraLens(),
                 ),
 
                 if (_sendPressed && !_uploadCompleted)

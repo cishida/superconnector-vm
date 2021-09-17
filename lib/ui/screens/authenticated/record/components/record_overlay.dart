@@ -11,10 +11,12 @@ class RecordOverlay extends StatefulWidget {
     Key? key,
     this.isRecording = false,
     required this.connection,
+    required this.toggleCamera,
   }) : super(key: key);
 
   final bool isRecording;
   final Connection connection;
+  final Function toggleCamera;
 
   @override
   _RecordOverlayState createState() => _RecordOverlayState();
@@ -150,8 +152,8 @@ class _RecordOverlayState extends State<RecordOverlay> {
         ),
         // if (!isRecording)
         Positioned(
-          top: 75.0,
-          right: 10.0,
+          top: 65.0,
+          right: 0.0,
           child: AnimatedOpacity(
             opacity: !widget.isRecording ? 1.0 : 0.0,
             duration: const Duration(
@@ -159,12 +161,15 @@ class _RecordOverlayState extends State<RecordOverlay> {
             ),
             child: Column(
               children: [
-                // CameraIcon(
-                //   title: 'Flip',
-                //   imageName:
-                //       'assets/images/authenticated/record/camera-flip-icon.png',
-                //   onPress: () {},
-                // ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CameraIcon(
+                    title: 'Flip',
+                    imageName:
+                        'assets/images/authenticated/record/camera-flip-icon.png',
+                    onPress: () => widget.toggleCamera(),
+                  ),
+                ),
                 // CameraIcon(
                 //   title: 'Attach',
                 //   imageName:
