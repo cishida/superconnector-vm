@@ -276,11 +276,21 @@ class _AccountState extends State<Account> {
                   AccountTile(
                     title: 'BLOCK LIST',
                     onPress: () {
-                      SuperNavigator.push(
+                      showModalBottomSheet(
                         context: context,
-                        widget: BlockList(),
-                        fullScreen: false,
+                        isScrollControlled: true,
+                        builder: (context) {
+                          return FractionallySizedBox(
+                            heightFactor: 0.93,
+                            child: BlockList(),
+                          );
+                        },
                       );
+                      // SuperNavigator.push(
+                      //   context: context,
+                      //   widget: BlockList(),
+                      //   fullScreen: false,
+                      // );
                     },
                   ),
                   AccountTile(

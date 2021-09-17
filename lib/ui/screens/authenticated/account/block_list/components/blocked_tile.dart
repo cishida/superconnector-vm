@@ -52,6 +52,77 @@ class _BlockedTileState extends State<BlockedTile> {
     return Column(
       children: [
         Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 7.0,
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 19.0,
+                  right: 12.0,
+                ),
+                child: SuperuserImage(
+                  url: _superuser!.photoUrl,
+                  radius: 19.0,
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _superuser!.fullName,
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    _superuser!.phoneNumber,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white.withOpacity(.5),
+                    ),
+                  ),
+                ],
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 22.0,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    widget.unblock();
+                  },
+                  child: Image.asset(
+                    'assets/images/authenticated/unblock-button.png',
+                    height: 20.0,
+                    width: 20.0,
+                    color: Colors.white.withOpacity(.5),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Underline(
+        //   margin: const EdgeInsets.only(left: 69.0),
+        // ),
+        // Container(
+        //   height: 1.0,
+        //   // width: MediaQuery.of(context).size.width,
+        //   color: ConstantColors.CONTACTS_GROUP_BACKGROUND,
+        //   margin: const EdgeInsets.only(
+        //     left: 69.0,
+        //   ),
+        // ),
+      ],
+    );
+
+    return Column(
+      children: [
+        Padding(
           padding: EdgeInsets.all(10.0),
           child: ListTile(
             leading: SuperuserImage(
