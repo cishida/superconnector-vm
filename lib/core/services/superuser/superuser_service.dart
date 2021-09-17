@@ -129,6 +129,9 @@ class SuperuserService {
   Future<int> syncNotifications(Superuser superuser) async {
     List<Video> videos = [];
 
+    if (superuser.id.isEmpty) {
+      return 0;
+    }
     final videoSnap = await videoCollection
         .where(
           'unwatchedIds',
