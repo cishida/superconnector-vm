@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
   @override
   initState() {
     super.initState();
-    registerNotification();
+    // registerNotification();
   }
 
   Future<void> _firebaseMessagingBackgroundHandler(

@@ -49,15 +49,15 @@ class _SuperconnectorVMState extends State<SuperconnectorVM> {
   @override
   void initState() {
     // registerNotification();
-    checkForInitialMessage();
+    // checkForInitialMessage();
 
     // For handling notification when the app is in background
     // but not terminated
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print(
-        'Background: Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
-      );
-    });
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    //   print(
+    //     'Background: Message title: ${message.notification?.title}, body: ${message.notification?.body}, data: ${message.data}',
+    //   );
+    // });
 
     super.initState();
   }

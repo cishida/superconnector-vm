@@ -46,13 +46,16 @@ class _AuthenticatedState extends State<Authenticated>
   }
 
   Future _setFCMToken(Superuser superuser) async {
-    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    if (superuser.onboarded &&
+        superuser.homeOnboardingStage == HomeOnboardingStage.completed) {
+      final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-    _firebaseMessaging.getToken().then((String? token) {
-      if (token != null) {
-        _superuserService.addToken(superuser.id, token);
-      }
-    });
+      _firebaseMessaging.getToken().then((String? token) {
+        if (token != null) {
+          _superuserService.addToken(superuser.id, token);
+        }
+      });
+    }
   }
 
   Future _syncBadge() async {
