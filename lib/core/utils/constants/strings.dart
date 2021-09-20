@@ -24,6 +24,8 @@ class ConstantStrings {
     'Dad',
     'Brother',
     'Sister',
+    'Husband',
+    'Wife',
     'Cousin',
     'Aunt',
     'Uncle',
