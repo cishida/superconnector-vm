@@ -166,8 +166,8 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
 
     final Size size = MediaQuery.of(context).size;
 
-    return GestureDetector(
-      onTapDown: (_) async {
+    return Listener(
+      onPointerDown: (_) async {
         widget.animationController.forward();
         await startVideoRecording();
         // await HapticFeedback.mediumImpact();
@@ -175,7 +175,8 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
           _shouldShowOnboardingChip = false;
         });
       },
-      onTapUp: (_) async {
+      // onPointerMove: _updateLocation,
+      onPointerUp: (_) async {
         if (widget.animationController.status == AnimationStatus.forward) {
           widget.animationController.stop();
         }
@@ -183,13 +184,29 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
         await _onStopButtonPressed();
         // HapticFeedback.lightImpact();
       },
-      onTapCancel: () async {
-        if (widget.animationController.status == AnimationStatus.forward) {
-          widget.animationController.stop();
-        }
+      // onTapDown: (_) async {
+      //   widget.animationController.forward();
+      //   await startVideoRecording();
+      //   // await HapticFeedback.mediumImpact();
+      //   setState(() {
+      //     _shouldShowOnboardingChip = false;
+      //   });
+      // },
+      // onTapUp: (_) async {
+      //   if (widget.animationController.status == AnimationStatus.forward) {
+      //     widget.animationController.stop();
+      //   }
 
-        await _onStopButtonPressed();
-      },
+      //   await _onStopButtonPressed();
+      //   // HapticFeedback.lightImpact();
+      // },
+      // onTapCancel: () async {
+      //   if (widget.animationController.status == AnimationStatus.forward) {
+      //     widget.animationController.stop();
+      //   }
+
+      //   await _onStopButtonPressed();
+      // },
       child: Container(
         height: widget.constraints.maxHeight,
         width: widget.constraints.maxWidth,
