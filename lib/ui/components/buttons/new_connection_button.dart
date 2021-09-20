@@ -13,10 +13,10 @@ class NewConnectionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double radius = 32.0;
+    double radius = 24.0;
 
     return Container(
-      width: radius * 2,
+      width: 146,
       height: radius * 2,
       decoration: isInverted
           ? BoxDecoration(
@@ -44,16 +44,37 @@ class NewConnectionButton extends StatelessWidget {
                 )
               ],
             ),
-      child: FittedBox(
-        child: FloatingActionButton(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          child: Icon(
-            Icons.add,
-            color: isInverted ? ConstantColors.FAB_BACKGROUND : Colors.white,
+      child: FloatingActionButton(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 15.0,
+            right: 25.0,
           ),
-          onPressed: () => onPressed(),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 2.0),
+                child: Icon(
+                  Icons.add,
+                  color:
+                      isInverted ? ConstantColors.FAB_BACKGROUND : Colors.white,
+                ),
+              ),
+              Text(
+                'CONNECT',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.25,
+                ),
+              ),
+            ],
+          ),
         ),
+        onPressed: () => onPressed(),
       ),
     );
   }
