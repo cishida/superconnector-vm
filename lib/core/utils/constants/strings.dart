@@ -39,6 +39,7 @@ class ConstantStrings {
     'Grandfather',
     'Granddaughter',
     'Grandson',
+    'Friend',
     'Stepmother',
     'Stepfather',
     'Stepbrother ',
