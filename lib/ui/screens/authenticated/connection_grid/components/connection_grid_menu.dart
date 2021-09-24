@@ -169,8 +169,12 @@ class ConnectionGridMenu extends StatelessWidget {
     }
 
     bool shouldBlock = true;
-    String targetUserId =
-        connection.userIds.firstWhere((userId) => userId != superuser.id);
+    String targetUserId = '';
+    if (connection.userIds.length > 1) {
+      targetUserId =
+          connection.userIds.firstWhere((userId) => userId != superuser.id);
+    }
+
     if (superuser.blockedUsers.keys.toList().contains(targetUserId)) {
       shouldBlock = false;
     }
@@ -220,18 +224,19 @@ class ConnectionGridMenu extends StatelessWidget {
                     //         ),
                     //         title: 'Unblock',
                     //       ),
-                    GridMenuItem(
-                      title: shouldBlock ? 'Block' : 'Unblock',
-                      onTap: shouldBlock
-                          ? () => _blockPressed(
-                                context: context,
-                                superuser: superuser,
-                              )
-                          : () => _unblockPressed(
-                                context: context,
-                                superuser: superuser,
-                              ),
-                    ),
+                    if (targetUserId.isNotEmpty)
+                      GridMenuItem(
+                        title: shouldBlock ? 'Block' : 'Unblock',
+                        onTap: shouldBlock
+                            ? () => _blockPressed(
+                                  context: context,
+                                  superuser: superuser,
+                                )
+                            : () => _unblockPressed(
+                                  context: context,
+                                  superuser: superuser,
+                                ),
+                      ),
                     GridMenuItem(
                       title: 'Delete',
                       onTap: () => _deletePressed(
