@@ -25,6 +25,7 @@ Connection _$ConnectionFromJson(Map<String, dynamic> json) => Connection(
               ) ??
               {},
       streakCount: json['streakCount'] as int? ?? 0,
+      videoCount: json['videoCount'] as int? ?? 0,
       isExampleConversation: json['isExampleConversation'] as bool? ?? false,
       mostRecentActivity: Connection._dateTimeFromTimestamp(
           json['mostRecentActivity'] as Timestamp?),
@@ -38,6 +39,7 @@ Map<String, dynamic> _$ConnectionToJson(Connection instance) =>
       'tags': instance.tags,
       'phoneNumberNameMap': instance.phoneNumberNameMap,
       'streakCount': instance.streakCount,
+      'videoCount': instance.videoCount,
       'isExampleConversation': instance.isExampleConversation,
       'mostRecentActivity':
           Connection._dateTimeAsIs(instance.mostRecentActivity),

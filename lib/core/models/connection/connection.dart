@@ -24,6 +24,8 @@ class Connection {
   Map<String, String> phoneNumberNameMap;
   @JsonKey(defaultValue: 0)
   int streakCount;
+  @JsonKey(defaultValue: 0)
+  int videoCount;
 
   // Each new user creates an example connection that is handled differently
   // than standard connections
@@ -56,6 +58,7 @@ class Connection {
     this.tags = const {},
     this.phoneNumberNameMap = const {},
     this.streakCount = 0,
+    this.videoCount = 0,
     this.isExampleConversation = false,
     this.mostRecentActivity,
     this.created,

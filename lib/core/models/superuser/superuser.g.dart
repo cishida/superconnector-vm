@@ -20,6 +20,7 @@ Superuser _$SuperuserFromJson(Map<String, dynamic> json) => Superuser(
               .toList() ??
           [],
       unseenNotificationCount: json['unseenNotificationCount'] as int? ?? 0,
+      connectionCount: json['connectionCount'] as int? ?? 0,
       numContacts: json['numContacts'] as int? ?? 0,
       blockedUsers: (json['blockedUsers'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, DateTime.parse(e as String)),
@@ -44,6 +45,7 @@ Map<String, dynamic> _$SuperuserToJson(Superuser instance) => <String, dynamic>{
       'fcmTokens': instance.fcmTokens,
       'unseenNotificationCount': instance.unseenNotificationCount,
       'numContacts': instance.numContacts,
+      'connectionCount': instance.connectionCount,
       'blockedUsers':
           instance.blockedUsers.map((k, e) => MapEntry(k, e.toIso8601String())),
       'onboarded': instance.onboarded,

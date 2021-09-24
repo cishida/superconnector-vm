@@ -62,6 +62,8 @@ class Superuser {
   int unseenNotificationCount;
   @JsonKey(defaultValue: 0)
   int numContacts;
+  @JsonKey(defaultValue: 0)
+  int connectionCount;
   @JsonKey(defaultValue: {})
   Map<String, DateTime> blockedUsers;
 
@@ -98,6 +100,7 @@ class Superuser {
     this.socialLinks = const {},
     this.fcmTokens = const [],
     this.unseenNotificationCount = 0,
+    this.connectionCount = 0,
     this.numContacts = 0,
     this.blockedUsers = const {},
     this.onboarded = false,
