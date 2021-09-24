@@ -57,7 +57,7 @@ class _InitialLandingState extends State<InitialLanding>
     PhoneVerificationFailed verificationFailed =
         (FirebaseAuthException authException) {
       setState(() {
-        _errorMessage = 'Verification failed: ' +
+        _errorMessage = 'Verification error: ' +
             (authException.message != null
                 ? authException.message!.replaceAll('_', ' ').capitalize()
                 : '');
@@ -215,9 +215,9 @@ class _InitialLandingState extends State<InitialLanding>
                             ),
                           ),
                           Text(
-                            'A video sharing app for family',
+                            'A private video sharing app for your family',
                             style: TextStyle(
-                              fontSize: 24.0,
+                              fontSize: 16.0,
                               color: Colors.white.withOpacity(.7),
                               fontWeight: FontWeight.w600,
                               letterSpacing: .15,
