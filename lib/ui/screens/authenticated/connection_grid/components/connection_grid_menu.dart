@@ -6,6 +6,8 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/ui/components/chips/menu_chip.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/snack_bars/dark_snack_bar.dart';
+import 'package:superconnector_vm/ui/components/snack_bars/light_snack_bar.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 
 class ConnectionGridMenu extends StatelessWidget {
   const ConnectionGridMenu({
@@ -20,10 +22,11 @@ class ConnectionGridMenu extends StatelessWidget {
     String message,
   ) {
     ScaffoldMessenger.of(context).showSnackBar(
-      DarkSnackBar.createSnackBar(
+      LightSnackBar.createSnackBar(
         text: message,
       ),
     );
+
     // ScaffoldMessenger.of(context).showSnackBar(
     //   SnackBar(
     //     content: Text(message),
@@ -95,6 +98,27 @@ class ConnectionGridMenu extends StatelessWidget {
     );
   }
 
+  void _editRelationPressed(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.93,
+          child: Relations(
+            connection: connection,
+          ),
+        );
+      },
+    ).then((value) {
+      Navigator.of(context).pop();
+      _showSnackbar(
+        context,
+        'Your family relation has been updated.',
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
@@ -114,10 +138,10 @@ class ConnectionGridMenu extends StatelessWidget {
       backgroundColor: Colors.transparent,
       resizeToAvoidBottomInset: false,
       body: Container(
-        padding: const EdgeInsets.only(
-          top: 65.0,
-          right: 15.0,
-        ),
+        // padding: const EdgeInsets.only(
+        //   top: 65.0,
+        //   right: 15.0,
+        // ),
         constraints: BoxConstraints.expand(),
         color: Colors.black.withOpacity(0.7),
         child: SafeArea(
@@ -128,8 +152,8 @@ class ConnectionGridMenu extends StatelessWidget {
             },
             child: AnimationLimiter(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: AnimationConfiguration.toStaggeredList(
                   duration: const Duration(milliseconds: 250),
                   childAnimationBuilder: (widget) => SlideAnimation(
@@ -155,10 +179,43 @@ class ConnectionGridMenu extends StatelessWidget {
                             ),
                             title: 'Unblock',
                           ),
+                    GridMenuItem(
+                      title: 'Edit Relation',
+                      onTap: () => _editRelationPressed(context),
+                    ),
                   ],
                 ),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class GridMenuItem extends StatelessWidget {
+  const GridMenuItem({
+    Key? key,
+    required this.title,
+    required this.onTap,
+  }) : super(key: key);
+
+  final String title;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22.0,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

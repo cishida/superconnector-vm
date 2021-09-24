@@ -39,6 +39,71 @@ class VideoUploader {
     return jsonResponse['data'];
   }
 
+  Future<dynamic> createLiveStream(String videoId) async {
+    String basicAuth = 'Basic ' +
+        base64Encode(
+          utf8.encode(
+            '${dotenv.env['MUX_TOKEN_ID_DEV']}:${dotenv.env['MUX_TOKEN_SECRET_DEV']}',
+            // '${dotenv.env['MUX_TOKEN_ID_PROD']}:${dotenv.env['MUX_TOKEN_SECRET_PROD']}',
+          ),
+        );
+    Map<String, String> headers = {
+      'content-type': 'application/json',
+      'authorization': basicAuth
+    };
+
+    print(videoId);
+    Map body = {
+      'passthrough': videoId,
+      'new_asset_settings': {
+        'playback_policy': ['public']
+      },
+      'low_latency': true,
+      'cors_origin': '*',
+    };
+
+    var response = await http.post(
+      Uri.https('api.mux.com', '/video/v1/live-streams'),
+      headers: headers,
+      body: jsonEncode(body),
+    );
+
+    var jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+    // _video.uploadId = jsonResponse['data']['id'].toString();
+
+    // return jsonResponse['data']['url'];
+    return jsonResponse['data'];
+  }
+
+  Future<dynamic> deleteLiveStream(String id) async {
+    String basicAuth = 'Basic ' +
+        base64Encode(
+          utf8.encode(
+            '${dotenv.env['MUX_TOKEN_ID_DEV']}:${dotenv.env['MUX_TOKEN_SECRET_DEV']}',
+            // '${dotenv.env['MUX_TOKEN_ID_PROD']}:${dotenv.env['MUX_TOKEN_SECRET_PROD']}',
+          ),
+        );
+    Map<String, String> headers = {
+      'content-type': 'application/json',
+      'authorization': basicAuth
+    };
+    Map body = {};
+
+    var response = await http.delete(
+      Uri.https('api.mux.com', '/video/v1/live-streams/' + id),
+      headers: headers,
+      body: jsonEncode(body),
+    );
+
+    var jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+    // _video.uploadId = jsonResponse['data']['id'].toString();
+
+    // return jsonResponse['data']['url'];
+    return jsonResponse['data'];
+  }
+
 //   Future<void> _uploadFile(File fileToUpload) async {
 //     _progress = 0;
 //     _uploadComplete = false;
