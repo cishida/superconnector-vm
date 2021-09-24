@@ -40,7 +40,10 @@ class _ConnectionListState extends State<ConnectionList> {
             padding: const EdgeInsets.only(
               bottom: 200.0,
             ),
-            children: _buildTiles(connections),
+            children: _buildTiles(connections
+                .where((connection) =>
+                    !connection.deletedIds.contains(superuser.id))
+                .toList()),
             // itemCount: connections.length,
             // itemBuilder: (context, index) {
             //   return ConnectionTile(

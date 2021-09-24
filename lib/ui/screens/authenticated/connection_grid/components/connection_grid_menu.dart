@@ -3,9 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/ui/components/chips/menu_chip.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
-import 'package:superconnector_vm/ui/components/snack_bars/dark_snack_bar.dart';
 import 'package:superconnector_vm/ui/components/snack_bars/light_snack_bar.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 
@@ -98,6 +96,49 @@ class ConnectionGridMenu extends StatelessWidget {
     );
   }
 
+  Future _deleteConnection({
+    required Superuser superuser,
+    required BuildContext context,
+  }) async {
+    connection.deletedIds.add(superuser.id);
+    final set = Set<String>.from(connection.deletedIds);
+    connection.deletedIds = set.map((deletedId) => deletedId).toList();
+    await connection.update();
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  Future _deletePressed({
+    required Superuser superuser,
+    required BuildContext context,
+  }) async {
+    Navigator.pop(context);
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Stack(
+          children: [
+            SuperDialog(
+              title: 'Delete Connection',
+              subtitle:
+                  'This permanently removes these videos from your history.',
+              primaryActionTitle: 'Continue',
+              primaryAction: () => _deleteConnection(
+                superuser: superuser,
+                context: context,
+              ),
+              secondaryActionTitle: 'Cancel',
+              secondaryAction: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _editRelationPressed(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -164,21 +205,40 @@ class ConnectionGridMenu extends StatelessWidget {
                     ),
                   ),
                   children: [
-                    shouldBlock
-                        ? MenuChip(
-                            onPressed: () => _blockPressed(
-                              context: context,
-                              superuser: superuser,
-                            ),
-                            title: 'Block',
-                          )
-                        : MenuChip(
-                            onPressed: () => _unblockPressed(
-                              context: context,
-                              superuser: superuser,
-                            ),
-                            title: 'Unblock',
-                          ),
+                    // shouldBlock
+                    //     ? MenuChip(
+                    //         onPressed: () => _blockPressed(
+                    //           context: context,
+                    //           superuser: superuser,
+                    //         ),
+                    //         title: 'Block',
+                    //       )
+                    //     : MenuChip(
+                    //         onPressed: () => _unblockPressed(
+                    //           context: context,
+                    //           superuser: superuser,
+                    //         ),
+                    //         title: 'Unblock',
+                    //       ),
+                    GridMenuItem(
+                      title: shouldBlock ? 'Block' : 'Unblock',
+                      onTap: shouldBlock
+                          ? () => _blockPressed(
+                                context: context,
+                                superuser: superuser,
+                              )
+                          : () => _unblockPressed(
+                                context: context,
+                                superuser: superuser,
+                              ),
+                    ),
+                    GridMenuItem(
+                      title: 'Delete',
+                      onTap: () => _deletePressed(
+                        superuser: superuser,
+                        context: context,
+                      ),
+                    ),
                     GridMenuItem(
                       title: 'Edit Relation',
                       onTap: () => _editRelationPressed(context),

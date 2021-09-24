@@ -10,12 +10,23 @@ class Connection {
   String id;
   @JsonKey(defaultValue: [])
   List<String> userIds;
+
+  // Deleted ids are users who have deleted the connection
+  @JsonKey(defaultValue: [])
+  List<String> deletedIds;
+
+  // Tags map each user to their respective tag for the connection
   @JsonKey(defaultValue: {})
   Map<String, String> tags;
+
+  // For preusers we map added phone numbers to the contact name
   @JsonKey(defaultValue: {})
   Map<String, String> phoneNumberNameMap;
   @JsonKey(defaultValue: 0)
   int streakCount;
+
+  // Each new user creates an example connection that is handled differently
+  // than standard connections
   @JsonKey(defaultValue: false)
   bool isExampleConversation;
   @JsonKey(fromJson: _dateTimeFromTimestamp, toJson: _dateTimeAsIs)
@@ -41,6 +52,7 @@ class Connection {
   Connection({
     this.id = '',
     this.userIds = const [],
+    this.deletedIds = const [],
     this.tags = const {},
     this.phoneNumberNameMap = const {},
     this.streakCount = 0,
