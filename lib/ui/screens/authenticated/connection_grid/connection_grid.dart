@@ -151,8 +151,24 @@ class _ConnectionGridState extends State<ConnectionGrid> {
         appBar: CustomAppBar(
           backgroundColor: ConstantColors.OFF_WHITE,
         ),
-        floatingActionButton: NewConnectionButton(
-          isInverted: true,
+        floatingActionButton: FloatingActionButton(
+          elevation: 10,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            width: 64.0,
+            height: 64.0,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: Icon(
+                Icons.add,
+                color: ConstantColors.PRIMARY,
+              ),
+            ),
+          ),
           onPressed: () {
             BlockUtility blockUtility = BlockUtility(
               context: context,
@@ -162,6 +178,18 @@ class _ConnectionGridState extends State<ConnectionGrid> {
             blockUtility.handleBlockedRecordNavigation();
           },
         ),
+
+        // NewConnectionButton(
+        //   isInverted: true,
+        //   onPressed: () {
+        //     BlockUtility blockUtility = BlockUtility(
+        //       context: context,
+        //       superuser: superuser,
+        //       connection: widget.connection,
+        //     );
+        //     blockUtility.handleBlockedRecordNavigation();
+        //   },
+        // ),
         body: Column(
           children: [
             // SizedBox(
