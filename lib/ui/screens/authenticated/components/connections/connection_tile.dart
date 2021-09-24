@@ -27,10 +27,12 @@ class ConnectionTile extends StatefulWidget {
   const ConnectionTile({
     Key? key,
     required this.connection,
+    this.invertGradient = false,
     this.shouldIgnoreTaps = false,
   }) : super(key: key);
 
   final Connection connection;
+  final bool invertGradient;
   final bool shouldIgnoreTaps;
 
   @override
@@ -352,6 +354,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                     itemBuilder: (context, index) {
                       if (index == 0) {
                         return VMConnectionTile(
+                          invertGradient: widget.invertGradient,
                           onPressed: () {
                             _handleNav(
                               onComplete: () {

@@ -13,12 +13,20 @@ class _ConnectionListState extends State<ConnectionList> {
   List<ConnectionTile> _buildTiles(List<Connection> connections) {
     List<ConnectionTile> tiles = [];
 
+    int count = 0;
+
     connections.forEach((connection) {
+      bool invertGradient = false;
+      if (count % 2 != 0) {
+        invertGradient = true;
+      }
       tiles.add(
         ConnectionTile(
           connection: connection,
+          invertGradient: invertGradient,
         ),
       );
+      count++;
     });
 
     return tiles;

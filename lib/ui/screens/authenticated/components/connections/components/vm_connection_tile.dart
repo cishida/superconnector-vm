@@ -4,10 +4,12 @@ class VMConnectionTile extends StatelessWidget {
   const VMConnectionTile({
     Key? key,
     required this.onPressed,
+    this.invertGradient = false,
     this.isGrid = false,
   }) : super(key: key);
 
   final Function onPressed;
+  final bool invertGradient;
   final bool isGrid;
 
   @override
@@ -27,7 +29,9 @@ class VMConnectionTile extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(isGrid ? 3.0 : 6.0),
                 child: Image.asset(
-                  'assets/images/authenticated/vm-connection-gradient.png',
+                  invertGradient
+                      ? 'assets/images/authenticated/vm-connection-gradient-inverted.png'
+                      : 'assets/images/authenticated/vm-connection-gradient.png',
                   fit: BoxFit.cover,
                 ),
               ),
