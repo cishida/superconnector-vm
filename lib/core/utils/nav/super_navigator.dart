@@ -69,7 +69,7 @@ class SuperNavigator {
 
   static void handleRecordNavigation({
     required BuildContext context,
-    required Connection connection,
+    Connection? connection,
   }) async {
     var cameraStatus = await Permission.camera.status;
     var microphoneStatus = await Permission.microphone.status;

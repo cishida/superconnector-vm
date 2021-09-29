@@ -12,7 +12,7 @@ class RecordPermission extends StatelessWidget {
     required this.connection,
   }) : super(key: key);
 
-  final Connection connection;
+  final Connection? connection;
 
   void _navigateToRecord({
     required BuildContext context,

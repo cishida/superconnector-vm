@@ -15,7 +15,7 @@ class RecordOverlay extends StatefulWidget {
   }) : super(key: key);
 
   final bool isRecording;
-  final Connection connection;
+  final Connection? connection;
   final Function toggleCamera;
 
   @override
@@ -27,7 +27,11 @@ class _RecordOverlayState extends State<RecordOverlay> {
   late List<Superuser> _superusers = [];
 
   String _formatNames() {
-    if (widget.connection.isExampleConversation) {
+    if (widget.connection == null) {
+      return '';
+    }
+
+    if (widget.connection!.isExampleConversation) {
       return 'To Example Connection';
     }
 
@@ -41,7 +45,7 @@ class _RecordOverlayState extends State<RecordOverlay> {
       }
     });
 
-    widget.connection.phoneNumberNameMap.values.forEach((element) {
+    widget.connection!.phoneNumberNameMap.values.forEach((element) {
       if (names.isEmpty) {
         names += element;
       } else {
@@ -54,12 +58,12 @@ class _RecordOverlayState extends State<RecordOverlay> {
 
   Future _loadUserNames() async {
     final currentSuperuser = Provider.of<Superuser?>(context, listen: false);
-    if (currentSuperuser == null) {
+    if (currentSuperuser == null || widget.connection == null) {
       return;
     }
 
     _superusers = await _connectionService.getConnectionUsers(
-      connection: widget.connection,
+      connection: widget.connection!,
       currentSuperuser: currentSuperuser,
     );
   }
@@ -123,33 +127,34 @@ class _RecordOverlayState extends State<RecordOverlay> {
             },
           ),
         ),
-        Positioned.fill(
-          top: 71.0,
-          right: 62.0,
-          left: 62.0,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15.0,
-                vertical: 6.0,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(32.0),
-                color: Colors.white.withOpacity(.20),
-              ),
-              child: Text(
-                _formatNames(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w600,
+        if (_superusers.length > 0)
+          Positioned.fill(
+            top: 71.0,
+            right: 62.0,
+            left: 62.0,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 6.0,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(32.0),
+                  color: Colors.white.withOpacity(.20),
+                ),
+                child: Text(
+                  _formatNames(),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.0,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
           ),
-        ),
         // if (!isRecording)
         Positioned(
           top: 65.0,

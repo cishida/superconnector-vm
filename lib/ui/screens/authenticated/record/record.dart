@@ -27,7 +27,7 @@ class Record extends StatefulWidget {
     required this.connection,
   }) : super(key: key);
 
-  final Connection connection;
+  final Connection? connection;
 
   @override
   _RecordState createState() => _RecordState();
@@ -283,42 +283,36 @@ class _RecordState extends State<Record>
       listen: false,
     );
 
-    // Connection connection = await ConnectionService().getOrCreateConnection(
-    //   currentUserId: superuser.id,
-    //   selectedContacts: selectedContacts,
-    //   connections: connections,
-    //   analytics: analytics,
+    //     // Connection connection = await ConnectionService().getOrCreateConnection(
+    //     //   currentUserId: superuser.id,
+    //     //   selectedContacts: selectedContacts,
+    //     //   connections: connections,
+    //     //   analytics: analytics,
+    //     // );
+
+    // await _videoDoc.update({
+    //   'connectionId': widget.connection.id,
+    //   'unwatchedIds': widget.connection.userIds
+    //       .where((element) => element != superuser.id)
+    //       .toList(),
+    // });
+
+    // widget.connection.mostRecentActivity = DateTime.now();
+    // await widget.connection.update();
+
+    // analytics.logEvent(
+    //   name: 'vm_sent',
+    //   parameters: <String, dynamic>{
+    //     'id': _videoDoc.id,
+    //     'senderId': superuser.id,
+    //     'connectionId': widget.connection.id,
+    //     'duration': BetterPlayerUtility.getVideoDuration(
+    //       _betterPlayerController,
+    //     ),
+    //   },
     // );
-    await _videoDoc.update({
-      'connectionId': widget.connection.id,
-      'unwatchedIds': widget.connection.userIds
-          .where((element) => element != superuser.id)
-          .toList(),
-    });
 
-    widget.connection.mostRecentActivity = DateTime.now();
-    await widget.connection.update();
-
-    analytics.logEvent(
-      name: 'vm_sent',
-      parameters: <String, dynamic>{
-        'id': _videoDoc.id,
-        'senderId': superuser.id,
-        'connectionId': widget.connection.id,
-        'duration': BetterPlayerUtility.getVideoDuration(
-          _betterPlayerController,
-        ),
-      },
-    );
-
-    Navigator.of(context).popUntil((route) => route.isFirst);
-
-    // if (widget.connection.phoneNumberNameMap.isNotEmpty) {
-    //   List<String> phoneNumbers =
-    //       widget.connection.phoneNumberNameMap.keys.toList();
-
-    //   _showInviteCard(phoneNumbers);
-    // }
+    // Navigator.of(context).popUntil((route) => route.isFirst);
     return;
   }
 

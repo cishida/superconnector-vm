@@ -124,6 +124,11 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                           context: context,
                         );
                         break;
+                      case 2:
+                        SuperNavigator.handleRecordNavigation(
+                          context: context,
+                        );
+                        break;
                       case 3:
                         authenticatedController.setIsSearching(true);
                         break;
