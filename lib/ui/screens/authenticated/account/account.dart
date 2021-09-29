@@ -8,7 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/auth/auth_service.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/gradient_background.dart';
@@ -147,20 +149,24 @@ class _AccountState extends State<Account> {
                 ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return SuperDialog(
-                          title: 'Sign out',
-                          subtitle: 'Are you sure you want to sign out?',
-                          primaryActionTitle: 'Continue',
-                          primaryAction: _logout,
-                          secondaryActionTitle: 'Cancel',
-                          secondaryAction: () => Navigator.of(context).pop(),
-                        );
-                      },
+                  onTap: () async {
+                    await SMSUtility.send(
+                      "Just added you in Superconnector so we can VM (video message) each other - here's your invite: ${ConstantStrings.TESTFLIGHT_LINK}",
+                      [],
                     );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (context) {
+                    //     return SuperDialog(
+                    //       title: 'Sign out',
+                    //       subtitle: 'Are you sure you want to sign out?',
+                    //       primaryActionTitle: 'Continue',
+                    //       primaryAction: _logout,
+                    //       secondaryActionTitle: 'Cancel',
+                    //       secondaryAction: () => Navigator.of(context).pop(),
+                    //     );
+                    //   },
+                    // );
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -171,13 +177,13 @@ class _AccountState extends State<Account> {
                       right: 20.0,
                     ),
                     height: 36.0,
-                    width: 95.0,
+                    width: 76.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(32.0),
                       color: Colors.white.withOpacity(.20),
                     ),
                     child: Text(
-                      'Sign out',
+                      'Invite',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -303,6 +309,24 @@ class _AccountState extends State<Account> {
                     title: 'PRIVACY POLICY',
                     onPress: () async {
                       await _toUrl('https://www.superconnector.com/privacy');
+                    },
+                  ),
+                  AccountTile(
+                    title: 'SIGN OUT',
+                    onPress: () async {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SuperDialog(
+                            title: 'Sign out',
+                            subtitle: 'Are you sure you want to sign out?',
+                            primaryActionTitle: 'Continue',
+                            primaryAction: _logout,
+                            secondaryActionTitle: 'Cancel',
+                            secondaryAction: () => Navigator.of(context).pop(),
+                          );
+                        },
+                      );
                     },
                   ),
 
