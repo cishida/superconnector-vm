@@ -9,6 +9,7 @@ import 'package:superconnector_vm/core/services/auth/auth_service.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/services/supercontact/supercontact_service.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
+import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 
 /// Used to create user-dependent objects that need to be accessible by all widgets.
 /// This widgets should live above the [MaterialApp].
@@ -58,6 +59,9 @@ class AuthWidgetBuilder extends StatelessWidget {
               value:
                   SupercontactService().getSupercontacts(superFirebaseUser.id),
               initialData: [],
+            ),
+            ChangeNotifierProvider(
+              create: (_) => AuthenticatedController(),
             ),
             // NOTE: Any other user-bound providers here can be added here
           ],

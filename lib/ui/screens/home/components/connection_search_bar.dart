@@ -34,6 +34,7 @@ class ConnectionSearchBar extends StatelessWidget {
       autocorrect: false,
       enabled: true,
       keyboardAppearance: Brightness.light,
+      textInputAction: TextInputAction.search,
       style: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w600,
@@ -58,7 +59,7 @@ class ConnectionSearchBar extends StatelessWidget {
       ),
       controller: searchController,
       onEditingComplete: () {
-        FocusScope.of(context).unfocus();
+        // FocusScope.of(context).unfocus();
       },
       onChanged: (text) {
         connectionSearchTerm.set(text);

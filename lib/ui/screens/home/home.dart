@@ -15,7 +15,9 @@ import 'package:superconnector_vm/ui/screens/authenticated/components/connection
 import 'package:superconnector_vm/ui/screens/home/components/home_title_bar.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -275,28 +277,28 @@ class _HomeState extends State<Home> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
-          appBar: CustomAppBar(),
-          floatingActionButton: NewConnectionButton(
-            onPressed: () {
-              selectedContacts.reset();
-              SuperNavigator.handleContactsNavigation(context: context);
-            },
+          backgroundColor: Colors.white,
+          appBar: CustomAppBar(
+            backgroundColor: Colors.white,
           ),
-          body: Container(
-            color: ConstantColors.OFF_WHITE,
-            child: Column(
-              children: [
-                HomeTitleBar(
-                  superuser: superuser,
+          // floatingActionButton: NewConnectionButton(
+          //   onPressed: () {
+          //     selectedContacts.reset();
+          //     SuperNavigator.handleContactsNavigation(context: context);
+          //   },
+          // ),
+          body: Column(
+            children: [
+              HomeTitleBar(
+                superuser: superuser,
+              ),
+              Expanded(
+                child: Container(
+                  color: Colors.white,
+                  child: ConnectionList(),
                 ),
-                Expanded(
-                  child: Container(
-                    color: Colors.white,
-                    child: ConnectionList(),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

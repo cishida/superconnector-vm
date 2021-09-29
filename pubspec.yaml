@@ -115,6 +115,7 @@ flutter:
     - assets/images/authenticated/
     - assets/images/authenticated/record/
     - assets/images/authenticated/onboarding/
+    - assets/images/authenticated/bottom_nav/
     - .env
 
   fonts:

@@ -350,27 +350,25 @@ class _ConnectionTileState extends State<ConnectionTile>
                   ),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: min(filteredVideos.length + 1, 6),
+                    itemCount: min(filteredVideos.length, 5),
                     itemBuilder: (context, index) {
-                      if (index == 0) {
-                        return VMConnectionTile(
-                          invertGradient: widget.invertGradient,
-                          onPressed: () {
-                            _handleNav(
-                              onComplete: () {
-                                BlockUtility blockUtility = BlockUtility(
-                                  context: context,
-                                  superuser: superuser,
-                                  connection: widget.connection,
-                                );
-                                blockUtility.handleBlockedRecordNavigation();
-                              },
-                            );
-                          },
-                        );
-                      }
-
-                      int effectiveIndex = index - 1;
+                      // if (index == 0) {
+                      //   return VMConnectionTile(
+                      //     invertGradient: widget.invertGradient,
+                      //     onPressed: () {
+                      //       _handleNav(
+                      //         onComplete: () {
+                      //           BlockUtility blockUtility = BlockUtility(
+                      //             context: context,
+                      //             superuser: superuser,
+                      //             connection: widget.connection,
+                      //           );
+                      //           blockUtility.handleBlockedRecordNavigation();
+                      //         },
+                      //       );
+                      //     },
+                      //   );
+                      // }
 
                       return GestureDetector(
                         behavior: widget.shouldIgnoreTaps
@@ -381,8 +379,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                             return;
                           }
 
-                          if (filteredVideos[effectiveIndex].status ==
-                              'ready') {
+                          if (filteredVideos[index].status == 'ready') {
                             _handleNav(
                               onComplete: () {
                                 SuperNavigator.push(
@@ -390,7 +387,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                                   widget: ConnectionCarousel(
                                     connection: widget.connection,
                                     videos: filteredVideos,
-                                    initialIndex: effectiveIndex,
+                                    initialIndex: index,
                                   ),
                                   fullScreen: false,
                                 );
@@ -399,7 +396,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                           }
                         },
                         child: VideoTile(
-                          video: filteredVideos[effectiveIndex],
+                          video: filteredVideos[index],
                         ),
                       );
                     },

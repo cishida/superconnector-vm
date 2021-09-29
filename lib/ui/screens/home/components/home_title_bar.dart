@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection_search_term.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/account.dart';
 import 'package:superconnector_vm/ui/screens/home/components/connection_search_bar.dart';
@@ -21,7 +22,7 @@ class HomeTitleBar extends StatefulWidget {
 
 class _HomeTitleBarState extends State<HomeTitleBar>
     with SingleTickerProviderStateMixin {
-  bool _isSearching = false;
+  // bool _isSearching = false;
   TextEditingController _searchController = TextEditingController();
   FocusNode _focusNode = FocusNode();
 
@@ -30,6 +31,12 @@ class _HomeTitleBarState extends State<HomeTitleBar>
     double width = MediaQuery.of(context).size.width;
     ConnectionSearchTerm connectionSearchTerm =
         Provider.of<ConnectionSearchTerm>(context);
+    AuthenticatedController authenticatedController =
+        Provider.of<AuthenticatedController>(context);
+
+    if (authenticatedController.isSearching) {
+      _focusNode.requestFocus();
+    }
 
     return Column(
       children: [
@@ -40,56 +47,72 @@ class _HomeTitleBarState extends State<HomeTitleBar>
             children: [
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 150),
-                left: _isSearching ? -200 : 0.0,
-                bottom: 7.0,
+                left: authenticatedController.isSearching ? -300 : 0.0,
+                bottom: 20.0,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0),
-                  child: Text(
-                    'Family',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -.5,
-                    ),
+                  padding: const EdgeInsets.only(
+                    left: 18.0,
+                  ),
+                  child: Image.asset(
+                    'assets/images/authenticated/superconnector-title.png',
+                    width: width * .527,
                   ),
                 ),
               ),
-              // if (!_isSearching) Spacer(),
-              Positioned(
-                right: 22 + 42 + 12 - 8,
-                bottom: 8.0,
-                child: AnimatedOpacity(
-                  duration: Duration(milliseconds: _isSearching ? 0 : 600),
-                  opacity: _isSearching ? 0 : 1,
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      if (mounted) {
-                        setState(() {
-                          _isSearching = true;
-                        });
-                      }
-                      _focusNode.requestFocus();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        'assets/images/authenticated/search-icon.png',
-                        width: 26.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // AnimatedPositioned(
+              //   duration: const Duration(milliseconds: 150),
+              //   left: authenticatedController.isSearching ? -200 : 0.0,
+              //   bottom: 7.0,
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(left: 18.0),
+              //     child: Text(
+              //       'Family',
+              //       style: TextStyle(
+              //         color: Colors.black,
+              //         fontSize: 40.0,
+              //         fontWeight: FontWeight.w700,
+              //         letterSpacing: -.5,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // if (!authenticatedController.isSearching) Spacer(),
+              // Positioned(
+              //   right: 22 + 42 + 12 - 8,
+              //   bottom: 8.0,
+              //   child: AnimatedOpacity(
+              //     duration: Duration(milliseconds: authenticatedController.isSearching ? 0 : 600),
+              //     opacity: authenticatedController.isSearching ? 0 : 1,
+              //     child: GestureDetector(
+              //       behavior: HitTestBehavior.opaque,
+              //       onTap: () {
+              //         if (mounted) {
+              //           setState(() {
+              //             authenticatedController.isSearching = true;
+              //           });
+              //         }
+              //         _focusNode.requestFocus();
+              //       },
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: Image.asset(
+              //           'assets/images/authenticated/search-icon.png',
+              //           width: 26.0,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 150),
-                right: 60.0,
-                left: _isSearching ? 0 : MediaQuery.of(context).size.width,
+                right: 0.0,
+                left: authenticatedController.isSearching
+                    ? 0
+                    : MediaQuery.of(context).size.width,
                 bottom: 8.0,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 11.0,
+                    horizontal: 18.0,
                   ),
                   child: Stack(
                     children: [
@@ -99,9 +122,10 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                           searchController: _searchController,
                           focusNode: _focusNode,
                           close: () {
-                            setState(() {
-                              _isSearching = false;
-                            });
+                            authenticatedController.setIsSearching(false);
+                            // setState(() {
+                            //   authenticatedController.isSearching = false;
+                            // });
                           },
                         ),
                       ),
@@ -110,22 +134,23 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                 ),
               ),
 
-              if (_isSearching)
+              if (authenticatedController.isSearching)
                 Positioned(
-                  right: 74.0,
+                  right: 20.0,
                   top: 8.0,
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 150),
-                    opacity: _isSearching ? 1 : 0,
+                    opacity: authenticatedController.isSearching ? 1 : 0,
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
                         _searchController.clear();
                         connectionSearchTerm.set('');
                         FocusScope.of(context).unfocus();
-                        setState(() {
-                          _isSearching = false;
-                        });
+                        authenticatedController.setIsSearching(false);
+                        // setState(() {
+                        //   authenticatedController.isSearching = false;
+                        // });
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -142,39 +167,39 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                   ),
                 ),
 
-              Positioned(
-                right: 0.0,
-                bottom: 9.0,
-                child: Container(
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      // SuperNavigator.push(
-                      //   context: context,
-                      //   widget: Account(),
-                      //   fullScreen: false,
-                      // );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Account(),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 12.0,
-                        left: 11.0,
-                      ),
-                      child: SuperuserImage(
-                        url: widget.superuser.photoUrl,
-                        radius: 21.0,
-                        bordered: false,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   right: 0.0,
+              //   bottom: 9.0,
+              //   child: Container(
+              //     child: GestureDetector(
+              //       behavior: HitTestBehavior.opaque,
+              //       onTap: () {
+              //         // SuperNavigator.push(
+              //         //   context: context,
+              //         //   widget: Account(),
+              //         //   fullScreen: false,
+              //         // );
+              //         Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) => Account(),
+              //           ),
+              //         );
+              //       },
+              //       child: Padding(
+              //         padding: const EdgeInsets.only(
+              //           right: 12.0,
+              //           left: 11.0,
+              //         ),
+              //         child: SuperuserImage(
+              //           url: widget.superuser.photoUrl,
+              //           radius: 21.0,
+              //           bordered: false,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

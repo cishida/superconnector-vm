@@ -24,6 +24,7 @@ class ConstantColors {
 
   // Buttons
   static const Color FAB_BACKGROUND = Color(0xFF0AA7FF);
+  static const Color BOTTOM_NAV_UNSELECTED = Color(0xFF8996A2);
 
   // Errors
   static const Color ERROR_RED = Color(0xFFA22027);
