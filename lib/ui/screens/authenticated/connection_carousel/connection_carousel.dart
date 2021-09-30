@@ -37,7 +37,7 @@ class _ConnectionCarouselState extends State<ConnectionCarousel> {
     }
 
     TextStyle bottomNavStyle = TextStyle(
-      color: ConstantColors.TURQUOISE,
+      color: Colors.white,
       fontSize: 18.0,
       fontWeight: FontWeight.w600,
     );

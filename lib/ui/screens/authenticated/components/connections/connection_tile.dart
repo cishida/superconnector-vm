@@ -302,11 +302,11 @@ class _ConnectionTileState extends State<ConnectionTile>
                               //   ),
                               // ),
                               widget.connection.isExampleConversation
-                                  ? 'Tap to try video sharing'
+                                  ? 'Tap to try video messaging'
                                   : (videos.length == 0
-                                      ? 'Send a welcome video'
+                                      ? 'Send a welcome video message (VM)'
                                       : (widget.connection.tags[superuser.id] ??
-                                              'Choose your family relation')
+                                              'Add a private tag')
                                           .toString()),
                               style: TextStyle(
                                 fontSize: 15.0,

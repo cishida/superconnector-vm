@@ -34,7 +34,7 @@ class OnboardingNotifications extends StatelessWidget {
                 height: 12.0,
               ),
               Text(
-                'These tell you when you receive videos from family members so you can reply quickly.',
+                'These tell you when you receive video messages so you can reply quickly.',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,
