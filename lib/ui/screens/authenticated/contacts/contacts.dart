@@ -21,11 +21,11 @@ import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_sel
 class Contacts extends StatefulWidget {
   const Contacts({
     Key? key,
-    required this.tag,
-    required this.isGroup,
+    this.tag,
+    this.isGroup = false,
   }) : super(key: key);
 
-  final String tag;
+  final String? tag;
   final bool isGroup;
 
   @override
@@ -88,7 +88,7 @@ class _ContactsState extends State<Contacts> {
       selectedContacts: selectedContacts,
       connections: connections,
       analytics: analytics,
-      tag: widget.tag,
+      tag: widget.tag ?? '',
     );
 
     Connection connection = connectionMap['connection'];
@@ -268,7 +268,7 @@ class _ContactsState extends State<Contacts> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Send Request',
+                    widget.tag == null ? 'Choose Recipient(s)' : 'Send Request',
                     style: Theme.of(context).textTheme.headline5!.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
@@ -280,11 +280,13 @@ class _ContactsState extends State<Contacts> {
                       top: 5.0,
                     ),
                     child: Text(
-                      widget.isGroup
-                          ? 'Add people to your family group.'
-                          : 'Invite your ' +
-                              widget.tag.toLowerCase() +
-                              ' to connect.',
+                      widget.tag == null
+                          ? 'Select people who you want to share with'
+                          : widget.isGroup
+                              ? 'Add people to your family group.'
+                              : 'Invite your ' +
+                                  widget.tag!.toLowerCase() +
+                                  ' to connect.',
                       style: Theme.of(context).textTheme.bodyText1!,
                     ),
                   ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
+// import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
@@ -67,7 +67,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
     var selectedContacts = Provider.of<SelectedContacts>(
       context,
     );
-    SuperuserService _superuserService = SuperuserService();
+    // SuperuserService _superuserService = SuperuserService();
 
     if (superuser == null || superuser.id == '') {
       return Center(

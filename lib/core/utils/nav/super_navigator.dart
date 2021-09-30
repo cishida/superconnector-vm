@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_permission/contacts_permission.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
@@ -32,6 +33,7 @@ class SuperNavigator {
   static void handleContactsNavigation({
     required BuildContext context,
     bool shouldShowHistory = false,
+    bool shouldSendVideo = false,
     Function? primaryAction,
   }) async {
     var status = await Permission.contacts.status;
@@ -48,16 +50,31 @@ class SuperNavigator {
       //   ),
       // );
 
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) {
-          return FractionallySizedBox(
-            heightFactor: 0.93,
-            child: Relations(),
-          );
-        },
-      );
+      if (shouldSendVideo) {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) {
+            return FractionallySizedBox(
+              heightFactor: 0.93,
+              child: Contacts(
+                isGroup: true,
+              ),
+            );
+          },
+        );
+      } else {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) {
+            return FractionallySizedBox(
+              heightFactor: 0.93,
+              child: Relations(),
+            );
+          },
+        );
+      }
     } else {
       SuperNavigator.push(
         context: context,

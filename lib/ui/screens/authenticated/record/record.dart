@@ -12,6 +12,7 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
+import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
 import 'package:superconnector_vm/core/utils/video/video_uploader.dart';
@@ -258,6 +259,13 @@ class _RecordState extends State<Record>
   Future<void> _onSendPressed() async {
     if (_videoFile == null) {
       return;
+    }
+
+    if (widget.connection == null) {
+      SuperNavigator.handleContactsNavigation(
+        shouldSendVideo: true,
+        context: context,
+      );
     }
 
     setState(() {

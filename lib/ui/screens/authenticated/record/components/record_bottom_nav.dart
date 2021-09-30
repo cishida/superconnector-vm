@@ -16,7 +16,7 @@ class RecordBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextStyle bottomNavStyle = TextStyle(
-      color: ConstantColors.TURQUOISE,
+      color: Colors.white,
       fontSize: 18.0,
       fontWeight: FontWeight.w600,
     );
@@ -39,34 +39,39 @@ class RecordBottomNav extends StatelessWidget {
                 style: bottomNavStyle,
               ),
             ),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => onSendPressed(),
-              child: shouldShowSendVM
-                  ? Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15.0,
-                        vertical: 6.0,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(32.0),
-                        color: ConstantColors.TURQUOISE,
-                      ),
-                      child: Text(
-                        'Send Video',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: ConstantColors.DARK_BLUE,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    )
-                  : Text(
-                      'Send Video',
-                      style: bottomNavStyle,
-                    ),
-            ),
+            if (shouldShowSendVM)
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => onSendPressed(),
+                child: Image.asset(
+                  'assets/images/authenticated/record/send-vm-button.png',
+                  width: 46.0,
+                ),
+                // shouldShowSendVM
+                //     ? Container(
+                //         padding: const EdgeInsets.symmetric(
+                //           horizontal: 15.0,
+                //           vertical: 6.0,
+                //         ),
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(32.0),
+                //           color: ConstantColors.TURQUOISE,
+                //         ),
+                //         child: Text(
+                //           'Send Video',
+                //           textAlign: TextAlign.center,
+                //           style: TextStyle(
+                //             color: ConstantColors.DARK_BLUE,
+                //             fontSize: 18.0,
+                //             fontWeight: FontWeight.w600,
+                //           ),
+                //         ),
+                //       )
+                //     : Text(
+                //         'Send Video',
+                //         style: bottomNavStyle,
+                //       ),
+              ),
           ],
         ),
       ),
