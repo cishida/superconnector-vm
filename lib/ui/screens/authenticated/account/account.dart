@@ -151,7 +151,7 @@ class _AccountState extends State<Account> {
                   behavior: HitTestBehavior.opaque,
                   onTap: () async {
                     await SMSUtility.send(
-                      "Just added you in Superconnector so we can VM (video message) each other - here's your invite: ${ConstantStrings.TESTFLIGHT_LINK}",
+                      "Just connected with you in Superconnector! Here's your invite: ${ConstantStrings.TESTFLIGHT_LINK}",
                       [],
                     );
                     // showDialog(
