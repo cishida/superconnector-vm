@@ -3,7 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_permission/contacts_permission.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relation_categories/relation_categories.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/record_permission/record_permission.dart';
 
@@ -69,8 +69,8 @@ class SuperNavigator {
           isScrollControlled: true,
           builder: (context) {
             return FractionallySizedBox(
-              heightFactor: 0.93,
-              child: Relations(),
+              heightFactor: 0.5,
+              child: RelationCategories(),
             );
           },
         );

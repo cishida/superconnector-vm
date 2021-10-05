@@ -9,9 +9,10 @@ import 'package:superconnector_vm/ui/components/overlays/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/components/relation_tile.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 
-class Relations extends StatefulWidget {
-  const Relations({
+class RelationCategories extends StatefulWidget {
+  const RelationCategories({
     Key? key,
     this.connection,
   }) : super(key: key);
@@ -19,10 +20,10 @@ class Relations extends StatefulWidget {
   final Connection? connection;
 
   @override
-  _RelationsState createState() => _RelationsState();
+  _RelationCategoriesState createState() => _RelationCategoriesState();
 }
 
-class _RelationsState extends State<Relations> {
+class _RelationCategoriesState extends State<RelationCategories> {
   void _toContacts({
     required String tag,
     bool isGroup = false,
@@ -58,11 +59,24 @@ class _RelationsState extends State<Relations> {
     // Navigator.of(context).pop();
   }
 
-  void _onCustom(String relation) {
-    final String title = relation == 'Group' ? 'Group Name' : 'Custom Relation';
-    final String subtitle = relation == 'Group'
-        ? 'Only you can see your group names.'
-        : 'Pick a name for your relation.';
+  void _toRelations({
+    required String tag,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.93,
+          child: Relations(),
+        );
+      },
+    );
+  }
+
+  void _onCustom() {
+    final String title = 'Write your own';
+    final String subtitle = 'Pick a name for your relation.';
 
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -79,7 +93,7 @@ class _RelationsState extends State<Relations> {
             onSubmit: (text) async {
               _toContacts(
                 tag: text,
-                isGroup: relation == 'Group',
+                isGroup: false,
               );
             },
           );
@@ -92,11 +106,9 @@ class _RelationsState extends State<Relations> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    final List<String> tags = ['Custom'];
-    tags.addAll(ConstantStrings.FAMILY_RELATIONS);
-    // if (widget.connection == null) {
-    //   tags.add('Group');
-    // }
+    final List<String> tags = ['Write your own'];
+    tags.addAll(ConstantStrings.RELATION_CATEGORIES);
+    tags.add('None');
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -155,17 +167,15 @@ class _RelationsState extends State<Relations> {
               child: ListView.builder(
                 itemCount: tags.length,
                 itemBuilder: (context, index) {
-                  if (tags[index] == 'Custom' || tags[index] == 'Group') {
+                  if (tags[index] == 'Write your own') {
                     return RelationTile(
                       relation: tags[index],
-                      onPress: () => _onCustom(
-                        tags[index],
-                      ),
+                      onPress: () => _onCustom(),
                     );
                   } else {
                     return RelationTile(
                       relation: tags[index],
-                      onPress: () => _toContacts(
+                      onPress: () => _toRelations(
                         tag: tags[index],
                       ),
                     );

@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
@@ -264,9 +263,9 @@ class _HomeState extends State<Home> {
       return Container();
     }
 
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-    );
+    // var selectedContacts = Provider.of<SelectedContacts>(
+    //   context,
+    // );
 
     // Start onboarding cards after building
     // will use the stage a user left off at

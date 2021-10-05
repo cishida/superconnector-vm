@@ -90,11 +90,7 @@ class _RecordState extends State<Record>
           description.lensDirection == CameraLensDirection.front);
     }
 
-    if (newDescription != null) {
-      initCamera(description: newDescription);
-    } else {
-      print('Asked camera not available');
-    }
+    initCamera(description: newDescription);
   }
 
   Future<void> _setVideoFile(XFile file) async {

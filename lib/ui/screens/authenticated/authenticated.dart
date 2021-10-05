@@ -7,7 +7,6 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/authenticated_nav/authenticated_nav.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding.dart';
-import 'package:superconnector_vm/ui/screens/home/home.dart';
 // import 'package:superconnector_vm/core/services/auth/auth_service.dart';
 
 class Authenticated extends StatefulWidget {

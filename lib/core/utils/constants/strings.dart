@@ -20,6 +20,13 @@ class ConstantStrings {
   static const String TESTFLIGHT_LINK =
       'https://testflight.apple.com/join/KLePjsGB';
 
+  // Categories
+  static const List<String> RELATION_CATEGORIES = [
+    'Family Tags',
+    'Friend Tags',
+    'Professional Tags',
+  ];
+
   // Family
   static const List<String> FAMILY_RELATIONS = [
     'Mom',
