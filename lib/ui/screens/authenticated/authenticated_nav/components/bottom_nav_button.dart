@@ -16,9 +16,7 @@ class BottomNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var color = selected
-        ? ConstantColors.PRIMARY
-        : ConstantColors.BOTTOM_NAV_UNSELECTED;
+    var color = selected ? Colors.white : ConstantColors.BOTTOM_NAV_UNSELECTED;
     var fontWeight = selected ? FontWeight.w700 : FontWeight.w600;
     Image image = Image.asset(
       'assets/images/authenticated/bottom_nav/bottom-nav-${title.toLowerCase()}.png',

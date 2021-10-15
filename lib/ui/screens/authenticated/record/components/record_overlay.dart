@@ -118,15 +118,15 @@ class _RecordOverlayState extends State<RecordOverlay> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned(
-          top: 71.0,
-          left: 0.0,
-          child: ChevronBackButton(
-            onBack: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
+        // Positioned(
+        //   top: 71.0,
+        //   left: 0.0,
+        //   child: ChevronBackButton(
+        //     onBack: () {
+        //       Navigator.pop(context);
+        //     },
+        //   ),
+        // ),
         if (_superusers.length > 0 && !widget.isRecording)
           Positioned.fill(
             top: 71.0,
@@ -155,39 +155,7 @@ class _RecordOverlayState extends State<RecordOverlay> {
               ),
             ),
           ),
-        Positioned(
-          top: 71.0,
-          left: 50.0,
-          right: 50.0,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: AnimatedOpacity(
-              opacity: widget.isRecording ? 1.0 : 0.0,
-              duration: const Duration(
-                milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
-              ),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
-                  vertical: 6.0,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(32.0),
-                  color: Colors.white.withOpacity(.20),
-                ),
-                child: Text(
-                  'Recording',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+
         // if (!isRecording)
         Positioned(
           top: 65.0,

@@ -43,64 +43,64 @@ class _HomeTitleBarState extends State<HomeTitleBar>
           width: width,
           child: Stack(
             children: [
+              // AnimatedPositioned(
+              //   duration: const Duration(milliseconds: 150),
+              //   left: authenticatedController.isSearching ? -300 : 0.0,
+              //   bottom: 20.0,
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(
+              //       left: 18.0,
+              //     ),
+              //     child: Image.asset(
+              //       'assets/images/authenticated/superconnector-title.png',
+              //       width: width * .527,
+              //     ),
+              //   ),
+              // ),
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 150),
-                left: authenticatedController.isSearching ? -300 : 0.0,
-                bottom: 20.0,
+                left: authenticatedController.isSearching ? -400 : 0.0,
+                bottom: 7.0,
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 18.0,
-                  ),
-                  child: Image.asset(
-                    'assets/images/authenticated/superconnector-title.png',
-                    width: width * .527,
+                  padding: const EdgeInsets.only(left: 18.0),
+                  child: Text(
+                    'Video Messages',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -.5,
+                    ),
                   ),
                 ),
               ),
-              // AnimatedPositioned(
-              //   duration: const Duration(milliseconds: 150),
-              //   left: authenticatedController.isSearching ? -200 : 0.0,
-              //   bottom: 7.0,
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(left: 18.0),
-              //     child: Text(
-              //       'Family',
-              //       style: TextStyle(
-              //         color: Colors.black,
-              //         fontSize: 40.0,
-              //         fontWeight: FontWeight.w700,
-              //         letterSpacing: -.5,
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // if (!authenticatedController.isSearching) Spacer(),
-              // Positioned(
-              //   right: 22 + 42 + 12 - 8,
-              //   bottom: 8.0,
-              //   child: AnimatedOpacity(
-              //     duration: Duration(milliseconds: authenticatedController.isSearching ? 0 : 600),
-              //     opacity: authenticatedController.isSearching ? 0 : 1,
-              //     child: GestureDetector(
-              //       behavior: HitTestBehavior.opaque,
-              //       onTap: () {
-              //         if (mounted) {
-              //           setState(() {
-              //             authenticatedController.isSearching = true;
-              //           });
-              //         }
-              //         _focusNode.requestFocus();
-              //       },
-              //       child: Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Image.asset(
-              //           'assets/images/authenticated/search-icon.png',
-              //           width: 26.0,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              if (!authenticatedController.isSearching)
+                Positioned(
+                  right: 20,
+                  bottom: 8.0,
+                  child: AnimatedOpacity(
+                    duration: Duration(
+                        milliseconds:
+                            authenticatedController.isSearching ? 0 : 600),
+                    opacity: authenticatedController.isSearching ? 0 : 1,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        if (mounted) {
+                          authenticatedController.setIsSearching(true);
+                        }
+                        _focusNode.requestFocus();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          'assets/images/authenticated/search-icon.png',
+                          width: 26.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 150),
                 right: 0.0,

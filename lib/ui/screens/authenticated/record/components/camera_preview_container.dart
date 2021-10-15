@@ -141,6 +141,15 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
     try {
       XFile videoFile = await widget.cameraController!.stopVideoRecording();
       widget.setVideoFile(videoFile);
+      if (_timer != null) {
+        _timer!.cancel();
+      }
+
+      setState(() {
+        _isRecording = false;
+        _currentVideoSeconds = 0;
+        _shouldShowOnboardingChip = true;
+      });
     } on CameraException catch (e) {
       _showCameraException(e);
       return null;
@@ -237,6 +246,51 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
             //     ),
             //   ),
             // ),
+
+            Positioned(
+              top: 71.0,
+              left: 50.0,
+              right: 50.0,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: AnimatedOpacity(
+                  opacity: _isRecording ? 1.0 : 0.0,
+                  duration: const Duration(
+                    milliseconds:
+                        ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0,
+                      vertical: 6.0,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(32.0),
+                      color: _isRecording &&
+                              ConstantValues.VIDEO_TIME_LIMIT -
+                                      _currentVideoSeconds <=
+                                  0
+                          ? Colors.black.withOpacity(.3)
+                          : Colors.white.withOpacity(.20),
+                    ),
+                    child: Text(
+                      _isRecording &&
+                              ConstantValues.VIDEO_TIME_LIMIT -
+                                      _currentVideoSeconds <=
+                                  0
+                          ? '${((ConstantValues.VIDEO_TIME_LIMIT + ConstantValues.VIDEO_OVERFLOW_LIMIT) - _currentVideoSeconds).toString()} overflow'
+                          : '${(ConstantValues.VIDEO_TIME_LIMIT - _currentVideoSeconds).toString()} remaining',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
 
             // Using mask over white progress indicator for gradient
             Positioned(
@@ -387,7 +441,7 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
                       color: Colors.white.withOpacity(.20),
                     ),
                     child: Text(
-                      'Tap and hold to record (${ConstantValues.VIDEO_TIME_LIMIT.toString()}s)',
+                      'Tap and hold to record',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -399,88 +453,88 @@ class _CameraPreviewContainerState extends State<CameraPreviewContainer> {
                 ),
               ),
             ),
-            Positioned.fill(
-              bottom: 39.0,
-              left: 0.0,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: AnimatedOpacity(
-                  opacity: _isRecording &&
-                          ConstantValues.VIDEO_TIME_LIMIT -
-                                  _currentVideoSeconds >
-                              0
-                      ? 1.0
-                      : 0.0,
-                  duration: const Duration(
-                    milliseconds:
-                        ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0,
-                      vertical: 6.0,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32.0),
-                      color: Colors.white.withOpacity(.20),
-                    ),
-                    child: Text(
-                      '${(ConstantValues.VIDEO_TIME_LIMIT - _currentVideoSeconds).toString()} remaining',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned.fill(
-              bottom: 39.0,
-              left: 0.0,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: AnimatedOpacity(
-                  opacity: _isRecording &&
-                          ConstantValues.VIDEO_TIME_LIMIT -
-                                  _currentVideoSeconds <=
-                              0
-                      ? 1.0
-                      : 0.0,
-                  duration: const Duration(
-                    milliseconds:
-                        ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0,
-                      vertical: 6.0,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32.0),
-                      // color: Colors.white.withOpacity(.20),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/authenticated/overflow-background.png',
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: Text(
-                      '${((ConstantValues.VIDEO_TIME_LIMIT + ConstantValues.VIDEO_OVERFLOW_LIMIT) - _currentVideoSeconds).toString()} overflow',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // Positioned.fill(
+            //   bottom: 39.0,
+            //   left: 0.0,
+            //   child: Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: AnimatedOpacity(
+            //       opacity: _isRecording &&
+            //               ConstantValues.VIDEO_TIME_LIMIT -
+            //                       _currentVideoSeconds >
+            //                   0
+            //           ? 1.0
+            //           : 0.0,
+            //       duration: const Duration(
+            //         milliseconds:
+            //             ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+            //       ),
+            //       child: Container(
+            //         padding: const EdgeInsets.symmetric(
+            //           horizontal: 15.0,
+            //           vertical: 6.0,
+            //         ),
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(32.0),
+            //           color: Colors.white.withOpacity(.20),
+            //         ),
+            //         child: Text(
+            //           '${(ConstantValues.VIDEO_TIME_LIMIT - _currentVideoSeconds).toString()} remaining',
+            //           textAlign: TextAlign.center,
+            //           style: TextStyle(
+            //             color: Colors.white,
+            //             fontSize: 15.0,
+            //             fontWeight: FontWeight.w600,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // Positioned.fill(
+            //   bottom: 39.0,
+            //   left: 0.0,
+            //   child: Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: AnimatedOpacity(
+            //       opacity: _isRecording &&
+            //               ConstantValues.VIDEO_TIME_LIMIT -
+            //                       _currentVideoSeconds <=
+            //                   0
+            //           ? 1.0
+            //           : 0.0,
+            //       duration: const Duration(
+            //         milliseconds:
+            //             ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+            //       ),
+            //       child: Container(
+            //         padding: const EdgeInsets.symmetric(
+            //           horizontal: 15.0,
+            //           vertical: 6.0,
+            //         ),
+            //         decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(32.0),
+            //           // color: Colors.white.withOpacity(.20),
+            //           image: DecorationImage(
+            //             image: AssetImage(
+            //               'assets/images/authenticated/overflow-background.png',
+            //             ),
+            //             fit: BoxFit.cover,
+            //           ),
+            //         ),
+            //         child: Text(
+            //           '${((ConstantValues.VIDEO_TIME_LIMIT + ConstantValues.VIDEO_OVERFLOW_LIMIT) - _currentVideoSeconds).toString()} overflow',
+            //           textAlign: TextAlign.center,
+            //           style: TextStyle(
+            //             color: Colors.white,
+            //             fontSize: 15.0,
+            //             fontWeight: FontWeight.w600,
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

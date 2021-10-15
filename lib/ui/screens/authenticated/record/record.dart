@@ -17,6 +17,7 @@ import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
 import 'package:superconnector_vm/core/utils/video/video_uploader.dart';
 import 'package:superconnector_vm/main.dart';
+import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/camera_preview_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_bottom_nav.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_overlay.dart';
@@ -25,10 +26,12 @@ import 'package:superconnector_vm/ui/screens/authenticated/record/components/vid
 class Record extends StatefulWidget {
   const Record({
     Key? key,
-    required this.connection,
+    this.connection,
+    this.shouldGoBack = false,
   }) : super(key: key);
 
   final Connection? connection;
+  final bool shouldGoBack;
 
   @override
   _RecordState createState() => _RecordState();
@@ -408,6 +411,17 @@ class _RecordState extends State<Record>
             body: Stack(
               alignment: Alignment.center,
               children: [
+                if (widget.shouldGoBack)
+                  Positioned(
+                    top: 71.0,
+                    left: 0.0,
+                    child: ChevronBackButton(
+                      onBack: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+
                 // Camera preview for recording VM
                 // if (_cameraController != null &&
                 //     _cameraController!.value.isInitialized &&
@@ -454,6 +468,34 @@ class _RecordState extends State<Record>
                   toggleCamera: () => _toggleCameraLens(),
                 ),
 
+                // if (_shouldShowVideo)
+                Positioned(
+                  top: 71.0,
+                  left: 0.0,
+                  child: AnimatedOpacity(
+                    opacity: _shouldShowVideo ? 1.0 : 0.0,
+                    duration: const Duration(
+                      milliseconds:
+                          ConstantValues.CAMERA_TO_VIDEO_PLAYER_MILLISECONDS,
+                    ),
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: _onResetPressed,
+                      child: Image.asset(
+                        'assets/images/authenticated/record/reset-button.png',
+                        width: 24.0,
+                      ),
+                      // Text(
+                      //   'Reset',
+                      //   style: TextStyle(
+                      //     color: Colors.white,
+                      //     fontSize: 20.0,
+                      //   ),
+                      // ),
+                    ),
+                  ),
+                ),
+
                 if (_sendPressed && !_uploadCompleted)
                   Container(
                     color: Colors.black.withOpacity(0.65),
@@ -473,13 +515,25 @@ class _RecordState extends State<Record>
                       ),
                     ),
                   ),
+
+                if (_isResetting)
+                  Container(
+                    color: Colors.black,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [],
+                      ),
+                    ),
+                  ),
               ],
             ),
-            bottomNavigationBar: RecordBottomNav(
-              shouldShowSendVM: _betterPlayerController != null,
-              onResetPressed: _onResetPressed,
-              onSendPressed: _onSendPressed,
-            ),
+            // bottomNavigationBar: RecordBottomNav(
+            //   shouldShowSendVM: _betterPlayerController != null,
+            //   onResetPressed: _onResetPressed,
+            //   onSendPressed: _onSendPressed,
+            // ),
           );
         },
       ),

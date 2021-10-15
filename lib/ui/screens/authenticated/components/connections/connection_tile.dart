@@ -287,7 +287,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                           children: [
                             ConnectionNames(
                               names: widget.connection.isExampleConversation
-                                  ? ['Example Connection']
+                                  ? [superuser.fullName]
                                   : _superusers.map((e) => e.fullName).toList(),
                               phoneNumberNameMap:
                                   widget.connection.phoneNumberNameMap,
@@ -301,7 +301,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                               //   ),
                               // ),
                               widget.connection.isExampleConversation
-                                  ? 'Tap to try video messaging'
+                                  ? 'Me'
                                   : (videos.length == 0
                                       ? 'Send a welcome video message (VM)'
                                       : (widget.connection.tags[superuser.id] ??
