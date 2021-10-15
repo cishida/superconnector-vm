@@ -35,6 +35,13 @@ class _ContactsSelectionState extends State<ContactsSelection> {
   SuperuserService _superuserService = SuperuserService();
 
   Future _loadUsers() async {
+    if (!widget.isSelectable) {
+      setState(() {
+        _superusers = [];
+      });
+      return;
+    }
+
     List<Superuser> tempSuperusers = [];
     final currentSuperuser = Provider.of<Superuser?>(
       context,

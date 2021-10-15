@@ -21,6 +21,7 @@ import 'package:superconnector_vm/ui/screens/authenticated/components/connection
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/video_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relation_categories/relation_categories.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 
 class ConnectionTile extends StatefulWidget {
@@ -253,17 +254,25 @@ class _ConnectionTileState extends State<ConnectionTile>
                 return;
               }
 
-              _handleNav(
-                onComplete: () {
-                  SuperNavigator.push(
-                    context: context,
-                    widget: ConnectionGrid(
-                      connection: widget.connection,
-                    ),
-                    fullScreen: false,
-                  );
-                },
+              SuperNavigator.push(
+                context: context,
+                widget: ConnectionGrid(
+                  connection: widget.connection,
+                ),
+                fullScreen: false,
               );
+
+              // _handleNav(
+              //   onComplete: () {
+              //     SuperNavigator.push(
+              //       context: context,
+              //       widget: ConnectionGrid(
+              //         connection: widget.connection,
+              //       ),
+              //       fullScreen: false,
+              //     );
+              //   },
+              // );
             },
             child: Column(
               children: [
@@ -295,25 +304,60 @@ class _ConnectionTileState extends State<ConnectionTile>
                               unwatchedCount: unwatchedCount,
                             ),
                             // Text('Names broken if seeing this'),
-                            Text(
-                              // TimestampFormatter().getChatTileTime(
-                              //   Timestamp.fromDate(
-                              //     widget.connection.mostRecentActivity!,
-                              //   ),
-                              // ),
-                              widget.connection.isExampleConversation
-                                  ? 'Me'
-                                  : (videos.length == 0
-                                      ? 'Send a welcome video message (VM)'
-                                      : (widget.connection.tags[superuser.id] ??
-                                              'Add a private tag')
-                                          .toString()),
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400,
-                                color: textColor,
+
+                            if (!widget.connection.isExampleConversation &&
+                                (widget.connection.tags[superuser.id] == null ||
+                                    widget.connection.tags[superuser.id]!
+                                        .isEmpty))
+                              GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (context) {
+                                      return FractionallySizedBox(
+                                        heightFactor: 0.5,
+                                        child: RelationCategories(
+                                          connection: widget.connection,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Text(
+                                  'Add a private tag',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: ConstantColors.PRIMARY,
+                                  ),
+                                ),
                               ),
-                            ),
+
+                            if (widget.connection.isExampleConversation ||
+                                (widget.connection.tags[superuser.id] != null &&
+                                    widget.connection.tags[superuser.id]!
+                                        .isNotEmpty))
+                              Text(
+                                (widget.connection.isExampleConversation
+                                        ? 'Me'
+                                        : widget.connection.tags[superuser.id])
+                                    .toString(),
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: !widget.connection
+                                              .isExampleConversation &&
+                                          (widget.connection
+                                                      .tags[superuser.id] ==
+                                                  null ||
+                                              widget.connection
+                                                  .tags[superuser.id]!.isEmpty)
+                                      ? ConstantColors.PRIMARY
+                                      : textColor,
+                                ),
+                              ),
                           ],
                         ),
                       ),

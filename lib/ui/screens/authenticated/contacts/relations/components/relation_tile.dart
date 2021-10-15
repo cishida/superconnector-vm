@@ -56,6 +56,7 @@ class _RelationTileState extends State<RelationTile> {
                     widget.relation,
                     style: Theme.of(context).textTheme.button!.copyWith(
                           letterSpacing: .15,
+                          color: Colors.black,
                         ),
                   ),
                 ),
@@ -63,7 +64,7 @@ class _RelationTileState extends State<RelationTile> {
                 Padding(
                   padding: const EdgeInsets.only(left: 18.4),
                   child: Underline(
-                    color: Colors.white.withOpacity(.2),
+                    color: Colors.black.withOpacity(.08),
                   ),
                 ),
               ],

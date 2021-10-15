@@ -24,81 +24,66 @@ class RelationCategories extends StatefulWidget {
 }
 
 class _RelationCategoriesState extends State<RelationCategories> {
-  void _toContacts({
-    required String tag,
-    bool isGroup = false,
-  }) {
-    Navigator.of(context).pop();
+  // void _toContacts({
+  //   required String tag,
+  //   bool isGroup = false,
+  // }) {
+  //   Navigator.of(context).pop();
 
-    if (widget.connection == null) {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) {
-          return FractionallySizedBox(
-            heightFactor: 0.93,
-            child: Contacts(
-              tag: tag,
-              isGroup: isGroup,
-            ),
-          );
-        },
-      );
-    } else {
-      final superuser = Provider.of<Superuser?>(
-        context,
-        listen: false,
-      );
-      if (superuser != null) {
-        widget.connection!.tags.addAll({
-          superuser.id: tag,
-        });
-        widget.connection!.update();
-      }
-    }
-    // Navigator.of(context).pop();
-  }
+  //   if (tag == 'None') {
+  //     return;
+  //   }
+
+  //   if (widget.connection == null) {
+  //     showModalBottomSheet(
+  //       context: context,
+  //       isScrollControlled: true,
+  //       builder: (context) {
+  //         return FractionallySizedBox(
+  //           heightFactor: 0.93,
+  //           child: Contacts(
+  //             tag: tag,
+  //             isGroup: isGroup,
+  //           ),
+  //         );
+  //       },
+  //     );
+  //   } else {
+  //     final superuser = Provider.of<Superuser?>(
+  //       context,
+  //       listen: false,
+  //     );
+  //     if (superuser != null) {
+  //       widget.connection!.tags.addAll({
+  //         superuser.id: tag,
+  //       });
+  //       widget.connection!.update();
+  //     }
+  //   }
+  //   // Navigator.of(context).pop();
+  // }
 
   void _toRelations({
     required String tag,
   }) {
+    Navigator.of(context).pop();
+
+    if (tag == 'None') {
+      return;
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
           heightFactor: 0.93,
-          child: Relations(),
+          child: Relations(
+            tag: tag,
+            connection: widget.connection,
+          ),
         );
       },
-    );
-  }
-
-  void _onCustom() {
-    final String title = 'Write your own';
-    final String subtitle = 'Pick a name for your relation.';
-
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (BuildContext context, _, __) {
-          return OverlayInput(
-            fieldName: 'Relation',
-            explanation: OverlayExplanation(
-              title: title,
-              subtitle: subtitle,
-            ),
-            textCapitalization: TextCapitalization.words,
-            textInputAction: TextInputAction.done,
-            onSubmit: (text) async {
-              _toContacts(
-                tag: text,
-                isGroup: false,
-              );
-            },
-          );
-        },
-      ),
     );
   }
 
@@ -106,7 +91,7 @@ class _RelationCategoriesState extends State<RelationCategories> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    final List<String> tags = ['Write your own'];
+    final List<String> tags = [];
     tags.addAll(ConstantStrings.RELATION_CATEGORIES);
     tags.add('None');
 
@@ -118,7 +103,7 @@ class _RelationCategoriesState extends State<RelationCategories> {
           image: DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage(
-              'assets/images/authenticated/gradient-background.png',
+              'assets/images/authenticated/tag-category-background.png',
             ),
           ),
           borderRadius: BorderRadius.only(
@@ -127,21 +112,21 @@ class _RelationCategoriesState extends State<RelationCategories> {
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
               child: BottomSheetTab(),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                left: 20.0,
+                // left: 20.0,
                 bottom: 19.0,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'New Connection',
+                    'General',
                     style: Theme.of(context).textTheme.headline5!.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
@@ -153,7 +138,7 @@ class _RelationCategoriesState extends State<RelationCategories> {
                       top: 5.0,
                     ),
                     child: Text(
-                      'Add a private tag to stay organized.',
+                      'What type of tag do you want to add?',
                       style: Theme.of(context).textTheme.bodyText1!,
                     ),
                   ),
@@ -164,23 +149,19 @@ class _RelationCategoriesState extends State<RelationCategories> {
               color: Colors.white.withOpacity(.2),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: tags.length,
-                itemBuilder: (context, index) {
-                  if (tags[index] == 'Write your own') {
-                    return RelationTile(
-                      relation: tags[index],
-                      onPress: () => _onCustom(),
-                    );
-                  } else {
+              child: Container(
+                color: Colors.white,
+                child: ListView.builder(
+                  itemCount: tags.length,
+                  itemBuilder: (context, index) {
                     return RelationTile(
                       relation: tags[index],
                       onPress: () => _toRelations(
                         tag: tags[index],
                       ),
                     );
-                  }
-                },
+                  },
+                ),
               ),
             ),
           ],

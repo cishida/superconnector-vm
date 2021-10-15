@@ -71,8 +71,10 @@ class SuperNavigator {
           isScrollControlled: true,
           builder: (context) {
             return FractionallySizedBox(
-              heightFactor: 0.5,
-              child: RelationCategories(),
+              heightFactor: 0.93,
+              child: Contacts(
+                isGroup: false,
+              ),
             );
           },
         );

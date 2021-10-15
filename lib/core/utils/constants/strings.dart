@@ -22,9 +22,9 @@ class ConstantStrings {
 
   // Categories
   static const List<String> RELATION_CATEGORIES = [
-    'Family Tags',
-    'Friend Tags',
-    'Professional Tags',
+    'Family',
+    'Friend',
+    'Professional',
   ];
 
   // Family
@@ -61,5 +61,33 @@ class ConstantStrings {
     'Daughter-in-law',
     'Brother-in-law',
     'Sister-in-law',
+  ];
+
+  // Friend
+  static const List<String> FRIEND_RELATIONS = [
+    'Local Friend',
+    'Highschool Friend',
+    'College Friend',
+    'Grad School Friend',
+    'Neighbor',
+    'Travel Buddy',
+    'Gym Friend',
+    'BFF',
+    'Social Friend',
+    'Teammate',
+  ];
+
+  // Professional
+  static const List<String> PROFESSIONAL_RELATIONS = [
+    'Coworker',
+    'Colleague',
+    'Employee',
+    'Boss',
+    'Partner',
+    'Advisor',
+    'Investor',
+    'Mentor',
+    'Assistant',
+    'Contractor',
   ];
 }

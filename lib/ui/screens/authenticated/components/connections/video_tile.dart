@@ -71,7 +71,7 @@ class _VideoTileState extends State<VideoTile> {
                       image: CachedNetworkImageProvider(
                         'https://image.mux.com/' +
                             widget.video.playbackIds.first +
-                            '/animated.gif?start=0&end=1',
+                            '/animated.gif?start=1&end=2',
                       ),
                     )
                   : (_owner != null

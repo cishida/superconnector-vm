@@ -14,9 +14,11 @@ class Relations extends StatefulWidget {
   const Relations({
     Key? key,
     this.connection,
+    this.tag = 'Family',
   }) : super(key: key);
 
   final Connection? connection;
+  final String tag;
 
   @override
   _RelationsState createState() => _RelationsState();
@@ -92,8 +94,22 @@ class _RelationsState extends State<Relations> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    final List<String> tags = ['Custom'];
-    tags.addAll(ConstantStrings.FAMILY_RELATIONS);
+    final List<String> tags = ['Write your own'];
+    switch (widget.tag) {
+      case 'Family':
+        tags.addAll(ConstantStrings.FAMILY_RELATIONS);
+        break;
+      case 'Friend':
+        tags.addAll(ConstantStrings.FRIEND_RELATIONS);
+        break;
+      case 'Professional':
+        tags.addAll(ConstantStrings.PROFESSIONAL_RELATIONS);
+        break;
+      default:
+        tags.addAll(ConstantStrings.FAMILY_RELATIONS);
+        break;
+    }
+
     // if (widget.connection == null) {
     //   tags.add('Group');
     // }
@@ -106,7 +122,7 @@ class _RelationsState extends State<Relations> {
           image: DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage(
-              'assets/images/authenticated/gradient-background.png',
+              'assets/images/authenticated/tag-background.png',
             ),
           ),
           borderRadius: BorderRadius.only(
@@ -115,18 +131,18 @@ class _RelationsState extends State<Relations> {
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
               child: BottomSheetTab(),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                left: 20.0,
+                // left: 20.0,
                 bottom: 19.0,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     'New Connection',
@@ -152,25 +168,29 @@ class _RelationsState extends State<Relations> {
               color: Colors.white.withOpacity(.2),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: tags.length,
-                itemBuilder: (context, index) {
-                  if (tags[index] == 'Custom' || tags[index] == 'Group') {
-                    return RelationTile(
-                      relation: tags[index],
-                      onPress: () => _onCustom(
-                        tags[index],
-                      ),
-                    );
-                  } else {
-                    return RelationTile(
-                      relation: tags[index],
-                      onPress: () => _toContacts(
-                        tag: tags[index],
-                      ),
-                    );
-                  }
-                },
+              child: Container(
+                color: Colors.white,
+                child: ListView.builder(
+                  itemCount: tags.length,
+                  itemBuilder: (context, index) {
+                    if (tags[index] == 'Write your own' ||
+                        tags[index] == 'Group') {
+                      return RelationTile(
+                        relation: tags[index],
+                        onPress: () => _onCustom(
+                          tags[index],
+                        ),
+                      );
+                    } else {
+                      return RelationTile(
+                        relation: tags[index],
+                        onPress: () => _toContacts(
+                          tag: tags[index],
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           ],
