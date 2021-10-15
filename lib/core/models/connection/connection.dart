@@ -18,6 +18,8 @@ class Connection {
   // Tags map each user to their respective tag for the connection
   @JsonKey(defaultValue: {})
   Map<String, String> tags;
+  @JsonKey(defaultValue: {})
+  Map<String, String> tagCategories;
 
   // For preusers we map added phone numbers to the contact name
   @JsonKey(defaultValue: {})
@@ -56,6 +58,7 @@ class Connection {
     this.userIds = const [],
     this.deletedIds = const [],
     this.tags = const {},
+    this.tagCategories = const {},
     this.phoneNumberNameMap = const {},
     this.streakCount = 0,
     this.videoCount = 0,

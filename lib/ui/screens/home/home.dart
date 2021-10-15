@@ -270,7 +270,7 @@ class _HomeState extends State<Home> {
     // Start onboarding cards after building
     // will use the stage a user left off at
     WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
-      _startOnboarding(superuser);
+      // _startOnboarding(superuser);
     });
 
     return LayoutBuilder(
