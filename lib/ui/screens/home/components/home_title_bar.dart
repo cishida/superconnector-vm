@@ -4,6 +4,7 @@ import 'package:superconnector_vm/core/models/connection_search_term.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/screens/home/components/connection_search_bar.dart';
 
 class HomeTitleBar extends StatefulWidget {
@@ -64,7 +65,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                 child: Padding(
                   padding: const EdgeInsets.only(left: 18.0),
                   child: Text(
-                    'Video Messages',
+                    'Records',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 40.0,
@@ -74,6 +75,32 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                   ),
                 ),
               ),
+              if (!authenticatedController.isSearching)
+                Positioned(
+                  right: 70,
+                  bottom: 12.0,
+                  child: AnimatedOpacity(
+                    duration: Duration(
+                        milliseconds:
+                            authenticatedController.isSearching ? 0 : 600),
+                    opacity: authenticatedController.isSearching ? 0 : 1,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        SuperNavigator.handleContactsNavigation(
+                          context: context,
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          'assets/images/authenticated/add-connection-button.png',
+                          width: 20.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               if (!authenticatedController.isSearching)
                 Positioned(
                   right: 20,

@@ -29,9 +29,7 @@ class VMConnectionTile extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(isGrid ? 3.0 : 6.0),
                 child: Image.asset(
-                  invertGradient
-                      ? 'assets/images/authenticated/vm-connection-gradient-inverted.png'
-                      : 'assets/images/authenticated/vm-connection-gradient.png',
+                  'assets/images/authenticated/initial-record-background.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -39,8 +37,8 @@ class VMConnectionTile extends StatelessWidget {
             Positioned(
               child: Center(
                 child: Image.asset(
-                  'assets/images/authenticated/add-button.png',
-                  width: 26.0,
+                  'assets/images/authenticated/initial-record-button.png',
+                  width: 54.0,
                 ),
               ),
             ),

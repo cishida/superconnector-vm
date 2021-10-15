@@ -20,7 +20,7 @@ class BottomNavButton extends StatelessWidget {
     var fontWeight = selected ? FontWeight.w700 : FontWeight.w600;
     Image image = Image.asset(
       'assets/images/authenticated/bottom_nav/bottom-nav-${title.toLowerCase()}.png',
-      height: 22.0,
+      height: title.toLowerCase() == 'camera' ? 18 : 22.0,
       color: color,
     );
 

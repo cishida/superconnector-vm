@@ -79,7 +79,7 @@ class _AccountTileState extends State<AccountTile> {
                                 widget.subtitle!,
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.white.withOpacity(.5),
                                   fontSize: widget.subtitle!.length > 50 &&
                                           size.width < 400
                                       ? 14.0

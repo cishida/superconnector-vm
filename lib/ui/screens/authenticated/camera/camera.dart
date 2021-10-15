@@ -8,6 +8,7 @@ import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
+import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 
@@ -15,11 +16,9 @@ class Camera extends StatefulWidget {
   const Camera({
     Key? key,
     this.connection,
-    this.shouldGoBack = false,
   }) : super(key: key);
 
   final Connection? connection;
-  final bool shouldGoBack;
 
   @override
   _CameraState createState() => _CameraState();
@@ -296,6 +295,17 @@ class _CameraState extends State<Camera>
                     ),
                   ),
                 ),
+                if (widget.connection != null)
+                  Positioned(
+                    top: 71.0,
+                    left: 0.0,
+                    child: ChevronBackButton(
+                      color: Colors.white,
+                      onBack: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                 CameraOptions(
                   toggleCamera: _toggleCameraLens,
                 ),

@@ -17,6 +17,7 @@ import 'package:superconnector_vm/ui/components/overlays/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_names.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/vm_connection_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/video_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
@@ -349,25 +350,28 @@ class _ConnectionTileState extends State<ConnectionTile>
                   ),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: min(filteredVideos.length, 5),
+                    itemCount: min(
+                        filteredVideos.length +
+                            (filteredVideos.length == 0 ? 1 : 0),
+                        5),
                     itemBuilder: (context, index) {
-                      // if (index == 0) {
-                      //   return VMConnectionTile(
-                      //     invertGradient: widget.invertGradient,
-                      //     onPressed: () {
-                      //       _handleNav(
-                      //         onComplete: () {
-                      //           BlockUtility blockUtility = BlockUtility(
-                      //             context: context,
-                      //             superuser: superuser,
-                      //             connection: widget.connection,
-                      //           );
-                      //           blockUtility.handleBlockedRecordNavigation();
-                      //         },
-                      //       );
-                      //     },
-                      //   );
-                      // }
+                      if (index == 0 && filteredVideos.length == 0) {
+                        return VMConnectionTile(
+                          invertGradient: widget.invertGradient,
+                          onPressed: () {
+                            _handleNav(
+                              onComplete: () {
+                                BlockUtility blockUtility = BlockUtility(
+                                  context: context,
+                                  superuser: superuser,
+                                  connection: widget.connection,
+                                );
+                                blockUtility.handleBlockedRecordNavigation();
+                              },
+                            );
+                          },
+                        );
+                      }
 
                       return GestureDetector(
                         behavior: widget.shouldIgnoreTaps

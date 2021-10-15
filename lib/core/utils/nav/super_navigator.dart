@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_permission/contacts_permission.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relation_categories/relation_categories.dart';
@@ -95,7 +96,7 @@ class SuperNavigator {
     if (cameraStatus.isGranted && microphoneStatus.isGranted) {
       SuperNavigator.push(
         context: context,
-        widget: Record(
+        widget: Camera(
           connection: connection,
         ),
         fullScreen: false,

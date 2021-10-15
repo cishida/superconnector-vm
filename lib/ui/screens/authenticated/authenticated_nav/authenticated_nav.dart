@@ -93,9 +93,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                   controller: _tabController,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
-                    Camera(
-                      shouldGoBack: false,
-                    ),
+                    Camera(),
                     // Record(
                     //   shouldGoBack: false,
                     // ),
@@ -168,7 +166,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                       selected: _tabController.index == 0,
                     ),
                     BottomNavButton(
-                      title: 'vms',
+                      title: 'records',
                       selected: _tabController.index == 1,
                     ),
                     // Padding(
