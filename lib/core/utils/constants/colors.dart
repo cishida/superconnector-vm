@@ -6,6 +6,7 @@ class ConstantColors {
   static const Color OFF_WHITE = Color(0xFFF9F9F9);
   static const Color DIVIDER_GRAY = Color(0xFFE0E7ED);
   static const Color ED_GRAY = Color(0xFFEDEDED);
+  static const Color BLUE_7 = Color(0xFF07193D);
   static const Color DARK_BLUE = Color(0xFF16202B);
   static const Color OFF_DARK_BLUE = Color(0xFF212C39);
   static const Color TURQUOISE = Color(0xFF0AD3FF);

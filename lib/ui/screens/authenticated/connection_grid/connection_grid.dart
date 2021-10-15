@@ -247,35 +247,36 @@ class _ConnectionGridState extends State<ConnectionGrid> {
                           ),
                           margin: const EdgeInsets.only(top: 1.0),
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/images/authenticated/gradient-background.png',
-                              ),
-                            ),
+                            color: ConstantColors.BLUE_7,
+                            // image: DecorationImage(
+                            //   fit: BoxFit.cover,
+                            //   image: AssetImage(
+                            //     'assets/images/authenticated/gradient-background.png',
+                            //   ),
+                            // ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Video History',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              Text(
-                                'This helps you browse all the videos you’ve shared with each other.',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
+                              // Text(
+                              //   'Video History',
+                              //   style: TextStyle(
+                              //     fontSize: 22,
+                              //     fontWeight: FontWeight.w700,
+                              //     color: Colors.white,
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: 12,
+                              // ),
+                              // Text(
+                              //   'This helps you browse all the videos you’ve shared with each other.',
+                              //   style: TextStyle(
+                              //     fontSize: 16,
+                              //     fontWeight: FontWeight.w400,
+                              //     color: Colors.white,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
