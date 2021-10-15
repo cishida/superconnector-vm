@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,21 +6,26 @@ import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_overlay.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 
 class Camera extends StatefulWidget {
   const Camera({
     Key? key,
+    this.shouldGoBack = false,
   }) : super(key: key);
+
+  final bool shouldGoBack;
 
   @override
   _CameraState createState() => _CameraState();
 }
 
-class _CameraState extends State<Camera> {
-  // CameraController? _cameraController;
+class _CameraState extends State<Camera>
+    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
   CameraController? _controller;
   List<CameraDescription> _cameras = [];
-  String? _path;
+  String? _filePath;
   Timer? _timer;
   int _currentVideoSeconds = 0;
 
@@ -53,6 +57,22 @@ class _CameraState extends State<Camera> {
     }
   }
 
+  // Future _initializeDirectory() async {
+  //   final Directory extDir = await getApplicationDocumentsDirectory();
+  //   final String dirPath = '${extDir.path}/Movies/superconnector/videos';
+  //   await Directory(dirPath).create(recursive: true);
+  //   if (mounted) {
+  //     setState(() {
+  //       _filePath =
+  //           '$dirPath/${DateTime.now().millisecondsSinceEpoch.toString()}.mp4';
+  //     });
+  //   }
+  // }
+
+  void _showCameraException(CameraException e) {
+    print('Error: ${e.code}\n${e.description}');
+  }
+
   void _toggleCameraLens() {
     if (_controller == null) {
       return;
@@ -73,7 +93,9 @@ class _CameraState extends State<Camera> {
 
   @override
   void initState() {
+    WidgetsFlutterBinding.ensureInitialized().addObserver(this);
     super.initState();
+
     availableCameras().then((availableCameras) async {
       _cameras = availableCameras;
 
@@ -81,35 +103,123 @@ class _CameraState extends State<Camera> {
     }).catchError((err) {
       print('Error :${err.code}Error message : ${err.message}');
     });
-  }
 
-  Widget cameraPreview() {
-    return AspectRatio(
-      aspectRatio: _controller!.value.aspectRatio,
-      child: CameraPreview(_controller!),
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(
+        milliseconds: ConstantValues.VIDEO_TIME_LIMIT * 1000,
+      ),
     );
+    _animationController.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
-  Widget camera(context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Container(
-          width: constraints.maxWidth,
-          height: constraints.maxHeight,
-          child: ClipRRect(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10),
-            ),
-            child: Transform.scale(
-              scale: 9 / 16,
-              child: cameraPreview(),
-            ), //cameraPreview(),
+  Future<String?> startVideoRecording() async {
+    if (_controller == null || !_controller!.value.isInitialized) {
+      print('Error: select a camera first.');
+      return null;
+    }
+
+    if (_controller!.value.isRecordingVideo) {
+      // A recording is already started, do nothing.
+      return null;
+    }
+
+    try {
+      _controller!.startVideoRecording();
+
+      const oneSec = const Duration(seconds: 1);
+      _timer = Timer.periodic(
+        oneSec,
+        (Timer timer) {
+          if (_currentVideoSeconds >=
+              ConstantValues.VIDEO_TIME_LIMIT +
+                  ConstantValues.VIDEO_OVERFLOW_LIMIT) {
+            _stopVideoRecording();
+          } else {
+            if (mounted) {
+              setState(() {
+                _currentVideoSeconds = _currentVideoSeconds + 1;
+              });
+            }
+          }
+        },
+      );
+    } on CameraException catch (e) {
+      _showCameraException(e);
+      return null;
+    }
+    return _filePath;
+  }
+
+  Future _onResetPressed() async {
+    _animationController.reset();
+    print('Reset');
+  }
+
+  Future onNewCameraSelected(
+    CameraDescription cameraDescription,
+  ) async {
+    print('here?');
+    if (_controller != null) {
+      CameraController temp = _controller!;
+      if (mounted) {
+        setState(() {
+          _controller = null;
+        });
+      }
+      await temp.dispose();
+    }
+    await initCamera();
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  Future<void> _stopVideoRecording() async {
+    if (_controller == null || !_controller!.value.isRecordingVideo) {
+      return null;
+    }
+
+    try {
+      XFile videoFile = await _controller!.stopVideoRecording();
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          pageBuilder: (context, animation1, animation2) =>
+              VideoPreviewContainer(
+            videoFile: videoFile,
+            onReset: _onResetPressed,
           ),
-        );
-      },
-    );
+          transitionDuration: Duration.zero,
+        ),
+      );
+
+      await onNewCameraSelected(_controller!.description);
+
+      if (_timer != null) {
+        _timer!.cancel();
+      }
+
+      setState(() {
+        _currentVideoSeconds = 0;
+      });
+    } on CameraException catch (e) {
+      print('Camera exception');
+      _showCameraException(e);
+      return null;
+    }
   }
+
+  // Widget camera(context) {
+  //   return LayoutBuilder(
+  //     builder: (context, constraints) {
+  //       return
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -121,21 +231,71 @@ class _CameraState extends State<Camera> {
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: ConstantColors.DARK_BLUE,
-        body: Stack(
-          children: [
-            camera(context),
-            CameraOptions(
-              toggleCamera: _toggleCameraLens,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: ConstantColors.DARK_BLUE,
+            body: Stack(
+              children: [
+                Listener(
+                  onPointerDown: (_) async {
+                    _animationController.forward();
+                    await startVideoRecording();
+                  },
+                  onPointerUp: (_) async {
+                    if (_animationController.status ==
+                        AnimationStatus.forward) {
+                      _animationController.stop();
+                    }
+                    await _stopVideoRecording();
+                  },
+                  child: Container(
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                      child: Transform.scale(
+                        scale: 9 /
+                            14 /
+                            (constraints.maxWidth / constraints.maxHeight),
+                        child: AspectRatio(
+                          aspectRatio:
+                              (constraints.maxWidth / constraints.maxHeight),
+                          child: OverflowBox(
+                            alignment: Alignment.topCenter,
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Container(
+                                width: constraints.maxWidth,
+                                height: constraints.maxHeight,
+                                child: Stack(
+                                  children: <Widget>[
+                                    CameraPreview(_controller!),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ), //cameraPreview(),
+                    ),
+                  ),
+                ),
+                CameraOptions(
+                  toggleCamera: _toggleCameraLens,
+                ),
+                CameraOverlay(
+                  controller: _controller!,
+                  currentVideoSeconds: _currentVideoSeconds,
+                ),
+              ],
             ),
-            CameraOverlay(
-              controller: _controller!,
-              currentVideoSeconds: _currentVideoSeconds,
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

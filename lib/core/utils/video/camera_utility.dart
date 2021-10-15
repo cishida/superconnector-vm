@@ -7,8 +7,9 @@ class CameraUtility {
   }) async {
     CameraController controller = CameraController(
       camera,
-      ResolutionPreset.veryHigh,
+      ResolutionPreset.high,
       enableAudio: true,
+      imageFormatGroup: ImageFormatGroup.bgra8888,
     );
 
     if (listener != null) {

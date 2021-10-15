@@ -93,10 +93,12 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                   controller: _tabController,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
-                    // Camera(),
-                    Record(
+                    Camera(
                       shouldGoBack: false,
                     ),
+                    // Record(
+                    //   shouldGoBack: false,
+                    // ),
                     Home(),
                     Account(),
                     // Container(),

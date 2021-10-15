@@ -34,15 +34,15 @@ class BetterPlayerUtility {
 
     final uint8list = await thumb.VideoThumbnail.thumbnailData(
       video: videoFile.path,
-      imageFormat: thumb.ImageFormat.JPEG,
-      maxWidth: size.width.toInt(),
-      maxHeight: size.height.toInt(),
-      quality: 1,
+      // imageFormat: thumb.ImageFormat.JPEG,
+      // maxWidth: size.width.toInt(),
+      // maxHeight: size.height.toInt(),
+      // quality: 1,
     );
 
     BetterPlayerController betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
-        startAt: Duration(milliseconds: 75),
+        startAt: Duration(milliseconds: 15),
         autoPlay: true,
         showPlaceholderUntilPlay: true,
         looping: true,
@@ -51,26 +51,34 @@ class BetterPlayerUtility {
         controlsConfiguration: BetterPlayerControlsConfiguration(
           showControls: false,
         ),
-        placeholder: Center(
-          child: uint8list != null
-              ? Stack(
-                  children: [
-                    Image.memory(
-                      uint8list,
-                    ),
-                    BackdropFilter(
-                      filter: ui.ImageFilter.blur(
-                        sigmaX: 8.0,
-                        sigmaY: 8.0,
+        placeholder: uint8list != null
+            ? Container(
+                color: Colors.transparent,
+                child: Center(
+                  child: Stack(
+                    children: [
+                      Image.memory(
+                        uint8list,
                       ),
-                      child: Container(
-                        color: Colors.transparent,
-                      ),
-                    )
-                  ],
-                )
-              : Container(),
-        ),
+                      BackdropFilter(
+                        filter: ui.ImageFilter.blur(
+                          sigmaX: 8.0,
+                          sigmaY: 8.0,
+                        ),
+                        child: Container(
+                          color: Colors.transparent,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : Container(
+                color: Colors.transparent,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
       ),
       betterPlayerDataSource: betterPlayerDataSource,
     );
