@@ -33,8 +33,8 @@ class SuperNavigator {
   static void handleContactsNavigation({
     required BuildContext context,
     bool shouldShowHistory = false,
-    bool shouldSendVideo = false,
     Function? primaryAction,
+    Function? sendVM,
   }) async {
     var status = await Permission.contacts.status;
 
@@ -50,7 +50,7 @@ class SuperNavigator {
       //   ),
       // );
 
-      if (shouldSendVideo) {
+      if (sendVM != null) {
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -59,6 +59,7 @@ class SuperNavigator {
               heightFactor: 0.93,
               child: Contacts(
                 isGroup: true,
+                sendVM: sendVM,
               ),
             );
           },

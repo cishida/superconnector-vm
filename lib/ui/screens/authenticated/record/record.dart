@@ -279,12 +279,12 @@ class _RecordState extends State<Record>
       return;
     }
 
-    if (widget.connection == null) {
-      SuperNavigator.handleContactsNavigation(
-        shouldSendVideo: true,
-        context: context,
-      );
-    }
+    // if (widget.connection == null) {
+    //   SuperNavigator.handleContactsNavigation(
+    //     shouldSendVideo: true,
+    //     context: context,
+    //   );
+    // }
 
     setState(() {
       _sendPressed = true;

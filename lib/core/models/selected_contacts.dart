@@ -1,45 +1,46 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 
 class SelectedContacts extends ChangeNotifier {
-  // List<Supercontact> _selectedSupercontacts = [];
+  List<Superuser> _selectedSuperusers = [];
   List<Contact> _selectedContacts = [];
 
-  // List<Supercontact> get getSelectedSupercontacts {
-  //   return _selectedSupercontacts;
-  // }
+  List<Superuser> get getSuperusers {
+    return _selectedSuperusers;
+  }
 
   List<Contact> get contacts {
     return _selectedContacts;
   }
 
-  // void addSupercontact(Supercontact supercontact) {
-  //   _selectedSupercontacts.add(supercontact);
-  //   notifyListeners();
-  // }
+  void addSuperuser(Superuser superuser) {
+    _selectedSuperusers.add(superuser);
+    notifyListeners();
+  }
 
   void add(Contact contact) {
     _selectedContacts.add(contact);
     notifyListeners();
   }
 
-  // void removeSupercontact(String phoneNumber) {
-  //   _selectedSupercontacts
-  //       .removeWhere((supercontact) => supercontact.phoneNumber == phoneNumber);
-  //   notifyListeners();
-  // }
+  void removeSuperuser(String phoneNumber) {
+    _selectedSuperusers
+        .removeWhere((superuser) => superuser.phoneNumber == phoneNumber);
+    notifyListeners();
+  }
 
   void remove(Contact contact) {
     _selectedContacts.remove(contact);
     notifyListeners();
   }
 
-  // bool containsSupercontact(Supercontact supercontact) {
-  //   return _selectedSupercontacts
-  //           .where((element) => element.phoneNumber == supercontact.phoneNumber)
-  //           .length >
-  //       0;
-  // }
+  bool containsSuperuser(Superuser superuser) {
+    return _selectedSuperusers
+            .where((element) => element.phoneNumber == superuser.phoneNumber)
+            .length >
+        0;
+  }
 
   bool contains(Contact contact) {
     return _selectedContacts.contains(contact);
@@ -47,24 +48,24 @@ class SelectedContacts extends ChangeNotifier {
 
   void reset() {
     _selectedContacts = [];
-    // _selectedSupercontacts = [];
+    _selectedSuperusers = [];
   }
 
   bool isEmpty() {
-    return _selectedContacts.isEmpty; // && _selectedSupercontacts.isEmpty;
+    return _selectedContacts.isEmpty && _selectedSuperusers.isEmpty;
   }
 
   // Future setContactsFromConnection({
   //   required Connection connection,
-  //   required List<Supercontact> supercontacts,
+  //   required List<Superuser> superusers,
   // }) async {
   //   reset();
 
   //   connection.userIds.forEach((userId) {
-  //     List<Supercontact> tempSupercontacts =
-  //         supercontacts.where((sc) => sc.targetUserId == userId).toList();
-  //     if (tempSupercontacts.length > 0) {
-  //       addSupercontact(tempSupercontacts.first);
+  //     List<Superuser> tempsuperusers =
+  //         superusers.where((sc) => sc.targetUserId == userId).toList();
+  //     if (tempsuperusers.length > 0) {
+  //       addsuperuser(tempsuperusers.first);
   //     }
   //   });
 

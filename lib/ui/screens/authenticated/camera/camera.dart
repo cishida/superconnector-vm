@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
@@ -11,9 +14,11 @@ import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_
 class Camera extends StatefulWidget {
   const Camera({
     Key? key,
+    this.connection,
     this.shouldGoBack = false,
   }) : super(key: key);
 
+  final Connection? connection;
   final bool shouldGoBack;
 
   @override
@@ -115,6 +120,12 @@ class _CameraState extends State<Camera>
         setState(() {});
       }
     });
+
+    var selectedContacts = Provider.of<SelectedContacts>(
+      context,
+      listen: false,
+    );
+    selectedContacts.reset();
   }
 
   Future<String?> startVideoRecording() async {

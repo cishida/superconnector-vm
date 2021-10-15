@@ -70,6 +70,24 @@ class _ContactsState extends State<Contacts> {
     setState(() {});
   }
 
+  Future _toggleSuperuser({
+    required Superuser superuser,
+    required BuildContext context,
+  }) async {
+    var selectedContacts = Provider.of<SelectedContacts>(
+      context,
+      listen: false,
+    );
+
+    if (selectedContacts.containsSuperuser(superuser)) {
+      selectedContacts.removeSuperuser(superuser.phoneNumber);
+    } else {
+      selectedContacts.addSuperuser(superuser);
+    }
+
+    setState(() {});
+  }
+
   Future _setOrCreateConnection() async {
     final superuser = Provider.of<Superuser?>(context, listen: false);
     final connections = Provider.of<List<Connection>>(context, listen: false);
@@ -239,9 +257,9 @@ class _ContactsState extends State<Contacts> {
       backgroundColor: Colors.transparent,
       floatingActionButton: widget.isGroup
           ? GroupSelectionButton(
-              onPressed: () {
+              onPressed: () async {
                 if (widget.sendVM != null) {
-                  widget.sendVM!();
+                  await widget.sendVM!();
                 }
                 Navigator.of(context).popUntil((route) => route.isFirst);
 
@@ -354,6 +372,10 @@ class _ContactsState extends State<Contacts> {
                           contact: contact,
                           context: context,
                         ),
+                  onTapSuperuser: (superuser) => _toggleSuperuser(
+                    superuser: superuser,
+                    context: context,
+                  ),
                   isSelectable: widget.isGroup,
                   filter: _filter,
                   contacts: _contacts!,

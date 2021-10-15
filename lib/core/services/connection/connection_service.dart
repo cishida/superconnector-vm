@@ -23,6 +23,30 @@ class ConnectionService {
   //   return null;
   // }
 
+  Future<Connection?> getConnectionFromUserIds(List<String> ids) async {
+    final snapshot = await connectionCollection
+        .where('userIds', arrayContains: ids[0])
+        .where('userIds', arrayContains: ids[1])
+        .limit(1)
+        .get();
+
+    if (snapshot.docs.length == 0) {
+      return null;
+    }
+
+    var doc = snapshot.docs.first;
+    var data = doc.data();
+
+    if (data != null) {
+      return Connection.fromJson(
+        doc.id,
+        data as Map<String, dynamic>,
+      );
+    } else {
+      return null;
+    }
+  }
+
   Future<List<Superuser>> getConnectionUsers({
     required Connection connection,
     required Superuser currentSuperuser,

@@ -13,12 +13,14 @@ class ContactsSelection extends StatefulWidget {
   const ContactsSelection({
     Key? key,
     required this.onTapContact,
+    required this.onTapSuperuser,
     required this.isSelectable,
     this.filter = '',
     required this.contacts,
   }) : super(key: key);
 
   final Function(Contact) onTapContact;
+  final Function(Superuser) onTapSuperuser;
   final bool isSelectable;
   final String filter;
   final Iterable<Contact> contacts;
@@ -118,12 +120,12 @@ class _ContactsSelectionState extends State<ContactsSelection> {
           if (index < _superusers!.length) {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () => widget.onTapContact(filteredContacts[index]),
+              onTap: () => widget.onTapSuperuser(_superusers![index]),
               child: SuperuserItem(
                 superuser: _superusers![index],
                 isSelectable: widget.isSelectable,
-                isSelected: selectedContacts.contains(
-                  filteredContacts[index],
+                isSelected: selectedContacts.containsSuperuser(
+                  _superusers![index],
                 ),
               ),
             );
