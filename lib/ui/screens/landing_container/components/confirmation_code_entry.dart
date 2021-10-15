@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 
 class ConfirmationCodeEntry extends StatefulWidget {
@@ -106,12 +107,13 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
       },
       child: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              'assets/images/unauthenticated/landing-background.png',
-            ),
-            fit: BoxFit.cover,
-          ),
+          color: ConstantColors.DARK_BLUE,
+          // image: DecorationImage(
+          //   image: AssetImage(
+          //     'assets/images/unauthenticated/landing-background.png',
+          //   ),
+          //   fit: BoxFit.cover,
+          // ),
         ),
         child: SafeArea(
           child: Column(

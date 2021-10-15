@@ -125,12 +125,13 @@ class _InitialLandingState extends State<InitialLanding>
       },
       child: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              'assets/images/unauthenticated/landing-background.png',
-            ),
-            fit: BoxFit.cover,
-          ),
+          color: ConstantColors.DARK_BLUE,
+          // image: DecorationImage(
+          //   image: AssetImage(
+          //     'assets/images/unauthenticated/landing-background.png',
+          //   ),
+          //   fit: BoxFit.cover,
+          // ),
         ),
         child: SafeArea(
           child: Stack(
