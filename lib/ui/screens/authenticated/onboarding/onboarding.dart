@@ -6,7 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_camera/onboarding_camera.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_notifications/onboarding_notification.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_welcome/onboarding_welcome.dart';
 
@@ -190,6 +192,11 @@ class _OnboardingPagesState extends State<OnboardingPages> {
       ),
     );
     pages.add(
+      OnboardingCamera(
+        nextPage: _goToNextPage,
+      ),
+    );
+    pages.add(
       OnboardingNotifications(
         next: widget.completePages,
       ),
@@ -220,12 +227,13 @@ class _OnboardingPagesState extends State<OnboardingPages> {
         resizeToAvoidBottomInset: false,
         body: Container(
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(
-                'assets/images/unauthenticated/landing-background.png',
-              ),
-              fit: BoxFit.cover,
-            ),
+            color: ConstantColors.DARK_BLUE,
+            // image: DecorationImage(
+            //   image: AssetImage(
+            //     'assets/images/unauthenticated/landing-background.png',
+            //   ),
+            //   fit: BoxFit.cover,
+            // ),
           ),
           height: MediaQuery.of(context).size.height,
           child: SafeArea(
@@ -244,7 +252,7 @@ class _OnboardingPagesState extends State<OnboardingPages> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: DotsIndicator(
-                      dotsCount: 2,
+                      dotsCount: 3,
                       position: _currentIndex,
                       decorator: DotsDecorator(
                         color: Colors.white.withOpacity(.32), // Inactive color
