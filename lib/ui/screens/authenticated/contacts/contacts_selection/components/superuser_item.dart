@@ -1,17 +1,17 @@
-import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/ui/components/images/empty_image.dart';
+import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
 
-class ContactItem extends StatelessWidget {
-  const ContactItem({
+class SuperuserItem extends StatelessWidget {
+  const SuperuserItem({
     Key? key,
-    required this.contact,
+    required this.superuser,
     required this.isSelectable,
     this.isSelected = false,
   }) : super(key: key);
 
-  final Contact contact;
+  final Superuser superuser;
   final bool isSelectable;
   final bool isSelected;
 
@@ -30,28 +30,24 @@ class ContactItem extends StatelessWidget {
                   left: 19.0,
                   right: 12.0,
                 ),
-                child: contact.avatar != null
-                    ? CircleAvatar(
-                        backgroundImage: MemoryImage(contact.avatar!),
-                        radius: 19.0,
-                      )
-                    : EmptyImage(
-                        size: 38.0,
-                        isReversed: false,
-                      ),
+                child: SuperuserImage(
+                  url: superuser.photoUrl,
+                  radius: 19.0,
+                  bordered: false,
+                ),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    contact.displayName!,
+                    superuser.fullName,
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.black,
                     ),
                   ),
                   Text(
-                    contact.phones!.first.value!,
+                    'Tag',
                     style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.black.withOpacity(.6),

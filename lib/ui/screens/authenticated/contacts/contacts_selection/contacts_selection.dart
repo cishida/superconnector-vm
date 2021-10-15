@@ -1,8 +1,13 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/components/contact_item.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/components/superuser_item.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/supercontacts_selection/components/supercontact_item.dart';
 
 class ContactsSelection extends StatefulWidget {
   const ContactsSelection({
@@ -24,9 +29,51 @@ class ContactsSelection extends StatefulWidget {
 
 class _ContactsSelectionState extends State<ContactsSelection> {
   List<Contact> _sortedContacts = [];
+  List<Superuser>? _superusers;
+  SuperuserService _superuserService = SuperuserService();
+
+  Future _loadUsers() async {
+    List<Superuser> tempSuperusers = [];
+    final currentSuperuser = Provider.of<Superuser?>(
+      context,
+      listen: false,
+    );
+    var connections = Provider.of<List<Connection>>(
+      context,
+      listen: false,
+    );
+
+    if (currentSuperuser == null) {
+      return;
+    }
+
+    for (var i = 0; i < connections.length; i++) {
+      List<String> ids = tempSuperusers.map((e) => e.id).toList();
+
+      for (var id in connections[i].userIds) {
+        if (id != currentSuperuser.id && !ids.contains(id)) {
+          Superuser? superuser = await _superuserService.getSuperuserFromId(id);
+          if (superuser != null) {
+            tempSuperusers.add(superuser);
+          }
+        }
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        _superusers = tempSuperusers;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+
+    // Future.delayed(Duration.zero, () {
+    //   _loadUsers();
+    // });
 
     _sortedContacts = widget.contacts.toList();
     _sortedContacts.sort((a, b) {
@@ -40,6 +87,21 @@ class _ContactsSelectionState extends State<ContactsSelection> {
       context,
     );
 
+    var connections = Provider.of<List<Connection>>(
+      context,
+    );
+
+    if (connections.length > 0 &&
+        (_superusers == null || _superusers!.length == 0)) {
+      _loadUsers();
+    }
+
+    if (_superusers == null) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
     List<Contact> filteredContacts = _sortedContacts.where((contact) {
       return widget.filter == '' ||
           (widget.filter != '' &&
@@ -51,16 +113,32 @@ class _ContactsSelectionState extends State<ContactsSelection> {
     return Padding(
       padding: const EdgeInsets.only(top: 11.0),
       child: ListView.builder(
-        itemCount: filteredContacts.length,
+        itemCount: filteredContacts.length + _superusers!.length,
         itemBuilder: (context, index) {
+          if (index < _superusers!.length) {
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => widget.onTapContact(filteredContacts[index]),
+              child: SuperuserItem(
+                superuser: _superusers![index],
+                isSelectable: widget.isSelectable,
+                isSelected: selectedContacts.contains(
+                  filteredContacts[index],
+                ),
+              ),
+            );
+          }
+
+          int effectiveIndex = index - _superusers!.length;
+
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onTap: () => widget.onTapContact(filteredContacts[index]),
+            onTap: () => widget.onTapContact(filteredContacts[effectiveIndex]),
             child: ContactItem(
-              contact: filteredContacts[index],
+              contact: filteredContacts[effectiveIndex],
               isSelectable: widget.isSelectable,
               isSelected: selectedContacts.contains(
-                filteredContacts[index],
+                filteredContacts[effectiveIndex],
               ),
             ),
           );

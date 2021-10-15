@@ -8,6 +8,7 @@ import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/services/supercontact/supercontact_service.dart';
+import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
@@ -23,10 +24,12 @@ class Contacts extends StatefulWidget {
     Key? key,
     this.tag,
     this.isGroup = false,
+    this.sendVM,
   }) : super(key: key);
 
   final String? tag;
   final bool isGroup;
+  final Function? sendVM;
 
   @override
   _ContactsState createState() => _ContactsState();
@@ -235,19 +238,25 @@ class _ContactsState extends State<Contacts> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: widget.isGroup
-          ? GroupSelectionButton(onPressed: () {
-              _setOrCreateConnection();
-            })
+          ? GroupSelectionButton(
+              onPressed: () {
+                if (widget.sendVM != null) {
+                  widget.sendVM!();
+                }
+                Navigator.of(context).popUntil((route) => route.isFirst);
+
+                Provider.of<AuthenticatedController>(
+                  context,
+                  listen: false,
+                ).setIndex(1);
+                // _setOrCreateConnection();
+              },
+            )
           : Container(),
       body: Container(
         width: size.width,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage(
-              'assets/images/authenticated/gradient-background-reversed.png',
-            ),
-          ),
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0),
             topRight: Radius.circular(30.0),
@@ -256,45 +265,70 @@ class _ContactsState extends State<Contacts> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: BottomSheetTab(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20.0,
-                bottom: 19.0,
+            Container(
+              width: size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    'assets/images/authenticated/gradient-background-reversed.png',
+                  ),
+                ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0),
+                ),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.tag == null ? 'Choose Recipient(s)' : 'Send Request',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20.0,
-                        ),
+                  Center(
+                    child: BottomSheetTab(),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                      top: 5.0,
+                      left: 20.0,
+                      bottom: 19.0,
                     ),
-                    child: Text(
-                      widget.tag == null
-                          ? 'Select people who you want to share with'
-                          : widget.isGroup
-                              ? 'Add people to your family group.'
-                              : 'Invite your ' +
-                                  widget.tag!.toLowerCase() +
-                                  ' to connect.',
-                      style: Theme.of(context).textTheme.bodyText1!,
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.tag == null
+                                ? 'Add Recipient(s)'
+                                : 'Send Request',
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.headline5!.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20.0,
+                                    ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 5.0,
+                            ),
+                            child: Text(
+                              widget.tag == null
+                                  ? 'Choose people who you want to share with.'
+                                  : widget.isGroup
+                                      ? 'Add people to your family group.'
+                                      : 'Invite your ' +
+                                          widget.tag!.toLowerCase() +
+                                          ' to connect.',
+                              style: Theme.of(context).textTheme.bodyText1!,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                  ),
+                  Underline(
+                    color: Colors.white.withOpacity(.2),
                   ),
                 ],
               ),
-            ),
-            Underline(
-              color: Colors.white.withOpacity(.2),
             ),
             SizedBox(
               height: 7.0,

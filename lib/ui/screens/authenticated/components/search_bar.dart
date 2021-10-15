@@ -28,7 +28,7 @@ class SearchBar extends StatelessWidget {
       enabled: enabled,
       keyboardAppearance: Brightness.light,
       style: TextStyle(
-        color: Colors.white,
+        color: Colors.black.withOpacity(.6),
         fontWeight: FontWeight.normal,
         fontSize: 18.0,
         // backgroundColor: ConstantColors.SECONDARY,
@@ -37,7 +37,7 @@ class SearchBar extends StatelessWidget {
         isDense: true,
         hintText: "Search",
         hintStyle: TextStyle(
-          color: Colors.white,
+          color: Colors.black.withOpacity(.6),
         ),
         contentPadding: EdgeInsets.fromLTRB(
           0.0,
@@ -50,7 +50,7 @@ class SearchBar extends StatelessWidget {
         border: border,
         focusedBorder: border,
         filled: true,
-        fillColor: Colors.white.withOpacity(.24),
+        fillColor: Colors.black.withOpacity(.08),
         prefixIcon: Container(
           width: 18.0,
           margin: EdgeInsets.only(left: 12.0, right: 8.0),
@@ -63,7 +63,7 @@ class SearchBar extends StatelessWidget {
             ),
             child: Image.asset(
               'assets/images/authenticated/search-icon-gray.png',
-              color: Colors.white.withOpacity(.6),
+              color: Colors.black.withOpacity(.6),
               height: 18,
               width: 18,
             ),

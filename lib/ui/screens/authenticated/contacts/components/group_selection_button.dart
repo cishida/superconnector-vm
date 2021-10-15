@@ -25,6 +25,7 @@ class GroupSelectionButton extends StatelessWidget {
               ),
               child: Image.asset(
                 'assets/images/authenticated/check-mark.png',
+                color: Colors.white,
                 width: 18.0,
                 height: 14.0,
               ),
@@ -32,14 +33,14 @@ class GroupSelectionButton extends StatelessWidget {
             Text(
               'CONFIRM',
               style: Theme.of(context).textTheme.button!.copyWith(
-                    color: ConstantColors.PRIMARY,
+                    color: Colors.white,
                     fontSize: 15.0,
                   ),
             ),
           ],
         ),
         style: ElevatedButton.styleFrom(
-          primary: Colors.white,
+          primary: ConstantColors.PRIMARY,
           onPrimary: ConstantColors.OFF_WHITE,
           elevation: 5.0,
           minimumSize: Size(136, 49),

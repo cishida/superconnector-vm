@@ -1,7 +1,9 @@
 import 'package:better_player/better_player.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_bottom_nav.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
@@ -11,10 +13,12 @@ class VideoPreviewContainer extends StatefulWidget {
     Key? key,
     required this.videoFile,
     required this.onReset,
+    this.connection,
   }) : super(key: key);
 
   final XFile videoFile;
   final Function onReset;
+  final Connection? connection;
 
   @override
   _VideoPreviewContainerState createState() => _VideoPreviewContainerState();
@@ -114,8 +118,19 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
               ),
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () {
+                onTap: () async {
                   print('send');
+                  if (_betterController != null &&
+                      _betterController!.isPlaying() != null &&
+                      _betterController!.isPlaying()!) {
+                    await _betterController!.pause();
+                  }
+                  if (widget.connection == null) {
+                    SuperNavigator.handleContactsNavigation(
+                      shouldSendVideo: true,
+                      context: context,
+                    );
+                  }
                 },
                 child: Image.asset(
                   'assets/images/authenticated/record/send-vm-button.png',
