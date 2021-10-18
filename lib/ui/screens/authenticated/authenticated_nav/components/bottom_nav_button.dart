@@ -48,7 +48,7 @@ class BottomNavButton extends StatelessWidget {
         //     :
         image,
         Text(
-          title.capitalize(),
+          title == 'records' ? 'Camera Rolls' : title.capitalize(),
           style: TextStyle(
             color: color,
             fontSize: 12.0,

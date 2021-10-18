@@ -21,11 +21,13 @@ class VideoPreviewContainer extends StatefulWidget {
     Key? key,
     required this.videoFile,
     required this.onReset,
+    this.blurredThumb,
     this.connection,
   }) : super(key: key);
 
   final XFile videoFile;
   final Function onReset;
+  final Widget? blurredThumb;
   final Connection? connection;
 
   @override
@@ -79,6 +81,13 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [
+              if (widget.blurredThumb != null)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.red,
+                    child: widget.blurredThumb!,
+                  ),
+                ),
               Positioned.fill(
                 child: VideoPreview(
                   constraints: constraints,

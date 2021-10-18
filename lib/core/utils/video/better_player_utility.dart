@@ -37,12 +37,12 @@ class BetterPlayerUtility {
       // imageFormat: thumb.ImageFormat.JPEG,
       // maxWidth: size.width.toInt(),
       // maxHeight: size.height.toInt(),
-      // quality: 1,
+      quality: 1,
     );
 
     BetterPlayerController betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
-        startAt: Duration(milliseconds: 15),
+        // startAt: Duration(milliseconds: 15),
         autoPlay: true,
         showPlaceholderUntilPlay: true,
         looping: true,
@@ -73,12 +73,7 @@ class BetterPlayerUtility {
                   ),
                 ),
               )
-            : Container(
-                color: Colors.transparent,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
+            : Container(),
       ),
       betterPlayerDataSource: betterPlayerDataSource,
     );

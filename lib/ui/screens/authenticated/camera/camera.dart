@@ -11,6 +11,8 @@ import 'package:superconnector_vm/core/utils/video/camera_utility.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
+import 'package:video_thumbnail/video_thumbnail.dart' as thumb;
+import 'dart:ui' as ui;
 
 class Camera extends StatefulWidget {
   const Camera({
@@ -139,7 +141,7 @@ class _CameraState extends State<Camera>
     }
 
     try {
-      _controller!.startVideoRecording();
+      await _controller!.startVideoRecording();
 
       const oneSec = const Duration(seconds: 1);
       _timer = Timer.periodic(
@@ -196,11 +198,43 @@ class _CameraState extends State<Camera>
 
     try {
       XFile videoFile = await _controller!.stopVideoRecording();
+      final uint8list = await thumb.VideoThumbnail.thumbnailData(
+        video: videoFile.path,
+        // imageFormat: thumb.ImageFormat.JPEG,
+        // maxWidth: size.width.toInt(),
+        // maxHeight: size.height.toInt(),
+        quality: 1,
+      );
+
+      Widget blurredThumb = uint8list != null
+          ? Container(
+              color: Colors.transparent,
+              child: Center(
+                child: Stack(
+                  children: [
+                    Image.memory(
+                      uint8list,
+                    ),
+                    BackdropFilter(
+                      filter: ui.ImageFilter.blur(
+                        sigmaX: 8.0,
+                        sigmaY: 8.0,
+                      ),
+                      child: Container(
+                        color: Colors.transparent,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
+          : Container();
       Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: (context, animation1, animation2) =>
               VideoPreviewContainer(
             videoFile: videoFile,
+            blurredThumb: blurredThumb,
             onReset: _onResetPressed,
           ),
           transitionDuration: Duration.zero,

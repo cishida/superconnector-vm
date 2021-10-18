@@ -65,7 +65,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                 child: Padding(
                   padding: const EdgeInsets.only(left: 18.0),
                   child: Text(
-                    'Records',
+                    'Camera Rolls',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 40.0,

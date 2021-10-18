@@ -54,6 +54,9 @@ class _RelationsState extends State<Relations> {
         widget.connection!.tags.addAll({
           superuser.id: tag,
         });
+        widget.connection!.tagCategories.addAll({
+          superuser.id: widget.tag,
+        });
         widget.connection!.update();
       }
     }
