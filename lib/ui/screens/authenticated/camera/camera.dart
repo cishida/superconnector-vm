@@ -347,8 +347,59 @@ class _CameraState extends State<Camera>
                   controller: _controller!,
                   currentVideoSeconds: _currentVideoSeconds,
                 ),
+                // Using mask over white progress indicator for gradient
+                Positioned(
+                  bottom: 0,
+                  child: Container(
+                    width: constraints.maxWidth,
+                    child: Stack(
+                      children: [
+                        ShaderMask(
+                          shaderCallback: (rect) {
+                            return LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              stops: [
+                                0.0,
+                                .33,
+                                .66,
+                                1.0,
+                              ],
+                              colors: [
+                                Color(0xFF0AD3FF),
+                                Color(0xFFA132F5),
+                                Color(0xFFF46F66),
+                                Color(0xFFF1943B),
+                              ],
+                            ).createShader(rect);
+                          },
+                          child: LinearProgressIndicator(
+                            color: Colors.transparent,
+                            minHeight: 4.0,
+                            backgroundColor: Colors.transparent,
+                            value: _animationController.value,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
+            // bottomNavigationBar: BottomAppBar(
+            //   color: ConstantColors.DARK_BLUE,
+            //   child: Container(
+            //     alignment: Alignment.centerRight,
+            //     height: 0.0,
+            //     padding: const EdgeInsets.symmetric(
+            //       horizontal: 20.0,
+            //     ),
+            //     child: Container(),
+            //   ),
+            // ),
           );
         },
       ),
@@ -439,10 +490,20 @@ class CameraOverlay extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(32.0),
-                  color: Colors.white.withOpacity(.20),
+                  color: controller.value.isRecordingVideo &&
+                          ConstantValues.VIDEO_TIME_LIMIT -
+                                  currentVideoSeconds <=
+                              0
+                      ? Colors.black.withOpacity(.3)
+                      : Colors.white.withOpacity(.20),
                 ),
                 child: Text(
-                  '${(ConstantValues.VIDEO_TIME_LIMIT - currentVideoSeconds).toString()} remaining',
+                  controller.value.isRecordingVideo &&
+                          ConstantValues.VIDEO_TIME_LIMIT -
+                                  currentVideoSeconds <=
+                              0
+                      ? '${((ConstantValues.VIDEO_TIME_LIMIT + ConstantValues.VIDEO_OVERFLOW_LIMIT) - currentVideoSeconds).toString()} overflow'
+                      : '${(ConstantValues.VIDEO_TIME_LIMIT - currentVideoSeconds).toString()} remaining',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
