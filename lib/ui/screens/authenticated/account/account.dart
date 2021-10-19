@@ -165,8 +165,10 @@ class _AccountState extends State<Account> {
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () async {
+                        String body = ConstantStrings.TARGETED_INVITE_COPY +
+                            ConstantStrings.TESTFLIGHT_LINK;
                         await SMSUtility.send(
-                          "Just connected with you in Superconnector! Here's your invite: ${ConstantStrings.TESTFLIGHT_LINK}",
+                          body,
                           [],
                         );
                         // showDialog(

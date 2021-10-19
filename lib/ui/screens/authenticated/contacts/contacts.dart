@@ -9,6 +9,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/services/supercontact/supercontact_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
@@ -174,8 +175,8 @@ class _ContactsState extends State<Contacts> {
                   'Send them a Superconnector invitation so you can both use your shared camera roll.',
               primaryActionTitle: 'Continue',
               primaryAction: () async {
-                String body =
-                    "Just connected with you in Superconnector! Here's your invite: https://testflight.apple.com/join/KLePjsGB";
+                String body = ConstantStrings.TARGETED_INVITE_COPY +
+                    ConstantStrings.TESTFLIGHT_LINK;
 
                 await SMSUtility.send(body, phoneNumbers);
                 Navigator.pop(context);
