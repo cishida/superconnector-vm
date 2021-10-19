@@ -6,6 +6,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/carousel_video_player.dart';
@@ -86,7 +87,7 @@ class _ConnectionCarouselState extends State<ConnectionCarousel> {
       bottomNavigationBar: BottomAppBar(
         color: ConstantColors.DARK_BLUE,
         child: Container(
-          height: 55.0,
+          height: ConstantValues.BOTTOM_NAV_HEIGHT,
           padding: const EdgeInsets.symmetric(
             horizontal: 20.0,
           ),

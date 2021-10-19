@@ -10,6 +10,7 @@ import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
@@ -235,7 +236,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
             color: ConstantColors.DARK_BLUE,
             child: Container(
               alignment: Alignment.centerRight,
-              height: 55.0,
+              height: ConstantValues.BOTTOM_NAV_HEIGHT,
               padding: const EdgeInsets.symmetric(
                 horizontal: 20.0,
               ),
@@ -282,9 +283,12 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                     _pressed = false;
                   });
                 },
-                child: Image.asset(
-                  'assets/images/authenticated/record/send-vm-button.png',
-                  width: 46.0,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Image.asset(
+                    'assets/images/authenticated/record/send-vm-button.png',
+                    width: 46.0,
+                  ),
                 ),
               ),
             ),

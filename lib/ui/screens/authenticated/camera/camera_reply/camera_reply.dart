@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
 
 class CameraReply extends StatefulWidget {
@@ -40,7 +41,7 @@ class _CameraReplyState extends State<CameraReply> {
         color: ConstantColors.DARK_BLUE,
         child: Container(
           alignment: Alignment.centerRight,
-          height: 55.0,
+          height: ConstantValues.BOTTOM_NAV_HEIGHT,
           padding: const EdgeInsets.symmetric(
             horizontal: 20.0,
           ),

@@ -1,4 +1,8 @@
 class ConstantValues {
+  // Nav
+  static const double BOTTOM_NAV_HEIGHT = 48.0;
+
+  // Camera
   static const int VIDEO_TIME_LIMIT = 30;
   static const int VIDEO_OVERFLOW_LIMIT = 10;
   static const int CAMERA_OVERLAY_FADE_MILLISECONDS = 200;

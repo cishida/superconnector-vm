@@ -105,7 +105,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
               //   color: ConstantColors.DIVIDER_GRAY,
               // ),
               Container(
-                height: authenticatedController.isSearching ? 0.0 : 92.0,
+                height: authenticatedController.isSearching ? 0.0 : 80.0,
                 padding: const EdgeInsets.only(
                   bottom: 24.0,
                 ),
