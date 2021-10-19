@@ -258,8 +258,14 @@ class _ContactsState extends State<Contacts> {
       backgroundColor: Colors.transparent,
       floatingActionButton: widget.isGroup
           ? GroupSelectionButton(
+              pressed: _pressed,
               onPressed: () async {
-                if (_pressed) {
+                var selectedContacts = Provider.of<SelectedContacts>(
+                  context,
+                  listen: false,
+                );
+
+                if (_pressed || selectedContacts.isEmpty()) {
                   return;
                 }
 
