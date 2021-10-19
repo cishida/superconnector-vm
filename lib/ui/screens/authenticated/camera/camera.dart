@@ -475,7 +475,7 @@ class _CameraState extends State<Camera>
                                 },
                                 child: LinearProgressIndicator(
                                   color: Colors.transparent,
-                                  minHeight: 4.0,
+                                  minHeight: 6.0,
                                   backgroundColor: Colors.transparent,
                                   value: _animationController.value,
                                   valueColor: AlwaysStoppedAnimation<Color>(
