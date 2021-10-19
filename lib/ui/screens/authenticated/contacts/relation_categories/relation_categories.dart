@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
@@ -95,12 +96,13 @@ class _RelationCategoriesState extends State<RelationCategories> {
       body: Container(
         width: size.width,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage(
-              'assets/images/authenticated/tag-category-background.png',
-            ),
-          ),
+          color: ConstantColors.DARK_BLUE,
+          // image: DecorationImage(
+          //   fit: BoxFit.cover,
+          //   image: AssetImage(
+          //     'assets/images/authenticated/tag-category-background.png',
+          //   ),
+          // ),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0),
             topRight: Radius.circular(30.0),

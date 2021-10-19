@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
 import 'package:superconnector_vm/ui/components/overlays/overlay_explanation.dart';
@@ -122,12 +123,13 @@ class _RelationsState extends State<Relations> {
       body: Container(
         width: size.width,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage(
-              'assets/images/authenticated/tag-background.png',
-            ),
-          ),
+          color: ConstantColors.DARK_BLUE,
+          // image: DecorationImage(
+          //   fit: BoxFit.cover,
+          //   image: AssetImage(
+          //     'assets/images/authenticated/tag-background.png',
+          //   ),
+          // ),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0),
             topRight: Radius.circular(30.0),

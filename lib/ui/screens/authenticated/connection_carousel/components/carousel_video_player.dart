@@ -129,7 +129,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
         return SuperDialog(
           title: 'Overview',
           subtitle:
-              'When you select a video message, it plays automatically on repeat. Tap to pause it or swipe up to watch the previous one.',
+              'Swipe up and down to navigate through photos and videos on a camera roll.',
           primaryActionTitle: 'Continue',
           primaryAction: () => Navigator.of(context).pop(),
         );
