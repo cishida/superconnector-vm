@@ -48,8 +48,8 @@ class OnboardingCamera extends StatelessWidget {
               Container(
                 width: size.width,
                 child: BarButton(
-                  textColor: ConstantColors.PRIMARY,
-                  backgroundColor: Colors.white,
+                  textColor: Colors.white,
+                  backgroundColor: ConstantColors.PRIMARY,
                   title: 'Allow Camera Access',
                   onPressed: () async {
                     Map<Permission, PermissionStatus> statuses = await [

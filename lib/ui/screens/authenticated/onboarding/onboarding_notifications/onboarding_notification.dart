@@ -47,8 +47,8 @@ class OnboardingNotifications extends StatelessWidget {
               Container(
                 width: size.width,
                 child: BarButton(
-                  textColor: ConstantColors.PRIMARY,
-                  backgroundColor: Colors.white,
+                  textColor: Colors.white,
+                  backgroundColor: ConstantColors.PRIMARY,
                   title: 'Turn On Notifications',
                   onPressed: () async {
                     await FirebaseMessaging.instance.requestPermission(

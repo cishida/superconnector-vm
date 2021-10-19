@@ -46,7 +46,7 @@ class _OnboardingWelcomeState extends State<OnboardingWelcome> {
     );
 
     TextStyle textFieldStyle = TextStyle(
-      color: Colors.black.withOpacity(.4),
+      color: Colors.white.withOpacity(.3),
       fontWeight: FontWeight.w600,
       fontSize: 17.0,
       // backgroundColor: ConstantColors.SECONDARY,
@@ -105,13 +105,14 @@ class _OnboardingWelcomeState extends State<OnboardingWelcome> {
                   autofocus: false,
                   autocorrect: false,
                   style: textFieldStyle.copyWith(
-                    color: Colors.black.withOpacity(.7),
+                    color: Colors.white,
                   ),
                   cursorColor: ConstantColors.PRIMARY,
                   keyboardAppearance: Brightness.light,
                   initialValue: _getPlaceholder(
                     superuser,
                   ),
+                  textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
                     labelText:
                         _showError ? 'Please add your name *' : 'Full name',
@@ -137,7 +138,7 @@ class _OnboardingWelcomeState extends State<OnboardingWelcome> {
                     errorBorder: border,
                     focusedErrorBorder: border,
                     filled: true,
-                    fillColor: Colors.white.withOpacity(.7),
+                    fillColor: Colors.white.withOpacity(.2),
                   ),
                   // controller: _textController,
                   onEditingComplete: () {
@@ -164,8 +165,8 @@ class _OnboardingWelcomeState extends State<OnboardingWelcome> {
                   vertical: 65.0,
                 ),
                 child: BarButton(
-                  textColor: ConstantColors.PRIMARY,
-                  backgroundColor: Colors.white,
+                  textColor: Colors.white,
+                  backgroundColor: ConstantColors.PRIMARY,
                   title: 'Continue',
                   onPressed: () {
                     if (superuser.fullName.isEmpty) {
