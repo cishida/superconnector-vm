@@ -69,28 +69,28 @@ class _OnboardingState extends State<Onboarding> {
           );
 
           var newVideoDoc = videoCollection.doc();
-          var exampleVideoSnap = await exampleVideoCollection.get();
+          // var exampleVideoSnap = await exampleVideoCollection.get();
 
-          exampleVideoSnap.docs.forEach((exampleVideo) {
-            Video video = Video(
-              assetId: exampleVideo['assetId'],
-              connectionId: newConnectionDoc.id,
-              uploadId: exampleVideo["uploadId"],
-              superuserId: ConstantStrings.SUPERCONNECTOR_ID,
-              playbackIds: [exampleVideo["playbackIds"].first],
-              status: 'ready',
-              caption: '',
-              created: DateTime.now(),
-              duration: 4.133333,
-              views: 0,
-              deleted: false,
-            );
+          // exampleVideoSnap.docs.forEach((exampleVideo) {
+          //   Video video = Video(
+          //     assetId: exampleVideo['assetId'],
+          //     connectionId: newConnectionDoc.id,
+          //     uploadId: exampleVideo["uploadId"],
+          //     superuserId: ConstantStrings.SUPERCONNECTOR_ID,
+          //     playbackIds: [exampleVideo["playbackIds"].first],
+          //     status: 'ready',
+          //     caption: '',
+          //     created: DateTime.now(),
+          //     duration: 4.133333,
+          //     views: 0,
+          //     deleted: false,
+          //   );
 
-            batch.set(
-              newVideoDoc,
-              video.toJson(),
-            );
-          });
+          // batch.set(
+          //   newVideoDoc,
+          //   video.toJson(),
+          // );
+          // });
 
           batch.commit();
         }

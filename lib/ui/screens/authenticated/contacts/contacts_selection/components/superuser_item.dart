@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
 
 class SuperuserItem extends StatelessWidget {
@@ -19,6 +21,15 @@ class SuperuserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentSuperuser = Provider.of<Superuser?>(
+      context,
+      listen: false,
+    );
+
+    if (currentSuperuser == null) {
+      return Container();
+    }
+
     return Column(
       children: [
         Padding(
@@ -33,7 +44,9 @@ class SuperuserItem extends StatelessWidget {
                   right: 12.0,
                 ),
                 child: SuperuserImage(
-                  url: superuser.photoUrl,
+                  url: superuser.id == ConstantStrings.SUPERCONNECTOR_ID
+                      ? currentSuperuser.photoUrl
+                      : superuser.photoUrl,
                   radius: 19.0,
                   bordered: false,
                 ),
@@ -42,14 +55,18 @@ class SuperuserItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    superuser.fullName,
+                    superuser.id == ConstantStrings.SUPERCONNECTOR_ID
+                        ? currentSuperuser.fullName
+                        : superuser.fullName,
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.black,
                     ),
                   ),
                   Text(
-                    tag ?? 'Connection',
+                    superuser.id == ConstantStrings.SUPERCONNECTOR_ID
+                        ? 'Me'
+                        : (tag ?? 'Connection'),
                     style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.black.withOpacity(.6),

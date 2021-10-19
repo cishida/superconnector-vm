@@ -11,6 +11,7 @@ import 'package:superconnector_vm/core/services/superuser/superuser_service.dart
 import 'package:superconnector_vm/core/services/video/video_service.dart';
 import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/overlays/overlay_explanation.dart';
 import 'package:superconnector_vm/ui/components/overlays/overlay_input.dart';
@@ -285,6 +286,10 @@ class _ConnectionTileState extends State<ConnectionTile>
                     children: [
                       ConnectionPhotos(
                         photoUrls: _superusers.map((e) => e.photoUrl).toList(),
+                        isMe: _superusers
+                            .map((e) => e.id)
+                            .toList()
+                            .contains(ConstantStrings.SUPERCONNECTOR_ID),
                         emptyImageCount:
                             widget.connection.phoneNumberNameMap.length,
                       ),

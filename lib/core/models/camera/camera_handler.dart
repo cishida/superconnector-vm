@@ -16,14 +16,14 @@ import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 class CameraHandler extends ChangeNotifier {
   CameraController? _cameraController;
   BetterPlayerController? _betterPlayerController;
-  int _progress = 0;
+  double _progress = 0;
   bool _uploadCompleted = false;
   bool _isUploading = false;
   String? _errorMessage;
   Map<String, dynamic> _uploadData = {};
   List<Video> _videos = [];
 
-  int get progress => _progress;
+  double get progress => _progress;
 
   Future createVideos(
     List<Connection> connections,
@@ -106,7 +106,7 @@ class CameraHandler extends ChangeNotifier {
       ..endPoint = await _uploadData['url']
       ..file = File(fileToUpload.path)
       ..onProgress = (double progress) {
-        _progress = progress.floor();
+        _progress = progress;
         notifyListeners();
       }
       ..onError = (

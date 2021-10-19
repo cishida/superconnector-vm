@@ -164,12 +164,6 @@ class _VideoTileLinearProgressState extends State<VideoTileLinearProgress> {
       context,
     );
 
-    cameraHandler.addListener(() {
-      print(cameraHandler.progress.toDouble() -
-          (cameraHandler.progress > 25 ? .15 : 0) / 100);
-      if (mounted) setState(() {});
-    });
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -180,9 +174,9 @@ class _VideoTileLinearProgressState extends State<VideoTileLinearProgress> {
           valueColor: AlwaysStoppedAnimation<Color>(
             ConstantColors.PRIMARY,
           ),
-          value: (cameraHandler.progress.toDouble() -
-                  (cameraHandler.progress > 25 ? 5 : 0)) /
-              100,
+          value:
+              (cameraHandler.progress - (cameraHandler.progress > 25 ? 5 : 0)) /
+                  100,
         ),
       ),
     );
