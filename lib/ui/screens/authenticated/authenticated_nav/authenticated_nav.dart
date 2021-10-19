@@ -7,7 +7,6 @@ import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/account.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/authenticated_nav/components/bottom_nav_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
 import 'package:superconnector_vm/ui/screens/home/home.dart';
 
 class AuthenticatedNav extends StatefulWidget {
@@ -161,10 +160,14 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     setState(() {});
                   },
                   tabs: [
-                    BottomNavButton(
-                      title: 'camera',
-                      selected: _tabController.index == 0,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: BottomNavButton(
+                        title: 'camera',
+                        selected: _tabController.index == 0,
+                      ),
                     ),
+
                     BottomNavButton(
                       title: 'records',
                       selected: _tabController.index == 1,
@@ -181,10 +184,13 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     //   showBadge: showChatsBadge,
                     //   selected: _tabController.index == 3,
                     // ),
-                    BottomNavButton(
-                      title: 'settings',
-                      // showBadge: false,
-                      selected: _tabController.index == 2,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: BottomNavButton(
+                        title: 'settings',
+                        // showBadge: false,
+                        selected: _tabController.index == 2,
+                      ),
                     ),
                   ],
                 ),
