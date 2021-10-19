@@ -294,98 +294,102 @@ class _CameraState extends State<Camera>
                     }
                     await _stopVideoRecording();
                   },
-                  child: Container(
-                    width: constraints.maxWidth,
-                    height: constraints.maxHeight,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      child: Transform.scale(
-                        scale: 9 /
-                            14 /
-                            (constraints.maxWidth / constraints.maxHeight),
-                        child: AspectRatio(
-                          aspectRatio:
-                              (constraints.maxWidth / constraints.maxHeight),
-                          child: OverflowBox(
-                            alignment: Alignment.topCenter,
-                            child: FittedBox(
-                              fit: BoxFit.fitHeight,
-                              child: Container(
-                                width: constraints.maxWidth,
-                                height: constraints.maxHeight,
-                                child: Stack(
-                                  children: <Widget>[
-                                    CameraPreview(_controller!),
-                                  ],
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: constraints.maxWidth,
+                        height: constraints.maxHeight,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          child: Transform.scale(
+                            scale: 9 /
+                                14 /
+                                (constraints.maxWidth / constraints.maxHeight),
+                            child: AspectRatio(
+                              aspectRatio: (constraints.maxWidth /
+                                  constraints.maxHeight),
+                              child: OverflowBox(
+                                alignment: Alignment.topCenter,
+                                child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child: Container(
+                                    width: constraints.maxWidth,
+                                    height: constraints.maxHeight,
+                                    child: Stack(
+                                      children: <Widget>[
+                                        CameraPreview(_controller!),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
+                          ), //cameraPreview(),
+                        ),
+                      ),
+                      if (widget.connection != null)
+                        Positioned(
+                          top: 71.0,
+                          left: 0.0,
+                          child: ChevronBackButton(
+                            color: Colors.white,
+                            onBack: () {
+                              Navigator.pop(context);
+                            },
                           ),
                         ),
-                      ), //cameraPreview(),
-                    ),
+                      CameraOverlay(
+                        controller: _controller!,
+                        currentVideoSeconds: _currentVideoSeconds,
+                      ),
+                      // Using mask over white progress indicator for gradient
+                      Positioned(
+                        bottom: 0,
+                        child: Container(
+                          width: constraints.maxWidth,
+                          child: Stack(
+                            children: [
+                              ShaderMask(
+                                shaderCallback: (rect) {
+                                  return LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    stops: [
+                                      0.0,
+                                      .33,
+                                      .66,
+                                      1.0,
+                                    ],
+                                    colors: [
+                                      Color(0xFF0AD3FF),
+                                      Color(0xFFA132F5),
+                                      Color(0xFFF46F66),
+                                      Color(0xFFF1943B),
+                                    ],
+                                  ).createShader(rect);
+                                },
+                                child: LinearProgressIndicator(
+                                  color: Colors.transparent,
+                                  minHeight: 4.0,
+                                  backgroundColor: Colors.transparent,
+                                  value: _animationController.value,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                if (widget.connection != null)
-                  Positioned(
-                    top: 71.0,
-                    left: 0.0,
-                    child: ChevronBackButton(
-                      color: Colors.white,
-                      onBack: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
                 CameraOptions(
                   toggleCamera: _toggleCameraLens,
-                ),
-                CameraOverlay(
-                  controller: _controller!,
-                  currentVideoSeconds: _currentVideoSeconds,
-                ),
-                // Using mask over white progress indicator for gradient
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    width: constraints.maxWidth,
-                    child: Stack(
-                      children: [
-                        ShaderMask(
-                          shaderCallback: (rect) {
-                            return LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              stops: [
-                                0.0,
-                                .33,
-                                .66,
-                                1.0,
-                              ],
-                              colors: [
-                                Color(0xFF0AD3FF),
-                                Color(0xFFA132F5),
-                                Color(0xFFF46F66),
-                                Color(0xFFF1943B),
-                              ],
-                            ).createShader(rect);
-                          },
-                          child: LinearProgressIndicator(
-                            color: Colors.transparent,
-                            minHeight: 4.0,
-                            backgroundColor: Colors.transparent,
-                            value: _animationController.value,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ],
             ),
