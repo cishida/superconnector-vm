@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
 class SearchBar extends StatelessWidget {
   const SearchBar({
@@ -28,7 +29,7 @@ class SearchBar extends StatelessWidget {
       enabled: enabled,
       keyboardAppearance: Brightness.light,
       style: TextStyle(
-        color: Colors.black.withOpacity(.6),
+        color: ConstantColors.navSearchText,
         fontWeight: FontWeight.normal,
         fontSize: 18.0,
         // backgroundColor: ConstantColors.SECONDARY,
@@ -37,7 +38,7 @@ class SearchBar extends StatelessWidget {
         isDense: true,
         hintText: "Search",
         hintStyle: TextStyle(
-          color: Colors.black.withOpacity(.6),
+          color: ConstantColors.navSearchText,
         ),
         contentPadding: EdgeInsets.fromLTRB(
           0.0,
@@ -50,7 +51,7 @@ class SearchBar extends StatelessWidget {
         border: border,
         focusedBorder: border,
         filled: true,
-        fillColor: Colors.black.withOpacity(.08),
+        fillColor: ConstantColors.navSearchBackground,
         prefixIcon: Container(
           width: 18.0,
           margin: EdgeInsets.only(left: 12.0, right: 8.0),
@@ -63,7 +64,7 @@ class SearchBar extends StatelessWidget {
             ),
             child: Image.asset(
               'assets/images/authenticated/search-icon-gray.png',
-              color: Colors.black.withOpacity(.6),
+              color: ConstantColors.navSearchText,
               height: 18,
               width: 18,
             ),

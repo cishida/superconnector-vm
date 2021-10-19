@@ -24,6 +24,14 @@ class ConstantColors {
   static const Color CONTACT_SELECTION_CIRCLE_BORDER = Color(0xFFC7C6CB);
   static const Color CONTACT_SUBTITLE = Color(0xFF8996A2);
 
+  // Nav Drawer
+  static Color navSearchBackground = Colors.white.withOpacity(.08);
+  static Color navSearchText = Colors.white.withOpacity(.6);
+  static Color navItemTitle = Colors.white;
+  static Color navItemSub = Colors.white.withOpacity(.6);
+  static Color navItemCheck = Colors.white;
+  static Color navEmptyImage = Colors.white.withOpacity(.2);
+
   // Buttons
   static const Color FAB_BACKGROUND = Color(0xFF0AA7FF);
   static const Color BOTTOM_NAV_UNSELECTED = Color(0xFF8996A2);

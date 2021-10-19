@@ -49,6 +49,7 @@ class SuperuserItem extends StatelessWidget {
                       : superuser.photoUrl,
                   radius: 19.0,
                   bordered: false,
+                  reversed: true,
                 ),
               ),
               Column(
@@ -60,16 +61,16 @@ class SuperuserItem extends StatelessWidget {
                         : superuser.fullName,
                     style: TextStyle(
                       fontSize: 18.0,
-                      color: Colors.black,
+                      color: ConstantColors.navItemTitle,
                     ),
                   ),
                   Text(
                     superuser.id == ConstantStrings.SUPERCONNECTOR_ID
                         ? 'Me'
-                        : (tag ?? 'Connection'),
+                        : (tag ?? 'Connected'),
                     style: TextStyle(
                       fontSize: 15.0,
-                      color: Colors.black.withOpacity(.6),
+                      color: ConstantColors.navItemSub,
                     ),
                   ),
                 ],
@@ -85,6 +86,7 @@ class SuperuserItem extends StatelessWidget {
                           'assets/images/authenticated/contacts-check-mark.png',
                           width: 24.0,
                           height: 24.0,
+                          color: ConstantColors.navItemCheck,
                         )
                       : Container(
                           width: 24.0,

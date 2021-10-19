@@ -219,7 +219,7 @@ class _InitialLandingState extends State<InitialLanding>
                             'A shared camera for friends & family',
                             style: TextStyle(
                               fontSize: 16.0,
-                              color: Colors.white.withOpacity(.7),
+                              color: Colors.white.withOpacity(.8),
                               fontWeight: FontWeight.w600,
                               letterSpacing: .15,
                             ),

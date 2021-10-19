@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 
 part 'connection.g.dart';
 
 @JsonSerializable()
 class Connection {
+  Superuser? superuser;
+
   @JsonKey(ignore: true)
   String id;
   @JsonKey(defaultValue: [])

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
 class EmptyImage extends StatelessWidget {
   final double size;
@@ -13,6 +14,14 @@ class EmptyImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isReversed) {
+      return Image.asset(
+        'assets/images/authenticated/empty-contact-photo.png',
+        height: size,
+        width: size,
+        color: ConstantColors.navEmptyImage,
+      );
+    }
     return Image.asset(
       isReversed
           ? 'assets/images/authenticated/empty-contact-photo.png'

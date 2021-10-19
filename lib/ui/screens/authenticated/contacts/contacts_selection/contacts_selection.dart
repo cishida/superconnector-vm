@@ -32,6 +32,7 @@ class _ContactsSelectionState extends State<ContactsSelection> {
   List<Contact> _sortedContacts = [];
   List<Superuser>? _superusers;
   SuperuserService _superuserService = SuperuserService();
+  List<Connection> _connections = [];
 
   Future _loadUsers() async {
     if (!widget.isSelectable) {
@@ -55,14 +56,20 @@ class _ContactsSelectionState extends State<ContactsSelection> {
       return;
     }
 
-    for (var i = 0; i < connections.length; i++) {
+    var filteredConnections =
+        connections.where((e) => e.userIds.length == 2).toList();
+
+    for (var i = 0; i < filteredConnections.length; i++) {
       List<String> ids = tempSuperusers.map((e) => e.id).toList();
 
-      for (var id in connections[i].userIds) {
+      for (var id in filteredConnections[i].userIds) {
         if (id != currentSuperuser.id && !ids.contains(id)) {
           Superuser? superuser = await _superuserService.getSuperuserFromId(id);
+
           if (superuser != null) {
             tempSuperusers.add(superuser);
+            filteredConnections[i].superuser = superuser;
+            _connections.add(filteredConnections[i]);
           }
         }
       }
@@ -125,24 +132,25 @@ class _ContactsSelectionState extends State<ContactsSelection> {
     return Padding(
       padding: const EdgeInsets.only(top: 11.0),
       child: ListView.builder(
-        itemCount: filteredContacts.length + _superusers!.length,
+        itemCount: filteredContacts.length + _connections.length,
         itemBuilder: (context, index) {
-          if (index < _superusers!.length) {
+          if (index < _connections.length) {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () => widget.onTapSuperuser(_superusers![index]),
+              onTap: () =>
+                  widget.onTapSuperuser(_connections[index].superuser!),
               child: SuperuserItem(
-                superuser: _superusers![index],
-                tag: connections[index].tags[currentSuperuser.id],
+                superuser: _connections[index].superuser!,
+                tag: _connections[index].tags[currentSuperuser.id],
                 isSelectable: widget.isSelectable,
                 isSelected: selectedContacts.containsSuperuser(
-                  _superusers![index],
+                  _connections[index].superuser!,
                 ),
               ),
             );
           }
 
-          int effectiveIndex = index - _superusers!.length;
+          int effectiveIndex = index - _connections.length;
 
           return GestureDetector(
             behavior: HitTestBehavior.opaque,

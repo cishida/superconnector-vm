@@ -37,7 +37,7 @@ class ContactItem extends StatelessWidget {
                       )
                     : EmptyImage(
                         size: 38.0,
-                        isReversed: false,
+                        isReversed: true,
                       ),
               ),
               Column(
@@ -47,14 +47,14 @@ class ContactItem extends StatelessWidget {
                     contact.displayName!,
                     style: TextStyle(
                       fontSize: 18.0,
-                      color: Colors.black,
+                      color: ConstantColors.navItemTitle,
                     ),
                   ),
                   Text(
                     contact.phones!.first.value!,
                     style: TextStyle(
                       fontSize: 15.0,
-                      color: Colors.black.withOpacity(.6),
+                      color: ConstantColors.navItemSub,
                     ),
                   ),
                 ],
@@ -70,6 +70,7 @@ class ContactItem extends StatelessWidget {
                           'assets/images/authenticated/contacts-check-mark.png',
                           width: 24.0,
                           height: 24.0,
+                          color: ConstantColors.navItemCheck,
                         )
                       : Container(
                           width: 24.0,

@@ -7,11 +7,13 @@ class SuperuserImage extends StatelessWidget {
   final url;
   final radius;
   final bordered;
+  final reversed;
 
   SuperuserImage({
     this.url,
     this.radius,
     this.bordered = true,
+    this.reversed = false,
   });
 
   @override
@@ -20,6 +22,7 @@ class SuperuserImage extends StatelessWidget {
       child: url == null || url == ''
           ? EmptyImage(
               size: radius * 2,
+              isReversed: reversed,
             )
           : CachedNetworkImage(
               imageUrl: url,
