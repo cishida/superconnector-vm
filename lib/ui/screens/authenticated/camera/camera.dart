@@ -3,6 +3,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
@@ -33,7 +34,7 @@ class Camera extends StatefulWidget {
 class _CameraState extends State<Camera>
     with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  CameraController? _controller;
+  // CameraController? _controller;
   List<CameraDescription> _cameras = [];
   String? _filePath;
   Timer? _timer;
@@ -44,21 +45,61 @@ class _CameraState extends State<Camera>
   Future initCamera({
     CameraDescription? description,
   }) async {
-    if (_cameras.length > 0) {
-      _controller = await CameraUtility.initializeController(
-        description ??
-            _cameras.firstWhere((description) =>
-                description.lensDirection == CameraLensDirection.front),
-        listener: () {
-          if (mounted) {
-            setState(() {});
-          }
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
 
-          if (_controller!.value.hasError) {
-            print('Camera error ${_controller!.value.errorDescription}');
-          }
-        },
-      );
+    if (_cameras.length > 0) {
+      // _controller = await CameraUtility.initializeController(
+      //   description ??
+      //       _cameras.firstWhere((description) =>
+      //           description.lensDirection == CameraLensDirection.front),
+      //   listener: () {
+      //     if (mounted) {
+      //       setState(() {});
+      //     }
+
+      //     if (_controller!.value.hasError) {
+      //       print('Camera error ${_controller!.value.errorDescription}');
+      //     }
+      //   },
+      // );
+
+      var frontFacing = _cameras.firstWhere((description) =>
+          description.lensDirection == CameraLensDirection.front);
+
+      if (cameraHandler.cameraController == null) {
+        await cameraHandler.initCamera(
+          description ?? frontFacing,
+          listener: () {
+            if (mounted) {
+              setState(() {});
+            }
+
+            if (cameraHandler.cameraController!.value.hasError) {
+              print(
+                  'Camera error ${cameraHandler.cameraController!.value.errorDescription}');
+            }
+          },
+        );
+        // cameraHandler.cameraController =
+        //     await CameraUtility.initializeController(
+        //   description ??
+        //       _cameras.firstWhere((description) =>
+        //           description.lensDirection == CameraLensDirection.front),
+        //   listener: () {
+        //     if (mounted) {
+        //       setState(() {});
+        //     }
+
+        //     if (cameraHandler.cameraController!.value.hasError) {
+        //       print(
+        //           'Camera error ${cameraHandler.cameraController!.value.errorDescription}');
+        //     }
+        //   },
+        // );
+      }
     } else {
       print('No camera available');
     }
@@ -84,11 +125,16 @@ class _CameraState extends State<Camera>
   }
 
   void _toggleCameraLens() {
-    if (_controller == null) {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+    if (cameraHandler.cameraController == null) {
       return;
     }
 
-    final lensDirection = _controller!.description.lensDirection;
+    final lensDirection =
+        cameraHandler.cameraController!.description.lensDirection;
     CameraDescription newDescription;
     if (lensDirection == CameraLensDirection.front) {
       newDescription = _cameras.firstWhere((description) =>
@@ -134,18 +180,24 @@ class _CameraState extends State<Camera>
   }
 
   Future<String?> startVideoRecording() async {
-    if (_controller == null || !_controller!.value.isInitialized) {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+
+    if (cameraHandler.cameraController == null ||
+        !cameraHandler.cameraController!.value.isInitialized) {
       print('Error: select a camera first.');
       return null;
     }
 
-    if (_controller!.value.isRecordingVideo) {
+    if (cameraHandler.cameraController!.value.isRecordingVideo) {
       // A recording is already started, do nothing.
       return null;
     }
 
     try {
-      await _controller!.startVideoRecording();
+      await cameraHandler.cameraController!.startVideoRecording();
 
       const oneSec = const Duration(seconds: 1);
       _timer = Timer.periodic(
@@ -172,23 +224,28 @@ class _CameraState extends State<Camera>
   }
 
   Future _onResetPressed() async {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+
+    await cameraHandler.disposeCamera();
+    await initCamera();
     _animationController.reset();
-    print('Reset');
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Future onNewCameraSelected(
     CameraDescription cameraDescription,
   ) async {
-    print('here?');
-    if (_controller != null) {
-      CameraController temp = _controller!;
-      if (mounted) {
-        setState(() {
-          _controller = null;
-        });
-      }
-      await temp.dispose();
-    }
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+
+    await cameraHandler.disposeCamera();
     await initCamera();
     if (mounted) {
       setState(() {});
@@ -196,12 +253,19 @@ class _CameraState extends State<Camera>
   }
 
   Future<void> _stopVideoRecording() async {
-    if (_controller == null || !_controller!.value.isRecordingVideo) {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+
+    if (cameraHandler.cameraController == null ||
+        !cameraHandler.cameraController!.value.isRecordingVideo) {
       return null;
     }
 
     try {
-      XFile videoFile = await _controller!.stopVideoRecording();
+      XFile videoFile =
+          await cameraHandler.cameraController!.stopVideoRecording();
       final uint8list = await thumb.VideoThumbnail.thumbnailData(
         video: videoFile.path,
         // imageFormat: thumb.ImageFormat.JPEG,
@@ -246,7 +310,7 @@ class _CameraState extends State<Camera>
         ),
       );
 
-      await onNewCameraSelected(_controller!.description);
+      await onNewCameraSelected(cameraHandler.cameraController!.description);
 
       if (_timer != null) {
         _timer!.cancel();
@@ -274,7 +338,13 @@ class _CameraState extends State<Camera>
 
   @override
   Widget build(BuildContext context) {
-    if (_controller == null || !_controller!.value.isInitialized) {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+
+    if (cameraHandler.cameraController == null ||
+        !cameraHandler.cameraController!.value.isInitialized) {
       return Container(
         color: Colors.black,
       );
@@ -327,7 +397,8 @@ class _CameraState extends State<Camera>
                                     height: constraints.maxHeight,
                                     child: Stack(
                                       children: <Widget>[
-                                        CameraPreview(_controller!),
+                                        CameraPreview(
+                                            cameraHandler.cameraController!),
                                       ],
                                     ),
                                   ),
@@ -350,7 +421,7 @@ class _CameraState extends State<Camera>
                         ),
 
                       CameraOverlay(
-                        controller: _controller!,
+                        controller: cameraHandler.cameraController!,
                         currentVideoSeconds: _currentVideoSeconds,
                         connection: widget.connection,
                       ),
@@ -399,7 +470,7 @@ class _CameraState extends State<Camera>
                 ),
                 CameraOptions(
                   toggleCamera: _toggleCameraLens,
-                  controller: _controller,
+                  controller: cameraHandler.cameraController,
                 ),
               ],
             ),

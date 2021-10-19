@@ -42,7 +42,7 @@ class BetterPlayerUtility {
 
     BetterPlayerController betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(
-        // startAt: Duration(milliseconds: 15),
+        startAt: Duration(milliseconds: 50),
         autoPlay: true,
         showPlaceholderUntilPlay: true,
         looping: true,

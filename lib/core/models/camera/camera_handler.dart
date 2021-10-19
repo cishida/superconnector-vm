@@ -14,7 +14,7 @@ import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 
 class CameraHandler extends ChangeNotifier {
-  CameraController? _cameraController;
+  CameraController? cameraController;
   BetterPlayerController? _betterPlayerController;
   double _progress = 0;
   bool _uploadCompleted = false;
@@ -24,6 +24,44 @@ class CameraHandler extends ChangeNotifier {
   List<Video> _videos = [];
 
   double get progress => _progress;
+
+  // CameraController? get cameraController => _cameraController;
+  // set cameraController(CameraController? controller) {
+  //   _cameraController = controller;
+  // }
+
+  Future initCamera(
+    CameraDescription camera, {
+    Function? listener,
+  }) async {
+    cameraController = CameraController(
+      camera,
+      ResolutionPreset.high,
+      enableAudio: true,
+      imageFormatGroup: ImageFormatGroup.bgra8888,
+    );
+
+    if (listener != null) {
+      cameraController!.addListener(() => listener);
+    }
+
+    await cameraController!.initialize();
+    await cameraController!.prepareForVideoRecording();
+
+    notifyListeners();
+  }
+
+  Future disposeCamera() async {
+    if (cameraController != null) {
+      CameraController temp = cameraController!;
+      cameraController = null;
+      await temp.dispose();
+    }
+
+    // await initCamera(camera);
+
+    notifyListeners();
+  }
 
   Future createVideos(
     List<Connection> connections,
