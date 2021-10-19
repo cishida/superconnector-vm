@@ -40,6 +40,7 @@ class _ContactsState extends State<Contacts> {
   TextEditingController _controller = TextEditingController();
   Iterable<Contact>? _contacts;
   String _filter = '';
+  bool _pressed = false;
 
   Future _toggleContact({
     required Contact contact,
@@ -258,6 +259,13 @@ class _ContactsState extends State<Contacts> {
       floatingActionButton: widget.isGroup
           ? GroupSelectionButton(
               onPressed: () async {
+                if (_pressed) {
+                  return;
+                }
+
+                setState(() {
+                  _pressed = true;
+                });
                 if (widget.sendVM != null) {
                   await widget.sendVM!();
                 }
@@ -268,6 +276,9 @@ class _ContactsState extends State<Contacts> {
                   listen: false,
                 ).setIndex(1);
                 // _setOrCreateConnection();
+                setState(() {
+                  _pressed = false;
+                });
               },
             )
           : Container(),

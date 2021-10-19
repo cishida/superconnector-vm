@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
@@ -125,6 +126,61 @@ class ConnectionService {
 
   //   return connection;
   // }
+
+  Future<Connection> createConnectionFromContact({
+    required String currentUserId,
+    required Contact contact,
+    required FirebaseAnalytics analytics,
+  }) async {
+    var connectionDoc = connectionCollection.doc();
+    Map<String, String> phoneNumberNameMap = {};
+    List<String> userIds = [currentUserId];
+    String formattedPhone = contact.phones!.first.value!.replaceAll(
+      RegExp(r"\D"),
+      "",
+    );
+
+    if (formattedPhone.length == 10) {
+      formattedPhone = '1' + formattedPhone;
+    }
+    formattedPhone = '+' + formattedPhone;
+
+    String givenName = contact.givenName != null ? contact.givenName! : '';
+    String familyName = contact.familyName != null ? contact.familyName! : '';
+
+    String name = givenName +
+        (givenName.isNotEmpty && familyName.isNotEmpty ? ' ' : '') +
+        familyName;
+
+    final Superuser? superuser =
+        await _superuserService.getSuperuserFromPhone(formattedPhone);
+
+    if (superuser == null) {
+      phoneNumberNameMap[formattedPhone] = name;
+    } else {
+      userIds.add(superuser.id);
+    }
+
+    Connection connection = Connection(
+      id: connectionDoc.id,
+      userIds: userIds,
+      phoneNumberNameMap: phoneNumberNameMap,
+      streakCount: 1,
+      created: DateTime.now(),
+      mostRecentActivity: DateTime.now(),
+    );
+
+    await connectionDoc.set(connection.toJson());
+    await analytics.logEvent(
+      name: 'connection_created',
+      parameters: <String, dynamic>{
+        'id': connectionDoc.id,
+        'userIds': connection.userIds,
+      },
+    );
+
+    return connection;
+  }
 
   Future<Map<String, dynamic>> getOrCreateConnection({
     required String currentUserId,

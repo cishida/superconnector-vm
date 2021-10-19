@@ -7,11 +7,13 @@ class SuperuserItem extends StatelessWidget {
   const SuperuserItem({
     Key? key,
     required this.superuser,
+    this.tag = '',
     required this.isSelectable,
     this.isSelected = false,
   }) : super(key: key);
 
   final Superuser superuser;
+  final String? tag;
   final bool isSelectable;
   final bool isSelected;
 
@@ -47,7 +49,7 @@ class SuperuserItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Tag',
+                    tag ?? 'Connection',
                     style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.black.withOpacity(.6),

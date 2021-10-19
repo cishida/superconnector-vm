@@ -96,6 +96,10 @@ class _ContactsSelectionState extends State<ContactsSelection> {
       context,
     );
 
+    var currentSuperuser = Provider.of<Superuser?>(
+      context,
+    );
+
     var connections = Provider.of<List<Connection>>(
       context,
     );
@@ -105,7 +109,7 @@ class _ContactsSelectionState extends State<ContactsSelection> {
       _loadUsers();
     }
 
-    if (_superusers == null) {
+    if (_superusers == null || currentSuperuser == null) {
       return Center(
         child: CircularProgressIndicator(),
       );
@@ -130,6 +134,7 @@ class _ContactsSelectionState extends State<ContactsSelection> {
               onTap: () => widget.onTapSuperuser(_superusers![index]),
               child: SuperuserItem(
                 superuser: _superusers![index],
+                tag: connections[index].tags[currentSuperuser.id],
                 isSelectable: widget.isSelectable,
                 isSelected: selectedContacts.containsSuperuser(
                   _superusers![index],
