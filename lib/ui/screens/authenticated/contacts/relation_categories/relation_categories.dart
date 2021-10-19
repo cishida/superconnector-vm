@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
-import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
-import 'package:superconnector_vm/ui/components/overlays/overlay_explanation.dart';
-import 'package:superconnector_vm/ui/components/overlays/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/components/relation_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 

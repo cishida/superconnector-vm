@@ -4,7 +4,6 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 
 class RecordOverlay extends StatefulWidget {
   const RecordOverlay({

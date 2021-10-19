@@ -5,7 +5,6 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/permissions_template.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
 
 class RecordPermission extends StatelessWidget {
   const RecordPermission({

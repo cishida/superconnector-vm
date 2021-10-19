@@ -17,18 +17,13 @@ class CameraHandler extends ChangeNotifier {
   CameraController? cameraController;
   BetterPlayerController? _betterPlayerController;
   double _progress = 0;
-  bool _uploadCompleted = false;
-  bool _isUploading = false;
-  String? _errorMessage;
+  // bool _uploadCompleted = false;
+  // bool _isUploading = false;
+  // String? _errorMessage;
   Map<String, dynamic> _uploadData = {};
   List<Video> _videos = [];
 
   double get progress => _progress;
-
-  // CameraController? get cameraController => _cameraController;
-  // set cameraController(CameraController? controller) {
-  //   _cameraController = controller;
-  // }
 
   Future initCamera(
     CameraDescription camera, {
@@ -71,8 +66,6 @@ class CameraHandler extends ChangeNotifier {
   ) async {
     _videos = [];
     _uploadData = {};
-    _uploadCompleted = false;
-    _isUploading = true;
     _progress = 0;
 
     List<Future> futures = [];
@@ -136,9 +129,6 @@ class CameraHandler extends ChangeNotifier {
 
   Future<void> _uploadFile(XFile fileToUpload) async {
     _progress = 0;
-    _uploadCompleted = false;
-    _isUploading = true;
-    _errorMessage = null;
 
     // Chunk upload
     var uploadOptions = UpChunkOptions()
@@ -153,18 +143,16 @@ class CameraHandler extends ChangeNotifier {
         int chunk,
         int attempts,
       ) {
-        _errorMessage = 'UpChunk error 💥 🙀:\n'
-            ' - Message: $message\n'
-            ' - Chunk: $chunk\n'
-            ' - Attempts: $attempts';
+        // _errorMessage = 'UpChunk error 💥 🙀:\n'
+        //     ' - Message: $message\n'
+        //     ' - Chunk: $chunk\n'
+        //     ' - Attempts: $attempts';
         notifyListeners();
       }
       ..onSuccess = () async {
         if (_betterPlayerController == null) {
           return;
         }
-
-        _uploadCompleted = true;
       };
 
     UpChunk.createUpload(uploadOptions);

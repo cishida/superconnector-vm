@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
 
 class CameraReply extends StatefulWidget {

@@ -1,6 +1,5 @@
 import 'package:better_player/better_player.dart';
 import 'package:camera/camera.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -9,16 +8,13 @@ import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
-import 'package:superconnector_vm/core/utils/video/video_uploader.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_bottom_nav.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
 
 class VideoPreviewContainer extends StatefulWidget {
@@ -41,8 +37,8 @@ class VideoPreviewContainer extends StatefulWidget {
 
 class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
   BetterPlayerController? _betterController;
-  ConnectionService _connectionService = ConnectionService();
-  double? _aspectRatio;
+  // ConnectionService _connectionService = ConnectionService();
+  // double? _aspectRatio;
   bool _pressed = false;
 
   void _safeSetState() {
@@ -98,9 +94,9 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       },
     );
     _betterController!.addEventsListener((event) {
-      if (_betterController != null) {
-        _aspectRatio = _betterController!.getAspectRatio();
-      }
+      // if (_betterController != null) {
+      //   _aspectRatio = _betterController!.getAspectRatio();
+      // }
     });
 
     _safeSetState();

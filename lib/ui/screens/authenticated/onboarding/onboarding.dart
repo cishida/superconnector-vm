@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_camera/onboarding_camera.dart';
@@ -68,7 +67,7 @@ class _OnboardingState extends State<Onboarding> {
             connection.toJson(),
           );
 
-          var newVideoDoc = videoCollection.doc();
+          // var newVideoDoc = videoCollection.doc();
           // var exampleVideoSnap = await exampleVideoCollection.get();
 
           // exampleVideoSnap.docs.forEach((exampleVideo) {
