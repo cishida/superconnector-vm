@@ -12,6 +12,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
@@ -42,6 +43,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
   BetterPlayerController? _betterController;
   ConnectionService _connectionService = ConnectionService();
   double? _aspectRatio;
+  bool _pressed = false;
 
   void _safeSetState() {
     if (mounted) {
@@ -52,6 +54,10 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
   Future _showInviteCard(
     List<String> phoneNumbers,
   ) async {
+    if (phoneNumbers.isEmpty) {
+      return;
+    }
+
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -100,9 +106,73 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
     _safeSetState();
   }
 
+  Future prepareSelected() async {}
+
+  Future sendVM() async {
+    var selectedContacts = Provider.of<SelectedContacts>(
+      context,
+      listen: false,
+    );
+    final analytics = Provider.of<FirebaseAnalytics>(
+      context,
+      listen: false,
+    );
+    final connections = Provider.of<List<Connection>>(
+      context,
+      listen: false,
+    );
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+    final currentSuperuser = Provider.of<Superuser?>(
+      context,
+      listen: false,
+    );
+
+    if (currentSuperuser == null) {
+      return;
+    }
+
+    List<String> phoneNumbers = [];
+
+    if (widget.connection == null) {
+      selectedContacts.superusers.forEach((superuser) async {
+        selectedContacts.addConnection(connections
+            .where((element) =>
+                element.userIds.length == 2 &&
+                element.userIds.contains(superuser.id))
+            .toList()
+            .first);
+      });
+
+      await Future.forEach(selectedContacts.contacts, (Contact contact) async {
+        Connection connection =
+            await ConnectionService().createConnectionFromContact(
+          currentUserId: currentSuperuser.id,
+          contact: contact,
+          analytics: analytics,
+        );
+
+        if (connection.phoneNumberNameMap.isNotEmpty) {
+          phoneNumbers = connection.phoneNumberNameMap.keys.toList();
+        }
+        selectedContacts.addConnection(connection);
+      });
+    }
+
+    await cameraHandler.createVideos(
+      selectedContacts.connections,
+      currentSuperuser,
+      widget.videoFile,
+    );
+
+    await _showInviteCard(phoneNumbers);
+    selectedContacts.reset();
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.delayed(Duration.zero, () {
       _initializeVideo();
@@ -173,78 +243,45 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () async {
+                  if (_pressed) {
+                    return;
+                  }
+
+                  setState(() {
+                    _pressed = true;
+                  });
+
+                  var selectedContacts = Provider.of<SelectedContacts>(
+                    context,
+                    listen: false,
+                  );
+
                   if (_betterController != null &&
                       _betterController!.isPlaying() != null &&
                       _betterController!.isPlaying()!) {
                     await _betterController!.pause();
                   }
+
                   if (widget.connection == null) {
                     SuperNavigator.handleContactsNavigation(
                       context: context,
-                      sendVM: () async {
-                        var selectedContacts = Provider.of<SelectedContacts>(
-                          context,
-                          listen: false,
-                        );
-                        final analytics = Provider.of<FirebaseAnalytics>(
-                          context,
-                          listen: false,
-                        );
-                        final connections = Provider.of<List<Connection>>(
-                          context,
-                          listen: false,
-                        );
-                        final cameraHandler = Provider.of<CameraHandler>(
-                          context,
-                          listen: false,
-                        );
-                        final currentSuperuser = Provider.of<Superuser?>(
-                          context,
-                          listen: false,
-                        );
-
-                        if (currentSuperuser == null) {
-                          return;
-                        }
-
-                        List<String> phoneNumbers = [];
-
-                        selectedContacts.superusers.forEach((superuser) async {
-                          selectedContacts.addConnection(connections
-                              .where((element) =>
-                                  element.userIds.length == 2 &&
-                                  element.userIds.contains(superuser.id))
-                              .toList()
-                              .first);
-                        });
-
-                        await Future.forEach(selectedContacts.contacts,
-                            (Contact contact) async {
-                          Connection connection = await ConnectionService()
-                              .createConnectionFromContact(
-                            currentUserId: currentSuperuser.id,
-                            contact: contact,
-                            analytics: analytics,
-                          );
-
-                          if (connection.phoneNumberNameMap.isNotEmpty) {
-                            phoneNumbers =
-                                connection.phoneNumberNameMap.keys.toList();
-                          }
-                          selectedContacts.addConnection(connection);
-                        });
-
-                        await cameraHandler.createVideos(
-                          selectedContacts.connections,
-                          currentSuperuser,
-                          widget.videoFile,
-                        );
-
-                        await _showInviteCard(phoneNumbers);
-                        selectedContacts.reset();
-                      },
+                      sendVM: sendVM,
                     );
+                  } else {
+                    selectedContacts.addConnection(widget.connection!);
+                    sendVM();
+
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+
+                    Provider.of<AuthenticatedController>(
+                      context,
+                      listen: false,
+                    ).setIndex(1);
                   }
+
+                  setState(() {
+                    _pressed = false;
+                  });
                 },
                 child: Image.asset(
                   'assets/images/authenticated/record/send-vm-button.png',
