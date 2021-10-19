@@ -5,6 +5,7 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/snack_bars/light_snack_bar.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/relation_categories/relation_categories.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 
 class ConnectionGridMenu extends StatelessWidget {
@@ -145,18 +146,18 @@ class ConnectionGridMenu extends StatelessWidget {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-          heightFactor: 0.93,
-          child: Relations(
+          heightFactor: 0.5,
+          child: RelationCategories(
             connection: connection,
           ),
         );
       },
     ).then((value) {
-      Navigator.of(context).pop();
-      _showSnackbar(
-        context,
-        'Your family relation has been updated.',
-      );
+      // Navigator.of(context).pop();
+      // _showSnackbar(
+      //   context,
+      //   'Your family relation has been updated.',
+      // );
     });
   }
 

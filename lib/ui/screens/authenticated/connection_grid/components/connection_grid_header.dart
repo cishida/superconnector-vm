@@ -75,7 +75,7 @@ class ConnectionGridHeader extends StatelessWidget {
                         child: Text(
                           nameText,
                           style: TextStyle(
-                            color: ConstantColors.PRIMARY,
+                            color: Colors.black.withOpacity(.87),
                             fontSize: 18.0,
                             fontWeight: FontWeight.w600,
                           ),
