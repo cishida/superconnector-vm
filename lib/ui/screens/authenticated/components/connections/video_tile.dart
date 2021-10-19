@@ -58,7 +58,7 @@ class _VideoTileState extends State<VideoTile> {
         right: 1.0,
       ),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.grey.shade400,
         borderRadius: BorderRadius.circular(6.0),
       ),
       child: Stack(

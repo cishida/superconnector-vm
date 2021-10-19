@@ -26,7 +26,7 @@ class _VideoGridTileState extends State<VideoGridTile> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: Colors.grey.shade400,
         // borderRadius: BorderRadius.circular(3.0),
       ),
       child: Stack(
