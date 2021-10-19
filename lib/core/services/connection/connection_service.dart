@@ -214,7 +214,7 @@ class ConnectionService {
     }
 
     await connectionDoc.set(connection.toJson());
-    analytics.logEvent(
+    await analytics.logEvent(
       name: 'connection_created',
       parameters: <String, dynamic>{
         'id': connectionDoc.id,
@@ -260,7 +260,7 @@ class ConnectionService {
 
     batch.update(userCollectionDocument, map);
 
-    return batch.commit();
+    return await batch.commit();
   }
 
   Future<Connection?> getConnectionFromId(String id) async {
@@ -296,7 +296,7 @@ class ConnectionService {
         .map(_connectionListFromSnapshot);
   }
 
-  Future update(String id, Map<String, dynamic> data) {
-    return connectionCollection.doc(id).update(data);
+  Future update(String id, Map<String, dynamic> data) async {
+    return await connectionCollection.doc(id).update(data);
   }
 }

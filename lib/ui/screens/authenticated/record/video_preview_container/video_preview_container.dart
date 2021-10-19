@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
@@ -84,7 +85,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
               if (widget.blurredThumb != null)
                 Positioned.fill(
                   child: Container(
-                    color: Colors.red,
+                    color: Colors.transparent,
                     child: widget.blurredThumb!,
                   ),
                 ),
@@ -159,6 +160,10 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                           context,
                           listen: false,
                         );
+                        final cameraHandler = Provider.of<CameraHandler>(
+                          context,
+                          listen: false,
+                        );
                         final currentSuperuser = Provider.of<Superuser?>(
                           context,
                           listen: false,
@@ -168,50 +173,66 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                           return;
                         }
 
-                        final uploader = VideoUploader();
-                        DocumentReference _videoDoc = FirebaseFirestore.instance
-                            .collection('videos')
-                            .doc();
-                        Video initialVideo =
-                            Video(id: _videoDoc.id, created: DateTime.now());
-                        final json =
-                            await uploader.getUploadJson(initialVideo.id);
-                        initialVideo.uploadId = json['id'];
+                        selectedContacts.superusers.forEach((superuser) async {
+                          selectedContacts.addConnection(connections
+                              .where((element) =>
+                                  element.userIds.length == 2 &&
+                                  element.userIds.contains(superuser.id))
+                              .toList()
+                              .first);
+                        });
 
-                        selectedContacts.contacts.forEach((contact) {});
-                        selectedContacts.getSuperusers.forEach(
-                          (superuser) async {
-                            Connection? connection = connections
-                                .where((element) =>
-                                    element.userIds.length == 2 &&
-                                    element.userIds.contains(superuser.id))
-                                .toList()
-                                .first;
-
-                            if (connection != null) {
-                              DocumentReference _videoDoc = FirebaseFirestore
-                                  .instance
-                                  .collection('videos')
-                                  .doc();
-                              await _videoDoc.set({
-                                'uploadId': initialVideo.uploadId,
-                                'superuserId': superuser.id,
-                                'created': Timestamp.now(),
-                                'duration':
-                                    BetterPlayerUtility.getVideoDuration(
-                                  _betterController,
-                                ),
-                                'views': 0,
-                                'deleted': false,
-                                'connectionId': connection.id,
-                                'unwatchedIds': [superuser.id],
-                              });
-
-                              connection.mostRecentActivity = DateTime.now();
-                              await connection.update();
-                            }
-                          },
+                        cameraHandler.createVideos(
+                          selectedContacts.connections,
+                          currentSuperuser,
+                          widget.videoFile,
                         );
+
+                        // final uploader = VideoUploader();
+                        // DocumentReference _videoDoc = FirebaseFirestore.instance
+                        //     .collection('videos')
+                        //     .doc();
+                        // Video initialVideo =
+                        //     Video(id: _videoDoc.id, created: DateTime.now());
+                        // final json =
+                        //     await uploader.getUploadJson(initialVideo.id);
+                        // initialVideo.uploadId = json['id'];
+
+                        // selectedContacts.contacts.forEach((contact) {});
+
+                        // selectedContacts.superusers.forEach(
+                        //   (superuser) async {
+                        //     Connection? connection = connections
+                        //         .where((element) =>
+                        //             element.userIds.length == 2 &&
+                        //             element.userIds.contains(superuser.id))
+                        //         .toList()
+                        //         .first;
+
+                        //     if (connection != null) {
+                        //       DocumentReference _videoDoc = FirebaseFirestore
+                        //           .instance
+                        //           .collection('videos')
+                        //           .doc();
+                        //       await _videoDoc.set({
+                        //         'uploadId': initialVideo.uploadId,
+                        //         'superuserId': superuser.id,
+                        //         'created': Timestamp.now(),
+                        //         'duration':
+                        //             BetterPlayerUtility.getVideoDuration(
+                        //           _betterController,
+                        //         ),
+                        //         'views': 0,
+                        //         'deleted': false,
+                        //         'connectionId': connection.id,
+                        //         'unwatchedIds': [superuser.id],
+                        //       });
+
+                        //       connection.mostRecentActivity = DateTime.now();
+                        //       await connection.update();
+                        //     }
+                        //   },
+                        // );
 
                         selectedContacts.reset();
                       },

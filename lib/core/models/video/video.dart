@@ -65,6 +65,10 @@ class Video {
     await VideoService().updateVideo(this.id, this.toJson());
   }
 
+  Future create() async {
+    await VideoService().createVideo(this.id, this.toJson());
+  }
+
   Future incrementViewCount() {
     return FirebaseFirestore.instance.collection('videos').doc(id).update(
       {

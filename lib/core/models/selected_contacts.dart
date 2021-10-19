@@ -1,58 +1,71 @@
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 
 class SelectedContacts extends ChangeNotifier {
-  List<Superuser> _selectedSuperusers = [];
-  List<Contact> _selectedContacts = [];
+  List<Superuser> _superusers = [];
+  List<Contact> _contacts = [];
+  List<Connection> _connections = [];
 
-  List<Superuser> get getSuperusers {
-    return _selectedSuperusers;
-  }
+  List<Connection> get connections => _connections;
+  List<Superuser> get superusers => _superusers;
+  List<Contact> get contacts => _contacts;
 
-  List<Contact> get contacts {
-    return _selectedContacts;
+  void addConnection(Connection connection) {
+    _connections.add(connection);
+    notifyListeners();
   }
 
   void addSuperuser(Superuser superuser) {
-    _selectedSuperusers.add(superuser);
+    _superusers.add(superuser);
     notifyListeners();
   }
 
   void add(Contact contact) {
-    _selectedContacts.add(contact);
+    _contacts.add(contact);
+    notifyListeners();
+  }
+
+  void removeConnection(String id) {
+    _connections.removeWhere((connection) => connection.id == id);
     notifyListeners();
   }
 
   void removeSuperuser(String phoneNumber) {
-    _selectedSuperusers
+    _superusers
         .removeWhere((superuser) => superuser.phoneNumber == phoneNumber);
     notifyListeners();
   }
 
   void remove(Contact contact) {
-    _selectedContacts.remove(contact);
+    _contacts.remove(contact);
     notifyListeners();
   }
 
+  bool containsConnection(Connection connection) {
+    return _connections.where((e) => e.id == connection.id).length > 0;
+  }
+
   bool containsSuperuser(Superuser superuser) {
-    return _selectedSuperusers
+    return _superusers
             .where((element) => element.phoneNumber == superuser.phoneNumber)
             .length >
         0;
   }
 
   bool contains(Contact contact) {
-    return _selectedContacts.contains(contact);
+    return _contacts.contains(contact);
   }
 
   void reset() {
-    _selectedContacts = [];
-    _selectedSuperusers = [];
+    _contacts = [];
+    _superusers = [];
+    _connections = [];
   }
 
   bool isEmpty() {
-    return _selectedContacts.isEmpty && _selectedSuperusers.isEmpty;
+    return _contacts.isEmpty && _superusers.isEmpty && _connections.isEmpty;
   }
 
   // Future setContactsFromConnection({

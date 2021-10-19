@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
@@ -146,19 +147,44 @@ class _VideoTileState extends State<VideoTile> {
   }
 }
 
-class VideoTileLinearProgress extends StatelessWidget {
+class VideoTileLinearProgress extends StatefulWidget {
   const VideoTileLinearProgress({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<VideoTileLinearProgress> createState() =>
+      _VideoTileLinearProgressState();
+}
+
+class _VideoTileLinearProgressState extends State<VideoTileLinearProgress> {
+  @override
   Widget build(BuildContext context) {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+    );
+
+    // cameraHandler.addListener(() {
+    //   print(cameraHandler.progress.toDouble());
+    //   if (mounted) setState(() {});
+    // });
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 16.0,
         ),
-        child: LinearProgressIndicator(),
+        child: LinearProgressIndicator(
+          backgroundColor: Colors.white,
+          valueColor: AlwaysStoppedAnimation<Color>(
+            ConstantColors.PRIMARY,
+          ),
+          value: (cameraHandler.progress.toDouble() / 100) -
+                      cameraHandler.progress >
+                  25
+              ? 15
+              : 0,
+        ),
       ),
     );
   }

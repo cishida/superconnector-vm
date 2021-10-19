@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/connection_search_term.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
@@ -62,6 +63,9 @@ class AuthWidgetBuilder extends StatelessWidget {
             ),
             ChangeNotifierProvider(
               create: (_) => AuthenticatedController(),
+            ),
+            ChangeNotifierProvider(
+              create: (_) => CameraHandler(),
             ),
             // NOTE: Any other user-bound providers here can be added here
           ],

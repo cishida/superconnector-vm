@@ -13,7 +13,12 @@ class VideoService {
     var batch = db.batch();
     final DocumentReference videoDocument = videoCollection.doc(videoId);
     batch.update(videoDocument, map);
-    return batch.commit();
+    return await batch.commit();
+  }
+
+  Future createVideo(String videoId, Map<String, dynamic> map) async {
+    final DocumentReference videoDocument = videoCollection.doc(videoId);
+    return await videoDocument.set(map);
   }
 
   // Superuser video list from snapshot
