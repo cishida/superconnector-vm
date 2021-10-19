@@ -29,6 +29,7 @@ class CameraHandler extends ChangeNotifier {
     List<Connection> connections,
     Superuser superuser,
     XFile file,
+    BetterPlayerController betterPlayerController,
   ) async {
     _videos = [];
     _uploadData = {};
@@ -48,7 +49,7 @@ class CameraHandler extends ChangeNotifier {
         unwatchedIds:
             connection.userIds.where((id) => id != superuser.id).toList(),
         duration: BetterPlayerUtility.getVideoDuration(
-          _betterPlayerController,
+          betterPlayerController,
         ),
         views: 0,
         deleted: false,

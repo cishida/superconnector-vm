@@ -165,6 +165,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       selectedContacts.connections,
       currentSuperuser,
       widget.videoFile,
+      _betterController!,
     );
 
     await _showInviteCard(phoneNumbers);
