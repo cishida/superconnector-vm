@@ -44,36 +44,34 @@ class BetterPlayerUtility {
       BetterPlayerConfiguration(
         startAt: Duration(milliseconds: 50),
         autoPlay: true,
-        showPlaceholderUntilPlay: true,
+        showPlaceholderUntilPlay: false,
         looping: true,
         aspectRatio: 9 / 16,
         fit: BoxFit.cover,
         controlsConfiguration: BetterPlayerControlsConfiguration(
           showControls: false,
         ),
-        placeholder: uint8list != null
-            ? Container(
-                color: Colors.transparent,
-                child: Center(
-                  child: Stack(
-                    children: [
-                      Image.memory(
-                        uint8list,
-                      ),
-                      BackdropFilter(
-                        filter: ui.ImageFilter.blur(
-                          sigmaX: 8.0,
-                          sigmaY: 8.0,
-                        ),
-                        child: Container(
-                          color: Colors.transparent,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-            : Container(),
+        // placeholder: uint8list != null
+        //     ? Stack(
+        //         children: [
+        //           Image.memory(
+        //             uint8list,
+        //             // width: constraints.maxWidth,
+        //             // height: constraints.maxHeight,
+        //             fit: BoxFit.cover,
+        //           ),
+        //           BackdropFilter(
+        //             filter: ui.ImageFilter.blur(
+        //               sigmaX: 8.0,
+        //               sigmaY: 8.0,
+        //             ),
+        //             child: Container(
+        //               color: Colors.transparent,
+        //             ),
+        //           )
+        //         ],
+        //       )
+        //     : Container(),
       ),
       betterPlayerDataSource: betterPlayerDataSource,
     );

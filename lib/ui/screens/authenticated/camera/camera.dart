@@ -12,7 +12,6 @@ import 'package:superconnector_vm/ui/screens/authenticated/camera/components/cam
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 import 'package:video_thumbnail/video_thumbnail.dart' as thumb;
-import 'dart:ui' as ui;
 
 class Camera extends StatefulWidget {
   const Camera({
@@ -286,36 +285,13 @@ class _CameraState extends State<Camera>
         quality: 1,
       );
 
-      Widget blurredThumb = uint8list != null
-          ? Container(
-              color: Colors.transparent,
-              child: Center(
-                child: Stack(
-                  children: [
-                    Image.memory(
-                      uint8list,
-                    ),
-                    BackdropFilter(
-                      filter: ui.ImageFilter.blur(
-                        sigmaX: 8.0,
-                        sigmaY: 8.0,
-                      ),
-                      child: Container(
-                        color: Colors.transparent,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
-          : Container();
       Navigator.of(context).push(
         PageRouteBuilder(
           pageBuilder: (context, animation1, animation2) =>
               VideoPreviewContainer(
             connection: widget.connection,
             videoFile: videoFile,
-            blurredThumb: blurredThumb,
+            blurredThumb: uint8list,
             onReset: _onResetPressed,
           ),
           transitionDuration: Duration.zero,

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:better_player/better_player.dart';
 import 'package:camera/camera.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -18,6 +20,8 @@ import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
+import 'dart:ui' as ui;
+
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
 
 class VideoPreviewContainer extends StatefulWidget {
@@ -31,7 +35,7 @@ class VideoPreviewContainer extends StatefulWidget {
 
   final XFile videoFile;
   final Function onReset;
-  final Widget? blurredThumb;
+  final Uint8List? blurredThumb;
   final Connection? connection;
 
   @override
@@ -45,6 +49,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
   bool _pressed = false;
   Duration? _duration = Duration(seconds: 0);
   Duration? _position = Duration(seconds: 0);
+  bool _hasPlayed = false;
 
   void _safeSetState() {
     if (mounted) {
@@ -102,6 +107,10 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       // if (_betterController != null) {
       //   _aspectRatio = _betterController!.getAspectRatio();
       // }
+      if (!_hasPlayed &&
+          event.betterPlayerEventType == BetterPlayerEventType.progress) {
+        _hasPlayed = true;
+      }
     });
 
     _betterController!.videoPlayerController?.addListener(() {
@@ -206,20 +215,68 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [
-              if (widget.blurredThumb != null)
+              // if (widget.blurredThumb != null)
+              //   Positioned.fill(
+              //     child: Container(
+              //       width: constraints.maxWidth,
+              //       height: constraints.maxHeight,
+              //       child: Stack(
+              //         children: [
+              //           Image.memory(
+              //             widget.blurredThumb!,
+              //             width: constraints.maxWidth,
+              //             height: constraints.maxHeight,
+              //             fit: BoxFit.cover,
+              //           ),
+              //           BackdropFilter(
+              //             filter: ui.ImageFilter.blur(
+              //               sigmaX: 8.0,
+              //               sigmaY: 8.0,
+              //             ),
+              //             child: Container(
+              //               color: Colors.transparent,
+              //             ),
+              //           )
+              //         ],
+              //       ),
+              //     ),
+              //   ),
+              if (_betterController != null &&
+                  _betterController!.isVideoInitialized() != null &&
+                  _betterController!.isVideoInitialized()!)
                 Positioned.fill(
-                  child: Container(
-                    color: Colors.transparent,
-                    child: widget.blurredThumb!,
+                  child: VideoPreview(
+                    constraints: constraints,
+                    aspectRatio: 9 / 16,
+                    betterPlayerController: _betterController!,
                   ),
                 ),
-              Positioned.fill(
-                child: VideoPreview(
-                  constraints: constraints,
-                  aspectRatio: 9 / 16,
-                  betterPlayerController: _betterController,
+              if (widget.blurredThumb != null && !_hasPlayed)
+                Positioned.fill(
+                  child: Container(
+                    width: constraints.maxWidth,
+                    height: constraints.maxHeight,
+                    child: Stack(
+                      children: [
+                        Image.memory(
+                          widget.blurredThumb!,
+                          width: constraints.maxWidth,
+                          height: constraints.maxHeight,
+                          fit: BoxFit.cover,
+                        ),
+                        BackdropFilter(
+                          filter: ui.ImageFilter.blur(
+                            sigmaX: 8.0,
+                            sigmaY: 8.0,
+                          ),
+                          child: Container(
+                            color: Colors.transparent,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
-              ),
               Positioned(
                 top: 71.0 - 28.0,
                 left: 0.0,

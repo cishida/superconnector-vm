@@ -11,7 +11,7 @@ class VideoPreview extends StatefulWidget {
   }) : super(key: key);
 
   final double? aspectRatio;
-  final BetterPlayerController? betterPlayerController;
+  final BetterPlayerController betterPlayerController;
   final BoxConstraints constraints;
 
   @override
@@ -23,8 +23,10 @@ class _VideoPreviewState extends State<VideoPreview> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.betterPlayerController == null || widget.aspectRatio == null) {
-      return Container();
+    if (widget.aspectRatio == null) {
+      return Container(
+        color: Colors.transparent,
+      );
     }
 
     return Stack(
@@ -39,7 +41,7 @@ class _VideoPreviewState extends State<VideoPreview> {
             child: AspectRatio(
               aspectRatio: widget.aspectRatio!,
               child: BetterPlayer(
-                controller: widget.betterPlayerController!,
+                controller: widget.betterPlayerController,
               ),
             ),
           ),
