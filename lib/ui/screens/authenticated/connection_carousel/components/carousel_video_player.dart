@@ -127,7 +127,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
       barrierDismissible: true,
       builder: (context) {
         return SuperDialog(
-          title: 'Video Player',
+          title: 'Overview',
           subtitle:
               'When you select a video message, it plays automatically on repeat. Tap to pause it or swipe up to watch the previous one.',
           primaryActionTitle: 'Continue',

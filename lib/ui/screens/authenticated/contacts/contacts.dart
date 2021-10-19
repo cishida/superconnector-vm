@@ -170,7 +170,7 @@ class _ContactsState extends State<Contacts> {
             SuperDialog(
               title: 'Confirmation',
               subtitle:
-                  'Send them a Superconnector invitation so they can connect with you.',
+                  'Send them a Superconnector invitation so you can both use your shared camera roll.',
               primaryActionTitle: 'Continue',
               primaryAction: () async {
                 String body =
@@ -324,7 +324,7 @@ class _ContactsState extends State<Contacts> {
                         children: [
                           Text(
                             widget.tag == null
-                                ? 'Add Recipient(s)'
+                                ? 'Camera Rolls'
                                 : 'Send Request',
                             textAlign: TextAlign.center,
                             style:
@@ -340,7 +340,7 @@ class _ContactsState extends State<Contacts> {
                             ),
                             child: Text(
                               widget.tag == null
-                                  ? 'Choose people who you want to share with.'
+                                  ? 'Choose who you want to share with.'
                                   : widget.isGroup
                                       ? 'Add people to your family group.'
                                       : 'Invite your ' +

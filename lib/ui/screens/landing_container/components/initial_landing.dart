@@ -216,7 +216,7 @@ class _InitialLandingState extends State<InitialLanding>
                             ),
                           ),
                           Text(
-                            'A private video sharing app for your family',
+                            'A shared camera for friends & family',
                             style: TextStyle(
                               fontSize: 16.0,
                               color: Colors.white.withOpacity(.7),
