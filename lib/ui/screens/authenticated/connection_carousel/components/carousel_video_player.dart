@@ -202,7 +202,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
           ),
           if (_videoSuperuser != null)
             VideoMetaData(
-              video: widget.video,
+              created: widget.video.created,
               superuser: _videoSuperuser!,
               duration: _duration,
               position: _position,

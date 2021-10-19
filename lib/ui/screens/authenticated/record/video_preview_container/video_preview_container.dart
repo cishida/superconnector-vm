@@ -17,6 +17,7 @@ import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
 
 class VideoPreviewContainer extends StatefulWidget {
@@ -42,6 +43,8 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
   // ConnectionService _connectionService = ConnectionService();
   // double? _aspectRatio;
   bool _pressed = false;
+  Duration? _duration = Duration(seconds: 0);
+  Duration? _position = Duration(seconds: 0);
 
   void _safeSetState() {
     if (mounted) {
@@ -99,6 +102,15 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       // if (_betterController != null) {
       //   _aspectRatio = _betterController!.getAspectRatio();
       // }
+    });
+
+    _betterController!.videoPlayerController?.addListener(() {
+      if (mounted) {
+        setState(() {
+          _position = _betterController!.videoPlayerController?.value.position;
+          _duration = _betterController!.videoPlayerController?.value.duration;
+        });
+      }
     });
 
     _safeSetState();
@@ -182,6 +194,12 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
 
   @override
   Widget build(BuildContext context) {
+    Superuser? superuser = Provider.of<Superuser?>(context);
+
+    if (superuser == null) {
+      return Container();
+    }
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
@@ -222,14 +240,13 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                       width: 18.0,
                     ),
                   ),
-                  // Text(
-                  //   'Reset',
-                  //   style: TextStyle(
-                  //     color: Colors.white,
-                  //     fontSize: 20.0,
-                  //   ),
-                  // ),
                 ),
+              ),
+              VideoMetaData(
+                created: DateTime.now(),
+                superuser: superuser,
+                duration: _duration,
+                position: _position,
               ),
             ],
           ),

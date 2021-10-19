@@ -8,13 +8,13 @@ import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/c
 class VideoMetaData extends StatelessWidget {
   const VideoMetaData({
     Key? key,
-    required this.video,
+    required this.created,
     required this.superuser,
     required this.duration,
     required this.position,
   }) : super(key: key);
 
-  final Video video;
+  final DateTime created;
   final Superuser superuser;
   final Duration? duration;
   final Duration? position;
@@ -54,7 +54,7 @@ class VideoMetaData extends StatelessWidget {
           Text(
             TimestampFormatter.getDateFromTimestamp(
               Timestamp.fromDate(
-                video.created,
+                created,
               ),
             ),
             style: textStyle,
@@ -62,7 +62,7 @@ class VideoMetaData extends StatelessWidget {
           Text(
             TimestampFormatter.getTimeFromTimestamp(
               Timestamp.fromDate(
-                video.created,
+                created,
               ),
             ),
             style: textStyle,
