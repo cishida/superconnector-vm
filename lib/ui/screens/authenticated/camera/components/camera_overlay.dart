@@ -143,8 +143,8 @@ class _CameraOverlayState extends State<CameraOverlay> {
                           ConstantValues.VIDEO_TIME_LIMIT -
                                   widget.currentVideoSeconds <=
                               0
-                      ? '${((ConstantValues.VIDEO_TIME_LIMIT + ConstantValues.VIDEO_OVERFLOW_LIMIT) - widget.currentVideoSeconds).toString()} overflow'
-                      : '${(ConstantValues.VIDEO_TIME_LIMIT - widget.currentVideoSeconds).toString()} remaining',
+                      ? '${((ConstantValues.VIDEO_TIME_LIMIT + ConstantValues.VIDEO_OVERFLOW_LIMIT) - widget.currentVideoSeconds).toString()}s overflow'
+                      : '${(ConstantValues.VIDEO_TIME_LIMIT - widget.currentVideoSeconds).toString()}s remaining',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,

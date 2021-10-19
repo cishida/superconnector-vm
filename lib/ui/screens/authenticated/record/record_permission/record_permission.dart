@@ -4,6 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/permissions_template.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/record.dart';
 
 class RecordPermission extends StatelessWidget {
@@ -20,7 +21,7 @@ class RecordPermission extends StatelessWidget {
     Navigator.of(context).pop();
     SuperNavigator.push(
       context: context,
-      widget: Record(
+      widget: Camera(
         connection: connection,
       ),
       fullScreen: false,
