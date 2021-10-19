@@ -69,37 +69,37 @@ class _CameraState extends State<Camera>
       var frontFacing = _cameras.firstWhere((description) =>
           description.lensDirection == CameraLensDirection.front);
 
-      if (cameraHandler.cameraController == null) {
-        await cameraHandler.initCamera(
-          description ?? frontFacing,
-          listener: () {
-            if (mounted) {
-              setState(() {});
-            }
+      // if (cameraHandler.cameraController == null) {
+      await cameraHandler.initCamera(
+        description ?? frontFacing,
+        listener: () {
+          if (mounted) {
+            setState(() {});
+          }
 
-            if (cameraHandler.cameraController!.value.hasError) {
-              print(
-                  'Camera error ${cameraHandler.cameraController!.value.errorDescription}');
-            }
-          },
-        );
-        // cameraHandler.cameraController =
-        //     await CameraUtility.initializeController(
-        //   description ??
-        //       _cameras.firstWhere((description) =>
-        //           description.lensDirection == CameraLensDirection.front),
-        //   listener: () {
-        //     if (mounted) {
-        //       setState(() {});
-        //     }
+          if (cameraHandler.cameraController!.value.hasError) {
+            print(
+                'Camera error ${cameraHandler.cameraController!.value.errorDescription}');
+          }
+        },
+      );
+      // cameraHandler.cameraController =
+      //     await CameraUtility.initializeController(
+      //   description ??
+      //       _cameras.firstWhere((description) =>
+      //           description.lensDirection == CameraLensDirection.front),
+      //   listener: () {
+      //     if (mounted) {
+      //       setState(() {});
+      //     }
 
-        //     if (cameraHandler.cameraController!.value.hasError) {
-        //       print(
-        //           'Camera error ${cameraHandler.cameraController!.value.errorDescription}');
-        //     }
-        //   },
-        // );
-      }
+      //     if (cameraHandler.cameraController!.value.hasError) {
+      //       print(
+      //           'Camera error ${cameraHandler.cameraController!.value.errorDescription}');
+      //     }
+      //   },
+      // );
+      // }
     } else {
       print('No camera available');
     }
@@ -124,7 +124,8 @@ class _CameraState extends State<Camera>
     print('Error: ${e.code}\n${e.description}');
   }
 
-  void _toggleCameraLens() {
+  Future _toggleCameraLens() async {
+    print('here');
     final cameraHandler = Provider.of<CameraHandler>(
       context,
       listen: false,
@@ -144,7 +145,9 @@ class _CameraState extends State<Camera>
           description.lensDirection == CameraLensDirection.front);
     }
 
-    initCamera(description: newDescription);
+    await onNewCameraSelected(newDescription);
+
+    // await initCamera(description: newDescription);
   }
 
   @override
@@ -178,6 +181,17 @@ class _CameraState extends State<Camera>
     );
     selectedContacts.reset();
   }
+
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance!.removeObserver(this);
+  //   final cameraHandler = Provider.of<CameraHandler>(
+  //     context,
+  //     listen: false,
+  //   );
+  //   cameraHandler.disposeCamera();
+  //   super.dispose();
+  // }
 
   Future<String?> startVideoRecording() async {
     final cameraHandler = Provider.of<CameraHandler>(
@@ -224,15 +238,16 @@ class _CameraState extends State<Camera>
   }
 
   Future _onResetPressed() async {
-    final cameraHandler = Provider.of<CameraHandler>(
-      context,
-      listen: false,
-    );
-
-    await cameraHandler.disposeCamera();
-    await initCamera();
-    _animationController.reset();
     if (mounted) {
+      final cameraHandler = Provider.of<CameraHandler>(
+        context,
+        listen: false,
+      );
+
+      await cameraHandler.disposeCamera();
+      await initCamera();
+      _animationController.reset();
+
       setState(() {});
     }
   }
@@ -246,7 +261,9 @@ class _CameraState extends State<Camera>
     );
 
     await cameraHandler.disposeCamera();
-    await initCamera();
+    await initCamera(
+      description: cameraDescription,
+    );
     if (mounted) {
       setState(() {});
     }
@@ -356,11 +373,15 @@ class _CameraState extends State<Camera>
         builder: (context, constraints) {
           return Scaffold(
             key: _scaffoldKey,
-            backgroundColor: ConstantColors.DARK_BLUE,
+            backgroundColor: Colors.black,
             body: Stack(
               children: [
                 Listener(
-                  onPointerDown: (_) async {
+                  onPointerDown: (PointerDownEvent event) async {
+                    print(event.position);
+                    if (event.position.dy < 200) {
+                      return;
+                    }
                     _animationController.forward();
                     await startVideoRecording();
                   },
@@ -414,7 +435,8 @@ class _CameraState extends State<Camera>
                           left: 0.0,
                           child: ChevronBackButton(
                             color: Colors.white,
-                            onBack: () {
+                            onBack: () async {
+                              await cameraHandler.disposeCamera();
                               Navigator.pop(context);
                             },
                           ),

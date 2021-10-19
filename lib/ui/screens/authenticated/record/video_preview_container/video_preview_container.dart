@@ -168,6 +168,8 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       _betterController!,
     );
 
+    await cameraHandler.disposeCamera();
+
     await _showInviteCard(phoneNumbers);
     selectedContacts.reset();
   }
