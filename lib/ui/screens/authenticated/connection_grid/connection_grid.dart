@@ -157,14 +157,16 @@ class _ConnectionGridState extends State<ConnectionGrid> {
             width: 64.0,
             height: 64.0,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: ConstantColors.PRIMARY,
               borderRadius: BorderRadius.circular(32.0),
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 2.0),
-              child: Icon(
-                Icons.add,
-                color: ConstantColors.PRIMARY,
+              padding: const EdgeInsets.only(bottom: 1.0),
+              child: Center(
+                child: Image.asset(
+                  'assets/images/authenticated/bottom_nav/bottom-nav-camera.png',
+                  width: 30.0,
+                ),
               ),
             ),
           ),

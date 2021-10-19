@@ -7,11 +7,13 @@ class BottomNavButton extends StatelessWidget {
     Key? key,
     required this.title,
     required this.selected,
+    this.imageHeight = 23.0,
     this.showBadge = false,
   }) : super(key: key);
 
   final String title;
   final bool selected;
+  final double imageHeight;
   final bool showBadge;
 
   @override
@@ -20,7 +22,7 @@ class BottomNavButton extends StatelessWidget {
     var fontWeight = selected ? FontWeight.w700 : FontWeight.w600;
     Image image = Image.asset(
       'assets/images/authenticated/bottom_nav/bottom-nav-${title.toLowerCase()}.png',
-      height: title.toLowerCase() == 'camera' ? 18 : 22.0,
+      height: imageHeight,
       color: color,
     );
 

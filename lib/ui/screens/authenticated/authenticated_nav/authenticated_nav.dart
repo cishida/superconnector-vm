@@ -166,6 +166,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     BottomNavButton(
                       title: 'records',
                       selected: _tabController.index == 1,
+                      imageHeight: 24.0,
                     ),
                     // Padding(
                     //   padding: const EdgeInsets.only(bottom: 4.0),
