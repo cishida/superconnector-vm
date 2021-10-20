@@ -31,6 +31,7 @@ class _CameraState extends State<Camera>
   // CameraController? _controller;
   List<CameraDescription> _cameras = [];
   String? _filePath;
+  bool _pointerDown = false;
   Timer? _timer;
   int _currentVideoSeconds = 0;
 
@@ -204,30 +205,35 @@ class _CameraState extends State<Camera>
       return null;
     }
 
-    try {
-      await cameraHandler.cameraController!.startVideoRecording();
+    Future.delayed(Duration(milliseconds: 150), () async {
+      try {
+        if (_pointerDown) {
+          const oneSec = const Duration(seconds: 1);
+          _timer = Timer.periodic(
+            oneSec,
+            (Timer timer) {
+              if (_currentVideoSeconds >=
+                  ConstantValues.VIDEO_TIME_LIMIT +
+                      ConstantValues.VIDEO_OVERFLOW_LIMIT) {
+                _stopVideoRecording();
+              } else {
+                if (mounted) {
+                  setState(() {
+                    _currentVideoSeconds = _currentVideoSeconds + 1;
+                  });
+                }
+              }
+            },
+          );
+          await cameraHandler.cameraController!.startVideoRecording();
+        }
+        setState(() {});
+      } on CameraException catch (e) {
+        _showCameraException(e);
+        return null;
+      }
+    });
 
-      const oneSec = const Duration(seconds: 1);
-      _timer = Timer.periodic(
-        oneSec,
-        (Timer timer) {
-          if (_currentVideoSeconds >=
-              ConstantValues.VIDEO_TIME_LIMIT +
-                  ConstantValues.VIDEO_OVERFLOW_LIMIT) {
-            _stopVideoRecording();
-          } else {
-            if (mounted) {
-              setState(() {
-                _currentVideoSeconds = _currentVideoSeconds + 1;
-              });
-            }
-          }
-        },
-      );
-    } on CameraException catch (e) {
-      _showCameraException(e);
-      return null;
-    }
     return _filePath;
   }
 
@@ -349,17 +355,24 @@ class _CameraState extends State<Camera>
               children: [
                 Listener(
                   onPointerDown: (PointerDownEvent event) async {
+                    setState(() {
+                      _pointerDown = true;
+                    });
                     if (event.position.dy < 200) {
                       return;
                     }
-                    _animationController.forward();
+                    // _animationController.forward();
                     await startVideoRecording();
+                    setState(() {});
                   },
                   onPointerUp: (_) async {
-                    if (_animationController.status ==
-                        AnimationStatus.forward) {
-                      _animationController.stop();
-                    }
+                    setState(() {
+                      _pointerDown = false;
+                    });
+                    // if (_animationController.status ==
+                    //     AnimationStatus.forward) {
+                    //   _animationController.stop();
+                    // }
                     await _stopVideoRecording();
                   },
                   child: Stack(
@@ -416,6 +429,7 @@ class _CameraState extends State<Camera>
                         controller: cameraHandler.cameraController!,
                         currentVideoSeconds: _currentVideoSeconds,
                         connection: widget.connection,
+                        pointerDown: _pointerDown,
                       ),
                       // Using mask over white progress indicator for gradient
                       // Positioned(
