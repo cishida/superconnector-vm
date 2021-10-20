@@ -428,6 +428,7 @@ class _CameraState extends State<Camera>
                       CameraOverlay(
                         controller: cameraHandler.cameraController!,
                         currentVideoSeconds: _currentVideoSeconds,
+                        toggleCamera: _toggleCameraLens,
                         connection: widget.connection,
                         pointerDown: _pointerDown,
                       ),

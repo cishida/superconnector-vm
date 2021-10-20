@@ -12,12 +12,14 @@ class CameraOverlay extends StatefulWidget {
     Key? key,
     required this.controller,
     required this.currentVideoSeconds,
+    required this.toggleCamera,
     this.connection,
     this.pointerDown = false,
   }) : super(key: key);
 
   final CameraController controller;
   final int currentVideoSeconds;
+  final Function toggleCamera;
   final Connection? connection;
   final bool pointerDown;
 
@@ -192,18 +194,27 @@ class _CameraOverlayState extends State<CameraOverlay>
                 ),
               ),
             ),
-
-            // Image.asset(
-            //   'assets/images/authenticated/record/recording-button.png',
-            //   width: 80.0,
-            // ),
-
-            //  Image.asset(
-            //   _isRecording
-            //       ? 'assets/images/authenticated/record/recording-button.png'
-            //       : 'assets/images/authenticated/record/record-button.png',
-            //   width: 80.0,
-            // ),
+          ),
+        ),
+        Positioned(
+          bottom: 105.0,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => widget.toggleCamera(),
+            child: AnimatedOpacity(
+              opacity: !widget.controller.value.isRecordingVideo ? 1.0 : 0.0,
+              duration: const Duration(
+                milliseconds: 100,
+              ),
+              child: Container(
+                margin: const EdgeInsets.only(left: 2 * (37.0 + 40 + (31 / 2))),
+                padding: const EdgeInsets.all(12.0),
+                child: Image.asset(
+                  'assets/images/authenticated/record/camera-flip-icon.png',
+                  width: 31.0,
+                ),
+              ),
+            ),
           ),
         ),
         Positioned(
@@ -225,11 +236,6 @@ class _CameraOverlayState extends State<CameraOverlay>
                 ),
               ),
             ),
-
-            // Image.asset(
-            //   'assets/images/authenticated/record/record-button.png',
-            //   width: 80.0,
-            // ),
           ),
         ),
         Positioned(

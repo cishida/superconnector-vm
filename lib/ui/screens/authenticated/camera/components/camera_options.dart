@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/record/components/record_overlay.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 
 class CameraOptions extends StatelessWidget {
   const CameraOptions({
