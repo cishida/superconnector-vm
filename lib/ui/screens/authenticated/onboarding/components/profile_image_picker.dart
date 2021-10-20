@@ -6,7 +6,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/images/superuser_image.dart';
 
 class ProfileImagePicker extends StatefulWidget {

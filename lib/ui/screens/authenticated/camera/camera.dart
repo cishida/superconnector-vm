@@ -10,6 +10,7 @@ import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_options.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_toggle.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 import 'package:video_thumbnail/video_thumbnail.dart' as thumb;
 
@@ -120,7 +121,6 @@ class _CameraState extends State<Camera>
   }
 
   Future _toggleCameraLens() async {
-    print('here');
     final cameraHandler = Provider.of<CameraHandler>(
       context,
       listen: false,
@@ -244,11 +244,17 @@ class _CameraState extends State<Camera>
         listen: false,
       );
 
+      if (_timer != null) {
+        _timer!.cancel();
+      }
       await cameraHandler.disposeCamera();
       await initCamera();
       _animationController.reset();
 
-      setState(() {});
+      setState(() {
+        _currentVideoSeconds = 0;
+        _pointerDown = false;
+      });
     }
   }
 
@@ -337,12 +343,12 @@ class _CameraState extends State<Camera>
       listen: false,
     );
 
-    if (cameraHandler.cameraController == null ||
-        !cameraHandler.cameraController!.value.isInitialized) {
-      return Container(
-        color: Colors.black,
-      );
-    }
+    // if (cameraHandler.cameraController == null ||
+    //     !cameraHandler.cameraController!.value.isInitialized) {
+    //   return Container(
+    //     color: Colors.black,
+    //   );
+    // }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -352,6 +358,7 @@ class _CameraState extends State<Camera>
             key: _scaffoldKey,
             backgroundColor: Colors.black,
             body: Stack(
+              alignment: Alignment.center,
               children: [
                 Listener(
                   onPointerDown: (PointerDownEvent event) async {
@@ -376,6 +383,7 @@ class _CameraState extends State<Camera>
                     await _stopVideoRecording();
                   },
                   child: Stack(
+                    alignment: Alignment.center,
                     children: [
                       Container(
                         width: constraints.maxWidth,
@@ -401,8 +409,21 @@ class _CameraState extends State<Camera>
                                     height: constraints.maxHeight,
                                     child: Stack(
                                       children: <Widget>[
-                                        CameraPreview(
-                                            cameraHandler.cameraController!),
+                                        if (cameraHandler.cameraController !=
+                                            null)
+                                          AnimatedOpacity(
+                                            opacity: cameraHandler
+                                                        .cameraController !=
+                                                    null
+                                                ? 1.0
+                                                : 0.0,
+                                            duration: const Duration(
+                                              milliseconds: 500,
+                                            ),
+                                            child: CameraPreview(
+                                              cameraHandler.cameraController!,
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -426,12 +447,13 @@ class _CameraState extends State<Camera>
                         ),
 
                       CameraOverlay(
-                        controller: cameraHandler.cameraController!,
+                        controller: cameraHandler.cameraController,
                         currentVideoSeconds: _currentVideoSeconds,
-                        toggleCamera: _toggleCameraLens,
+                        // toggleCamera: _toggleCameraLens,
                         connection: widget.connection,
                         pointerDown: _pointerDown,
                       ),
+
                       // Using mask over white progress indicator for gradient
                       // Positioned(
                       //   bottom: 0,
@@ -478,6 +500,10 @@ class _CameraState extends State<Camera>
                 CameraOptions(
                   toggleCamera: _toggleCameraLens,
                   controller: cameraHandler.cameraController,
+                ),
+                CameraToggle(
+                  controller: cameraHandler.cameraController,
+                  toggleCamera: _toggleCameraLens,
                 ),
               ],
             ),

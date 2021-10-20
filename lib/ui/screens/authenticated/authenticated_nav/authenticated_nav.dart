@@ -80,7 +80,6 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
   }
 
   void _toCamera() {
-    print('here');
     Provider.of<AuthenticatedController>(
       context,
       listen: false,

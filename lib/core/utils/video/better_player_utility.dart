@@ -1,8 +1,7 @@
 import 'package:better_player/better_player.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:video_thumbnail/video_thumbnail.dart' as thumb;
-import 'dart:ui' as ui;
+// import 'package:video_thumbnail/video_thumbnail.dart' as thumb;
 
 class BetterPlayerUtility {
   static double getVideoDuration(
@@ -32,13 +31,13 @@ class BetterPlayerUtility {
       subtitles: [],
     );
 
-    final uint8list = await thumb.VideoThumbnail.thumbnailData(
-      video: videoFile.path,
-      // imageFormat: thumb.ImageFormat.JPEG,
-      // maxWidth: size.width.toInt(),
-      // maxHeight: size.height.toInt(),
-      quality: 1,
-    );
+    // final uint8list = await thumb.VideoThumbnail.thumbnailData(
+    //   video: videoFile.path,
+    //   // imageFormat: thumb.ImageFormat.JPEG,
+    //   // maxWidth: size.width.toInt(),
+    //   // maxHeight: size.height.toInt(),
+    //   quality: 1,
+    // );
 
     BetterPlayerController betterPlayerController = BetterPlayerController(
       BetterPlayerConfiguration(

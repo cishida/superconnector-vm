@@ -1,7 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 
 class CameraOptions extends StatelessWidget {
   const CameraOptions({
@@ -27,15 +26,15 @@ class CameraOptions extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CameraIcon(
-                title: 'Flip',
-                imageName:
-                    'assets/images/authenticated/record/camera-flip-icon.png',
-                onPress: () => toggleCamera(),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(10.0),
+            //   child: CameraIcon(
+            //     title: 'Flip',
+            //     imageName:
+            //         'assets/images/authenticated/record/camera-flip-icon.png',
+            //     onPress: () => toggleCamera(),
+            //   ),
+            // ),
           ],
         ),
       ),

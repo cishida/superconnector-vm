@@ -38,8 +38,6 @@ class _InitialLandingState extends State<InitialLanding>
   bool get wantKeepAlive => true;
 
   void _verifyPhoneNumber() async {
-    print('here');
-
     if (_submitted) {
       return;
     }

@@ -12,14 +12,14 @@ class CameraOverlay extends StatefulWidget {
     Key? key,
     required this.controller,
     required this.currentVideoSeconds,
-    required this.toggleCamera,
+    // required this.toggleCamera,
     this.connection,
     this.pointerDown = false,
   }) : super(key: key);
 
-  final CameraController controller;
+  final CameraController? controller;
   final int currentVideoSeconds;
-  final Function toggleCamera;
+  // final Function toggleCamera;
   final Connection? connection;
   final bool pointerDown;
 
@@ -100,11 +100,13 @@ class _CameraOverlayState extends State<CameraOverlay>
 
   @override
   Widget build(BuildContext context) {
+    bool _isRecording =
+        widget.controller != null && widget.controller!.value.isRecordingVideo;
+
     return Stack(
       alignment: Alignment.center,
       children: [
-        if (widget.connection != null &&
-            !widget.controller.value.isRecordingVideo)
+        if (widget.connection != null && !_isRecording)
           Positioned.fill(
             top: 71.0,
             right: 62.0,
@@ -139,7 +141,7 @@ class _CameraOverlayState extends State<CameraOverlay>
           child: Align(
             alignment: Alignment.topCenter,
             child: AnimatedOpacity(
-              opacity: widget.controller.value.isRecordingVideo ? 1.0 : 0.0,
+              opacity: _isRecording ? 1.0 : 0.0,
               duration: const Duration(
                 milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
               ),
@@ -150,7 +152,7 @@ class _CameraOverlayState extends State<CameraOverlay>
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(32.0),
-                  color: widget.controller.value.isRecordingVideo &&
+                  color: _isRecording &&
                           ConstantValues.VIDEO_TIME_LIMIT -
                                   widget.currentVideoSeconds <=
                               0
@@ -158,7 +160,7 @@ class _CameraOverlayState extends State<CameraOverlay>
                       : Colors.white.withOpacity(.20),
                 ),
                 child: Text(
-                  widget.controller.value.isRecordingVideo &&
+                  _isRecording &&
                           ConstantValues.VIDEO_TIME_LIMIT -
                                   widget.currentVideoSeconds <=
                               0
@@ -197,30 +199,9 @@ class _CameraOverlayState extends State<CameraOverlay>
           ),
         ),
         Positioned(
-          bottom: 105.0,
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => widget.toggleCamera(),
-            child: AnimatedOpacity(
-              opacity: !widget.controller.value.isRecordingVideo ? 1.0 : 0.0,
-              duration: const Duration(
-                milliseconds: 100,
-              ),
-              child: Container(
-                margin: const EdgeInsets.only(left: 2 * (37.0 + 40 + (31 / 2))),
-                padding: const EdgeInsets.all(12.0),
-                child: Image.asset(
-                  'assets/images/authenticated/record/camera-flip-icon.png',
-                  width: 31.0,
-                ),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
           bottom: 93.0,
           child: AnimatedOpacity(
-            opacity: !widget.controller.value.isRecordingVideo ? 1.0 : 0.0,
+            opacity: !_isRecording ? 1.0 : 0.0,
             duration: const Duration(
               milliseconds: 100,
             ),
@@ -232,7 +213,7 @@ class _CameraOverlayState extends State<CameraOverlay>
                 shape: BoxShape.circle,
                 border: Border.all(
                   width: 8,
-                  color: ConstantColors.IMAGE_BORDER,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -241,7 +222,7 @@ class _CameraOverlayState extends State<CameraOverlay>
         Positioned(
           bottom: 93.0 - 32.0,
           child: AnimatedOpacity(
-            opacity: widget.controller.value.isRecordingVideo ? 1.0 : 0.0,
+            opacity: _isRecording ? 1.0 : 0.0,
             duration: const Duration(
               milliseconds: 100,
             ),
@@ -281,7 +262,7 @@ class _CameraOverlayState extends State<CameraOverlay>
           child: Align(
             alignment: Alignment.bottomCenter,
             child: AnimatedOpacity(
-              opacity: !widget.controller.value.isRecordingVideo ? 1.0 : 0.0,
+              opacity: !_isRecording ? 1.0 : 0.0,
               duration: const Duration(
                 milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
               ),

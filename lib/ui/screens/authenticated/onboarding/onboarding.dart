@@ -7,7 +7,6 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_camera/onboarding_camera.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_notifications/onboarding_notification.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding_welcome/onboarding_welcome.dart';
 

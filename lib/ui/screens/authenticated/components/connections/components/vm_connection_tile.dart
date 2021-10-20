@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
 class VMConnectionTile extends StatefulWidget {
   const VMConnectionTile({

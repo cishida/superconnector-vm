@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
