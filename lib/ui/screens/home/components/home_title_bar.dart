@@ -68,7 +68,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                     'Camera Rolls',
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 40.0,
+                      fontSize: 30.0,
                       fontWeight: FontWeight.w700,
                       letterSpacing: -.5,
                     ),
@@ -77,8 +77,8 @@ class _HomeTitleBarState extends State<HomeTitleBar>
               ),
               if (!authenticatedController.isSearching)
                 Positioned(
-                  right: 70,
-                  bottom: 12.0,
+                  right: 67,
+                  bottom: 6.0,
                   child: AnimatedOpacity(
                     duration: Duration(
                         milliseconds:
@@ -104,7 +104,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
               if (!authenticatedController.isSearching)
                 Positioned(
                   right: 20,
-                  bottom: 8.0,
+                  bottom: 6.0,
                   child: AnimatedOpacity(
                     duration: Duration(
                         milliseconds:
@@ -122,7 +122,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                         padding: const EdgeInsets.all(8.0),
                         child: Image.asset(
                           'assets/images/authenticated/search-icon.png',
-                          width: 26.0,
+                          width: 20.0,
                         ),
                       ),
                     ),
