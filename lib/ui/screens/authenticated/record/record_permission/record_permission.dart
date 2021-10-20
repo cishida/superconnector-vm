@@ -1,18 +1,21 @@
-import 'package:app_settings/app_settings.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/permissions_template.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/camera_reply/camera_reply.dart';
 
 class RecordPermission extends StatelessWidget {
   const RecordPermission({
     Key? key,
-    required this.connection,
+    this.connection,
+    this.callback,
   }) : super(key: key);
 
   final Connection? connection;
+  final Function? callback;
 
   void _navigateToRecord({
     required BuildContext context,
@@ -20,8 +23,8 @@ class RecordPermission extends StatelessWidget {
     Navigator.of(context).pop();
     SuperNavigator.push(
       context: context,
-      widget: Camera(
-        connection: connection,
+      widget: CameraReply(
+        connection: connection!,
       ),
       fullScreen: false,
     );
@@ -37,10 +40,17 @@ class RecordPermission extends StatelessWidget {
 
     if (statuses.values.first.isDenied ||
         statuses.values.first.isPermanentlyDenied) {
-      AppSettings.openAppSettings();
+      openAppSettings();
+      Future.delayed(Duration(milliseconds: 50), () => exit(0));
     } else {
       // if (statuses.values.first.isGranted || statuses.values.first.isLimited) {
-      _navigateToRecord(context: context);
+      //
+      if (connection != null) {
+        _navigateToRecord(context: context);
+      } else if (callback != null) {
+        callback!();
+        Navigator.of(context).pop();
+      }
       return;
     }
 

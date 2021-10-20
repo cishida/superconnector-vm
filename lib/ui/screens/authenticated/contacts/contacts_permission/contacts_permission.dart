@@ -1,11 +1,19 @@
-import 'package:app_settings/app_settings.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:superconnector_vm/ui/components/permissions_template.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 
 class ContactsPermission extends StatefulWidget {
-  const ContactsPermission({Key? key}) : super(key: key);
+  const ContactsPermission({
+    Key? key,
+    this.sendVM,
+    this.isGroup = false,
+  }) : super(key: key);
+
+  final Function? sendVM;
+  final bool isGroup;
 
   @override
   _ContactsPermissionState createState() => _ContactsPermissionState();
@@ -20,7 +28,10 @@ class _ContactsPermissionState extends State<ContactsPermission> {
       builder: (context) {
         return FractionallySizedBox(
           heightFactor: 0.93,
-          child: Relations(),
+          child: Contacts(
+            sendVM: widget.sendVM,
+            isGroup: widget.isGroup,
+          ),
         );
       },
     );
@@ -31,7 +42,8 @@ class _ContactsPermissionState extends State<ContactsPermission> {
     var status = await Permission.contacts.status;
 
     if (status.isDenied || status.isPermanentlyDenied) {
-      AppSettings.openAppSettings();
+      openAppSettings();
+      Future.delayed(Duration(milliseconds: 50), () => exit(0));
     }
 
     if (status.isGranted) {

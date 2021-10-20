@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/auth/auth_service.dart';
@@ -263,7 +264,11 @@ class _AccountState extends State<Account> {
                         title: 'PERMISSIONS',
                         subtitle: "View mobile phone information we're using.",
                         onPress: () {
-                          AppSettings.openAppSettings();
+                          AppSettings.openAppSettings(
+                            asAnotherTask: true,
+                          );
+                          Future.delayed(
+                              Duration(milliseconds: 50), () => exit(0));
                         },
                       ),
                       // AccountTile(

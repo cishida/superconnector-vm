@@ -30,12 +30,13 @@ class PermissionsTemplate extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                'assets/images/authenticated/gradient-background.png',
-              ),
-            ),
+            color: ConstantColors.DARK_BLUE,
+            // image: DecorationImage(
+            //   fit: BoxFit.cover,
+            //   image: AssetImage(
+            //     'assets/images/authenticated/gradient-background.png',
+            //   ),
+            // ),
           ),
           child: SafeArea(
             child: Padding(
@@ -81,11 +82,11 @@ class PermissionsTemplate extends StatelessWidget {
                     child: Text(
                       buttonText,
                       style: Theme.of(context).textTheme.button!.copyWith(
-                            color: ConstantColors.PRIMARY,
+                            color: Colors.white,
                           ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
+                      primary: ConstantColors.PRIMARY,
                       onPrimary: ConstantColors.OFF_WHITE,
                       minimumSize: Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(

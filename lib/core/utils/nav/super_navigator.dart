@@ -81,7 +81,10 @@ class SuperNavigator {
     } else {
       SuperNavigator.push(
         context: context,
-        widget: ContactsPermission(),
+        widget: ContactsPermission(
+          sendVM: sendVM,
+          isGroup: sendVM != null,
+        ),
         fullScreen: false,
       );
     }

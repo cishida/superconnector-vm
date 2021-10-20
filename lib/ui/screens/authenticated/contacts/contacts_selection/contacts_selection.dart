@@ -43,6 +43,7 @@ class _ContactsSelectionState extends State<ContactsSelection> {
     }
 
     List<Superuser> tempSuperusers = [];
+    _connections = [];
     final currentSuperuser = Provider.of<Superuser?>(
       context,
       listen: false,

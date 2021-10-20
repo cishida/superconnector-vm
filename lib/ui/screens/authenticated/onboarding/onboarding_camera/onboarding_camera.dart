@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -59,7 +61,8 @@ class OnboardingCamera extends StatelessWidget {
 
                     if (statuses.values.first.isDenied ||
                         statuses.values.first.isPermanentlyDenied) {
-                      AppSettings.openAppSettings();
+                      openAppSettings();
+                      Future.delayed(Duration(milliseconds: 50), () => exit(0));
                     }
 
                     nextPage();

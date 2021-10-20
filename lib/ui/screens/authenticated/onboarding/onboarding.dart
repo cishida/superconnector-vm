@@ -190,11 +190,11 @@ class _OnboardingPagesState extends State<OnboardingPages> {
         nextPage: _goToNextPage,
       ),
     );
-    pages.add(
-      OnboardingCamera(
-        nextPage: _goToNextPage,
-      ),
-    );
+    // pages.add(
+    //   OnboardingCamera(
+    //     nextPage: _goToNextPage,
+    //   ),
+    // );
     pages.add(
       OnboardingNotifications(
         next: widget.completePages,
@@ -251,7 +251,7 @@ class _OnboardingPagesState extends State<OnboardingPages> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: DotsIndicator(
-                      dotsCount: 3,
+                      dotsCount: 2,
                       position: _currentIndex,
                       decorator: DotsDecorator(
                         color: Colors.white.withOpacity(.32), // Inactive color

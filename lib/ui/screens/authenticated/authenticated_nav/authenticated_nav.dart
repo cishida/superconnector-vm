@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/account.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/authenticated_nav/components/bottom_nav_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/record_permission/record_permission.dart';
 import 'package:superconnector_vm/ui/screens/home/home.dart';
 
 class AuthenticatedNav extends StatefulWidget {
@@ -55,6 +58,34 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
     if (state == AppLifecycleState.resumed && mounted) {
       setState(() {});
     }
+  }
+
+  void handleRecordNavigation({
+    required BuildContext context,
+  }) async {
+    var cameraStatus = await Permission.camera.status;
+    var microphoneStatus = await Permission.microphone.status;
+
+    if (cameraStatus.isGranted && microphoneStatus.isGranted) {
+      _toCamera();
+    } else {
+      SuperNavigator.push(
+        context: context,
+        widget: RecordPermission(
+          callback: _toCamera,
+        ),
+        fullScreen: false,
+      );
+    }
+  }
+
+  void _toCamera() {
+    print('here');
+    Provider.of<AuthenticatedController>(
+      context,
+      listen: false,
+    ).setIndex(0);
+    _tabController.animateTo(0);
   }
 
   @override
@@ -117,11 +148,15 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                   indicatorColor: Colors.transparent,
                   automaticIndicatorColorAdjustment: false,
                   onTap: (value) {
-                    Provider.of<AuthenticatedController>(
-                      context,
-                      listen: false,
-                    ).setIndex(value);
-                    _tabController.animateTo(value);
+                    if (value == 0) {
+                      handleRecordNavigation(context: context);
+                    } else {
+                      Provider.of<AuthenticatedController>(
+                        context,
+                        listen: false,
+                      ).setIndex(value);
+                      _tabController.animateTo(value);
+                    }
                     // switch (value) {
                     //   case 1:
                     //     selectedContacts.reset();
