@@ -138,21 +138,21 @@ class _ProfileImagePickerState extends State<ProfileImagePicker> {
                             padding: const EdgeInsets.all(3.0),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: ConstantColors.IMAGE_BORDER,
-                              border: _imageFile != null
-                                  ? Border.all(
-                                      width: 2,
-                                      color: ConstantColors.IMAGE_BORDER,
-                                    )
-                                  : Border.all(
-                                      width: 0,
-                                      color: ConstantColors.IMAGE_BORDER,
-                                    ),
+                              // color: ConstantColors.IMAGE_BORDER,
+                              // border: _imageFile != null
+                              //     ? Border.all(
+                              //         width: 2,
+                              //         color: ConstantColors.IMAGE_BORDER,
+                              //       )
+                              //     : Border.all(
+                              //         width: 0,
+                              //         // color: ConstantColors.IMAGE_BORDER,
+                              //       ),
                               image: DecorationImage(
                                 fit: BoxFit.fitWidth,
                                 image: _imageFile == null
                                     ? AssetImage(
-                                        'assets/images/authenticated/photo-placeholder.png',
+                                        'assets/images/authenticated/profile-image-picker-empty.png',
                                       )
                                     : FileImage(_imageFile!) as ImageProvider,
                               ),
