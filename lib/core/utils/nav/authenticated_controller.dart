@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AuthenticatedController extends ChangeNotifier {
-  int _pageIndex = 0;
+  int _pageIndex = 1;
   bool _isSearching = false;
 
   int get pageIndex {

@@ -32,6 +32,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
     super.initState();
 
     _tabController = TabController(
+      initialIndex: 1,
       vsync: this,
       length: 3,
     );
