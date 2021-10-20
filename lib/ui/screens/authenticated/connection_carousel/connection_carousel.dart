@@ -74,7 +74,7 @@ class _ConnectionCarouselState extends State<ConnectionCarousel> {
             ),
           ),
           Positioned(
-            top: 50.0,
+            top: 71.0,
             left: 8.0,
             child: ChevronBackButton(
               onBack: () {
