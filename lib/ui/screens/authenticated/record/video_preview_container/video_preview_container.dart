@@ -258,11 +258,19 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                     height: constraints.maxHeight,
                     child: Stack(
                       children: [
-                        Image.memory(
-                          widget.blurredThumb!,
-                          width: constraints.maxWidth,
-                          height: constraints.maxHeight,
-                          fit: BoxFit.cover,
+                        Transform.scale(
+                          scale: 9 /
+                              16 /
+                              (constraints.maxWidth / constraints.maxHeight),
+                          child: AspectRatio(
+                            aspectRatio: 9 / 16,
+                            child: Image.memory(
+                              widget.blurredThumb!,
+                              width: constraints.maxWidth,
+                              height: constraints.maxHeight,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                         BackdropFilter(
                           filter: ui.ImageFilter.blur(

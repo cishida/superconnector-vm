@@ -291,6 +291,7 @@ class _CameraState extends State<Camera>
           await cameraHandler.cameraController!.stopVideoRecording();
       final uint8list = await thumb.VideoThumbnail.thumbnailData(
         video: videoFile.path,
+        timeMs: 250,
         // imageFormat: thumb.ImageFormat.JPEG,
         // maxWidth: size.width.toInt(),
         // maxHeight: size.height.toInt(),
