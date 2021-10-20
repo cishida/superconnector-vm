@@ -349,7 +349,6 @@ class _CameraState extends State<Camera>
               children: [
                 Listener(
                   onPointerDown: (PointerDownEvent event) async {
-                    print(event.position);
                     if (event.position.dy < 200) {
                       return;
                     }
@@ -419,45 +418,45 @@ class _CameraState extends State<Camera>
                         connection: widget.connection,
                       ),
                       // Using mask over white progress indicator for gradient
-                      Positioned(
-                        bottom: 0,
-                        child: Container(
-                          width: constraints.maxWidth,
-                          child: Stack(
-                            children: [
-                              ShaderMask(
-                                shaderCallback: (rect) {
-                                  return LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    stops: [
-                                      0.0,
-                                      .33,
-                                      .66,
-                                      1.0,
-                                    ],
-                                    colors: [
-                                      Color(0xFF0AD3FF),
-                                      Color(0xFFA132F5),
-                                      Color(0xFFF46F66),
-                                      Color(0xFFF1943B),
-                                    ],
-                                  ).createShader(rect);
-                                },
-                                child: LinearProgressIndicator(
-                                  color: Colors.transparent,
-                                  minHeight: 6.0,
-                                  backgroundColor: Colors.transparent,
-                                  value: _animationController.value,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Positioned(
+                      //   bottom: 0,
+                      //   child: Container(
+                      //     width: constraints.maxWidth,
+                      //     child: Stack(
+                      //       children: [
+                      //         ShaderMask(
+                      //           shaderCallback: (rect) {
+                      //             return LinearGradient(
+                      //               begin: Alignment.centerLeft,
+                      //               end: Alignment.centerRight,
+                      //               stops: [
+                      //                 0.0,
+                      //                 .33,
+                      //                 .66,
+                      //                 1.0,
+                      //               ],
+                      //               colors: [
+                      //                 Color(0xFF0AD3FF),
+                      //                 Color(0xFFA132F5),
+                      //                 Color(0xFFF46F66),
+                      //                 Color(0xFFF1943B),
+                      //               ],
+                      //             ).createShader(rect);
+                      //           },
+                      //           child: LinearProgressIndicator(
+                      //             color: Colors.transparent,
+                      //             minHeight: 6.0,
+                      //             backgroundColor: Colors.transparent,
+                      //             value: _animationController.value,
+                      //             valueColor: AlwaysStoppedAnimation<Color>(
+                      //               Colors.white,
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

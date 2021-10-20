@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 
 class CameraOverlay extends StatefulWidget {
@@ -12,19 +13,23 @@ class CameraOverlay extends StatefulWidget {
     required this.controller,
     required this.currentVideoSeconds,
     this.connection,
+    this.pointerDown = false,
   }) : super(key: key);
 
   final CameraController controller;
   final int currentVideoSeconds;
   final Connection? connection;
+  final bool pointerDown;
 
   @override
   State<CameraOverlay> createState() => _CameraOverlayState();
 }
 
-class _CameraOverlayState extends State<CameraOverlay> {
+class _CameraOverlayState extends State<CameraOverlay>
+    with TickerProviderStateMixin {
   final ConnectionService _connectionService = ConnectionService();
   late List<Superuser> _superusers = [];
+  late AnimationController _animationController;
 
   String _formatNames() {
     if (widget.connection == null) {
@@ -77,6 +82,18 @@ class _CameraOverlayState extends State<CameraOverlay> {
     super.initState();
 
     _loadUserNames();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    )
+      ..forward()
+      ..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -159,14 +176,27 @@ class _CameraOverlayState extends State<CameraOverlay> {
         Positioned(
           bottom: 93.0,
           child: AnimatedOpacity(
-            opacity: widget.controller.value.isRecordingVideo ? 1.0 : 0.0,
+            opacity: widget.pointerDown ? 1.0 : 0.0,
             duration: const Duration(
               milliseconds: 100,
             ),
-            child: Image.asset(
-              'assets/images/authenticated/record/recording-button.png',
+            child: Container(
               width: 80.0,
+              height: 80.0,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(.6),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 8,
+                  color: ConstantColors.IMAGE_BORDER,
+                ),
+              ),
             ),
+
+            // Image.asset(
+            //   'assets/images/authenticated/record/recording-button.png',
+            //   width: 80.0,
+            // ),
 
             //  Image.asset(
             //   _isRecording
@@ -183,9 +213,59 @@ class _CameraOverlayState extends State<CameraOverlay> {
             duration: const Duration(
               milliseconds: 100,
             ),
-            child: Image.asset(
-              'assets/images/authenticated/record/record-button.png',
+            child: Container(
               width: 80.0,
+              height: 80.0,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  width: 8,
+                  color: ConstantColors.IMAGE_BORDER,
+                ),
+              ),
+            ),
+
+            // Image.asset(
+            //   'assets/images/authenticated/record/record-button.png',
+            //   width: 80.0,
+            // ),
+          ),
+        ),
+        Positioned(
+          bottom: 93.0 - 32.0,
+          child: AnimatedOpacity(
+            opacity: widget.controller.value.isRecordingVideo ? 1.0 : 0.0,
+            duration: const Duration(
+              milliseconds: 100,
+            ),
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Container(
+                  margin: EdgeInsets.only(
+                    bottom: 16.0 * (1 - _animationController.value),
+                  ),
+                  decoration: ShapeDecoration(
+                    color: Colors.red.withOpacity(0.4),
+                    shape: CircleBorder(),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(
+                      16 + (16.0 * _animationController.value),
+                    ),
+                    child: child,
+                  ),
+                );
+              },
+              child: Container(
+                width: 80.0,
+                height: 80.0,
+                decoration: ShapeDecoration(
+                  color: Colors.red,
+                  shape: CircleBorder(),
+                ),
+              ),
             ),
           ),
         ),
