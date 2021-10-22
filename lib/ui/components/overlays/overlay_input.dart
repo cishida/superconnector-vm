@@ -56,81 +56,78 @@ class _OverlayInputState extends State<OverlayInput> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Container(
-            color: Colors.black.withOpacity(0.7),
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 17.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (widget.explanation != null) widget.explanation!,
-                    Builder(
-                      builder: (context) => Form(
-                        key: _formKey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        child: OverlayTextFormField(
-                          fieldKey: widget.fieldName,
-                          value: _value,
-                          autofocus: true,
-                          cursorColor: Colors.white,
-                          focusedBorderColor: Colors.white,
-                          textColor: Colors.white,
-                          textCapitalization: widget.textCapitalization,
-                          onComplete: () {
-                            final form = _formKey.currentState;
-                            if (form != null) {
-                              form.save();
-                            }
-                          },
-                          onSaved: (String? text) {
-                            if (text == null || text.length == 0) {
-                              return;
-                            }
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+          color: Colors.black.withOpacity(0.7),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 17.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.explanation != null) widget.explanation!,
+                  Builder(
+                    builder: (context) => Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: OverlayTextFormField(
+                        fieldKey: widget.fieldName,
+                        value: _value,
+                        autofocus: true,
+                        cursorColor: Colors.white,
+                        focusedBorderColor: Colors.white,
+                        textColor: Colors.white,
+                        textCapitalization: widget.textCapitalization,
+                        onComplete: () {
+                          final form = _formKey.currentState;
+                          if (form != null) {
+                            form.save();
+                          }
+                        },
+                        onSaved: (String? text) {
+                          if (text == null || text.length == 0) {
+                            return;
+                          }
 
-                            Navigator.pop(context);
-                            widget.onSubmit(text);
-                          },
-                          validate: (String? text) => _validate(text),
-                          onChanged: (String? text) {
-                            if (text == null) {
-                              return;
-                            }
+                          Navigator.pop(context);
+                          widget.onSubmit(text);
+                        },
+                        validate: (String? text) => _validate(text),
+                        onChanged: (String? text) {
+                          if (text == null) {
+                            return;
+                          }
 
-                            setState(() {
-                              _value = text;
-                            });
-                            if (widget.onChanged != null) {
-                              widget.onChanged!(text);
-                            }
-                          },
-                          textInputAction: widget.textInputAction,
-                        ),
+                          setState(() {
+                            _value = text;
+                          });
+                          if (widget.onChanged != null) {
+                            widget.onChanged!(text);
+                          }
+                        },
+                        textInputAction: widget.textInputAction,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 25.0, bottom: 10.0),
-                      child: Text(
-                        _value.length.toString() +
-                            ' / ${widget.characterLimit}',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          color: Colors.white,
-                        ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25.0, bottom: 10.0),
+                    child: Text(
+                      _value.length.toString() + ' / ${widget.characterLimit}',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                        color: Colors.white,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

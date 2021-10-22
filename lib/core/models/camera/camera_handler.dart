@@ -15,6 +15,7 @@ import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 
 class CameraHandler extends ChangeNotifier {
   CameraController? cameraController;
+  String _caption = '';
   BetterPlayerController? _betterPlayerController;
   double _progress = 0;
   // bool _uploadCompleted = false;
@@ -24,6 +25,12 @@ class CameraHandler extends ChangeNotifier {
   List<Video> _videos = [];
 
   double get progress => _progress;
+  String get caption => _caption;
+
+  void set caption(String text) {
+    _caption = text;
+    notifyListeners();
+  }
 
   Future initCamera(
     CameraDescription camera, {
@@ -42,6 +49,7 @@ class CameraHandler extends ChangeNotifier {
 
     await cameraController!.initialize();
     await cameraController!.prepareForVideoRecording();
+    caption = '';
 
     notifyListeners();
   }
@@ -52,6 +60,8 @@ class CameraHandler extends ChangeNotifier {
       cameraController = null;
       await temp.dispose();
     }
+
+    caption = '';
 
     // await initCamera(camera);
 
@@ -77,6 +87,7 @@ class CameraHandler extends ChangeNotifier {
         created: DateTime.now(),
         superuserId: superuser.id,
         connectionId: connection.id,
+        caption: caption,
         unwatchedIds:
             connection.userIds.where((id) => id != superuser.id).toList(),
         duration: BetterPlayerUtility.getVideoDuration(
@@ -94,6 +105,7 @@ class CameraHandler extends ChangeNotifier {
     await Future.wait(futures);
     await setUploadData();
     await _uploadFile(file);
+    caption = '';
   }
 
   Future setUploadData() async {

@@ -19,6 +19,7 @@ import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_options.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 import 'dart:ui' as ui;
 
@@ -204,6 +205,9 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+    );
 
     if (superuser == null) {
       return Container();
@@ -212,6 +216,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [
@@ -312,7 +317,9 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                 superuser: superuser,
                 duration: _duration,
                 position: _position,
+                caption: cameraHandler.caption,
               ),
+              CameraOptions(),
             ],
           ),
           bottomNavigationBar: BottomAppBar(

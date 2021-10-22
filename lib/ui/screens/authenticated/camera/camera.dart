@@ -498,10 +498,10 @@ class _CameraState extends State<Camera>
                     ],
                   ),
                 ),
-                CameraOptions(
-                  toggleCamera: _toggleCameraLens,
-                  controller: cameraHandler.cameraController,
-                ),
+                // CameraOptions(
+                //   toggleCamera: _toggleCameraLens,
+                //   controller: cameraHandler.cameraController,
+                // ),
                 CameraToggle(
                   controller: cameraHandler.cameraController,
                   toggleCamera: _toggleCameraLens,

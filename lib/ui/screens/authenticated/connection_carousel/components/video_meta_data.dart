@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_time.dart';
@@ -11,12 +12,14 @@ class VideoMetaData extends StatelessWidget {
     required this.superuser,
     required this.duration,
     required this.position,
+    this.caption = '',
   }) : super(key: key);
 
   final DateTime created;
   final Superuser superuser;
   final Duration? duration;
   final Duration? position;
+  final String caption;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +49,11 @@ class VideoMetaData extends StatelessWidget {
             superuser.fullName,
             style: textStyle,
           ),
+          if (caption != '')
+            Text(
+              '"' + caption + '"',
+              style: textStyle.copyWith(fontWeight: FontWeight.w600),
+            ),
           // Text(
           //   '@' + superuser.username,
           //   style: textStyle,
