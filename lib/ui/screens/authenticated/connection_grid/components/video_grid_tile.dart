@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 
 class VideoGridTile extends StatefulWidget {
@@ -40,7 +41,7 @@ class _VideoGridTileState extends State<VideoGridTile> {
                       image: CachedNetworkImageProvider(
                         'https://image.mux.com/' +
                             widget.video.playbackIds.first +
-                            '/animated.gif',
+                            ConstantStrings.GIF_ARGS,
                       ),
                     )
                   : Center(

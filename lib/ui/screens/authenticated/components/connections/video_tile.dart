@@ -7,6 +7,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 
 class VideoTile extends StatefulWidget {
@@ -72,7 +73,7 @@ class _VideoTileState extends State<VideoTile> {
                       image: CachedNetworkImageProvider(
                         'https://image.mux.com/' +
                             widget.video.playbackIds.first +
-                            '/animated.gif?start=1&end=2',
+                            ConstantStrings.GIF_ARGS,
                       ),
                     )
                   : (_owner != null
