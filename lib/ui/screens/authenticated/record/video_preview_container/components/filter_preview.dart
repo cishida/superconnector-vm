@@ -8,11 +8,11 @@ import 'package:superconnector_vm/core/utils/constants/colors.dart';
 class FilterPreview extends StatelessWidget {
   const FilterPreview({
     Key? key,
-    required this.filterName,
+    required this.filter,
     required this.image,
   }) : super(key: key);
 
-  final String filterName;
+  final String filter;
   final Uint8List? image;
 
   @override
@@ -28,7 +28,7 @@ class FilterPreview extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        cameraHandler.filterName = filterName;
+        cameraHandler.setFilter(filter);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -40,7 +40,7 @@ class FilterPreview extends StatelessWidget {
               width: 54.0,
               height: 54.0,
               decoration: BoxDecoration(
-                border: cameraHandler.filterName == filterName
+                border: cameraHandler.filter == filter
                     ? Border.all(color: ConstantColors.TURQUOISE, width: 3.0)
                     : Border.all(width: 0.0),
                 borderRadius: BorderRadius.circular(27.0),
@@ -55,10 +55,10 @@ class FilterPreview extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 9.0),
               child: Text(
-                filterName,
+                filter,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: cameraHandler.filterName == filterName
+                  color: cameraHandler.filter == filter
                       ? ConstantColors.TURQUOISE
                       : Colors.white,
                 ),

@@ -29,13 +29,11 @@ import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_
 class VideoPreviewContainer extends StatefulWidget {
   const VideoPreviewContainer({
     Key? key,
-    required this.videoFile,
     required this.onReset,
     this.blurredThumb,
     this.connection,
   }) : super(key: key);
 
-  final XFile videoFile;
   final Function onReset;
   final Uint8List? blurredThumb;
   final Connection? connection;
@@ -96,9 +94,14 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
   }
 
   Future _initializeVideo() async {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+
     _betterController = await BetterPlayerUtility.initializeFromVideoFile(
       size: MediaQuery.of(context).size,
-      videoFile: widget.videoFile,
+      videoFile: cameraHandler.videoFile!,
       onEvent: () {
         if (_betterController != null) {
           _safeSetState();
@@ -185,7 +188,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
     await cameraHandler.createVideos(
       selectedContacts.connections,
       currentSuperuser,
-      widget.videoFile,
+      cameraHandler.videoFile!,
       _betterController!,
     );
 
@@ -210,21 +213,25 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       context,
     );
 
+    // if (cameraHandler.filter != 'Normal') {
+    //   _initializeVideo();
+    // }
+
     if (superuser == null) {
       return Container();
     }
 
-    List<String> filterNames = [
+    List<String> filters = [
       'Normal',
       'B & W',
     ];
 
     List<FilterPreview> filterPreviews = [];
 
-    filterNames.forEach((filterName) {
+    filters.forEach((filter) {
       filterPreviews.add(
         FilterPreview(
-          filterName: filterName,
+          filter: filter,
           image: widget.blurredThumb,
         ),
       );

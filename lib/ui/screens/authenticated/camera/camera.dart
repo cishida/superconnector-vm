@@ -287,10 +287,10 @@ class _CameraState extends State<Camera>
     }
 
     try {
-      XFile videoFile =
+      cameraHandler.videoFile =
           await cameraHandler.cameraController!.stopVideoRecording();
       final uint8list = await thumb.VideoThumbnail.thumbnailData(
-        video: videoFile.path,
+        video: cameraHandler.videoFile!.path,
         timeMs: 250,
         // imageFormat: thumb.ImageFormat.JPEG,
         // maxWidth: size.width.toInt(),
@@ -303,7 +303,6 @@ class _CameraState extends State<Camera>
           pageBuilder: (context, animation1, animation2) =>
               VideoPreviewContainer(
             connection: widget.connection,
-            videoFile: videoFile,
             blurredThumb: uint8list,
             onReset: _onResetPressed,
           ),

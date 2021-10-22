@@ -5,18 +5,21 @@ import 'package:better_player/better_player.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_upchunk/flutter_upchunk.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
+import 'package:tapioca/tapioca.dart';
 
 class CameraHandler extends ChangeNotifier {
   CameraController? cameraController;
   String _caption = '';
-  String _filterName = 'Normal';
+  String _filter = 'Normal';
   bool _browsingFilters = false;
   BetterPlayerController? _betterPlayerController;
   double _progress = 0;
@@ -25,10 +28,11 @@ class CameraHandler extends ChangeNotifier {
   // String? _errorMessage;
   Map<String, dynamic> _uploadData = {};
   List<Video> _videos = [];
+  XFile? videoFile;
 
   double get progress => _progress;
   String get caption => _caption;
-  String get filterName => _filterName;
+  String get filter => _filter;
   bool get browsingFilters => _browsingFilters;
 
   set caption(String text) {
@@ -36,8 +40,24 @@ class CameraHandler extends ChangeNotifier {
     notifyListeners();
   }
 
-  set filterName(String text) {
-    _filterName = text;
+  Future setFilter(String text) async {
+    _filter = text;
+    try {
+      final tapiocaBalls = [
+        TapiocaBall.filter(Filters.pink),
+      ];
+      final cup = Cup(Content(videoFile!.path), tapiocaBalls);
+      var tempDir = await getTemporaryDirectory();
+      final path =
+          '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}result.mp4';
+      cup.suckUp(path).then((_) async {
+        videoFile = XFile(path);
+        notifyListeners();
+      });
+    } on PlatformException {
+      print("error!!!!");
+    }
+
     notifyListeners();
   }
 
@@ -120,7 +140,7 @@ class CameraHandler extends ChangeNotifier {
     await setUploadData();
     await _uploadFile(file);
     _caption = '';
-    _filterName = 'Normal';
+    _filter = 'Normal';
     _browsingFilters = false;
   }
 

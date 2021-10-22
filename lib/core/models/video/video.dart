@@ -13,8 +13,12 @@ class Video {
   String superuserId;
   @JsonKey(defaultValue: '')
   String connectionId;
+
   @JsonKey(defaultValue: '')
   String caption;
+  @JsonKey(defaultValue: '')
+  String filter;
+
   @JsonKey(defaultValue: [])
   List<String> playbackIds;
   @JsonKey(defaultValue: '')
@@ -47,6 +51,7 @@ class Video {
     this.connectionId = '',
     this.superuserId = '',
     this.caption = '',
+    this.filter = '',
     this.playbackIds = const [],
     this.status = '',
     this.assetId = '',

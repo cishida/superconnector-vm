@@ -573,6 +573,8 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
+  - tapioca (0.0.1):
+    - Flutter
   - TOCropViewController (2.6.0)
   - url_launcher (0.0.1):
     - Flutter
@@ -603,6 +605,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - tapioca (from `.symlinks/plugins/tapioca/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
@@ -679,6 +682,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
+  tapioca:
+    :path: ".symlinks/plugins/tapioca/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
   video_thumbnail:
@@ -734,6 +739,7 @@ SPEC CHECKSUMS:
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  tapioca: 59e9fc89671d49e2cefe6cd59c3efe678e589e89
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1

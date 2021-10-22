@@ -29,14 +29,14 @@ class CameraOptions extends StatelessWidget {
         ),
         child: Column(
           children: [
-            CameraIcon(
-              title: 'Filters',
-              imageName:
-                  'assets/images/authenticated/record/camera-filter-icon.png',
-              onPress: () {
-                cameraHandler.browsingFilters = !cameraHandler.browsingFilters;
-              },
-            ),
+            // CameraIcon(
+            //   title: 'Filters',
+            //   imageName:
+            //       'assets/images/authenticated/record/camera-filter-icon.png',
+            //   onPress: () {
+            //     cameraHandler.browsingFilters = !cameraHandler.browsingFilters;
+            //   },
+            // ),
             CameraIcon(
               title: 'Caption',
               imageName:
