@@ -206,6 +206,7 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
               superuser: _videoSuperuser!,
               duration: _duration,
               position: _position,
+              caption: widget.video.caption,
             ),
         ],
       ),

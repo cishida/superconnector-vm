@@ -7,6 +7,7 @@ import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/video_tile.dart';
 
 class VideoGridTile extends StatefulWidget {
   const VideoGridTile({
@@ -49,20 +50,6 @@ class _VideoGridTileState extends State<VideoGridTile> {
                     ),
             ),
           ),
-          Positioned(
-            left: 8.0,
-            bottom: 3.0,
-            child: Text(
-              TimestampFormatter().getChatTileTime(
-                Timestamp.fromDate(
-                  widget.video.created,
-                ),
-              ),
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          ),
           if (superuser != null &&
               widget.video.unwatchedIds.contains(superuser.id))
             Positioned.fill(
@@ -80,6 +67,23 @@ class _VideoGridTileState extends State<VideoGridTile> {
                 ),
               ),
             ),
+          // Positioned(
+          //   left: 8.0,
+          //   bottom: 3.0,
+          //   child: Text(
+          //     TimestampFormatter().getChatTileTime(
+          //       Timestamp.fromDate(
+          //         widget.video.created,
+          //       ),
+          //     ),
+          //     style: TextStyle(
+          //       color: Colors.white,
+          //     ),
+          //   ),
+          // ),
+          VideoTileOverlay(
+            video: widget.video,
+          ),
         ],
       ),
     );

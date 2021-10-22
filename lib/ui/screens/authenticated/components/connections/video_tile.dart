@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
@@ -126,13 +127,38 @@ class _VideoTileState extends State<VideoTile> {
                 ),
               ),
             ),
-          Positioned(
-            bottom: 3.0,
-            left: 8.0,
+          VideoTileOverlay(
+            video: widget.video,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class VideoTileOverlay extends StatelessWidget {
+  const VideoTileOverlay({
+    Key? key,
+    required this.video,
+  }) : super(key: key);
+
+  final Video video;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 4.0,
+      left: 8.0,
+      right: 0.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
             child: Text(
               TimestampFormatter().getChatTileTime(
                 Timestamp.fromDate(
-                  widget.video.created,
+                  video.created,
                 ),
               ),
               style: TextStyle(
@@ -142,6 +168,26 @@ class _VideoTileState extends State<VideoTile> {
               ),
             ),
           ),
+          if (video.caption.isNotEmpty)
+            Expanded(
+              child: Container(
+                height: 24,
+                padding: const EdgeInsets.only(left: 2.0),
+                color: Colors.white,
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    video.caption.replaceAll('', '\u200B'),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
