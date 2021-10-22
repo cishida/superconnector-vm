@@ -36,6 +36,7 @@ class VideoMetaData extends StatelessWidget {
     final cameraHandler = Provider.of<CameraHandler>(
       context,
     );
+    final Size size = MediaQuery.of(context).size;
 
     return Positioned(
       bottom: 20.0,
@@ -61,10 +62,21 @@ class VideoMetaData extends StatelessWidget {
               superuser.fullName,
               style: textStyle,
             ),
+            // if (caption != '')
+            //   Container(
+            //     child: Row(
+            //       children: <Widget>[
+            //         Flexible(child: Text("A looooooooooooooooooong text"))
+            //       ],
+            //     ),
+            //   ),
             if (caption != '')
-              Text(
-                '"' + caption + '"',
-                style: textStyle.copyWith(fontWeight: FontWeight.w600),
+              Container(
+                width: size.width / 2,
+                child: Text(
+                  '"' + caption + '"',
+                  style: textStyle.copyWith(fontWeight: FontWeight.w600),
+                ),
               ),
             // Text(
             //   '@' + superuser.username,
