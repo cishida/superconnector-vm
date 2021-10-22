@@ -24,6 +24,7 @@ import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/c
 import 'dart:ui' as ui;
 
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/components/filter_preview.dart';
 
 class VideoPreviewContainer extends StatefulWidget {
   const VideoPreviewContainer({
@@ -213,6 +214,80 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       return Container();
     }
 
+    List<String> filterNames = [
+      'Normal',
+      'B & W',
+    ];
+
+    List<FilterPreview> filterPreviews = [];
+
+    filterNames.forEach((filterName) {
+      filterPreviews.add(
+        FilterPreview(
+          filterName: filterName,
+          image: widget.blurredThumb,
+        ),
+      );
+    });
+
+    Widget browsefilters = Container(
+      child: Row(
+        children: filterPreviews,
+      ),
+    );
+
+    Widget sendButton = GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () async {
+        if (_pressed) {
+          return;
+        }
+
+        setState(() {
+          _pressed = true;
+        });
+
+        var selectedContacts = Provider.of<SelectedContacts>(
+          context,
+          listen: false,
+        );
+
+        if (_betterController != null &&
+            _betterController!.isPlaying() != null &&
+            _betterController!.isPlaying()!) {
+          await _betterController!.pause();
+        }
+
+        if (widget.connection == null) {
+          SuperNavigator.handleContactsNavigation(
+            context: context,
+            sendVM: sendVM,
+          );
+        } else {
+          selectedContacts.addConnection(widget.connection!);
+          sendVM();
+
+          Navigator.of(context).popUntil((route) => route.isFirst);
+
+          Provider.of<AuthenticatedController>(
+            context,
+            listen: false,
+          ).setIndex(1);
+        }
+
+        setState(() {
+          _pressed = false;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4.0),
+        child: Image.asset(
+          'assets/images/authenticated/record/send-vm-button.png',
+          width: 46.0,
+        ),
+      ),
+    );
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
@@ -220,32 +295,6 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
           backgroundColor: Colors.transparent,
           body: Stack(
             children: [
-              // if (widget.blurredThumb != null)
-              //   Positioned.fill(
-              //     child: Container(
-              //       width: constraints.maxWidth,
-              //       height: constraints.maxHeight,
-              //       child: Stack(
-              //         children: [
-              //           Image.memory(
-              //             widget.blurredThumb!,
-              //             width: constraints.maxWidth,
-              //             height: constraints.maxHeight,
-              //             fit: BoxFit.cover,
-              //           ),
-              //           BackdropFilter(
-              //             filter: ui.ImageFilter.blur(
-              //               sigmaX: 8.0,
-              //               sigmaY: 8.0,
-              //             ),
-              //             child: Container(
-              //               color: Colors.transparent,
-              //             ),
-              //           )
-              //         ],
-              //       ),
-              //     ),
-              //   ),
               if (_betterController != null &&
                   _betterController!.isVideoInitialized() != null &&
                   _betterController!.isVideoInitialized()!)
@@ -293,21 +342,28 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
               Positioned(
                 top: 71.0 - 28.0,
                 left: 0.0,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () async {
-                    if (_betterController != null) {
-                      await _betterController!.pause();
-                    }
+                child: AnimatedOpacity(
+                  opacity: !cameraHandler.browsingFilters ? 1.0 : 0.0,
+                  duration: const Duration(
+                    milliseconds:
+                        ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+                  ),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () async {
+                      if (_betterController != null) {
+                        await _betterController!.pause();
+                      }
 
-                    Navigator.of(context).pop();
-                    widget.onReset();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(28.0),
-                    child: Image.asset(
-                      'assets/images/authenticated/record/reset-button.png',
-                      width: 18.0,
+                      Navigator.of(context).pop();
+                      widget.onReset();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(28.0),
+                      child: Image.asset(
+                        'assets/images/authenticated/record/reset-button.png',
+                        width: 18.0,
+                      ),
                     ),
                   ),
                 ),
@@ -324,62 +380,20 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
           ),
           bottomNavigationBar: BottomAppBar(
             color: ConstantColors.DARK_BLUE,
-            child: Container(
-              alignment: Alignment.centerRight,
-              height: ConstantValues.BOTTOM_NAV_HEIGHT,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
+            child: AnimatedSize(
+              duration: Duration(
+                milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
               ),
-              child: GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () async {
-                  if (_pressed) {
-                    return;
-                  }
-
-                  setState(() {
-                    _pressed = true;
-                  });
-
-                  var selectedContacts = Provider.of<SelectedContacts>(
-                    context,
-                    listen: false,
-                  );
-
-                  if (_betterController != null &&
-                      _betterController!.isPlaying() != null &&
-                      _betterController!.isPlaying()!) {
-                    await _betterController!.pause();
-                  }
-
-                  if (widget.connection == null) {
-                    SuperNavigator.handleContactsNavigation(
-                      context: context,
-                      sendVM: sendVM,
-                    );
-                  } else {
-                    selectedContacts.addConnection(widget.connection!);
-                    sendVM();
-
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-
-                    Provider.of<AuthenticatedController>(
-                      context,
-                      listen: false,
-                    ).setIndex(1);
-                  }
-
-                  setState(() {
-                    _pressed = false;
-                  });
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Image.asset(
-                    'assets/images/authenticated/record/send-vm-button.png',
-                    width: 46.0,
-                  ),
+              child: Container(
+                alignment: Alignment.centerRight,
+                height: cameraHandler.browsingFilters
+                    ? ConstantValues.BROWSE_FILTER_HEIGHT
+                    : ConstantValues.BOTTOM_NAV_HEIGHT,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
                 ),
+                child:
+                    cameraHandler.browsingFilters ? browsefilters : sendButton,
               ),
             ),
           ),

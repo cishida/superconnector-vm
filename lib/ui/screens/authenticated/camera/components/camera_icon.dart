@@ -17,27 +17,33 @@ class CameraIcon extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => onPress(),
-      child: Column(
-        children: [
-          Image.asset(
-            imageName,
-            width: 24.0,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 4.0,
-              bottom: 26.0,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10.0,
+          vertical: 4.0,
+        ),
+        child: Column(
+          children: [
+            Image.asset(
+              imageName,
+              width: 24.0,
             ),
-            child: Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 4.0,
+                bottom: 26.0,
+              ),
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

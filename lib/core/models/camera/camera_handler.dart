@@ -16,6 +16,8 @@ import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 class CameraHandler extends ChangeNotifier {
   CameraController? cameraController;
   String _caption = '';
+  String _filterName = 'Normal';
+  bool _browsingFilters = false;
   BetterPlayerController? _betterPlayerController;
   double _progress = 0;
   // bool _uploadCompleted = false;
@@ -26,9 +28,21 @@ class CameraHandler extends ChangeNotifier {
 
   double get progress => _progress;
   String get caption => _caption;
+  String get filterName => _filterName;
+  bool get browsingFilters => _browsingFilters;
 
-  void set caption(String text) {
+  set caption(String text) {
     _caption = text;
+    notifyListeners();
+  }
+
+  set filterName(String text) {
+    _filterName = text;
+    notifyListeners();
+  }
+
+  set browsingFilters(bool shouldBrowse) {
+    _browsingFilters = shouldBrowse;
     notifyListeners();
   }
 
@@ -105,7 +119,9 @@ class CameraHandler extends ChangeNotifier {
     await Future.wait(futures);
     await setUploadData();
     await _uploadFile(file);
-    caption = '';
+    _caption = '';
+    _filterName = 'Normal';
+    _browsingFilters = false;
   }
 
   Future setUploadData() async {
