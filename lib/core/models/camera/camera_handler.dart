@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:better_player/better_player.dart';
 import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_upchunk/flutter_upchunk.dart';
@@ -17,6 +18,7 @@ import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:tapioca/tapioca.dart';
 import 'package:image/image.dart' as img;
+import 'package:uuid/uuid.dart';
 
 class CameraHandler extends ChangeNotifier {
   CameraController? cameraController;
@@ -145,14 +147,33 @@ class CameraHandler extends ChangeNotifier {
 
     List<Future> futures = [];
 
+    var uuid = Uuid();
+    // Time based for potential sorting purposes
+    var timeBasedUuid = uuid.v1();
+
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('${superuser.id}/photos/$timeBasedUuid');
+    UploadTask uploadTask = ref.putFile(imageFile!);
+    uploadTask.snapshotEvents.listen((event) {
+      _progress =
+          event.bytesTransferred.toDouble() / event.totalBytes.toDouble();
+    }).onError((error) {
+      // do something to handle error
+    });
+    await uploadTask.whenComplete(() => null);
+    var downloadUrl = await ref.getDownloadURL();
+
     connections.forEach((connection) {
       var photoDoc = FirebaseFirestore.instance.collection('photos').doc();
       Photo photo = Photo(
         id: photoDoc.id,
+        url: downloadUrl,
         created: DateTime.now(),
         superuserId: superuser.id,
         connectionId: connection.id,
         caption: caption,
+        status: 'created',
         unwatchedIds:
             connection.userIds.where((id) => id != superuser.id).toList(),
         deleted: false,

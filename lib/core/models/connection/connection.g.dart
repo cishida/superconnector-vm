@@ -34,13 +34,10 @@ Connection _$ConnectionFromJson(Map<String, dynamic> json) => Connection(
       mostRecentActivity: Connection._dateTimeFromTimestamp(
           json['mostRecentActivity'] as Timestamp?),
       created: Connection._dateTimeFromTimestamp(json['created'] as Timestamp?),
-    )..superuser = json['superuser'] == null
-        ? null
-        : Superuser.fromJson(json['superuser'] as Map<String, dynamic>);
+    );
 
 Map<String, dynamic> _$ConnectionToJson(Connection instance) =>
     <String, dynamic>{
-      'superuser': instance.superuser,
       'userIds': instance.userIds,
       'deletedIds': instance.deletedIds,
       'tags': instance.tags,

@@ -36,6 +36,7 @@ dependencies:
   # State / models
   provider: ^6.0.0
   json_serializable: ^5.0.0
+  uuid: ^3.0.5
 
   # Phone ops
   permission_handler: ^8.1.2

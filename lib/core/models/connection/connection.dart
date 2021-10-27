@@ -7,6 +7,7 @@ part 'connection.g.dart';
 
 @JsonSerializable()
 class Connection {
+  @JsonKey(ignore: true)
   Superuser? superuser;
 
   @JsonKey(ignore: true)
