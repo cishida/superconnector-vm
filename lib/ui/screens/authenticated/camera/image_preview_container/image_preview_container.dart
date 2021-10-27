@@ -1,0 +1,139 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/core/models/selected_contacts.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/values.dart';
+import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
+
+class ImagePreviewContainer extends StatefulWidget {
+  const ImagePreviewContainer({
+    Key? key,
+    required this.onReset,
+    this.connection,
+  }) : super(key: key);
+
+  final Function onReset;
+  final Connection? connection;
+
+  @override
+  _ImagePreviewContainerState createState() => _ImagePreviewContainerState();
+}
+
+class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+    );
+
+    if (cameraHandler.imageFile == null) {
+      return Container();
+    }
+
+    Widget sendButton = GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () async {
+        if (_pressed) {
+          return;
+        }
+
+        setState(() {
+          _pressed = true;
+        });
+
+        var selectedContacts = Provider.of<SelectedContacts>(
+          context,
+          listen: false,
+        );
+
+        if (widget.connection == null) {
+          print('SEND PHOTO NO CONNECTION');
+        } else {
+          print('SEND PHOTO TO CONNECTION');
+        }
+
+        setState(() {
+          _pressed = false;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 4.0),
+        child: Image.asset(
+          'assets/images/authenticated/record/send-vm-button.png',
+          width: 46.0,
+        ),
+      ),
+    );
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return Stack(
+              children: [
+                if (cameraHandler.imageFile != null)
+                  CameraTransform(
+                    constraints: constraints,
+                    isImage: true,
+                    child: Image.file(
+                      File(
+                        cameraHandler.imageFile!.path,
+                      ),
+                    ),
+                  ),
+                Positioned(
+                  top: 71.0 - 28.0,
+                  left: 0.0,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      widget.onReset();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(28.0),
+                      child: Image.asset(
+                        'assets/images/authenticated/record/reset-button.png',
+                        width: 18.0,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: ConstantColors.DARK_BLUE,
+          child: AnimatedSize(
+            duration: Duration(
+              milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+            ),
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: cameraHandler.browsingFilters
+                  ? ConstantValues.BROWSE_FILTER_HEIGHT
+                  : ConstantValues.BOTTOM_NAV_HEIGHT,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+              ),
+              child: cameraHandler.browsingFilters ? Container() : sendButton,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

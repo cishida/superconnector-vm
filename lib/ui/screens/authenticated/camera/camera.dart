@@ -11,6 +11,8 @@ import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_options.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_toggle.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/image_preview_container/image_preview_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 import 'package:video_thumbnail/video_thumbnail.dart' as thumb;
 
@@ -205,8 +207,12 @@ class _CameraState extends State<Camera>
       return null;
     }
 
-    Future.delayed(Duration(milliseconds: 150), () async {
+    Future.delayed(
+        Duration(
+          milliseconds: ConstantValues.CAMERA_TAKE_PHOTO_LIMIT_MILLISECONDS,
+        ), () async {
       try {
+        // If holding down, start recording
         if (_pointerDown) {
           const oneSec = const Duration(seconds: 1);
           _timer = Timer.periodic(
@@ -226,6 +232,29 @@ class _CameraState extends State<Camera>
             },
           );
           await cameraHandler.cameraController!.startVideoRecording();
+        } else {
+          // If let go, should take photo
+          try {
+            // Attempt to take a picture and then get the location
+            // where the image file is saved.
+            await cameraHandler.takePicture();
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (context, animation1, animation2) =>
+                    ImagePreviewContainer(
+                  connection: widget.connection,
+                  onReset: _onResetPressed,
+                ),
+                transitionDuration: Duration.zero,
+              ),
+            );
+
+            // await onNewCameraSelected(
+            //     cameraHandler.cameraController!.description);
+          } catch (e) {
+            // If an error occurs, log the error to the console.
+            print(e);
+          }
         }
         setState(() {});
       } on CameraException catch (e) {
@@ -336,19 +365,49 @@ class _CameraState extends State<Camera>
   //   );
   // }
 
+  // Widget cameraWidget(
+  //   BuildContext context,
+  //   BoxConstraints constraints,
+  // ) {
+  //   final cameraHandler = Provider.of<CameraHandler>(
+  //     context,
+  //   );
+
+  //   var camera = cameraHandler.cameraController!.value;
+  //   // fetch screen size
+  //   final aspect = constraints.maxWidth / constraints.maxHeight;
+
+  //   // calculate scale depending on screen and camera ratios
+  //   // this is actually size.aspectRatio / (1 / camera.aspectRatio)
+  //   // because camera preview size is received as landscape
+  //   // but we're calculating for portrait orientation
+  //   var scale = aspect * camera.aspectRatio;
+
+  //   // to prevent scaling down, invert the value
+  //   if (scale < 1) scale = 1 / scale;
+
+  //   return Transform.scale(
+  //     scale: scale,
+  //     child: Center(
+  //       child: CameraPreview(
+  //         cameraHandler.cameraController!,
+  //       ),
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     final cameraHandler = Provider.of<CameraHandler>(
       context,
-      listen: false,
     );
 
-    // if (cameraHandler.cameraController == null ||
-    //     !cameraHandler.cameraController!.value.isInitialized) {
-    //   return Container(
-    //     color: Colors.black,
-    //   );
-    // }
+    if (cameraHandler.cameraController == null ||
+        !cameraHandler.cameraController!.value.isInitialized) {
+      return Container(
+        color: Colors.black,
+      );
+    }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -385,54 +444,67 @@ class _CameraState extends State<Camera>
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      Container(
-                        width: constraints.maxWidth,
-                        height: constraints.maxHeight,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(10),
-                            bottomRight: Radius.circular(10),
-                          ),
-                          child: Transform.scale(
-                            scale: 9 /
-                                14 /
-                                (constraints.maxWidth / constraints.maxHeight),
-                            child: AspectRatio(
-                              aspectRatio: (constraints.maxWidth /
-                                  constraints.maxHeight),
-                              child: OverflowBox(
-                                alignment: Alignment.topCenter,
-                                child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child: Container(
-                                    width: constraints.maxWidth,
-                                    height: constraints.maxHeight,
-                                    child: Stack(
-                                      children: <Widget>[
-                                        if (cameraHandler.cameraController !=
-                                            null)
-                                          AnimatedOpacity(
-                                            opacity: cameraHandler
-                                                        .cameraController !=
-                                                    null
-                                                ? 1.0
-                                                : 0.0,
-                                            duration: const Duration(
-                                              milliseconds: 500,
-                                            ),
-                                            child: CameraPreview(
-                                              cameraHandler.cameraController!,
-                                            ),
-                                          ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ), //cameraPreview(),
+                      CameraTransform(
+                        constraints: constraints,
+                        child: CameraPreview(
+                          cameraHandler.cameraController!,
                         ),
                       ),
+                      // ClipRRect(
+                      //   borderRadius: BorderRadius.only(
+                      //     bottomLeft: Radius.circular(10),
+                      //     bottomRight: Radius.circular(10),
+                      //   ),
+                      //   child: Center(
+                      //     child: AspectRatio(
+                      //       aspectRatio: 1 /
+                      //           cameraHandler
+                      //               .cameraController!.value.aspectRatio,
+                      //       child:
+                      //           CameraPreview(cameraHandler.cameraController!),
+                      //     ),
+                      //   ),
+
+                      //   // Transform.scale(
+                      //   //   scale: 9 /
+                      //   //       14 /
+                      //   //       (constraints.maxWidth /
+                      //   //           constraints.maxHeight),
+                      //   //   child: AspectRatio(
+                      //   //     aspectRatio: (constraints.maxWidth /
+                      //   //         constraints.maxHeight),
+                      //   //     child: OverflowBox(
+                      //   //       alignment: Alignment.topCenter,
+                      //   //       child: FittedBox(
+                      //   //         fit: BoxFit.fitHeight,
+                      //   //         child: Container(
+                      //   //           width: constraints.maxWidth,
+                      //   //           height: constraints.maxHeight,
+                      //   //           child: Stack(
+                      //   //             children: <Widget>[
+                      //   //               if (cameraHandler.cameraController !=
+                      //   //                   null)
+                      //   //                 AnimatedOpacity(
+                      //   //                   opacity: cameraHandler
+                      //   //                               .cameraController !=
+                      //   //                           null
+                      //   //                       ? 1.0
+                      //   //                       : 0.0,
+                      //   //                   duration: const Duration(
+                      //   //                     milliseconds: 500,
+                      //   //                   ),
+                      //   //                   child: CameraPreview(
+                      //   //                     cameraHandler.cameraController!,
+                      //   //                   ),
+                      //   //                 ),
+                      //   //             ],
+                      //   //           ),
+                      //   //         ),
+                      //   //       ),
+                      //   //     ),
+                      //   //   ),
+                      //   // ),
+                      // ),
                       if (widget.connection != null)
                         Positioned(
                           top: 71.0,

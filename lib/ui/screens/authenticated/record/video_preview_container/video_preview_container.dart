@@ -20,6 +20,7 @@ import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_options.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 import 'dart:ui' as ui;
 
@@ -295,12 +296,12 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       ),
     );
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
-          body: Stack(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Stack(
             children: [
               if (_betterController != null &&
                   _betterController!.isVideoInitialized() != null &&
@@ -308,7 +309,6 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                 Positioned.fill(
                   child: VideoPreview(
                     constraints: constraints,
-                    aspectRatio: 9 / 16,
                     betterPlayerController: _betterController!,
                   ),
                 ),
@@ -319,18 +319,13 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                     height: constraints.maxHeight,
                     child: Stack(
                       children: [
-                        Transform.scale(
-                          scale: 9 /
-                              16 /
-                              (constraints.maxWidth / constraints.maxHeight),
-                          child: AspectRatio(
-                            aspectRatio: 9 / 16,
-                            child: Image.memory(
-                              widget.blurredThumb!,
-                              width: constraints.maxWidth,
-                              height: constraints.maxHeight,
-                              fit: BoxFit.cover,
-                            ),
+                        CameraTransform(
+                          constraints: constraints,
+                          child: Image.memory(
+                            widget.blurredThumb!,
+                            width: constraints.maxWidth,
+                            height: constraints.maxHeight,
+                            fit: BoxFit.cover,
                           ),
                         ),
                         BackdropFilter(
@@ -384,28 +379,27 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
               ),
               CameraOptions(),
             ],
+          );
+        },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: ConstantColors.DARK_BLUE,
+        child: AnimatedSize(
+          duration: Duration(
+            milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
           ),
-          bottomNavigationBar: BottomAppBar(
-            color: ConstantColors.DARK_BLUE,
-            child: AnimatedSize(
-              duration: Duration(
-                milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
-              ),
-              child: Container(
-                alignment: Alignment.centerRight,
-                height: cameraHandler.browsingFilters
-                    ? ConstantValues.BROWSE_FILTER_HEIGHT
-                    : ConstantValues.BOTTOM_NAV_HEIGHT,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20.0,
-                ),
-                child:
-                    cameraHandler.browsingFilters ? browsefilters : sendButton,
-              ),
+          child: Container(
+            alignment: Alignment.centerRight,
+            height: cameraHandler.browsingFilters
+                ? ConstantValues.BROWSE_FILTER_HEIGHT
+                : ConstantValues.BOTTOM_NAV_HEIGHT,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20.0,
             ),
+            child: cameraHandler.browsingFilters ? browsefilters : sendButton,
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

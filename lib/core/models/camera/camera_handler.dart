@@ -15,6 +15,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:tapioca/tapioca.dart';
+import 'package:image/image.dart' as img;
 
 class CameraHandler extends ChangeNotifier {
   CameraController? cameraController;
@@ -29,6 +30,8 @@ class CameraHandler extends ChangeNotifier {
   Map<String, dynamic> _uploadData = {};
   List<Video> _videos = [];
   XFile? videoFile;
+  File? imageFile;
+  img.Image? decodedImage;
 
   double get progress => _progress;
   String get caption => _caption;
@@ -83,6 +86,9 @@ class CameraHandler extends ChangeNotifier {
 
     await cameraController!.initialize();
     await cameraController!.prepareForVideoRecording();
+    await cameraController!.lockCaptureOrientation(
+      DeviceOrientation.portraitUp,
+    );
     caption = '';
 
     notifyListeners();
@@ -100,6 +106,31 @@ class CameraHandler extends ChangeNotifier {
     // await initCamera(camera);
 
     notifyListeners();
+  }
+
+  Future takePicture() async {
+    if (cameraController != null && cameraController!.value.isInitialized) {
+      // imageFile = await cameraController!.takePicture();
+
+      XFile xfile = await cameraController!.takePicture();
+
+      List<int> imageBytes = await xfile.readAsBytes();
+
+      decodedImage = img.decodeImage(imageBytes);
+      img.Image fixedImage = img.flipHorizontal(decodedImage!);
+
+      File file = File(xfile.path);
+
+      imageFile = await file.writeAsBytes(
+        img.encodeJpg(fixedImage),
+        flush: true,
+      );
+
+      // final img.Image? capturedImage =
+      //     img.decodeImage(await File(imageFile!.path).readAsBytes());
+      // final img.Image? orientedImage = img.bakeOrientation(capturedImage!);
+      // await File(imageFile!.path).writeAsBytes(img.encodeJpg(orientedImage!));
+    }
   }
 
   Future createVideos(
