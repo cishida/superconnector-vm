@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/core/models/photo/photo.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
@@ -24,6 +25,18 @@ class BlockUtility {
       bool unblocked = !superuser.blockedUsers.containsKey(video.superuserId);
       bool beforeBlock = superuser.blockedUsers[video.superuserId] != null &&
           video.created.isBefore(superuser.blockedUsers[video.superuserId]!);
+      return unblocked || beforeBlock;
+    }).toList();
+  }
+
+  static List<Photo> unblockedPhotos({
+    required Superuser superuser,
+    required List<Photo> photos,
+  }) {
+    return photos.where((photo) {
+      bool unblocked = !superuser.blockedUsers.containsKey(photo.superuserId);
+      bool beforeBlock = superuser.blockedUsers[photo.superuserId] != null &&
+          photo.created.isBefore(superuser.blockedUsers[photo.superuserId]!);
       return unblocked || beforeBlock;
     }).toList();
   }

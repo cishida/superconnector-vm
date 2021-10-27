@@ -10,6 +10,8 @@ import 'package:superconnector_vm/core/services/superuser/superuser_service.dart
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/video_tile_overlay.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/video_tile_progress.dart';
 
 class VideoTile extends StatefulWidget {
   const VideoTile({
@@ -87,7 +89,7 @@ class _VideoTileState extends State<VideoTile> {
                       //         _owner!.photoUrl,
                       //       ),
                       //     ),
-                      //     VideoTileLinearProgress(),
+                      //     VideoTileProgress(),
                       //   ],
                       // )
                       Stack(
@@ -104,11 +106,11 @@ class _VideoTileState extends State<VideoTile> {
                               color: Colors.black.withOpacity(.5),
                             ),
                             Center(
-                              child: VideoTileLinearProgress(),
+                              child: VideoTileProgress(),
                             )
                           ],
                         )
-                      : VideoTileLinearProgress()),
+                      : VideoTileProgress()),
             ),
           ),
           if (unwatched)
@@ -131,100 +133,6 @@ class _VideoTileState extends State<VideoTile> {
             video: widget.video,
           ),
         ],
-      ),
-    );
-  }
-}
-
-class VideoTileOverlay extends StatelessWidget {
-  const VideoTileOverlay({
-    Key? key,
-    required this.video,
-  }) : super(key: key);
-
-  final Video video;
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 4.0,
-      left: 8.0,
-      right: 0.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: Text(
-              TimestampFormatter().getChatTileTime(
-                Timestamp.fromDate(
-                  video.created,
-                ),
-              ),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          if (video.caption.isNotEmpty)
-            Expanded(
-              child: Container(
-                height: 24,
-                padding: const EdgeInsets.only(left: 2.0),
-                color: Colors.white,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    video.caption.replaceAll('', '\u200B'),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class VideoTileLinearProgress extends StatefulWidget {
-  const VideoTileLinearProgress({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<VideoTileLinearProgress> createState() =>
-      _VideoTileLinearProgressState();
-}
-
-class _VideoTileLinearProgressState extends State<VideoTileLinearProgress> {
-  @override
-  Widget build(BuildContext context) {
-    final cameraHandler = Provider.of<CameraHandler>(
-      context,
-    );
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-        ),
-        child: LinearProgressIndicator(
-          backgroundColor: Colors.white,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            ConstantColors.PRIMARY,
-          ),
-          value:
-              (cameraHandler.progress - (cameraHandler.progress > 25 ? 5 : 0)) /
-                  100,
-        ),
       ),
     );
   }

@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/connection_search_term.dart';
+import 'package:superconnector_vm/core/models/photo/photo.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
+import 'package:superconnector_vm/core/services/photo/photo_service.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/services/video/video_service.dart';
 import 'package:superconnector_vm/core/utils/block/block_utility.dart';
@@ -19,6 +21,7 @@ import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_names.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/vm_connection_tile.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/photo_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/video_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
@@ -44,6 +47,7 @@ class ConnectionTile extends StatefulWidget {
 class _ConnectionTileState extends State<ConnectionTile>
     with AutomaticKeepAliveClientMixin {
   VideoService _videoService = VideoService();
+  PhotoService _photoService = PhotoService();
   SuperuserService _superuserService = SuperuserService();
   List<Superuser> _superusers = [];
   late Timer _periodicUpdate;
@@ -223,29 +227,63 @@ class _ConnectionTileState extends State<ConnectionTile>
       return Container();
     }
 
-    return StreamProvider<List<Video>>.value(
-      value: _videoService.getConnectionVideoStream(
-        widget.connection.id,
-        limit: 5,
-      ),
-      initialData: [],
-      child: Consumer<List<Video>>(
-        builder: (context, videos, child) {
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<Video>>.value(
+          value: _videoService.getConnectionVideoStream(
+            widget.connection.id,
+            limit: 5,
+          ),
+          initialData: [],
+        ),
+        StreamProvider<List<Photo>>.value(
+          value: _photoService.getConnectionPhotoStream(
+            widget.connection.id,
+            limit: 5,
+          ),
+          initialData: [],
+        ),
+      ],
+      child: Consumer2<List<Video>, List<Photo>>(
+        builder: (context, videos, photos, child) {
           List<Video> filteredVideos = videos;
+          List<Photo> filteredPhotos = photos;
 
           if (widget.connection.userIds.length == 2) {
             filteredVideos = BlockUtility.unblockedVideos(
               superuser: superuser,
               videos: videos,
             );
+
+            filteredPhotos = BlockUtility.unblockedPhotos(
+              superuser: superuser,
+              photos: photos,
+            );
           }
+
+          int itemCount = filteredVideos.length + filteredPhotos.length;
+          List media = [];
+
+          media.addAll(filteredVideos);
+          media.addAll(filteredPhotos);
+          media.sort((a, b) {
+            return b.created.compareTo(a.created);
+          });
+
           int unwatchedCount = filteredVideos
-              .where(
-                (element) => element.unwatchedIds.contains(
-                  superuser.id,
-                ),
-              )
-              .length;
+                  .where(
+                    (element) => element.unwatchedIds.contains(
+                      superuser.id,
+                    ),
+                  )
+                  .length +
+              filteredPhotos
+                  .where(
+                    (element) => element.unwatchedIds.contains(
+                      superuser.id,
+                    ),
+                  )
+                  .length;
 
           Color textColor =
               unwatchedCount > 0 ? ConstantColors.PRIMARY : Colors.black;
@@ -399,12 +437,9 @@ class _ConnectionTileState extends State<ConnectionTile>
                   ),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: min(
-                        filteredVideos.length +
-                            (filteredVideos.length == 0 ? 1 : 0),
-                        5),
+                    itemCount: min(itemCount + (itemCount == 0 ? 1 : 0), 5),
                     itemBuilder: (context, index) {
-                      if (index == 0 && filteredVideos.length == 0) {
+                      if (index == 0 && itemCount == 0) {
                         return VMConnectionTile(
                           invertGradient: widget.invertGradient,
                           onPressed: () {
@@ -422,35 +457,67 @@ class _ConnectionTileState extends State<ConnectionTile>
                         );
                       }
 
-                      return GestureDetector(
-                        behavior: widget.shouldIgnoreTaps
-                            ? HitTestBehavior.translucent
-                            : HitTestBehavior.opaque,
-                        onTap: () {
-                          if (widget.shouldIgnoreTaps) {
-                            return;
-                          }
+                      if (media[index] is Video) {
+                        return GestureDetector(
+                          behavior: widget.shouldIgnoreTaps
+                              ? HitTestBehavior.translucent
+                              : HitTestBehavior.opaque,
+                          onTap: () {
+                            if (widget.shouldIgnoreTaps) {
+                              return;
+                            }
 
-                          if (filteredVideos[index].status == 'ready') {
-                            _handleNav(
-                              onComplete: () {
-                                SuperNavigator.push(
-                                  context: context,
-                                  widget: ConnectionCarousel(
-                                    connection: widget.connection,
-                                    videos: filteredVideos,
-                                    initialIndex: index,
-                                  ),
-                                  fullScreen: false,
-                                );
-                              },
-                            );
-                          }
-                        },
-                        child: VideoTile(
-                          video: filteredVideos[index],
-                        ),
-                      );
+                            if (media[index].status == 'ready') {
+                              _handleNav(
+                                onComplete: () {
+                                  SuperNavigator.push(
+                                    context: context,
+                                    widget: ConnectionCarousel(
+                                      connection: widget.connection,
+                                      videos: filteredVideos,
+                                      initialIndex: index,
+                                    ),
+                                    fullScreen: false,
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          child: VideoTile(
+                            video: media[index],
+                          ),
+                        );
+                      } else {
+                        return GestureDetector(
+                          behavior: widget.shouldIgnoreTaps
+                              ? HitTestBehavior.translucent
+                              : HitTestBehavior.opaque,
+                          onTap: () {
+                            if (widget.shouldIgnoreTaps) {
+                              return;
+                            }
+
+                            if (media[index].status == 'ready') {
+                              _handleNav(
+                                onComplete: () {
+                                  SuperNavigator.push(
+                                    context: context,
+                                    widget: ConnectionCarousel(
+                                      connection: widget.connection,
+                                      videos: filteredVideos,
+                                      initialIndex: index,
+                                    ),
+                                    fullScreen: false,
+                                  );
+                                },
+                              );
+                            }
+                          },
+                          child: PhotoTile(
+                            photo: media[index],
+                          ),
+                        );
+                      }
                     },
                   ),
                 ),

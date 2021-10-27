@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
-import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/components/connections/video_tile.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/video_tile_overlay.dart';
 
 class VideoGridTile extends StatefulWidget {
   const VideoGridTile({
