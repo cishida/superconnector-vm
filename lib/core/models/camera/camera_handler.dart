@@ -11,6 +11,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
+import 'package:superconnector_vm/core/models/photo/photo.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
@@ -29,6 +30,7 @@ class CameraHandler extends ChangeNotifier {
   // String? _errorMessage;
   Map<String, dynamic> _uploadData = {};
   List<Video> _videos = [];
+  List<Photo> _photos = [];
   XFile? videoFile;
   File? imageFile;
   img.Image? decodedImage;
@@ -131,6 +133,40 @@ class CameraHandler extends ChangeNotifier {
       // final img.Image? orientedImage = img.bakeOrientation(capturedImage!);
       // await File(imageFile!.path).writeAsBytes(img.encodeJpg(orientedImage!));
     }
+  }
+
+  Future createPhotos(
+    List<Connection> connections,
+    Superuser superuser,
+  ) async {
+    _photos = [];
+    _uploadData = {};
+    _progress = 0;
+
+    List<Future> futures = [];
+
+    connections.forEach((connection) {
+      var photoDoc = FirebaseFirestore.instance.collection('photos').doc();
+      Photo photo = Photo(
+        id: photoDoc.id,
+        created: DateTime.now(),
+        superuserId: superuser.id,
+        connectionId: connection.id,
+        caption: caption,
+        unwatchedIds:
+            connection.userIds.where((id) => id != superuser.id).toList(),
+        deleted: false,
+      );
+      _photos.add(photo);
+      futures.add(photo.create());
+      connection.mostRecentActivity = DateTime.now();
+      futures.add(connection.update());
+    });
+
+    await Future.wait(futures);
+    _caption = '';
+    _filter = 'Normal';
+    _browsingFilters = false;
   }
 
   Future createVideos(

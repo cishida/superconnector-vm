@@ -13,8 +13,8 @@ class VideoMetaData extends StatelessWidget {
     Key? key,
     required this.created,
     required this.superuser,
-    required this.duration,
-    required this.position,
+    this.duration,
+    this.position,
     this.caption = '',
   }) : super(key: key);
 
@@ -49,15 +49,16 @@ class VideoMetaData extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            VideoTime(
-              duration: duration ?? Duration(seconds: 0),
-              position: position ?? Duration(seconds: 0),
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.w600,
+            if (position != null && duration != null)
+              VideoTime(
+                duration: duration!,
+                position: position!,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
             Text(
               superuser.fullName,
               style: textStyle,

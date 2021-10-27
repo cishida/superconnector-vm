@@ -1,16 +1,24 @@
 import 'dart:io';
 
+import 'package:contacts_service/contacts_service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/core/utils/sms_utility.dart';
+import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 
 class ImagePreviewContainer extends StatefulWidget {
   const ImagePreviewContainer({
@@ -29,8 +37,109 @@ class ImagePreviewContainer extends StatefulWidget {
 class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
   bool _pressed = false;
 
+  Future _showInviteCard(
+    List<String> phoneNumbers,
+  ) async {
+    if (phoneNumbers.isEmpty) {
+      return;
+    }
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) {
+        return Stack(
+          children: [
+            SuperDialog(
+              title: 'Confirmation',
+              subtitle:
+                  'Send them a Superconnector invitation so you can both use your shared camera roll.',
+              primaryActionTitle: 'Continue',
+              primaryAction: () async {
+                String body = ConstantStrings.TARGETED_INVITE_COPY +
+                    ConstantStrings.TESTFLIGHT_LINK;
+
+                await SMSUtility.send(body, phoneNumbers);
+                Navigator.pop(context);
+              },
+              secondaryActionTitle: 'Cancel',
+              secondaryAction: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future sendVM() async {
+    var selectedContacts = Provider.of<SelectedContacts>(
+      context,
+      listen: false,
+    );
+    final analytics = Provider.of<FirebaseAnalytics>(
+      context,
+      listen: false,
+    );
+    final connections = Provider.of<List<Connection>>(
+      context,
+      listen: false,
+    );
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+    final currentSuperuser = Provider.of<Superuser?>(
+      context,
+      listen: false,
+    );
+
+    if (currentSuperuser == null) {
+      return;
+    }
+
+    List<String> phoneNumbers = [];
+
+    if (widget.connection == null) {
+      selectedContacts.superusers.forEach((superuser) async {
+        selectedContacts.addConnection(connections
+            .where((element) =>
+                element.userIds.length == 2 &&
+                element.userIds.contains(superuser.id))
+            .toList()
+            .first);
+      });
+
+      await Future.forEach(selectedContacts.contacts, (Contact contact) async {
+        Connection connection =
+            await ConnectionService().createConnectionFromContact(
+          currentUserId: currentSuperuser.id,
+          contact: contact,
+          analytics: analytics,
+        );
+
+        if (connection.phoneNumberNameMap.isNotEmpty) {
+          phoneNumbers = connection.phoneNumberNameMap.keys.toList();
+        }
+        selectedContacts.addConnection(connection);
+      });
+    }
+
+    await cameraHandler.createPhotos(
+      selectedContacts.connections,
+      currentSuperuser,
+    );
+
+    await cameraHandler.disposeCamera();
+
+    await _showInviteCard(phoneNumbers);
+    selectedContacts.reset();
+  }
+
   @override
   Widget build(BuildContext context) {
+    Superuser? superuser = Provider.of<Superuser?>(context);
     final cameraHandler = Provider.of<CameraHandler>(
       context,
     );
@@ -55,10 +164,27 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
           listen: false,
         );
 
+        // if (widget.connection == null) {
+        //   print('SEND PHOTO NO CONNECTION');
+        // } else {
+        //   print('SEND PHOTO TO CONNECTION');
+        // }
+
         if (widget.connection == null) {
-          print('SEND PHOTO NO CONNECTION');
+          SuperNavigator.handleContactsNavigation(
+            context: context,
+            sendVM: sendVM,
+          );
         } else {
-          print('SEND PHOTO TO CONNECTION');
+          selectedContacts.addConnection(widget.connection!);
+          sendVM();
+
+          Navigator.of(context).popUntil((route) => route.isFirst);
+
+          Provider.of<AuthenticatedController>(
+            context,
+            listen: false,
+          ).setIndex(1);
         }
 
         setState(() {
@@ -111,6 +237,12 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
                     ),
                   ),
                 ),
+                if (superuser != null)
+                  VideoMetaData(
+                    created: DateTime.now(),
+                    superuser: superuser,
+                    caption: cameraHandler.caption,
+                  ),
               ],
             );
           },

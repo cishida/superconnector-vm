@@ -111,8 +111,11 @@ class Superuser {
     required this.created,
   });
 
-  factory Superuser.fromJson(String id, Map<String, dynamic> json) =>
-      _$SuperuserFromJson(json)..id = id;
+  factory Superuser.fromJsonSetup(String id, Map<String, dynamic> json) =>
+      Superuser.fromJson(json)..id = id;
+
+  factory Superuser.fromJson(Map<String, dynamic> json) =>
+      _$SuperuserFromJson(json);
 
   Map<String, dynamic> toJson() => _$SuperuserToJson(this);
 

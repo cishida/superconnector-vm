@@ -62,7 +62,7 @@ class _ConfirmationCodeEntryState extends State<ConfirmationCodeEntry> {
     if (superuserDoc.exists) {
       var data = superuserDoc.data();
       if (data != null) {
-        superuser = Superuser.fromJson(
+        superuser = Superuser.fromJsonSetup(
           superuserDoc.id,
           data as Map<String, dynamic>,
         );

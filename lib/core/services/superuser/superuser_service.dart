@@ -31,7 +31,7 @@ class SuperuserService {
   Superuser? _superuserFromSnapshot(DocumentSnapshot snapshot) {
     var data = snapshot.data();
     if (snapshot.exists && data != null) {
-      return Superuser.fromJson(
+      return Superuser.fromJsonSetup(
         snapshot.id,
         Map<String, dynamic>.from(data as Map<String, dynamic>),
       );
@@ -67,7 +67,7 @@ class SuperuserService {
     final data = snapshot.data();
 
     if (snapshot.exists && data != null) {
-      return Superuser.fromJson(
+      return Superuser.fromJsonSetup(
         id,
         data as Map<String, dynamic>,
       );
@@ -84,7 +84,7 @@ class SuperuserService {
 
     if (snapshot.docs.length > 0) {
       final data = snapshot.docs.first.data();
-      return Superuser.fromJson(
+      return Superuser.fromJsonSetup(
         snapshot.docs.first.id,
         data as Map<String, dynamic>,
       );
@@ -95,7 +95,7 @@ class SuperuserService {
   // Superusers list from snapshot
   List<Superuser> _superuserListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return Superuser.fromJson(
+      return Superuser.fromJsonSetup(
         doc.id,
         doc.data() as Map<String, dynamic>,
       );

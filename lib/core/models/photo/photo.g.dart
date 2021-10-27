@@ -1,26 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'video.dart';
+part of 'photo.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Video _$VideoFromJson(Map<String, dynamic> json) => Video(
-      created: Video._dateTimeFromTimestamp(json['created'] as Timestamp),
-      uploadId: json['uploadId'] as String?,
+Photo _$PhotoFromJson(Map<String, dynamic> json) => Photo(
+      created: Photo._dateTimeFromTimestamp(json['created'] as Timestamp),
+      url: json['url'] as String? ?? '',
       connectionId: json['connectionId'] as String? ?? '',
       superuserId: json['superuserId'] as String? ?? '',
       caption: json['caption'] as String? ?? '',
       filter: json['filter'] as String? ?? '',
-      playbackIds: (json['playbackIds'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          [],
       status: json['status'] as String? ?? '',
-      assetId: json['assetId'] as String? ?? '',
-      views: json['views'] as int? ?? 0,
-      duration: (json['duration'] as num?)?.toDouble() ?? 0.0,
       deleted: json['deleted'] as bool? ?? false,
       unwatchedIds: (json['unwatchedIds'] as List<dynamic>?)
               ?.map((e) => e as String)
@@ -28,18 +21,14 @@ Video _$VideoFromJson(Map<String, dynamic> json) => Video(
           [],
     );
 
-Map<String, dynamic> _$VideoToJson(Video instance) => <String, dynamic>{
-      'uploadId': instance.uploadId,
+Map<String, dynamic> _$PhotoToJson(Photo instance) => <String, dynamic>{
+      'url': instance.url,
       'superuserId': instance.superuserId,
       'connectionId': instance.connectionId,
       'caption': instance.caption,
       'filter': instance.filter,
-      'playbackIds': instance.playbackIds,
       'status': instance.status,
-      'assetId': instance.assetId,
-      'views': instance.views,
-      'duration': instance.duration,
       'deleted': instance.deleted,
       'unwatchedIds': instance.unwatchedIds,
-      'created': Video._dateTimeAsIs(instance.created),
+      'created': Photo._dateTimeAsIs(instance.created),
     };
