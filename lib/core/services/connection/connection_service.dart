@@ -15,6 +15,8 @@ class ConnectionService {
   // Collection references
   final CollectionReference connectionCollection =
       FirebaseFirestore.instance.collection('connections');
+  final CollectionReference superuserCollection =
+      FirebaseFirestore.instance.collection('superusers');
   final SuperuserService _superuserService = SuperuserService();
 
   // Future<Connection?> getConnectionFromSelected({
@@ -350,6 +352,46 @@ class ConnectionService {
         .orderBy('mostRecentActivity', descending: true)
         .snapshots()
         .map(_connectionListFromSnapshot);
+  }
+
+  Stream<List<Connection>> getConnectionsWithUsers(String userId) async* {
+    var connectionsStream = connectionCollection
+        .where('userIds', arrayContains: userId)
+        .orderBy('mostRecentActivity', descending: true)
+        .snapshots();
+    List<Connection> connections = [];
+
+    await for (var connectionsSnapshot in connectionsStream) {
+      connections = [];
+      for (var connectionDoc in connectionsSnapshot.docs) {
+        var data = connectionDoc.data();
+        if (data != null) {
+          Connection connection = Connection.fromJson(
+            connectionDoc.id,
+            data as Map<String, dynamic>,
+          );
+          int peopleCount =
+              connection.userIds.length + connection.phoneNumberNameMap.length;
+          if (connection.deletedIds.contains(userId) || peopleCount > 2) {
+            continue;
+          }
+          for (var i = 0; i < connection.userIds.length; i++) {
+            if (connection.userIds[i] != userId) {
+              Superuser? superuser =
+                  await SuperuserService().getSuperuserFromId(
+                connection.userIds[i],
+              );
+              if (superuser != null) {
+                connection.superusers.add(superuser);
+              }
+            }
+          }
+
+          connections.add(connection);
+        }
+      }
+      yield connections;
+    }
   }
 
   Future update(String id, Map<String, dynamic> data) async {

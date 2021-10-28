@@ -53,7 +53,8 @@ class AuthWidgetBuilder extends StatelessWidget {
             //   initialData: [],
             // ),
             StreamProvider<List<Connection>>.value(
-              value: ConnectionService().getConnections(superFirebaseUser.id),
+              value: ConnectionService()
+                  .getConnectionsWithUsers(superFirebaseUser.id),
               initialData: [],
             ),
             StreamProvider<List<Supercontact>>.value(

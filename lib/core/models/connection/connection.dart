@@ -8,7 +8,7 @@ part 'connection.g.dart';
 @JsonSerializable()
 class Connection {
   @JsonKey(ignore: true)
-  Superuser? superuser;
+  List<Superuser> superusers = [];
 
   @JsonKey(ignore: true)
   String id;

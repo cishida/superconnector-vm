@@ -69,7 +69,7 @@ class _ContactsSelectionState extends State<ContactsSelection> {
 
           if (superuser != null) {
             tempSuperusers.add(superuser);
-            filteredConnections[i].superuser = superuser;
+            filteredConnections[i].superusers.add(superuser);
             _connections.add(filteredConnections[i]);
           }
         }
@@ -139,13 +139,13 @@ class _ContactsSelectionState extends State<ContactsSelection> {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () =>
-                  widget.onTapSuperuser(_connections[index].superuser!),
+                  widget.onTapSuperuser(_connections[index].superusers.first),
               child: SuperuserItem(
-                superuser: _connections[index].superuser!,
+                superuser: _connections[index].superusers[0],
                 tag: _connections[index].tags[currentSuperuser.id],
                 isSelectable: widget.isSelectable,
                 isSelected: selectedContacts.containsSuperuser(
-                  _connections[index].superuser!,
+                  _connections[index].superusers[0],
                 ),
               ),
             );

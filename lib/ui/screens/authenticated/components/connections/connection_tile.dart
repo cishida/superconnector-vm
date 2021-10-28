@@ -48,51 +48,51 @@ class _ConnectionTileState extends State<ConnectionTile>
   VideoService _videoService = VideoService();
   PhotoService _photoService = PhotoService();
   SuperuserService _superuserService = SuperuserService();
-  List<Superuser> _superusers = [];
+  // List<Superuser> _superusers = [];
   late Timer _periodicUpdate;
   String _groupName = '';
   List<String> _filteredNames = [];
 
-  Future _loadUsers() async {
-    List<Superuser> tempSuperusers = [];
-    final currentSuperuser = Provider.of<Superuser?>(context, listen: false);
+  // Future _loadUsers() async {
+  //   List<Superuser> tempSuperusers = [];
+  //   final currentSuperuser = Provider.of<Superuser?>(context, listen: false);
 
-    if (currentSuperuser == null) {
-      return;
-    }
+  //   if (currentSuperuser == null) {
+  //     return;
+  //   }
 
-    for (var i = 0; i < widget.connection.userIds.length; i++) {
-      List<String> ids = tempSuperusers.map((e) => e.id).toList();
+  //   for (var i = 0; i < widget.connection.userIds.length; i++) {
+  //     List<String> ids = tempSuperusers.map((e) => e.id).toList();
 
-      if (widget.connection.userIds[i] != currentSuperuser.id) {
-        Superuser? superuser = await _superuserService
-            .getSuperuserFromId(widget.connection.userIds[i]);
-        if (superuser != null && !ids.contains(superuser.id)) {
-          tempSuperusers.add(superuser);
-        }
-      }
-    }
+  //     if (widget.connection.userIds[i] != currentSuperuser.id) {
+  //       Superuser? superuser = await _superuserService
+  //           .getSuperuserFromId(widget.connection.userIds[i]);
+  //       if (superuser != null && !ids.contains(superuser.id)) {
+  //         tempSuperusers.add(superuser);
+  //       }
+  //     }
+  //   }
 
-    if (mounted) {
-      setState(() {
-        _superusers = tempSuperusers;
-      });
-    }
-  }
+  //   if (mounted) {
+  //     setState(() {
+  //       _superusers = tempSuperusers;
+  //     });
+  //   }
+  // }
 
-  @override
-  void didUpdateWidget(ConnectionTile oldWidget) {
-    super.didUpdateWidget(oldWidget);
+  // @override
+  // void didUpdateWidget(ConnectionTile oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
 
-    if (oldWidget.connection.id != widget.connection.id) {
-      _loadUsers();
-    }
-  }
+  //   if (oldWidget.connection.id != widget.connection.id) {
+  //     _loadUsers();
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
-    _loadUsers();
+    // _loadUsers();
     _periodicUpdate = Timer.periodic(Duration(seconds: 30), (Timer t) {
       if (mounted) {
         setState(() {});
@@ -194,7 +194,10 @@ class _ConnectionTileState extends State<ConnectionTile>
 
     _filteredNames = []; //_superusers.map((e) => e.fullName).toList();
 
-    _superusers.map((e) => e.fullName).toList().forEach((fullName) {
+    widget.connection.superusers
+        .map((e) => e.fullName)
+        .toList()
+        .forEach((fullName) {
       if (connectionSearchTerm.get() == '' ||
           (connectionSearchTerm.get() != '' &&
               fullName.toLowerCase().contains(
@@ -322,8 +325,10 @@ class _ConnectionTileState extends State<ConnectionTile>
                   child: Row(
                     children: [
                       ConnectionPhotos(
-                        photoUrls: _superusers.map((e) => e.photoUrl).toList(),
-                        isMe: _superusers
+                        photoUrls: widget.connection.superusers
+                            .map((e) => e.photoUrl)
+                            .toList(),
+                        isMe: widget.connection.superusers
                             .map((e) => e.id)
                             .toList()
                             .contains(ConstantStrings.SUPERCONNECTOR_ID),
@@ -340,7 +345,9 @@ class _ConnectionTileState extends State<ConnectionTile>
                             ConnectionNames(
                               names: widget.connection.isExampleConversation
                                   ? [superuser.fullName]
-                                  : _superusers.map((e) => e.fullName).toList(),
+                                  : widget.connection.superusers
+                                      .map((e) => e.fullName)
+                                      .toList(),
                               phoneNumberNameMap:
                                   widget.connection.phoneNumberNameMap,
                               unwatchedCount: unwatchedCount,
