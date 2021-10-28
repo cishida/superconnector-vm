@@ -101,7 +101,7 @@ class CameraOverlayRollPhoto extends StatelessWidget {
             )
           : EmptyImage(
               size: 42.0,
-              isReversed: true,
+              // isReversed: true,
             );
     }
 

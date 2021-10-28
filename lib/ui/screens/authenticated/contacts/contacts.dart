@@ -8,9 +8,7 @@ import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/services/supercontact/supercontact_service.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
-import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
@@ -262,10 +260,10 @@ class _ContactsState extends State<Contacts> {
           ? GroupSelectionButton(
               pressed: _pressed,
               onPressed: () async {
-                var selectedContacts = Provider.of<SelectedContacts>(
-                  context,
-                  listen: false,
-                );
+                // var selectedContacts = Provider.of<SelectedContacts>(
+                //   context,
+                //   listen: false,
+                // );
 
                 if (_pressed) {
                   return;
@@ -288,7 +286,7 @@ class _ContactsState extends State<Contacts> {
       body: Container(
         width: size.width,
         decoration: BoxDecoration(
-          color: ConstantColors.DARK_BLUE,
+          color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0),
             topRight: Radius.circular(30.0),
@@ -297,68 +295,70 @@ class _ContactsState extends State<Contacts> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Container(
-            //   width: size.width,
-            //   decoration: BoxDecoration(
-            //     image: DecorationImage(
-            //       fit: BoxFit.cover,
-            //       image: AssetImage(
-            //         'assets/images/authenticated/gradient-background-reversed.png',
-            //       ),
-            //     ),
-            //     borderRadius: BorderRadius.only(
-            //       topLeft: Radius.circular(30.0),
-            //       topRight: Radius.circular(30.0),
-            //     ),
-            //   ),
-            // child:
-            Column(
-              children: [
-                Center(
-                  child: BottomSheetTab(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 20.0,
-                    bottom: 19.0,
+            Container(
+              width: size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    'assets/images/authenticated/dark-blue-orange-gradient.png',
                   ),
-                  child: Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.tag == null ? 'Camera Rolls' : 'Send Request',
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.headline5!.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20.0,
-                                  ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 5.0,
-                          ),
-                          child: Text(
+                ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0),
+                ),
+              ),
+              child: Column(
+                children: [
+                  Center(
+                    child: BottomSheetTab(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 20.0,
+                      bottom: 19.0,
+                    ),
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
                             widget.tag == null
-                                ? 'Choose who you want to share with.'
-                                : widget.isGroup
-                                    ? 'Add people to your family group.'
-                                    : 'Invite your ' +
-                                        widget.tag!.toLowerCase() +
-                                        ' to connect.',
-                            style: Theme.of(context).textTheme.bodyText1!,
+                                ? 'Camera Rolls'
+                                : 'Send Request',
+                            textAlign: TextAlign.center,
+                            style:
+                                Theme.of(context).textTheme.headline5!.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20.0,
+                                    ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 5.0,
+                            ),
+                            child: Text(
+                              widget.tag == null
+                                  ? 'Choose who you want to share with.'
+                                  : widget.isGroup
+                                      ? 'Add people to your family group.'
+                                      : 'Invite your ' +
+                                          widget.tag!.toLowerCase() +
+                                          ' to connect.',
+                              style: Theme.of(context).textTheme.bodyText1!,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Underline(
-                  color: Colors.white.withOpacity(.2),
-                ),
-              ],
+                  Underline(
+                    color: Colors.white.withOpacity(.2),
+                  ),
+                ],
+              ),
             ),
             // ),
             SizedBox(

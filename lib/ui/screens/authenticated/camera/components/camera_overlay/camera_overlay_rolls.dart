@@ -61,7 +61,9 @@ class CameraOverlayRolls extends StatelessWidget {
                           style: style,
                         ),
                         Text(
-                          max(selectedContacts.connections.length, 1)
+                          (selectedContacts.superusers.length +
+                                  selectedContacts.contacts.length +
+                                  1)
                               .toString(),
                           style: style.copyWith(fontSize: 24.0),
                         ),

@@ -5,6 +5,7 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/components/contact_item.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/components/superuser_item.dart';
 
@@ -30,58 +31,58 @@ class ContactsSelection extends StatefulWidget {
 
 class _ContactsSelectionState extends State<ContactsSelection> {
   List<Contact> _sortedContacts = [];
-  List<Superuser>? _superusers;
+  // List<Superuser>? _superusers;
   SuperuserService _superuserService = SuperuserService();
-  List<Connection> _connections = [];
+  // List<Connection> _connections = [];
 
-  Future _loadUsers() async {
-    if (!widget.isSelectable) {
-      setState(() {
-        _superusers = [];
-      });
-      return;
-    }
+  // Future _loadUsers() async {
+  //   if (!widget.isSelectable) {
+  //     setState(() {
+  //       _superusers = [];
+  //     });
+  //     return;
+  //   }
 
-    List<Superuser> tempSuperusers = [];
-    _connections = [];
-    final currentSuperuser = Provider.of<Superuser?>(
-      context,
-      listen: false,
-    );
-    var connections = Provider.of<List<Connection>>(
-      context,
-      listen: false,
-    );
+  //   List<Superuser> tempSuperusers = [];
+  //   _connections = [];
+  //   final currentSuperuser = Provider.of<Superuser?>(
+  //     context,
+  //     listen: false,
+  //   );
+  //   var connections = Provider.of<List<Connection>>(
+  //     context,
+  //     listen: false,
+  //   );
 
-    if (currentSuperuser == null) {
-      return;
-    }
+  //   if (currentSuperuser == null) {
+  //     return;
+  //   }
 
-    var filteredConnections =
-        connections.where((e) => e.userIds.length == 2).toList();
+  //   var filteredConnections =
+  //       connections.where((e) => e.userIds.length == 2).toList();
 
-    for (var i = 0; i < filteredConnections.length; i++) {
-      List<String> ids = tempSuperusers.map((e) => e.id).toList();
+  //   for (var i = 0; i < filteredConnections.length; i++) {
+  //     List<String> ids = tempSuperusers.map((e) => e.id).toList();
 
-      for (var id in filteredConnections[i].userIds) {
-        if (id != currentSuperuser.id && !ids.contains(id)) {
-          Superuser? superuser = await _superuserService.getSuperuserFromId(id);
+  //     for (var id in filteredConnections[i].userIds) {
+  //       if (id != currentSuperuser.id && !ids.contains(id)) {
+  //         Superuser? superuser = await _superuserService.getSuperuserFromId(id);
 
-          if (superuser != null) {
-            tempSuperusers.add(superuser);
-            filteredConnections[i].superusers.add(superuser);
-            _connections.add(filteredConnections[i]);
-          }
-        }
-      }
-    }
+  //         if (superuser != null) {
+  //           tempSuperusers.add(superuser);
+  //           filteredConnections[i].superusers.add(superuser);
+  //           _connections.add(filteredConnections[i]);
+  //         }
+  //       }
+  //     }
+  //   }
 
-    if (mounted) {
-      setState(() {
-        _superusers = tempSuperusers;
-      });
-    }
-  }
+  //   if (mounted) {
+  //     setState(() {
+  //       _superusers = tempSuperusers;
+  //     });
+  //   }
+  // }
 
   @override
   void initState() {
@@ -111,12 +112,12 @@ class _ContactsSelectionState extends State<ContactsSelection> {
       context,
     );
 
-    if (connections.length > 0 &&
-        (_superusers == null || _superusers!.length == 0)) {
-      _loadUsers();
-    }
+    // if (connections.length > 0 &&
+    //     (_superusers == null || _superusers!.length == 0)) {
+    //   _loadUsers();
+    // }
 
-    if (_superusers == null || currentSuperuser == null) {
+    if (currentSuperuser == null) {
       return Center(
         child: CircularProgressIndicator(),
       );
@@ -130,28 +131,48 @@ class _ContactsSelectionState extends State<ContactsSelection> {
                   .contains(widget.filter.toLowerCase()));
     }).toList();
 
+    List<Connection> filteredConnections = connections.where((connection) {
+      return connection.userIds.length + connection.phoneNumberNameMap.length ==
+              2 &&
+          connection.superusers.isNotEmpty &&
+          !connection.userIds.contains(ConstantStrings.SUPERCONNECTOR_ID);
+    }).toList();
+
     return Padding(
       padding: const EdgeInsets.only(top: 11.0),
       child: ListView.builder(
-        itemCount: filteredContacts.length + _connections.length,
+        itemCount: filteredContacts.length +
+            filteredConnections.length +
+            1, // Extra for self
         itemBuilder: (context, index) {
-          if (index < _connections.length) {
+          if (index == 0) {
+            return SuperuserItem(
+              superuser: currentSuperuser,
+              tag: 'Me',
+              isSelectable: true,
+              isSelected: true,
+            );
+          }
+          int effectiveIndex = index - 1;
+
+          if (effectiveIndex < filteredConnections.length) {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: () =>
-                  widget.onTapSuperuser(_connections[index].superusers.first),
+              onTap: () => widget.onTapSuperuser(
+                  filteredConnections[effectiveIndex].superusers.first),
               child: SuperuserItem(
-                superuser: _connections[index].superusers[0],
-                tag: _connections[index].tags[currentSuperuser.id],
+                superuser: filteredConnections[effectiveIndex].superusers[0],
+                tag: filteredConnections[effectiveIndex]
+                    .tags[currentSuperuser.id],
                 isSelectable: widget.isSelectable,
                 isSelected: selectedContacts.containsSuperuser(
-                  _connections[index].superusers[0],
+                  filteredConnections[effectiveIndex].superusers[0],
                 ),
               ),
             );
           }
 
-          int effectiveIndex = index - _connections.length;
+          effectiveIndex = effectiveIndex - filteredConnections.length;
 
           return GestureDetector(
             behavior: HitTestBehavior.opaque,

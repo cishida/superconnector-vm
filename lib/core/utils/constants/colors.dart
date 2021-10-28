@@ -25,12 +25,12 @@ class ConstantColors {
   static const Color CONTACT_SUBTITLE = Color(0xFF8996A2);
 
   // Nav Drawer
-  static Color navSearchBackground = Colors.white.withOpacity(.08);
-  static Color navSearchText = Colors.white.withOpacity(.6);
-  static Color navItemTitle = Colors.white;
-  static Color navItemSub = Colors.white.withOpacity(.6);
-  static Color navItemCheck = Colors.white;
-  static Color navEmptyImage = Colors.white.withOpacity(.2);
+  static Color navSearchBackground = Colors.black.withOpacity(.08);
+  static Color navSearchText = Colors.black.withOpacity(.6);
+  static Color navItemTitle = Colors.black;
+  static Color navItemSub = Colors.black.withOpacity(.6);
+  // static Color navItemCheck = Colors.white;
+  static Color navEmptyImage = Colors.black.withOpacity(.2);
 
   // Buttons
   static const Color FAB_BACKGROUND = Color(0xFF0AA7FF);

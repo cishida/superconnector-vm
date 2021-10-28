@@ -511,8 +511,8 @@ class _CameraState extends State<Camera>
                           child: ChevronBackButton(
                             color: Colors.white,
                             onBack: () async {
+                              Navigator.of(context).pop();
                               await cameraHandler.disposeCamera();
-                              Navigator.pop(context);
                             },
                           ),
                         ),

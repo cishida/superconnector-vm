@@ -21,7 +21,8 @@ class ConstantStrings {
       "Just shared a camera roll with you in Superconnector! Here's your invite: ";
   static const String TESTFLIGHT_LINK =
       'https://testflight.apple.com/join/KLePjsGB';
-  static const String GIF_ARGS = '/animated.gif?start=1&end=3&fps=30&width=220';
+  static const String GIF_ARGS =
+      '/animated.gif?fps=30'; //?start=1&end=3&fps=30&width=220';
 
   // Categories
   static const List<String> RELATION_CATEGORIES = [

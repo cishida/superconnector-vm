@@ -171,6 +171,17 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
             .first);
       });
 
+      selectedContacts.addConnection(connections
+          .where(
+            (connection) =>
+                connection.userIds.length == 2 &&
+                connection.userIds.contains(
+                  ConstantStrings.SUPERCONNECTOR_ID,
+                ),
+          )
+          .toList()
+          .first);
+
       await Future.forEach(selectedContacts.contacts, (Contact contact) async {
         Connection connection =
             await ConnectionService().createConnectionFromContact(

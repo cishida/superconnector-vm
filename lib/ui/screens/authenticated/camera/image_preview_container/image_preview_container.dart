@@ -104,12 +104,23 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
     if (widget.connection == null) {
       selectedContacts.superusers.forEach((superuser) async {
         selectedContacts.addConnection(connections
-            .where((element) =>
-                element.userIds.length == 2 &&
-                element.userIds.contains(superuser.id))
+            .where((connection) =>
+                connection.userIds.length == 2 &&
+                connection.userIds.contains(superuser.id))
             .toList()
             .first);
       });
+
+      selectedContacts.addConnection(connections
+          .where(
+            (connection) =>
+                connection.userIds.length == 2 &&
+                connection.userIds.contains(
+                  ConstantStrings.SUPERCONNECTOR_ID,
+                ),
+          )
+          .toList()
+          .first);
 
       await Future.forEach(selectedContacts.contacts, (Contact contact) async {
         Connection connection =
@@ -171,22 +182,22 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
         //   print('SEND PHOTO TO CONNECTION');
         // }
 
-        if (widget.connection == null) {
-          SuperNavigator.handleContactsNavigation(
-            context: context,
-            confirm: sendVM,
-          );
-        } else {
-          selectedContacts.addConnection(widget.connection!);
-          sendVM();
+        // if (widget.connection == null) {
+        //   SuperNavigator.handleContactsNavigation(
+        //     context: context,
+        //     confirm: sendVM,
+        //   );
+        // } else {
+        //   selectedContacts.addConnection(widget.connection!);
+        sendVM();
 
-          Navigator.of(context).popUntil((route) => route.isFirst);
+        Navigator.of(context).popUntil((route) => route.isFirst);
 
-          Provider.of<AuthenticatedController>(
-            context,
-            listen: false,
-          ).setIndex(1);
-        }
+        Provider.of<AuthenticatedController>(
+          context,
+          listen: false,
+        ).setIndex(1);
+        // }
 
         setState(() {
           _pressed = false;

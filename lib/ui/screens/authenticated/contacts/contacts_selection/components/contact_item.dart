@@ -70,7 +70,7 @@ class ContactItem extends StatelessWidget {
                           'assets/images/authenticated/contacts-check-mark.png',
                           width: 24.0,
                           height: 24.0,
-                          color: ConstantColors.navItemCheck,
+                          color: ConstantColors.PRIMARY,
                         )
                       : Container(
                           width: 24.0,

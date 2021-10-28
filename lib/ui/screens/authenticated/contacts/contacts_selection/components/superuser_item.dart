@@ -23,7 +23,6 @@ class SuperuserItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentSuperuser = Provider.of<Superuser?>(
       context,
-      listen: false,
     );
 
     if (currentSuperuser == null) {
@@ -44,9 +43,7 @@ class SuperuserItem extends StatelessWidget {
                   right: 12.0,
                 ),
                 child: SuperuserImage(
-                  url: superuser.id == ConstantStrings.SUPERCONNECTOR_ID
-                      ? currentSuperuser.photoUrl
-                      : superuser.photoUrl,
+                  url: superuser.photoUrl,
                   radius: 19.0,
                   bordered: false,
                   reversed: true,
@@ -65,9 +62,7 @@ class SuperuserItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    superuser.id == ConstantStrings.SUPERCONNECTOR_ID
-                        ? 'Me'
-                        : (tag ?? 'Connected'),
+                    tag ?? 'Connected',
                     style: TextStyle(
                       fontSize: 15.0,
                       color: ConstantColors.navItemSub,
@@ -81,24 +76,31 @@ class SuperuserItem extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     right: 22.0,
                   ),
-                  child: isSelected
+                  child: superuser.id == currentSuperuser.id
                       ? Image.asset(
                           'assets/images/authenticated/contacts-check-mark.png',
                           width: 24.0,
                           height: 24.0,
-                          color: ConstantColors.navItemCheck,
+                          color: Colors.grey.withOpacity(.4),
                         )
-                      : Container(
-                          width: 24.0,
-                          height: 24.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: ConstantColors
-                                  .CONTACT_SELECTION_CIRCLE_BORDER,
-                            ),
-                          ),
-                        ),
+                      : (isSelected
+                          ? Image.asset(
+                              'assets/images/authenticated/contacts-check-mark.png',
+                              width: 24.0,
+                              height: 24.0,
+                              color: ConstantColors.PRIMARY,
+                            )
+                          : Container(
+                              width: 24.0,
+                              height: 24.0,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: ConstantColors
+                                      .CONTACT_SELECTION_CIRCLE_BORDER,
+                                ),
+                              ),
+                            )),
                 ),
             ],
           ),
