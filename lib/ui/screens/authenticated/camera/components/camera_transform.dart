@@ -40,11 +40,11 @@ class CameraTransform extends StatelessWidget {
 
     if (cameraHandler.cameraController != null) {
       var camera = cameraHandler.cameraController!.value;
-      cameraAspect = camera.aspectRatio;
 
       if (!camera.isInitialized) {
         return Container();
       }
+      cameraAspect = camera.aspectRatio;
     }
 
     scale = aspect * cameraAspect;

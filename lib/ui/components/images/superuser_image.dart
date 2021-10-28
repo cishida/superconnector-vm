@@ -10,8 +10,8 @@ class SuperuserImage extends StatelessWidget {
   final reversed;
 
   SuperuserImage({
-    this.url,
-    this.radius,
+    required this.url,
+    required this.radius,
     this.bordered = true,
     this.reversed = false,
   });

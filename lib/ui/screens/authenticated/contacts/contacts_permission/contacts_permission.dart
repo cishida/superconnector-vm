@@ -8,11 +8,11 @@ import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dar
 class ContactsPermission extends StatefulWidget {
   const ContactsPermission({
     Key? key,
-    this.sendVM,
+    this.confirm,
     this.isGroup = false,
   }) : super(key: key);
 
-  final Function? sendVM;
+  final Function? confirm;
   final bool isGroup;
 
   @override
@@ -29,7 +29,7 @@ class _ContactsPermissionState extends State<ContactsPermission> {
         return FractionallySizedBox(
           heightFactor: 0.93,
           child: Contacts(
-            sendVM: widget.sendVM,
+            confirm: widget.confirm,
             isGroup: widget.isGroup,
           ),
         );

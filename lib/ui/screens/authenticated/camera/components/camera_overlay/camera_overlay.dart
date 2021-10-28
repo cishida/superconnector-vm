@@ -13,14 +13,14 @@ class CameraOverlay extends StatefulWidget {
     Key? key,
     required this.controller,
     required this.currentVideoSeconds,
-    // required this.toggleCamera,
+    required this.toggleCamera,
     this.connection,
     this.pointerDown = false,
   }) : super(key: key);
 
   final CameraController? controller;
   final int currentVideoSeconds;
-  // final Function toggleCamera;
+  final Function toggleCamera;
   final Connection? connection;
   final bool pointerDown;
 
@@ -290,7 +290,7 @@ class _CameraOverlayState extends State<CameraOverlay>
           ),
         ),
         Positioned.fill(
-          top: 71.0,
+          top: 51.0,
           right: 0.0,
           child: Align(
             alignment: Alignment.topRight,
@@ -299,7 +299,48 @@ class _CameraOverlayState extends State<CameraOverlay>
               duration: const Duration(
                 milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
               ),
-              child: CameraOverlayRolls(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 8.0,
+                          right: 5.0,
+                          left: 5.0,
+                        ),
+                        child: Image.asset(
+                          'assets/images/authenticated/record/camera-flash-button.png',
+                          width: 42.0,
+                          height: 42.0,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 8.0,
+                          right: 9.0,
+                          left: 5.0,
+                        ),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () => widget.toggleCamera(),
+                          child: Image.asset(
+                            'assets/images/authenticated/record/camera-flip-button.png',
+                            width: 42.0,
+                            height: 42.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 3.0),
+                    child: CameraOverlayRolls(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

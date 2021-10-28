@@ -34,56 +34,30 @@ class SuperNavigator {
     required BuildContext context,
     bool shouldShowHistory = false,
     Function? primaryAction,
-    Function? sendVM,
+    Function? confirm,
   }) async {
     var status = await Permission.contacts.status;
 
     if (status.isGranted) {
-      // Navigator.of(context).push(
-      //   MaterialWithModalsPageRoute(
-      //     builder: (context) {
-      //       return FractionallySizedBox(
-      //         heightFactor: 0.93,
-      //         child: Relations(),
-      //       );
-      //     },
-      //   ),
-      // );
-
-      if (sendVM != null) {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) {
-            return FractionallySizedBox(
-              heightFactor: 0.93,
-              child: Contacts(
-                isGroup: true,
-                sendVM: sendVM,
-              ),
-            );
-          },
-        );
-      } else {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) {
-            return FractionallySizedBox(
-              heightFactor: 0.93,
-              child: Contacts(
-                isGroup: false,
-              ),
-            );
-          },
-        );
-      }
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return FractionallySizedBox(
+            heightFactor: 0.93,
+            child: Contacts(
+              isGroup: confirm != null,
+              confirm: confirm,
+            ),
+          );
+        },
+      );
     } else {
       SuperNavigator.push(
         context: context,
         widget: ContactsPermission(
-          sendVM: sendVM,
-          isGroup: sendVM != null,
+          confirm: confirm,
+          isGroup: confirm != null,
         ),
         fullScreen: false,
       );

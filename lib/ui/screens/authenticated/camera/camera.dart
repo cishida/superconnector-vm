@@ -171,11 +171,11 @@ class _CameraState extends State<Camera>
       }
     });
 
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-      listen: false,
-    );
-    selectedContacts.reset();
+    // var selectedContacts = Provider.of<SelectedContacts>(
+    //   context,
+    //   listen: false,
+    // );
+    // selectedContacts.reset();
   }
 
   // @override
@@ -517,14 +517,6 @@ class _CameraState extends State<Camera>
                           ),
                         ),
 
-                      CameraOverlay(
-                        controller: cameraHandler.cameraController,
-                        currentVideoSeconds: _currentVideoSeconds,
-                        // toggleCamera: _toggleCameraLens,
-                        connection: widget.connection,
-                        pointerDown: _pointerDown,
-                      ),
-
                       // Using mask over white progress indicator for gradient
                       // Positioned(
                       //   bottom: 0,
@@ -572,9 +564,16 @@ class _CameraState extends State<Camera>
                 //   toggleCamera: _toggleCameraLens,
                 //   controller: cameraHandler.cameraController,
                 // ),
-                CameraToggle(
+                // CameraToggle(
+                //   controller: cameraHandler.cameraController,
+                //   toggleCamera: _toggleCameraLens,
+                // ),
+                CameraOverlay(
                   controller: cameraHandler.cameraController,
+                  currentVideoSeconds: _currentVideoSeconds,
                   toggleCamera: _toggleCameraLens,
+                  connection: widget.connection,
+                  pointerDown: _pointerDown,
                 ),
               ],
             ),

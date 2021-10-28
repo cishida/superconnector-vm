@@ -196,7 +196,8 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
     await cameraHandler.disposeCamera();
 
     await _showInviteCard(phoneNumbers);
-    selectedContacts.reset();
+    // selectedContacts.reset();
+    cameraHandler.navigateToRolls(context);
   }
 
   @override
@@ -269,7 +270,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
         if (widget.connection == null) {
           SuperNavigator.handleContactsNavigation(
             context: context,
-            sendVM: sendVM,
+            confirm: sendVM,
           );
         } else {
           selectedContacts.addConnection(widget.connection!);

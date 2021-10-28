@@ -26,12 +26,12 @@ class Contacts extends StatefulWidget {
     Key? key,
     this.tag,
     this.isGroup = false,
-    this.sendVM,
+    this.confirm,
   }) : super(key: key);
 
   final String? tag;
   final bool isGroup;
-  final Function? sendVM;
+  final Function? confirm;
 
   @override
   _ContactsState createState() => _ContactsState();
@@ -118,7 +118,7 @@ class _ContactsState extends State<Contacts> {
     Connection connection = connectionMap['connection'];
     bool wasCreated = connectionMap['wasCreated'];
 
-    selectedContacts.reset();
+    // selectedContacts.reset();
     Navigator.of(context).pop();
 
     if (connection.phoneNumberNameMap.isNotEmpty && wasCreated) {
@@ -192,7 +192,7 @@ class _ContactsState extends State<Contacts> {
     );
   }
 
-  // Future _sendVM() async {
+  // Future _confirm() async {
   //   var selectedContacts = Provider.of<SelectedContacts>(
   //     context,
   //     listen: false,
@@ -267,22 +267,17 @@ class _ContactsState extends State<Contacts> {
                   listen: false,
                 );
 
-                if (_pressed || selectedContacts.isEmpty()) {
+                if (_pressed) {
                   return;
                 }
 
                 setState(() {
                   _pressed = true;
                 });
-                if (widget.sendVM != null) {
-                  await widget.sendVM!();
+                if (widget.confirm != null) {
+                  await widget.confirm!();
                 }
-                Navigator.of(context).popUntil((route) => route.isFirst);
 
-                Provider.of<AuthenticatedController>(
-                  context,
-                  listen: false,
-                ).setIndex(1);
                 // _setOrCreateConnection();
                 setState(() {
                   _pressed = false;
@@ -516,7 +511,7 @@ class _ContactsState extends State<Contacts> {
     //                 ),
     //           GestureDetector(
     //             behavior: HitTestBehavior.opaque,
-    //             onTap: _sendVM,
+    //             onTap: _confirm,
     //             child: Text(
     //               'Send VM',
     //               style: TextStyle(

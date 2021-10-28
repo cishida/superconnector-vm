@@ -11,10 +11,12 @@ import 'package:flutter_upchunk/flutter_upchunk.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/photo/photo.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
+import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:tapioca/tapioca.dart';
 import 'package:image/image.dart' as img;
@@ -292,5 +294,13 @@ class CameraHandler extends ChangeNotifier {
       };
 
     UpChunk.createUpload(uploadOptions);
+  }
+
+  void navigateToRolls(BuildContext context) {
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Provider.of<AuthenticatedController>(
+      context,
+      listen: false,
+    ).setIndex(1);
   }
 }
