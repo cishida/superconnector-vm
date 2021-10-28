@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:better_player/better_player.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,6 +36,9 @@ class _CarouselPhotoState extends State<CarouselPhoto> {
   bool _showedCard = false;
 
   Future _loadUserAndLog() async {
+    _photoSuperuser = await SuperuserService().getSuperuserFromId(
+      widget.photo.superuserId,
+    );
     _logWatchedEvent();
     if (mounted) {
       setState(() {});
@@ -121,43 +125,34 @@ class _CarouselPhotoState extends State<CarouselPhoto> {
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            left: 0.0,
-            right: 0.0,
-            top: 0.0,
-            bottom: 0.0,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final cameraHandler = Provider.of<CameraHandler>(
-                  context,
-                  listen: false,
-                );
-
-                if (cameraHandler.imageFile != null) {
-                  return CameraTransform(
-                    constraints: constraints,
-                    isImage: true,
-                    child: Image.file(
-                      File(
-                        cameraHandler.imageFile!.path,
-                      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          print(constraints.maxHeight);
+          return Stack(
+            children: [
+              Positioned(
+                child: CameraTransform(
+                  constraints: constraints,
+                  isImage: true,
+                  child: Image(
+                    // fit: BoxFit.cover,
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    image: CachedNetworkImageProvider(
+                      widget.photo.url,
                     ),
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-          ),
-          if (_photoSuperuser != null)
-            VideoMetaData(
-              created: widget.photo.created,
-              superuser: _photoSuperuser!,
-              caption: widget.photo.caption,
-            ),
-        ],
+                  ),
+                ),
+              ),
+              if (_photoSuperuser != null)
+                VideoMetaData(
+                  created: widget.photo.created,
+                  superuser: _photoSuperuser!,
+                  caption: widget.photo.caption,
+                ),
+            ],
+          );
+        },
       ),
     );
   }

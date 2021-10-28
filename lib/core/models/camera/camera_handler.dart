@@ -173,7 +173,7 @@ class CameraHandler extends ChangeNotifier {
         superuserId: superuser.id,
         connectionId: connection.id,
         caption: caption,
-        status: 'created',
+        status: 'ready',
         unwatchedIds:
             connection.userIds.where((id) => id != superuser.id).toList(),
         deleted: false,

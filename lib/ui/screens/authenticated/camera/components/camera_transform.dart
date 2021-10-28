@@ -34,18 +34,20 @@ class CameraTransform extends StatelessWidget {
     //     ),
     //   );
     // } else {
-    if (cameraHandler.cameraController == null) {
-      return Container();
+    double aspect = constraints.maxWidth / constraints.maxHeight;
+    double scale = 0;
+    double cameraAspect = 1.7777777;
+
+    if (cameraHandler.cameraController != null) {
+      var camera = cameraHandler.cameraController!.value;
+      cameraAspect = camera.aspectRatio;
+
+      if (!camera.isInitialized) {
+        return Container();
+      }
     }
 
-    var camera = cameraHandler.cameraController!.value;
-    final aspect = constraints.maxWidth / constraints.maxHeight;
-
-    if (!camera.isInitialized) {
-      return Container();
-    }
-
-    var scale = aspect * camera.aspectRatio;
+    scale = aspect * cameraAspect;
     // to prevent scaling down, invert the value
     if (scale < 1) scale = 1 / scale;
 
