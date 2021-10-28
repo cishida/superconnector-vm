@@ -336,23 +336,23 @@ class ConnectionService {
   }
 
   // Connections list from snapshot
-  List<Connection> _connectionListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      return Connection.fromJson(
-        doc.id,
-        doc.data() as Map<String, dynamic>,
-      );
-    }).toList();
-  }
+  // List<Connection> _connectionListFromSnapshot(QuerySnapshot snapshot) {
+  //   return snapshot.docs.map((doc) {
+  //     return Connection.fromJson(
+  //       doc.id,
+  //       doc.data() as Map<String, dynamic>,
+  //     );
+  //   }).toList();
+  // }
 
-  // Get Connections stream
-  Stream<List<Connection>> getConnections(String userId) {
-    return connectionCollection
-        .where('userIds', arrayContains: userId)
-        .orderBy('mostRecentActivity', descending: true)
-        .snapshots()
-        .map(_connectionListFromSnapshot);
-  }
+  // // Get Connections stream
+  // Stream<List<Connection>> getConnections(String userId) {
+  //   return connectionCollection
+  //       .where('userIds', arrayContains: userId)
+  //       .orderBy('mostRecentActivity', descending: true)
+  //       .snapshots()
+  //       .map(_connectionListFromSnapshot);
+  // }
 
   Stream<List<Connection>> getConnectionsWithUsers(String userId) async* {
     var connectionsStream = connectionCollection

@@ -6,6 +6,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay_rolls.dart';
 
 class CameraOverlay extends StatefulWidget {
   const CameraOverlay({
@@ -298,98 +299,11 @@ class _CameraOverlayState extends State<CameraOverlay>
               duration: const Duration(
                 milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
               ),
-              child: CameraSelectedRolls(),
+              child: CameraOverlayRolls(),
             ),
           ),
         ),
       ],
-    );
-  }
-}
-
-class CameraSelectedRolls extends StatelessWidget {
-  const CameraSelectedRolls({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    TextStyle style = TextStyle(
-      color: Colors.white,
-      fontSize: 14.0,
-      fontWeight: FontWeight.w600,
-    );
-
-    return Consumer<List<Connection>>(
-      builder: (context, connections, child) {
-        return Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 3.0,
-            vertical: 16.0,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(32.0),
-            color: Colors.black.withOpacity(.25),
-          ),
-          child: IntrinsicHeight(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Text(
-                        '8',
-                        style: style.copyWith(fontSize: 24.0),
-                      ),
-                      Text(
-                        'Camera\nRolls',
-                        textAlign: TextAlign.center,
-                        style: style,
-                      ),
-                      Text(
-                        '5',
-                        style: style.copyWith(fontSize: 24.0),
-                      ),
-                      Text(
-                        'Selected',
-                        style: style,
-                      ),
-                      SelectedRollPhotos(),
-                      Image.asset(
-                        'assets/images/authenticated/record/selected-camera-rolls-arrow.png',
-                        width: 34.0,
-                        height: 34.0,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class SelectedRollPhotos extends StatelessWidget {
-  const SelectedRollPhotos({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 11.0,
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            height: 0.0,
-          ),
-        ],
-      ),
     );
   }
 }
