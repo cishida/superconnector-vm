@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 
-class VideoTileOverlay extends StatelessWidget {
-  const VideoTileOverlay({
+class MediaTileOverlay extends StatelessWidget {
+  const MediaTileOverlay({
     Key? key,
-    required this.video,
+    // required this.video,
+    required this.created,
+    this.caption = '',
   }) : super(key: key);
 
-  final Video video;
+  // final Video video;
+  final DateTime created;
+  final String caption;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class VideoTileOverlay extends StatelessWidget {
             child: Text(
               TimestampFormatter().getChatTileTime(
                 Timestamp.fromDate(
-                  video.created,
+                  created,
                 ),
               ),
               style: TextStyle(
@@ -35,7 +39,7 @@ class VideoTileOverlay extends StatelessWidget {
               ),
             ),
           ),
-          if (video.caption.isNotEmpty)
+          if (caption.isNotEmpty)
             Expanded(
               child: Container(
                 height: 24,
@@ -44,7 +48,7 @@ class VideoTileOverlay extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    video.caption.replaceAll('', '\u200B'),
+                    caption.replaceAll('', '\u200B'),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

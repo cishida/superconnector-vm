@@ -21,8 +21,7 @@ import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_names.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/vm_connection_tile.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/components/connections/photo_tile.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/components/connections/video_tile.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/media_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/relation_categories/relation_categories.dart';
@@ -474,7 +473,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                                     context: context,
                                     widget: ConnectionCarousel(
                                       connection: widget.connection,
-                                      videos: filteredVideos,
+                                      media: media,
                                       initialIndex: index,
                                     ),
                                     fullScreen: false,
@@ -483,7 +482,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                               );
                             }
                           },
-                          child: VideoTile(
+                          child: MediaTile(
                             video: media[index],
                           ),
                         );
@@ -504,7 +503,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                                     context: context,
                                     widget: ConnectionCarousel(
                                       connection: widget.connection,
-                                      videos: filteredVideos,
+                                      media: media,
                                       initialIndex: index,
                                     ),
                                     fullScreen: false,
@@ -513,7 +512,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                               );
                             }
                           },
-                          child: PhotoTile(
+                          child: MediaTile(
                             photo: media[index],
                           ),
                         );

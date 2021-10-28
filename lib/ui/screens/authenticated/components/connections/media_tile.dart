@@ -4,22 +4,29 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/photo/photo.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
+import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/video_tile_progress.dart';
+import 'package:superconnector_vm/core/utils/constants/strings.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/media_tile_overlay.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/media_tile_progress.dart';
 
-class PhotoTile extends StatefulWidget {
-  const PhotoTile({
+class MediaTile extends StatefulWidget {
+  const MediaTile({
     Key? key,
-    required this.photo,
+    this.video,
+    this.photo,
   }) : super(key: key);
 
-  final Photo photo;
+  final Video? video;
+  final Photo? photo;
 
   @override
-  _PhotoTileState createState() => _PhotoTileState();
+  _MediaTileState createState() => _MediaTileState();
 }
 
-class _PhotoTileState extends State<PhotoTile> {
+class _MediaTileState extends State<MediaTile> {
+  Superuser? _owner;
+
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
@@ -28,7 +35,22 @@ class _PhotoTileState extends State<PhotoTile> {
       return Container();
     }
 
-    bool unwatched = widget.photo.unwatchedIds.contains(superuser.id);
+    dynamic media;
+    String url = '';
+
+    if (widget.video != null) {
+      media = widget.video;
+      url = media.playbackIds.length > 0
+          ? 'https://image.mux.com/' +
+              media.playbackIds.first +
+              ConstantStrings.GIF_ARGS
+          : '';
+    } else {
+      media = widget.photo;
+      url = media.url;
+    }
+
+    bool unwatched = media.unwatchedIds.contains(superuser.id);
 
     return Container(
       height: 146.0,
@@ -46,11 +68,11 @@ class _PhotoTileState extends State<PhotoTile> {
           Positioned.fill(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(6.0),
-              child: widget.photo.url.length > 0
+              child: url.isNotEmpty
                   ? Image(
                       fit: BoxFit.fitWidth,
                       image: CachedNetworkImageProvider(
-                        widget.photo.url,
+                        url,
                       ),
                     )
                   : Stack(
@@ -67,7 +89,7 @@ class _PhotoTileState extends State<PhotoTile> {
                           color: Colors.black.withOpacity(.5),
                         ),
                         Center(
-                          child: VideoTileProgress(),
+                          child: MediaTileProgress(),
                         )
                       ],
                     ),
@@ -89,9 +111,10 @@ class _PhotoTileState extends State<PhotoTile> {
                 ),
               ),
             ),
-          // PhotoTileOverlay(
-          //   video: widget.video,
-          // ),
+          MediaTileOverlay(
+            created: media.created,
+            caption: media.caption,
+          ),
         ],
       ),
     );

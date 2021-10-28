@@ -3,16 +3,16 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
-class VideoTileProgress extends StatefulWidget {
-  const VideoTileProgress({
+class MediaTileProgress extends StatefulWidget {
+  const MediaTileProgress({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<VideoTileProgress> createState() => _VideoTileProgressState();
+  State<MediaTileProgress> createState() => _MediaTileProgressState();
 }
 
-class _VideoTileProgressState extends State<VideoTileProgress> {
+class _MediaTileProgressState extends State<MediaTileProgress> {
   @override
   Widget build(BuildContext context) {
     final cameraHandler = Provider.of<CameraHandler>(

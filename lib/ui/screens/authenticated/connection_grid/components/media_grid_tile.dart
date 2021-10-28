@@ -1,28 +1,52 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/photo/photo.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/video_tile_overlay.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/media_tile_overlay.dart';
 
-class VideoGridTile extends StatefulWidget {
-  const VideoGridTile({
+class MediaGridTile extends StatefulWidget {
+  const MediaGridTile({
     Key? key,
-    required this.video,
+    this.video,
+    this.photo,
   }) : super(key: key);
 
-  final Video video;
+  final Video? video;
+  final Photo? photo;
 
   @override
-  _VideoGridTileState createState() => _VideoGridTileState();
+  _MediaGridTileState createState() => _MediaGridTileState();
 }
 
-class _VideoGridTileState extends State<VideoGridTile> {
+class _MediaGridTileState extends State<MediaGridTile> {
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
+
+    if (superuser == null) {
+      return Container();
+    }
+
+    dynamic media;
+    String url = '';
+
+    if (widget.video != null) {
+      media = widget.video;
+      url = media.playbackIds.length > 0
+          ? 'https://image.mux.com/' +
+              media.playbackIds.first +
+              ConstantStrings.GIF_ARGS
+          : '';
+    } else {
+      media = widget.photo;
+      url = media.url;
+    }
+
+    bool unwatched = media.unwatchedIds.contains(superuser.id);
 
     return Container(
       decoration: BoxDecoration(
@@ -34,13 +58,11 @@ class _VideoGridTileState extends State<VideoGridTile> {
           Positioned.fill(
             child: ClipRRect(
               // borderRadius: BorderRadius.circular(3.0),
-              child: widget.video.playbackIds.length > 0
+              child: url.isNotEmpty
                   ? Image(
                       fit: BoxFit.fitWidth,
                       image: CachedNetworkImageProvider(
-                        'https://image.mux.com/' +
-                            widget.video.playbackIds.first +
-                            ConstantStrings.GIF_ARGS,
+                        url,
                       ),
                     )
                   : Center(
@@ -48,8 +70,7 @@ class _VideoGridTileState extends State<VideoGridTile> {
                     ),
             ),
           ),
-          if (superuser != null &&
-              widget.video.unwatchedIds.contains(superuser.id))
+          if (unwatched)
             Positioned.fill(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6.0),
@@ -79,8 +100,9 @@ class _VideoGridTileState extends State<VideoGridTile> {
           //     ),
           //   ),
           // ),
-          VideoTileOverlay(
-            video: widget.video,
+          MediaTileOverlay(
+            created: media.created,
+            caption: media.caption,
           ),
         ],
       ),

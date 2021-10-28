@@ -9,6 +9,7 @@ import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/carousel_photo.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/carousel_video_player.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
 
@@ -16,12 +17,12 @@ class ConnectionCarousel extends StatefulWidget {
   const ConnectionCarousel({
     Key? key,
     required this.connection,
-    required this.videos,
+    required this.media,
     this.initialIndex = 0,
   }) : super(key: key);
 
   final Connection connection;
-  final List<Video> videos;
+  final List media;
   final int initialIndex;
 
   @override
@@ -60,15 +61,25 @@ class _ConnectionCarouselState extends State<ConnectionCarousel> {
                 enableInfiniteScroll: false,
                 initialPage: widget.initialIndex,
               ),
-              items: widget.videos.map(
-                (video) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return CarouselVideoPlayer(
-                        video: video,
-                      );
-                    },
-                  );
+              items: widget.media.map(
+                (media) {
+                  if (media is Video) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return CarouselVideoPlayer(
+                          video: media,
+                        );
+                      },
+                    );
+                  } else {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return CarouselPhoto(
+                          photo: media,
+                        );
+                      },
+                    );
+                  }
                 },
               ).toList(),
             ),
