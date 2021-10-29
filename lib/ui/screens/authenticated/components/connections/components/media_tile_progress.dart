@@ -29,9 +29,7 @@ class _MediaTileProgressState extends State<MediaTileProgress> {
           valueColor: AlwaysStoppedAnimation<Color>(
             ConstantColors.PRIMARY,
           ),
-          value:
-              (cameraHandler.progress - (cameraHandler.progress > 25 ? 5 : 0)) /
-                  100,
+          value: cameraHandler.progress / 100,
         ),
       ),
     );
