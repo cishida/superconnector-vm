@@ -103,12 +103,13 @@ class _OnboardingWelcomeState extends State<OnboardingWelcome> {
                 TextFormField(
                   focusNode: _focusNode,
                   autofocus: false,
-                  autocorrect: false,
+                  autocorrect: true,
+                  enableSuggestions: true,
                   style: textFieldStyle.copyWith(
                     color: Colors.white,
                   ),
                   cursorColor: ConstantColors.PRIMARY,
-                  keyboardAppearance: Brightness.light,
+                  keyboardAppearance: Brightness.dark,
                   initialValue: _getPlaceholder(
                     superuser,
                   ),

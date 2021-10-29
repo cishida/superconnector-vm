@@ -96,6 +96,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                         child: Image.asset(
                           'assets/images/authenticated/add-connection-button.png',
                           width: 20.0,
+                          color: ConstantColors.DARK_BLUE_SECONDARY,
                         ),
                       ),
                     ),
@@ -123,6 +124,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                         child: Image.asset(
                           'assets/images/authenticated/search-icon.png',
                           width: 20.0,
+                          color: ConstantColors.DARK_BLUE_SECONDARY,
                         ),
                       ),
                     ),

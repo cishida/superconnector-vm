@@ -67,7 +67,7 @@ class _ContactsPermissionState extends State<ContactsPermission> {
       ),
       title: 'Contacts Access',
       subheader:
-          'This helps you browse your contacts and share video messages with them.',
+          'This helps you browse your contacts and save to shared camera rolls.',
       buttonText: 'Allow Contacts Access',
       onAllowAccess: () => _checkPermissions(),
     );

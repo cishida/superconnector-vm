@@ -70,7 +70,7 @@ class RecordPermission extends StatelessWidget {
       ),
       title: 'Camera Access',
       subheader:
-          'This helps you record video messages and send them to your connections.',
+          'This lets you connect to your shared camera and camera rolls.',
       buttonText: 'Allow Camera Access',
       onAllowAccess: () => _checkPermissions(context),
     );
