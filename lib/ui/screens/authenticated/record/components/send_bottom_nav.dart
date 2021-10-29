@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
+import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/caption_overlay.dart';
 
 class SendBottomNav extends StatelessWidget {
@@ -50,9 +51,30 @@ class SendBottomNav extends StatelessWidget {
                     ),
                   );
                 },
-                child: Image.asset(
-                  'assets/images/authenticated/record/camera-caption-icon.png',
-                  width: 20,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20.0),
+                  child: Image.asset(
+                    'assets/images/authenticated/record/camera-caption-icon.png',
+                    width: 20,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  SuperNavigator.handleContactsNavigation(
+                    context: context,
+                    confirm: () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Image.asset(
+                    'assets/images/authenticated/record/camera-search-icon.png',
+                    width: 24,
+                  ),
                 ),
               ),
               Spacer(),
