@@ -139,26 +139,26 @@ class ConnectionGridMenu extends StatelessWidget {
     );
   }
 
-  void _editRelationPressed(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.5,
-          child: RelationCategories(
-            connection: connection,
-          ),
-        );
-      },
-    ).then((value) {
-      // Navigator.of(context).pop();
-      // _showSnackbar(
-      //   context,
-      //   'Your family relation has been updated.',
-      // );
-    });
-  }
+  // void _editRelationPressed(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     builder: (context) {
+  //       return FractionallySizedBox(
+  //         heightFactor: 0.5,
+  //         child: RelationCategories(
+  //           connection: connection,
+  //         ),
+  //       );
+  //     },
+  //   ).then((value) {
+  //     // Navigator.of(context).pop();
+  //     // _showSnackbar(
+  //     //   context,
+  //     //   'Your family relation has been updated.',
+  //     // );
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -244,10 +244,10 @@ class ConnectionGridMenu extends StatelessWidget {
                         context: context,
                       ),
                     ),
-                    GridMenuItem(
-                      title: 'Edit Relation',
-                      onTap: () => _editRelationPressed(context),
-                    ),
+                    // GridMenuItem(
+                    //   title: 'Edit Relation',
+                    //   onTap: () => _editRelationPressed(context),
+                    // ),
                   ],
                 ),
               ),

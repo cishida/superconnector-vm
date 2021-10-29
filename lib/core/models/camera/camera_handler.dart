@@ -116,8 +116,6 @@ class CameraHandler extends ChangeNotifier {
 
   Future takePicture() async {
     if (cameraController != null && cameraController!.value.isInitialized) {
-      bool shouldFlip = false;
-
       // imageFile = await cameraController!.takePicture();
 
       XFile xfile = await cameraController!.takePicture();

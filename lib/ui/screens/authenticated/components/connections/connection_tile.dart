@@ -119,62 +119,62 @@ class _ConnectionTileState extends State<ConnectionTile>
 
     final String? tag = widget.connection.tags[superuser.id];
 
-    if ((tag == null || tag.isEmpty) &&
-        !widget.connection.isExampleConversation) {
-      if (widget.connection.userIds.length +
-              widget.connection.phoneNumberNameMap.length >
-          2) {
-        Navigator.of(context)
-            .push(
-              PageRouteBuilder(
-                opaque: false,
-                pageBuilder: (BuildContext context, _, __) {
-                  return OverlayInput(
-                    fieldName: 'Relation',
-                    explanation: OverlayExplanation(
-                      title: 'Group Name',
-                      subtitle: 'Only you can see your group names.',
-                    ),
-                    textCapitalization: TextCapitalization.words,
-                    textInputAction: TextInputAction.done,
-                    onChanged: (text) {
-                      if (mounted) {
-                        setState(() {
-                          _groupName = text;
-                        });
-                      }
-                    },
-                    onSubmit: (text) async {
-                      // onComplete();
-                      widget.connection.tags[superuser.id] = _groupName;
-                      widget.connection.update();
-                    },
-                  );
-                },
-              ),
-            )
-            .then(
-              (value) => onComplete(),
-            );
-      } else {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) {
-            return FractionallySizedBox(
-              heightFactor: 0.93,
-              child: Relations(
-                connection: widget.connection,
-              ),
-            );
-          },
-        ).then(
-          (value) => onComplete(),
-        );
-      }
-    } else {
-      onComplete();
-    }
+    // if ((tag == null || tag.isEmpty) &&
+    //     !widget.connection.isExampleConversation) {
+    //   if (widget.connection.userIds.length +
+    //           widget.connection.phoneNumberNameMap.length >
+    //       2) {
+    //     Navigator.of(context)
+    //         .push(
+    //           PageRouteBuilder(
+    //             opaque: false,
+    //             pageBuilder: (BuildContext context, _, __) {
+    //               return OverlayInput(
+    //                 fieldName: 'Relation',
+    //                 explanation: OverlayExplanation(
+    //                   title: 'Group Name',
+    //                   subtitle: 'Only you can see your group names.',
+    //                 ),
+    //                 textCapitalization: TextCapitalization.words,
+    //                 textInputAction: TextInputAction.done,
+    //                 onChanged: (text) {
+    //                   if (mounted) {
+    //                     setState(() {
+    //                       _groupName = text;
+    //                     });
+    //                   }
+    //                 },
+    //                 onSubmit: (text) async {
+    //                   // onComplete();
+    //                   widget.connection.tags[superuser.id] = _groupName;
+    //                   widget.connection.update();
+    //                 },
+    //               );
+    //             },
+    //           ),
+    //         )
+    //         .then(
+    //           (value) => onComplete(),
+    //         );
+    //   } else {
+    //     showModalBottomSheet(
+    //       context: context,
+    //       isScrollControlled: true,
+    //       builder: (context) {
+    //         return FractionallySizedBox(
+    //           heightFactor: 0.93,
+    //           child: Relations(
+    //             connection: widget.connection,
+    //           ),
+    //         );
+    //       },
+    //     ).then(
+    //       (value) => onComplete(),
+    //     );
+    //   }
+    // } else {
+    onComplete();
+    // }
   }
 
   @override
@@ -354,59 +354,59 @@ class _ConnectionTileState extends State<ConnectionTile>
                             ),
                             // Text('Names broken if seeing this'),
 
-                            if (!widget.connection.isExampleConversation &&
-                                (widget.connection.tags[superuser.id] == null ||
-                                    widget.connection.tags[superuser.id]!
-                                        .isEmpty))
-                              GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    builder: (context) {
-                                      return FractionallySizedBox(
-                                        heightFactor: 0.5,
-                                        child: RelationCategories(
-                                          connection: widget.connection,
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Text(
-                                  'Add a private tag',
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: ConstantColors.PRIMARY,
-                                  ),
-                                ),
-                              ),
+                            // if (!widget.connection.isExampleConversation &&
+                            //     (widget.connection.tags[superuser.id] == null ||
+                            //         widget.connection.tags[superuser.id]!
+                            //             .isEmpty))
+                            //   GestureDetector(
+                            //     behavior: HitTestBehavior.opaque,
+                            //     onTap: () {
+                            //       showModalBottomSheet(
+                            //         context: context,
+                            //         isScrollControlled: true,
+                            //         builder: (context) {
+                            //           return FractionallySizedBox(
+                            //             heightFactor: 0.5,
+                            //             child: RelationCategories(
+                            //               connection: widget.connection,
+                            //             ),
+                            //           );
+                            //         },
+                            //       );
+                            //     },
+                            //     child: Text(
+                            //       'Add a private tag',
+                            //       style: TextStyle(
+                            //         fontSize: 15.0,
+                            //         fontWeight: FontWeight.w400,
+                            //         color: ConstantColors.PRIMARY,
+                            //       ),
+                            //     ),
+                            //   ),
 
-                            if (widget.connection.isExampleConversation ||
-                                (widget.connection.tags[superuser.id] != null &&
-                                    widget.connection.tags[superuser.id]!
-                                        .isNotEmpty))
-                              Text(
-                                (widget.connection.isExampleConversation
-                                        ? 'Me'
-                                        : widget.connection.tags[superuser.id])
-                                    .toString(),
-                                style: TextStyle(
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: !widget.connection
-                                              .isExampleConversation &&
-                                          (widget.connection
-                                                      .tags[superuser.id] ==
-                                                  null ||
-                                              widget.connection
-                                                  .tags[superuser.id]!.isEmpty)
-                                      ? ConstantColors.PRIMARY
-                                      : textColor,
-                                ),
-                              ),
+                            // if (widget.connection.isExampleConversation ||
+                            //     (widget.connection.tags[superuser.id] != null &&
+                            //         widget.connection.tags[superuser.id]!
+                            //             .isNotEmpty))
+                            //   Text(
+                            //     (widget.connection.isExampleConversation
+                            //             ? 'Me'
+                            //             : widget.connection.tags[superuser.id])
+                            //         .toString(),
+                            //     style: TextStyle(
+                            //       fontSize: 15.0,
+                            //       fontWeight: FontWeight.w400,
+                            //       color: !widget.connection
+                            //                   .isExampleConversation &&
+                            //               (widget.connection
+                            //                           .tags[superuser.id] ==
+                            //                       null ||
+                            //                   widget.connection
+                            //                       .tags[superuser.id]!.isEmpty)
+                            //           ? ConstantColors.PRIMARY
+                            //           : textColor,
+                            //     ),
+                            //   ),
                           ],
                         ),
                       ),
