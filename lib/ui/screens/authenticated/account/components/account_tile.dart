@@ -84,7 +84,7 @@ class _AccountTileState extends State<AccountTile> {
                                           size.width < 400
                                       ? 14.0
                                       : 16.0,
-                                  fontWeight: FontWeight.w600,
+                                  // fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ),
@@ -101,7 +101,7 @@ class _AccountTileState extends State<AccountTile> {
                 ),
                 Spacer(),
                 Underline(
-                  color: Colors.white.withOpacity(.2),
+                  color: Colors.white.withOpacity(.12),
                 ),
               ],
             ),

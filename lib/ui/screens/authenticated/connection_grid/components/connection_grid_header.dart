@@ -52,7 +52,7 @@ class ConnectionGridHeader extends StatelessWidget {
     return Column(
       children: [
         Container(
-          color: ConstantColors.OFF_WHITE,
+          color: Colors.white,
           height: 55.0,
           width: MediaQuery.of(context).size.width,
           child: Row(
@@ -63,7 +63,7 @@ class ConnectionGridHeader extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 12),
                   child: ChevronBackButton(
-                    color: ConstantColors.PRIMARY,
+                    color: ConstantColors.DARK_BLUE_SECONDARY,
                     onBack: () {
                       Navigator.pop(context);
                     },
@@ -80,7 +80,7 @@ class ConnectionGridHeader extends StatelessWidget {
                             child: Text(
                               superuser.fullName,
                               style: TextStyle(
-                                color: Colors.black.withOpacity(.87),
+                                color: ConstantColors.DARK_BLUE_SECONDARY,
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w600,
                               ),

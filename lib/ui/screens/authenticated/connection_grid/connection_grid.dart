@@ -177,34 +177,42 @@ class _ConnectionGridState extends State<ConnectionGrid> {
         appBar: CustomAppBar(
           backgroundColor: ConstantColors.OFF_WHITE,
         ),
-        floatingActionButton: FloatingActionButton(
-          elevation: 10,
-          backgroundColor: Colors.transparent,
-          child: Container(
-            width: 64.0,
-            height: 64.0,
-            decoration: BoxDecoration(
-              color: ConstantColors.PRIMARY,
-              borderRadius: BorderRadius.circular(32.0),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 1.0),
-              child: Center(
-                child: Image.asset(
-                  'assets/images/authenticated/bottom_nav/bottom-nav-camera.png',
-                  width: 30.0,
+        floatingActionButton: Container(
+          height: 64.0,
+          width: 64.0,
+          decoration: BoxDecoration(
+            color: ConstantColors.PRIMARY,
+            borderRadius: BorderRadius.circular(32.0),
+          ),
+          child: FittedBox(
+            child: FloatingActionButton(
+              elevation: 10,
+              backgroundColor: Colors.transparent,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ConstantColors.PRIMARY,
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 1.0),
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/authenticated/bottom_nav/bottom-nav-camera.png',
+                      width: 30.0,
+                    ),
+                  ),
                 ),
               ),
+              onPressed: () {
+                BlockUtility blockUtility = BlockUtility(
+                  context: context,
+                  superuser: superuser,
+                  connection: widget.connection,
+                );
+                blockUtility.handleBlockedRecordNavigation();
+              },
             ),
           ),
-          onPressed: () {
-            BlockUtility blockUtility = BlockUtility(
-              context: context,
-              superuser: superuser,
-              connection: widget.connection,
-            );
-            blockUtility.handleBlockedRecordNavigation();
-          },
         ),
 
         // NewConnectionButton(
@@ -305,7 +313,7 @@ class _ConnectionGridState extends State<ConnectionGrid> {
                             ),
                             margin: const EdgeInsets.only(top: 1.0),
                             decoration: BoxDecoration(
-                              color: ConstantColors.BLUE_7,
+                              color: ConstantColors.OFF_WHITE,
                               // image: DecorationImage(
                               //   fit: BoxFit.cover,
                               //   image: AssetImage(

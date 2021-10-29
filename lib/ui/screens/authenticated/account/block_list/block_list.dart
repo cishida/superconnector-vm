@@ -26,53 +26,75 @@ class BlockList extends StatelessWidget {
       body: Container(
         width: size.width,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage(
-              'assets/images/authenticated/gradient-background.png',
-            ),
-          ),
+          color: Colors.white,
+          // image: DecorationImage(
+          //   fit: BoxFit.cover,
+          //   image: AssetImage(
+          //     'assets/images/authenticated/gradient-background.png',
+          //   ),
+          // ),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0),
             topRight: Radius.circular(30.0),
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: BottomSheetTab(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20.0,
-                bottom: 19.0,
+            Container(
+              width: size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    'assets/images/authenticated/dark-blue-orange-gradient.png',
+                  ),
+                ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0),
+                ),
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Block List',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20.0,
-                        ),
+                  Center(
+                    child: BottomSheetTab(),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                      top: 5.0,
+                      // left: 20.0,
+                      bottom: 19.0,
                     ),
-                    child: Text(
-                      "You've blocked these contacts.",
-                      style: Theme.of(context).textTheme.bodyText1!,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Block List',
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 20.0,
+                                  ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 5.0,
+                          ),
+                          child: Text(
+                            "You've blocked these contacts.",
+                            style: Theme.of(context).textTheme.bodyText1!,
+                          ),
+                        ),
+                      ],
                     ),
+                  ),
+                  Underline(
+                    color: Colors.white.withOpacity(.2),
                   ),
                 ],
               ),
-            ),
-            Underline(
-              color: Colors.white.withOpacity(.2),
             ),
             Expanded(
               child: ListView.builder(

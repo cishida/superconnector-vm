@@ -72,14 +72,14 @@ class _BlockedTileState extends State<BlockedTile> {
                     _superuser!.fullName,
                     style: TextStyle(
                       fontSize: 18.0,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                   Text(
                     _superuser!.phoneNumber,
                     style: TextStyle(
                       fontSize: 15.0,
-                      color: Colors.white.withOpacity(.5),
+                      color: Colors.black.withOpacity(.5),
                     ),
                   ),
                 ],
@@ -97,7 +97,7 @@ class _BlockedTileState extends State<BlockedTile> {
                     'assets/images/authenticated/unblock-button.png',
                     height: 20.0,
                     width: 20.0,
-                    color: Colors.white.withOpacity(.5),
+                    color: Colors.black.withOpacity(.5),
                   ),
                 ),
               ),

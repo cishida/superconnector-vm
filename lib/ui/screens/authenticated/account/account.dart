@@ -144,8 +144,9 @@ class _AccountState extends State<Account> {
                         'Settings',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 36.0,
+                          fontSize: 30.0,
                           fontWeight: FontWeight.w700,
+                          // fontFamily: 'SourceSansPro',
                         ),
                       ),
                     ),
