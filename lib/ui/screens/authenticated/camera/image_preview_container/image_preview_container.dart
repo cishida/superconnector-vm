@@ -19,6 +19,8 @@ import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/components/send_bottom_nav.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 
 class ImagePreviewContainer extends StatefulWidget {
   const ImagePreviewContainer({
@@ -260,24 +262,28 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
             );
           },
         ),
-        bottomNavigationBar: BottomAppBar(
-          color: ConstantColors.DARK_BLUE,
-          child: AnimatedSize(
-            duration: Duration(
-              milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
-            ),
-            child: Container(
-              alignment: Alignment.centerRight,
-              height: cameraHandler.browsingFilters
-                  ? ConstantValues.BROWSE_FILTER_HEIGHT
-                  : ConstantValues.BOTTOM_NAV_HEIGHT,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-              ),
-              child: cameraHandler.browsingFilters ? Container() : sendButton,
-            ),
-          ),
+        bottomNavigationBar: SendBottomNav(
+          browseFilters: Container(),
+          sendButton: sendButton,
         ),
+        // bottomNavigationBar: BottomAppBar(
+        //   color: ConstantColors.DARK_BLUE,
+        //   child: AnimatedSize(
+        //     duration: Duration(
+        //       milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+        //     ),
+        //     child: Container(
+        //       alignment: Alignment.centerRight,
+        //       height: cameraHandler.browsingFilters
+        //           ? ConstantValues.BROWSE_FILTER_HEIGHT
+        //           : ConstantValues.BOTTOM_NAV_HEIGHT,
+        //       padding: const EdgeInsets.symmetric(
+        //         horizontal: 20.0,
+        //       ),
+        //       child: cameraHandler.browsingFilters ? Container() : sendButton,
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }

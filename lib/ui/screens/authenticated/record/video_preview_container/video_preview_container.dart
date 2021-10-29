@@ -19,9 +19,12 @@ import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_options.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/caption_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/components/send_bottom_nav.dart';
 import 'dart:ui' as ui;
 
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
@@ -252,7 +255,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       );
     });
 
-    Widget browsefilters = Container(
+    Widget browseFilters = Container(
       child: Row(
         children: filterPreviews,
       ),
@@ -400,28 +403,14 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                 position: _position,
                 caption: cameraHandler.caption,
               ),
-              CameraOptions(),
+              // CameraOptions(),
             ],
           );
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: ConstantColors.DARK_BLUE,
-        child: AnimatedSize(
-          duration: Duration(
-            milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
-          ),
-          child: Container(
-            alignment: Alignment.centerRight,
-            height: cameraHandler.browsingFilters
-                ? ConstantValues.BROWSE_FILTER_HEIGHT
-                : ConstantValues.BOTTOM_NAV_HEIGHT,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-            ),
-            child: cameraHandler.browsingFilters ? browsefilters : sendButton,
-          ),
-        ),
+      bottomNavigationBar: SendBottomNav(
+        browseFilters: browseFilters,
+        sendButton: sendButton,
       ),
     );
   }
