@@ -118,12 +118,13 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                   controller: _tabController,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
+                    Account(),
                     Camera(),
                     // Record(
                     //   shouldGoBack: false,
                     // ),
                     Home(),
-                    Account(),
+
                     // Container(),
                     // Container(),
                     // Container(),
@@ -193,15 +194,23 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     Align(
                       alignment: Alignment.centerLeft,
                       child: BottomNavButton(
-                        title: 'camera',
+                        title: 'settings',
+                        // showBadge: false,
                         selected: _tabController.index == 0,
                       ),
                     ),
-
                     BottomNavButton(
-                      title: 'records',
+                      title: 'camera',
                       selected: _tabController.index == 1,
-                      imageHeight: 24.0,
+                    ),
+
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: BottomNavButton(
+                        title: 'records',
+                        selected: _tabController.index == 2,
+                        imageHeight: 24.0,
+                      ),
                     ),
                     // Padding(
                     //   padding: const EdgeInsets.only(bottom: 4.0),
@@ -215,14 +224,6 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     //   showBadge: showChatsBadge,
                     //   selected: _tabController.index == 3,
                     // ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: BottomNavButton(
-                        title: 'settings',
-                        // showBadge: false,
-                        selected: _tabController.index == 2,
-                      ),
-                    ),
                   ],
                 ),
               ),
