@@ -101,6 +101,8 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
 
     List<String> phoneNumbers = [];
 
+    selectedContacts.resetConnections();
+
     if (widget.connection == null) {
       selectedContacts.superusers.forEach((superuser) async {
         selectedContacts.addConnection(connections
@@ -171,10 +173,10 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
           _pressed = true;
         });
 
-        var selectedContacts = Provider.of<SelectedContacts>(
-          context,
-          listen: false,
-        );
+        // var selectedContacts = Provider.of<SelectedContacts>(
+        //   context,
+        //   listen: false,
+        // );
 
         // if (widget.connection == null) {
         //   print('SEND PHOTO NO CONNECTION');

@@ -26,62 +26,51 @@ class CameraOverlayRolls extends StatelessWidget {
 
     return Consumer<List<Connection>>(
       builder: (context, connections, child) {
-        return GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            SuperNavigator.handleContactsNavigation(
-              context: context,
-              confirm: () {
-                Navigator.of(context).pop();
-              },
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 3.0,
-              vertical: 16.0,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(32.0),
-              color: Colors.black.withOpacity(.25),
-            ),
-            child: IntrinsicHeight(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Text(
-                          connections.length.toString(),
-                          style: style.copyWith(fontSize: 24.0),
-                        ),
-                        Text(
-                          'Camera\nRolls',
-                          textAlign: TextAlign.center,
-                          style: style,
-                        ),
-                        Text(
-                          (selectedContacts.superusers.length +
-                                  selectedContacts.contacts.length +
-                                  1)
-                              .toString(),
-                          style: style.copyWith(fontSize: 24.0),
-                        ),
-                        Text(
-                          'Selected',
-                          style: style,
-                        ),
-                        CameraOverlayRollPhotos(),
-                        Image.asset(
-                          'assets/images/authenticated/record/selected-camera-rolls-arrow.png',
-                          width: 34.0,
-                          height: 34.0,
-                        ),
-                      ],
-                    ),
+        return Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 3.0,
+            vertical: 16.0,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(32.0),
+            color: Colors.black.withOpacity(.25),
+          ),
+          child: IntrinsicHeight(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        connections.length.toString(),
+                        style: style.copyWith(fontSize: 24.0),
+                      ),
+                      Text(
+                        'Camera\nRolls',
+                        textAlign: TextAlign.center,
+                        style: style,
+                      ),
+                      Text(
+                        (selectedContacts.superusers.length +
+                                selectedContacts.contacts.length +
+                                1)
+                            .toString(),
+                        style: style.copyWith(fontSize: 24.0),
+                      ),
+                      Text(
+                        'Selected',
+                        style: style,
+                      ),
+                      CameraOverlayRollPhotos(),
+                      Image.asset(
+                        'assets/images/authenticated/record/selected-camera-rolls-arrow.png',
+                        width: 34.0,
+                        height: 34.0,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );

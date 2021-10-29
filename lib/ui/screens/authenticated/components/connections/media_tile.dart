@@ -69,12 +69,30 @@ class _MediaTileState extends State<MediaTile> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(6.0),
               child: url.isNotEmpty
-                  ? Image(
-                      fit: BoxFit.fitWidth,
-                      image: CachedNetworkImageProvider(
-                        url,
+                  ? CachedNetworkImage(
+                      imageUrl: url,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                            // colorFilter: ColorFilter.mode(
+                            //   Colors.red,
+                            //   BlendMode.colorBurn,
+                            // ),
+                          ),
+                        ),
                       ),
+                      // placeholder: (context, url) =>
+                      //     CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     )
+                  // Image(
+                  //     fit: BoxFit.fitWidth,
+                  //     image: CachedNetworkImageProvider(
+                  //       url,
+                  //     ),
+                  //   )
                   : Stack(
                       children: [
                         Positioned(

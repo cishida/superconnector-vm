@@ -64,6 +64,10 @@ class SelectedContacts extends ChangeNotifier {
     _connections = [];
   }
 
+  void resetConnections() {
+    _connections = [];
+  }
+
   bool isEmpty() {
     return _contacts.isEmpty && _superusers.isEmpty && _connections.isEmpty;
   }

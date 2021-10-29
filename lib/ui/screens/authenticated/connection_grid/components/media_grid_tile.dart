@@ -59,12 +59,16 @@ class _MediaGridTileState extends State<MediaGridTile> {
             child: ClipRRect(
               // borderRadius: BorderRadius.circular(3.0),
               child: url.isNotEmpty
-                  ? Image(
-                      fit: BoxFit.fitWidth,
-                      image: CachedNetworkImageProvider(
-                        url,
-                      ),
+                  ? CachedNetworkImage(
+                      imageUrl: url,
+                      fit: BoxFit.cover,
                     )
+                  // Image(
+                  //     fit: BoxFit.fitWidth,
+                  //     image: CachedNetworkImageProvider(
+                  //       url,
+                  //     ),
+                  //   )
                   : Center(
                       child: CircularProgressIndicator(),
                     ),

@@ -6,6 +6,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
+import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay_rolls.dart';
 
 class CameraOverlay extends StatefulWidget {
@@ -335,9 +336,20 @@ class _CameraOverlayState extends State<CameraOverlay>
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 3.0),
-                    child: CameraOverlayRolls(),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      SuperNavigator.handleContactsNavigation(
+                        context: context,
+                        confirm: () {
+                          Navigator.of(context).pop();
+                        },
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 3.0),
+                      child: CameraOverlayRolls(),
+                    ),
                   ),
                 ],
               ),

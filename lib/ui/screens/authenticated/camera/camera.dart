@@ -418,12 +418,140 @@ class _CameraState extends State<Camera>
             body: Stack(
               alignment: Alignment.center,
               children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CameraTransform(
+                      constraints: constraints,
+                      child: CameraPreview(
+                        cameraHandler.cameraController!,
+                      ),
+                    ),
+                    // ClipRRect(
+                    //   borderRadius: BorderRadius.only(
+                    //     bottomLeft: Radius.circular(10),
+                    //     bottomRight: Radius.circular(10),
+                    //   ),
+                    //   child: Center(
+                    //     child: AspectRatio(
+                    //       aspectRatio: 1 /
+                    //           cameraHandler
+                    //               .cameraController!.value.aspectRatio,
+                    //       child:
+                    //           CameraPreview(cameraHandler.cameraController!),
+                    //     ),
+                    //   ),
+
+                    //   // Transform.scale(
+                    //   //   scale: 9 /
+                    //   //       14 /
+                    //   //       (constraints.maxWidth /
+                    //   //           constraints.maxHeight),
+                    //   //   child: AspectRatio(
+                    //   //     aspectRatio: (constraints.maxWidth /
+                    //   //         constraints.maxHeight),
+                    //   //     child: OverflowBox(
+                    //   //       alignment: Alignment.topCenter,
+                    //   //       child: FittedBox(
+                    //   //         fit: BoxFit.fitHeight,
+                    //   //         child: Container(
+                    //   //           width: constraints.maxWidth,
+                    //   //           height: constraints.maxHeight,
+                    //   //           child: Stack(
+                    //   //             children: <Widget>[
+                    //   //               if (cameraHandler.cameraController !=
+                    //   //                   null)
+                    //   //                 AnimatedOpacity(
+                    //   //                   opacity: cameraHandler
+                    //   //                               .cameraController !=
+                    //   //                           null
+                    //   //                       ? 1.0
+                    //   //                       : 0.0,
+                    //   //                   duration: const Duration(
+                    //   //                     milliseconds: 500,
+                    //   //                   ),
+                    //   //                   child: CameraPreview(
+                    //   //                     cameraHandler.cameraController!,
+                    //   //                   ),
+                    //   //                 ),
+                    //   //             ],
+                    //   //           ),
+                    //   //         ),
+                    //   //       ),
+                    //   //     ),
+                    //   //   ),
+                    //   // ),
+                    // ),
+                    if (widget.connection != null)
+                      Positioned(
+                        top: 71.0,
+                        left: 0.0,
+                        child: ChevronBackButton(
+                          color: Colors.white,
+                          onBack: () async {
+                            Navigator.of(context).pop();
+                            await cameraHandler.disposeCamera();
+                          },
+                        ),
+                      ),
+
+                    // Using mask over white progress indicator for gradient
+                    // Positioned(
+                    //   bottom: 0,
+                    //   child: Container(
+                    //     width: constraints.maxWidth,
+                    //     child: Stack(
+                    //       children: [
+                    //         ShaderMask(
+                    //           shaderCallback: (rect) {
+                    //             return LinearGradient(
+                    //               begin: Alignment.centerLeft,
+                    //               end: Alignment.centerRight,
+                    //               stops: [
+                    //                 0.0,
+                    //                 .33,
+                    //                 .66,
+                    //                 1.0,
+                    //               ],
+                    //               colors: [
+                    //                 Color(0xFF0AD3FF),
+                    //                 Color(0xFFA132F5),
+                    //                 Color(0xFFF46F66),
+                    //                 Color(0xFFF1943B),
+                    //               ],
+                    //             ).createShader(rect);
+                    //           },
+                    //           child: LinearProgressIndicator(
+                    //             color: Colors.transparent,
+                    //             minHeight: 6.0,
+                    //             backgroundColor: Colors.transparent,
+                    //             value: _animationController.value,
+                    //             valueColor: AlwaysStoppedAnimation<Color>(
+                    //               Colors.white,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
+                ),
+                // CameraOptions(
+                //   toggleCamera: _toggleCameraLens,
+                //   controller: cameraHandler.cameraController,
+                // ),
+                // CameraToggle(
+                //   controller: cameraHandler.cameraController,
+                //   toggleCamera: _toggleCameraLens,
+                // ),
                 Listener(
                   onPointerDown: (PointerDownEvent event) async {
                     setState(() {
                       _pointerDown = true;
                     });
-                    if (event.position.dy < 200) {
+                    if (event.position.dy < constraints.maxHeight / 2 ||
+                        event.position.dx > constraints.maxWidth - 100) {
                       return;
                     }
                     // _animationController.forward();
@@ -440,140 +568,13 @@ class _CameraState extends State<Camera>
                     // }
                     await _stopVideoRecording();
                   },
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      CameraTransform(
-                        constraints: constraints,
-                        child: CameraPreview(
-                          cameraHandler.cameraController!,
-                        ),
-                      ),
-                      // ClipRRect(
-                      //   borderRadius: BorderRadius.only(
-                      //     bottomLeft: Radius.circular(10),
-                      //     bottomRight: Radius.circular(10),
-                      //   ),
-                      //   child: Center(
-                      //     child: AspectRatio(
-                      //       aspectRatio: 1 /
-                      //           cameraHandler
-                      //               .cameraController!.value.aspectRatio,
-                      //       child:
-                      //           CameraPreview(cameraHandler.cameraController!),
-                      //     ),
-                      //   ),
-
-                      //   // Transform.scale(
-                      //   //   scale: 9 /
-                      //   //       14 /
-                      //   //       (constraints.maxWidth /
-                      //   //           constraints.maxHeight),
-                      //   //   child: AspectRatio(
-                      //   //     aspectRatio: (constraints.maxWidth /
-                      //   //         constraints.maxHeight),
-                      //   //     child: OverflowBox(
-                      //   //       alignment: Alignment.topCenter,
-                      //   //       child: FittedBox(
-                      //   //         fit: BoxFit.fitHeight,
-                      //   //         child: Container(
-                      //   //           width: constraints.maxWidth,
-                      //   //           height: constraints.maxHeight,
-                      //   //           child: Stack(
-                      //   //             children: <Widget>[
-                      //   //               if (cameraHandler.cameraController !=
-                      //   //                   null)
-                      //   //                 AnimatedOpacity(
-                      //   //                   opacity: cameraHandler
-                      //   //                               .cameraController !=
-                      //   //                           null
-                      //   //                       ? 1.0
-                      //   //                       : 0.0,
-                      //   //                   duration: const Duration(
-                      //   //                     milliseconds: 500,
-                      //   //                   ),
-                      //   //                   child: CameraPreview(
-                      //   //                     cameraHandler.cameraController!,
-                      //   //                   ),
-                      //   //                 ),
-                      //   //             ],
-                      //   //           ),
-                      //   //         ),
-                      //   //       ),
-                      //   //     ),
-                      //   //   ),
-                      //   // ),
-                      // ),
-                      if (widget.connection != null)
-                        Positioned(
-                          top: 71.0,
-                          left: 0.0,
-                          child: ChevronBackButton(
-                            color: Colors.white,
-                            onBack: () async {
-                              Navigator.of(context).pop();
-                              await cameraHandler.disposeCamera();
-                            },
-                          ),
-                        ),
-
-                      // Using mask over white progress indicator for gradient
-                      // Positioned(
-                      //   bottom: 0,
-                      //   child: Container(
-                      //     width: constraints.maxWidth,
-                      //     child: Stack(
-                      //       children: [
-                      //         ShaderMask(
-                      //           shaderCallback: (rect) {
-                      //             return LinearGradient(
-                      //               begin: Alignment.centerLeft,
-                      //               end: Alignment.centerRight,
-                      //               stops: [
-                      //                 0.0,
-                      //                 .33,
-                      //                 .66,
-                      //                 1.0,
-                      //               ],
-                      //               colors: [
-                      //                 Color(0xFF0AD3FF),
-                      //                 Color(0xFFA132F5),
-                      //                 Color(0xFFF46F66),
-                      //                 Color(0xFFF1943B),
-                      //               ],
-                      //             ).createShader(rect);
-                      //           },
-                      //           child: LinearProgressIndicator(
-                      //             color: Colors.transparent,
-                      //             minHeight: 6.0,
-                      //             backgroundColor: Colors.transparent,
-                      //             value: _animationController.value,
-                      //             valueColor: AlwaysStoppedAnimation<Color>(
-                      //               Colors.white,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
+                  child: CameraOverlay(
+                    controller: cameraHandler.cameraController,
+                    currentVideoSeconds: _currentVideoSeconds,
+                    toggleCamera: _toggleCameraLens,
+                    connection: widget.connection,
+                    pointerDown: _pointerDown,
                   ),
-                ),
-                // CameraOptions(
-                //   toggleCamera: _toggleCameraLens,
-                //   controller: cameraHandler.cameraController,
-                // ),
-                // CameraToggle(
-                //   controller: cameraHandler.cameraController,
-                //   toggleCamera: _toggleCameraLens,
-                // ),
-                CameraOverlay(
-                  controller: cameraHandler.cameraController,
-                  currentVideoSeconds: _currentVideoSeconds,
-                  toggleCamera: _toggleCameraLens,
-                  connection: widget.connection,
-                  pointerDown: _pointerDown,
                 ),
               ],
             ),

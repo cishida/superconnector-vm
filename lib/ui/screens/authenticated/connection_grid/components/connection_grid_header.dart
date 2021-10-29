@@ -78,7 +78,7 @@ class ConnectionGridHeader extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Text(
-                              superuser!.fullName,
+                              superuser.fullName,
                               style: TextStyle(
                                 color: Colors.black.withOpacity(.87),
                                 fontSize: 18.0,

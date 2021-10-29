@@ -116,6 +116,8 @@ class CameraHandler extends ChangeNotifier {
 
   Future takePicture() async {
     if (cameraController != null && cameraController!.value.isInitialized) {
+      bool shouldFlip = false;
+
       // imageFile = await cameraController!.takePicture();
 
       XFile xfile = await cameraController!.takePicture();
@@ -123,12 +125,16 @@ class CameraHandler extends ChangeNotifier {
       List<int> imageBytes = await xfile.readAsBytes();
 
       decodedImage = img.decodeImage(imageBytes);
-      img.Image fixedImage = img.flipHorizontal(decodedImage!);
+
+      if (cameraController!.description.lensDirection ==
+          CameraLensDirection.front) {
+        decodedImage = img.flipHorizontal(decodedImage!);
+      }
 
       File file = File(xfile.path);
 
       imageFile = await file.writeAsBytes(
-        img.encodeJpg(fixedImage),
+        img.encodeJpg(decodedImage!),
         flush: true,
       );
 
