@@ -62,7 +62,7 @@ class SuperuserItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    tag ?? 'Connected',
+                    'Connected',
                     style: TextStyle(
                       fontSize: 15.0,
                       color: ConstantColors.navItemSub,

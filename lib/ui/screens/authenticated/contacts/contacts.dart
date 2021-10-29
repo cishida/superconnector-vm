@@ -325,9 +325,10 @@ class _ContactsState extends State<Contacts> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            widget.tag == null
-                                ? 'Camera Rolls'
-                                : 'Send Request',
+                            // widget.tag == null
+                            //     ? 'Camera Rolls'
+                            //     : 'Send Request',
+                            'Camera Rolls',
                             textAlign: TextAlign.center,
                             style:
                                 Theme.of(context).textTheme.headline5!.copyWith(
@@ -341,13 +342,14 @@ class _ContactsState extends State<Contacts> {
                               top: 5.0,
                             ),
                             child: Text(
-                              widget.tag == null
-                                  ? 'Choose who you want to share with.'
-                                  : widget.isGroup
-                                      ? 'Add people to your family group.'
-                                      : 'Invite your ' +
-                                          widget.tag!.toLowerCase() +
-                                          ' to connect.',
+                              'Share photos and videos 1-on-1.',
+                              // widget.tag == null
+                              //     ? 'Choose who you want to share with.'
+                              //     : widget.isGroup
+                              //         ? 'Add people to your family group.'
+                              //         : 'Invite your ' +
+                              //             widget.tag!.toLowerCase() +
+                              //             ' to connect.',
                               style: Theme.of(context).textTheme.bodyText1!,
                             ),
                           ),

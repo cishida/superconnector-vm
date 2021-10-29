@@ -105,6 +105,9 @@ class _CameraOverlayState extends State<CameraOverlay>
     bool _isRecording =
         widget.controller != null && widget.controller!.value.isRecordingVideo;
 
+    double recordButtonBottom = 70.0;
+    double recordButtonDiameter = 86.0;
+
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -180,15 +183,15 @@ class _CameraOverlayState extends State<CameraOverlay>
           ),
         ),
         Positioned(
-          bottom: 93.0,
+          bottom: recordButtonBottom,
           child: AnimatedOpacity(
             opacity: widget.pointerDown ? 1.0 : 0.0,
             duration: const Duration(
               milliseconds: 100,
             ),
             child: Container(
-              width: 80.0,
-              height: 80.0,
+              width: recordButtonDiameter,
+              height: recordButtonDiameter,
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(.6),
                 shape: BoxShape.circle,
@@ -201,15 +204,15 @@ class _CameraOverlayState extends State<CameraOverlay>
           ),
         ),
         Positioned(
-          bottom: 93.0,
+          bottom: recordButtonBottom,
           child: AnimatedOpacity(
             opacity: !_isRecording ? 1.0 : 0.0,
             duration: const Duration(
               milliseconds: 100,
             ),
             child: Container(
-              width: 80.0,
-              height: 80.0,
+              width: recordButtonDiameter,
+              height: recordButtonDiameter,
               decoration: BoxDecoration(
                 color: Colors.transparent,
                 shape: BoxShape.circle,
@@ -222,7 +225,7 @@ class _CameraOverlayState extends State<CameraOverlay>
           ),
         ),
         Positioned(
-          bottom: 93.0 - 32.0,
+          bottom: recordButtonBottom - 32.0,
           child: AnimatedOpacity(
             opacity: _isRecording ? 1.0 : 0.0,
             duration: const Duration(
@@ -248,8 +251,8 @@ class _CameraOverlayState extends State<CameraOverlay>
                 );
               },
               child: Container(
-                width: 80.0,
-                height: 80.0,
+                width: recordButtonDiameter,
+                height: recordButtonDiameter,
                 decoration: ShapeDecoration(
                   color: Colors.red,
                   shape: CircleBorder(),
@@ -259,7 +262,7 @@ class _CameraOverlayState extends State<CameraOverlay>
           ),
         ),
         Positioned.fill(
-          bottom: 39.0,
+          bottom: 22.0,
           left: 0.0,
           child: Align(
             alignment: Alignment.bottomCenter,
@@ -278,7 +281,7 @@ class _CameraOverlayState extends State<CameraOverlay>
                   color: Colors.white.withOpacity(.20),
                 ),
                 child: Text(
-                  'Tap for photo. Hold for video.',
+                  'Hold for video, tap for photo',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
