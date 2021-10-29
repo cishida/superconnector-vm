@@ -301,10 +301,10 @@ class CameraHandler extends ChangeNotifier {
   }
 
   void navigateToRolls(BuildContext context) {
-    Navigator.of(context).popUntil((route) => route.isFirst);
     Provider.of<AuthenticatedController>(
       context,
       listen: false,
-    ).setIndex(1);
+    ).setIndex(2);
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

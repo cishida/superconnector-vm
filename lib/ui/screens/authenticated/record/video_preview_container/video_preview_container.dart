@@ -199,6 +199,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       });
     }
 
+    cameraHandler.navigateToRolls(context);
     await cameraHandler.createVideos(
       selectedContacts.connections,
       currentSuperuser,
@@ -210,7 +211,6 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
 
     await _showInviteCard(phoneNumbers);
     // selectedContacts.reset();
-    cameraHandler.navigateToRolls(context);
   }
 
   @override

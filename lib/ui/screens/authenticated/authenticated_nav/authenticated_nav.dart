@@ -83,8 +83,8 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
     Provider.of<AuthenticatedController>(
       context,
       listen: false,
-    ).setIndex(0);
-    _tabController.animateTo(0);
+    ).setIndex(1);
+    _tabController.animateTo(1);
   }
 
   @override
@@ -148,7 +148,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                   indicatorColor: Colors.transparent,
                   automaticIndicatorColorAdjustment: false,
                   onTap: (value) {
-                    if (value == 0) {
+                    if (value == 1) {
                       handleRecordNavigation(context: context);
                     } else {
                       Provider.of<AuthenticatedController>(

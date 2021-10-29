@@ -139,16 +139,15 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
       });
     }
 
+    cameraHandler.navigateToRolls(context);
     await cameraHandler.createPhotos(
       selectedContacts.connections,
       currentSuperuser,
     );
 
     await cameraHandler.disposeCamera();
-
     await _showInviteCard(phoneNumbers);
     // selectedContacts.reset();
-    cameraHandler.navigateToRolls(context);
   }
 
   @override
