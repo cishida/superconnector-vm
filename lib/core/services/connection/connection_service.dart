@@ -186,7 +186,8 @@ class ConnectionService {
 
   Future<Map<String, dynamic>> getOrCreateConnection({
     required String currentUserId,
-    required SelectedContacts selectedContacts,
+    // required SelectedContacts selectedContacts,
+    required Contact contact,
     required List<Connection> connections,
     required FirebaseAnalytics analytics,
     required String tag,
@@ -199,33 +200,33 @@ class ConnectionService {
     var connectionDoc = connectionCollection.doc();
     Map<String, String> phoneNumberNameMap = {};
 
-    for (var contact in selectedContacts.contacts) {
-      String formattedPhone = contact.phones!.first.value!.replaceAll(
-        RegExp(r"\D"),
-        "",
-      );
+    // for (var contact in selectedContacts.contacts) {
+    String formattedPhone = contact.phones!.first.value!.replaceAll(
+      RegExp(r"\D"),
+      "",
+    );
 
-      if (formattedPhone.length == 10) {
-        formattedPhone = '1' + formattedPhone;
-      }
-      formattedPhone = '+' + formattedPhone;
-
-      String givenName = contact.givenName != null ? contact.givenName! : '';
-      String familyName = contact.familyName != null ? contact.familyName! : '';
-
-      String name = givenName +
-          (givenName.isNotEmpty && familyName.isNotEmpty ? ' ' : '') +
-          familyName;
-
-      final Superuser? superuser =
-          await _superuserService.getSuperuserFromPhone(formattedPhone);
-
-      if (superuser == null) {
-        phoneNumberNameMap[formattedPhone] = name;
-      } else {
-        userIds.add(superuser.id);
-      }
+    if (formattedPhone.length == 10) {
+      formattedPhone = '1' + formattedPhone;
     }
+    formattedPhone = '+' + formattedPhone;
+
+    String givenName = contact.givenName != null ? contact.givenName! : '';
+    String familyName = contact.familyName != null ? contact.familyName! : '';
+
+    String name = givenName +
+        (givenName.isNotEmpty && familyName.isNotEmpty ? ' ' : '') +
+        familyName;
+
+    final Superuser? superuser =
+        await _superuserService.getSuperuserFromPhone(formattedPhone);
+
+    if (superuser == null) {
+      phoneNumberNameMap[formattedPhone] = name;
+    } else {
+      userIds.add(superuser.id);
+    }
+    // }
 
     Connection connection = Connection(
       id: connectionDoc.id,

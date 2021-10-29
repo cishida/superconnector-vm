@@ -89,13 +89,13 @@ class _ContactsState extends State<Contacts> {
     setState(() {});
   }
 
-  Future _setOrCreateConnection() async {
+  Future _setOrCreateConnection(Contact contact) async {
     final superuser = Provider.of<Superuser?>(context, listen: false);
     final connections = Provider.of<List<Connection>>(context, listen: false);
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-      listen: false,
-    );
+    // var selectedContacts = Provider.of<SelectedContacts>(
+    //   context,
+    //   listen: false,
+    // );
     final analytics = Provider.of<FirebaseAnalytics>(
       context,
       listen: false,
@@ -107,7 +107,8 @@ class _ContactsState extends State<Contacts> {
 
     Map connectionMap = await ConnectionService().getOrCreateConnection(
       currentUserId: superuser.id,
-      selectedContacts: selectedContacts,
+      // selectedContacts: selectedContacts,
+      contact: contact,
       connections: connections,
       analytics: analytics,
       tag: widget.tag ?? '',
@@ -144,18 +145,18 @@ class _ContactsState extends State<Contacts> {
       return;
     }
 
-    var selectedContacts = Provider.of<SelectedContacts>(
-      context,
-      listen: false,
-    );
+    // var selectedContacts = Provider.of<SelectedContacts>(
+    //   context,
+    //   listen: false,
+    // );
 
-    if (selectedContacts.contains(contact)) {
-      selectedContacts.remove(contact);
-    } else {
-      selectedContacts.add(contact);
-    }
+    // if (selectedContacts.contains(contact)) {
+    //   selectedContacts.remove(contact);
+    // } else {
+    //   selectedContacts.add(contact);
+    // }
 
-    _setOrCreateConnection();
+    _setOrCreateConnection(contact);
   }
 
   Future _showInviteCard(

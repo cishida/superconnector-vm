@@ -142,10 +142,11 @@ class _ContactsSelectionState extends State<ContactsSelection> {
       padding: const EdgeInsets.only(top: 11.0),
       child: ListView.builder(
         itemCount: filteredContacts.length +
-            filteredConnections.length +
-            1, // Extra for self
+            (widget.isSelectable
+                ? filteredConnections.length + 1
+                : 0), // Extra for self
         itemBuilder: (context, index) {
-          if (index == 0) {
+          if (index == 0 && widget.isSelectable) {
             return SuperuserItem(
               superuser: currentSuperuser,
               tag: 'Me',
@@ -153,9 +154,10 @@ class _ContactsSelectionState extends State<ContactsSelection> {
               isSelected: true,
             );
           }
-          int effectiveIndex = index - 1;
+          int effectiveIndex = index - (widget.isSelectable ? 1 : 0);
 
-          if (effectiveIndex < filteredConnections.length) {
+          if (widget.isSelectable &&
+              effectiveIndex < filteredConnections.length) {
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () => widget.onTapSuperuser(
@@ -172,7 +174,8 @@ class _ContactsSelectionState extends State<ContactsSelection> {
             );
           }
 
-          effectiveIndex = effectiveIndex - filteredConnections.length;
+          effectiveIndex = effectiveIndex -
+              (widget.isSelectable ? filteredConnections.length : 0);
 
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
