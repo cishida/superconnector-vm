@@ -7,6 +7,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
+import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
 
 class CameraLenseContainer extends StatefulWidget {
   const CameraLenseContainer({
@@ -41,6 +42,15 @@ class _CameraLenseContainerState extends State<CameraLenseContainer> {
                   constraints: constraints,
                   child: CameraPreview(
                     cameraHandler.cameraController!,
+                  ),
+                ),
+                Center(
+                  child: Text(
+                    widget.lense.capitalize() + ' Lense',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24.0,
+                    ),
                   ),
                 ),
               ],
