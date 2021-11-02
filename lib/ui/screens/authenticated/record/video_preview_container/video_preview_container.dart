@@ -213,7 +213,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
     await cameraHandler.disposeCamera();
 
     await _showInviteCard(phoneNumbers);
-    // selectedContacts.reset();
+    selectedContacts.reset();
   }
 
   @override
@@ -272,10 +272,10 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
           _pressed = true;
         });
 
-        // var selectedContacts = Provider.of<SelectedContacts>(
-        //   context,
-        //   listen: false,
-        // );
+        var selectedContacts = Provider.of<SelectedContacts>(
+          context,
+          listen: false,
+        );
 
         if (_betterController != null &&
             _betterController!.isPlaying() != null &&
@@ -283,31 +283,31 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
           await _betterController!.pause();
         }
 
-        // if (widget.connection == null) {
-        //   SuperNavigator.handleContactsNavigation(
-        //     context: context,
-        //     confirm: sendVM,
-        //   );
-        // } else {
-        //   selectedContacts.addConnection(widget.connection!);
-        //   sendVM();
+        if (widget.connection == null) {
+          SuperNavigator.handleContactsNavigation(
+            context: context,
+            confirm: sendVM,
+          );
+        } else {
+          selectedContacts.addConnection(widget.connection!);
+          sendVM();
 
-        //   Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).popUntil((route) => route.isFirst);
 
-        //   Provider.of<AuthenticatedController>(
-        //     context,
-        //     listen: false,
-        //   ).setIndex(1);
-        // }
+          Provider.of<AuthenticatedController>(
+            context,
+            listen: false,
+          ).setIndex(1);
+        }
 
-        sendVM();
+        // sendVM();
 
-        Navigator.of(context).popUntil((route) => route.isFirst);
+        // Navigator.of(context).popUntil((route) => route.isFirst);
 
-        Provider.of<AuthenticatedController>(
-          context,
-          listen: false,
-        ).setIndex(1);
+        // Provider.of<AuthenticatedController>(
+        //   context,
+        //   listen: false,
+        // ).setIndex(1);
 
         setState(() {
           _pressed = false;

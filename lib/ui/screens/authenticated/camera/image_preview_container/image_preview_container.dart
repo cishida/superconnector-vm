@@ -149,7 +149,7 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
 
     await cameraHandler.disposeCamera();
     await _showInviteCard(phoneNumbers);
-    // selectedContacts.reset();
+    selectedContacts.reset();
   }
 
   @override
@@ -174,33 +174,33 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
           _pressed = true;
         });
 
-        // var selectedContacts = Provider.of<SelectedContacts>(
-        //   context,
-        //   listen: false,
-        // );
-
-        // if (widget.connection == null) {
-        //   print('SEND PHOTO NO CONNECTION');
-        // } else {
-        //   print('SEND PHOTO TO CONNECTION');
-        // }
-
-        // if (widget.connection == null) {
-        //   SuperNavigator.handleContactsNavigation(
-        //     context: context,
-        //     confirm: sendVM,
-        //   );
-        // } else {
-        //   selectedContacts.addConnection(widget.connection!);
-        sendVM();
-
-        Navigator.of(context).popUntil((route) => route.isFirst);
-
-        Provider.of<AuthenticatedController>(
+        var selectedContacts = Provider.of<SelectedContacts>(
           context,
           listen: false,
-        ).setIndex(1);
-        // }
+        );
+
+        if (widget.connection == null) {
+          print('SEND PHOTO NO CONNECTION');
+        } else {
+          print('SEND PHOTO TO CONNECTION');
+        }
+
+        if (widget.connection == null) {
+          SuperNavigator.handleContactsNavigation(
+            context: context,
+            confirm: sendVM,
+          );
+        } else {
+          selectedContacts.addConnection(widget.connection!);
+          sendVM();
+
+          Navigator.of(context).popUntil((route) => route.isFirst);
+
+          Provider.of<AuthenticatedController>(
+            context,
+            listen: false,
+          ).setIndex(1);
+        }
 
         setState(() {
           _pressed = false;

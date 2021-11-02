@@ -10,7 +10,6 @@ import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_menu.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_toggle.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/image_preview_container/image_preview_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
@@ -172,11 +171,11 @@ class _CameraState extends State<Camera>
       }
     });
 
-    // var selectedContacts = Provider.of<SelectedContacts>(
-    //   context,
-    //   listen: false,
-    // );
-    // selectedContacts.reset();
+    var selectedContacts = Provider.of<SelectedContacts>(
+      context,
+      listen: false,
+    );
+    selectedContacts.reset();
   }
 
   // @override
@@ -272,6 +271,10 @@ class _CameraState extends State<Camera>
         context,
         listen: false,
       );
+      var selectedContacts = Provider.of<SelectedContacts>(
+        context,
+        listen: false,
+      );
 
       if (_timer != null) {
         _timer!.cancel();
@@ -279,6 +282,7 @@ class _CameraState extends State<Camera>
       await cameraHandler.disposeCamera();
       await initCamera();
       _animationController.reset();
+      selectedContacts.reset();
 
       setState(() {
         _currentVideoSeconds = 0;

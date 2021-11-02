@@ -59,24 +59,24 @@ class SendBottomNav extends StatelessWidget {
                   ),
                 ),
               ),
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  SuperNavigator.handleContactsNavigation(
-                    context: context,
-                    confirm: () {
-                      Navigator.of(context).pop();
-                    },
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Image.asset(
-                    'assets/images/authenticated/record/camera-search-icon.png',
-                    width: 24,
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   behavior: HitTestBehavior.opaque,
+              //   onTap: () {
+              //     SuperNavigator.handleContactsNavigation(
+              //       context: context,
+              //       confirm: () {
+              //         Navigator.of(context).pop();
+              //       },
+              //     );
+              //   },
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(left: 20.0),
+              //     child: Image.asset(
+              //       'assets/images/authenticated/record/camera-search-icon.png',
+              //       width: 24,
+              //     ),
+              //   ),
+              // ),
               Spacer(),
               cameraHandler.browsingFilters ? browseFilters : sendButton,
             ],
