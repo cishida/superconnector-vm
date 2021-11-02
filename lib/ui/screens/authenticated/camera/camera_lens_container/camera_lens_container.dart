@@ -9,19 +9,19 @@ import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
 import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
 
-class CameraLenseContainer extends StatefulWidget {
-  const CameraLenseContainer({
+class CameraLensContainer extends StatefulWidget {
+  const CameraLensContainer({
     Key? key,
-    required this.lense,
+    required this.lens,
   }) : super(key: key);
 
-  final String lense;
+  final String lens;
 
   @override
-  _CameraLenseContainerState createState() => _CameraLenseContainerState();
+  _CameraLensContainerState createState() => _CameraLensContainerState();
 }
 
-class _CameraLenseContainerState extends State<CameraLenseContainer> {
+class _CameraLensContainerState extends State<CameraLensContainer> {
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
@@ -46,7 +46,7 @@ class _CameraLenseContainerState extends State<CameraLenseContainer> {
                 ),
                 Center(
                   child: Text(
-                    widget.lense.capitalize() + ' Lense',
+                    widget.lens.capitalize() + ' Lens',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24.0,
@@ -79,7 +79,7 @@ class _CameraLenseContainerState extends State<CameraLenseContainer> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.asset(
-                    'assets/images/authenticated/record/camera-cancel-lense.png',
+                    'assets/images/authenticated/record/camera-cancel-lens.png',
                     width: 28.0,
                     // color: Colors.white,
                   ),

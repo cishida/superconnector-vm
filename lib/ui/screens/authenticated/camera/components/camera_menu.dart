@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/camera_lense_container/camera_lense_container.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/camera_lens_container/camera_lens_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
 
@@ -50,8 +50,8 @@ class CameraMenu extends StatelessWidget {
               default:
                 Navigator.of(context).push(
                   PageRouteBuilder(
-                    pageBuilder: (c, a1, a2) => CameraLenseContainer(
-                      lense: key,
+                    pageBuilder: (c, a1, a2) => CameraLensContainer(
+                      lens: key,
                     ),
                     transitionsBuilder: (c, anim, a2, child) => FadeTransition(
                       opacity: anim,
