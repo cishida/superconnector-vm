@@ -7,6 +7,7 @@ import 'package:superconnector_vm/core/services/connection/connection_service.da
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay_rolls.dart';
 
 class CameraOverlay extends StatefulWidget {
@@ -98,6 +99,36 @@ class _CameraOverlayState extends State<CameraOverlay>
   void dispose() {
     _animationController.dispose();
     super.dispose();
+  }
+
+  List<Widget> _buildIcons() {
+    Map<String, double> nameSizes = {
+      'Upload': 16.0,
+      'Lenses': 22.0,
+      'Message': 22.0,
+      'Trending': 22.0,
+      'Intro': 22.0,
+      'Contract': 22.0,
+      'Invoice': 22.0,
+      'Pay': 22.0,
+    };
+
+    List<Widget> widgets = [];
+
+    nameSizes.forEach((key, value) {
+      widgets.add(
+        CameraIcon(
+          imageName: 'assets/images/authenticated/record/camera-menu-' +
+              key.toLowerCase() +
+              '.png',
+          title: key,
+          onPress: () {},
+          width: value,
+        ),
+      );
+    });
+
+    return widgets;
   }
 
   @override
@@ -304,57 +335,64 @@ class _CameraOverlayState extends State<CameraOverlay>
                 milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 8.0,
-                          right: 5.0,
-                          left: 5.0,
-                        ),
-                        child: Image.asset(
-                          'assets/images/authenticated/record/camera-flash-button.png',
-                          width: 42.0,
-                          height: 42.0,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 8.0,
-                          right: 9.0,
-                          left: 5.0,
-                        ),
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () => widget.toggleCamera(),
-                          child: Image.asset(
-                            'assets/images/authenticated/record/camera-flip-button.png',
-                            width: 42.0,
-                            height: 42.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      SuperNavigator.handleContactsNavigation(
-                        context: context,
-                        confirm: () {
-                          Navigator.of(context).pop();
-                        },
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 3.0),
-                      child: CameraOverlayRolls(),
-                    ),
-                  ),
-                ],
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: _buildIcons(),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     Padding(
+                //       padding: const EdgeInsets.only(
+                //         bottom: 8.0,
+                //         right: 5.0,
+                //         left: 5.0,
+                //       ),
+                //       child: Image.asset(
+                //         'assets/images/authenticated/record/camera-flash-button.png',
+                //         width: 42.0,
+                //         height: 42.0,
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.only(
+                //         bottom: 8.0,
+                //         right: 9.0,
+                //         left: 5.0,
+                //       ),
+                //       child: GestureDetector(
+                //         behavior: HitTestBehavior.opaque,
+                //         onTap: () => widget.toggleCamera(),
+                //         child: Image.asset(
+                //           'assets/images/authenticated/record/camera-flip-button.png',
+                //           width: 42.0,
+                //           height: 42.0,
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // CameraIcon(
+                //   imageName:
+                //       'assets/images/authenticated/record/camera-menu-upload.png',
+                //   title: 'Upload',
+                //   onPress: () {},
+                //   width: 16.0,
+                // ),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.opaque,
+                //   onTap: () {
+                //     SuperNavigator.handleContactsNavigation(
+                //       context: context,
+                //       confirm: () {
+                //         Navigator.of(context).pop();
+                //       },
+                //     );
+                //   },
+                //   child: Padding(
+                //     padding: const EdgeInsets.only(right: 3.0),
+                //     child: CameraOverlayRolls(),
+                //   ),
+                // ),
+                // ],
               ),
             ),
           ),
