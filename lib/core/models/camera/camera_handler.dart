@@ -100,6 +100,10 @@ class CameraHandler extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isRecording() {
+    return cameraController != null && cameraController!.value.isRecordingVideo;
+  }
+
   Future disposeCamera() async {
     if (cameraController != null) {
       CameraController temp = cameraController!;

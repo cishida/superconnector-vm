@@ -8,6 +8,7 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_menu.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_toggle.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
@@ -575,6 +576,9 @@ class _CameraState extends State<Camera>
                     connection: widget.connection,
                     pointerDown: _pointerDown,
                   ),
+                ),
+                CameraMenu(
+                  toggleCamera: _toggleCameraLens,
                 ),
               ],
             ),

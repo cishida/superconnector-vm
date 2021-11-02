@@ -101,36 +101,6 @@ class _CameraOverlayState extends State<CameraOverlay>
     super.dispose();
   }
 
-  List<Widget> _buildIcons() {
-    Map<String, double> nameSizes = {
-      'Upload': 16.0,
-      'Lenses': 22.0,
-      'Message': 22.0,
-      'Trending': 22.0,
-      'Intro': 22.0,
-      'Contract': 22.0,
-      'Invoice': 22.0,
-      'Pay': 22.0,
-    };
-
-    List<Widget> widgets = [];
-
-    nameSizes.forEach((key, value) {
-      widgets.add(
-        CameraIcon(
-          imageName: 'assets/images/authenticated/record/camera-menu-' +
-              key.toLowerCase() +
-              '.png',
-          title: key,
-          onPress: () {},
-          width: value,
-        ),
-      );
-    });
-
-    return widgets;
-  }
-
   @override
   Widget build(BuildContext context) {
     bool _isRecording =
@@ -324,79 +294,79 @@ class _CameraOverlayState extends State<CameraOverlay>
             ),
           ),
         ),
-        Positioned.fill(
-          top: 51.0,
-          right: 0.0,
-          child: Align(
-            alignment: Alignment.topRight,
-            child: AnimatedOpacity(
-              opacity: !_isRecording ? 1.0 : 0.0,
-              duration: const Duration(
-                milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: _buildIcons(),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.end,
-                //   children: [
-                //     Padding(
-                //       padding: const EdgeInsets.only(
-                //         bottom: 8.0,
-                //         right: 5.0,
-                //         left: 5.0,
-                //       ),
-                //       child: Image.asset(
-                //         'assets/images/authenticated/record/camera-flash-button.png',
-                //         width: 42.0,
-                //         height: 42.0,
-                //       ),
-                //     ),
-                //     Padding(
-                //       padding: const EdgeInsets.only(
-                //         bottom: 8.0,
-                //         right: 9.0,
-                //         left: 5.0,
-                //       ),
-                //       child: GestureDetector(
-                //         behavior: HitTestBehavior.opaque,
-                //         onTap: () => widget.toggleCamera(),
-                //         child: Image.asset(
-                //           'assets/images/authenticated/record/camera-flip-button.png',
-                //           width: 42.0,
-                //           height: 42.0,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // CameraIcon(
-                //   imageName:
-                //       'assets/images/authenticated/record/camera-menu-upload.png',
-                //   title: 'Upload',
-                //   onPress: () {},
-                //   width: 16.0,
-                // ),
-                // GestureDetector(
-                //   behavior: HitTestBehavior.opaque,
-                //   onTap: () {
-                //     SuperNavigator.handleContactsNavigation(
-                //       context: context,
-                //       confirm: () {
-                //         Navigator.of(context).pop();
-                //       },
-                //     );
-                //   },
-                //   child: Padding(
-                //     padding: const EdgeInsets.only(right: 3.0),
-                //     child: CameraOverlayRolls(),
-                //   ),
-                // ),
-                // ],
-              ),
-            ),
-          ),
-        ),
+        // Positioned.fill(
+        //   top: 51.0,
+        //   right: 0.0,
+        //   child: Align(
+        //     alignment: Alignment.topRight,
+        //     child: AnimatedOpacity(
+        //       opacity: !_isRecording ? 1.0 : 0.0,
+        //       duration: const Duration(
+        //         milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+        //       ),
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.center,
+        //         children: _buildIcons(),
+        //         // Row(
+        //         //   mainAxisAlignment: MainAxisAlignment.end,
+        //         //   children: [
+        //         //     Padding(
+        //         //       padding: const EdgeInsets.only(
+        //         //         bottom: 8.0,
+        //         //         right: 5.0,
+        //         //         left: 5.0,
+        //         //       ),
+        //         //       child: Image.asset(
+        //         //         'assets/images/authenticated/record/camera-flash-button.png',
+        //         //         width: 42.0,
+        //         //         height: 42.0,
+        //         //       ),
+        //         //     ),
+        //         //     Padding(
+        //         //       padding: const EdgeInsets.only(
+        //         //         bottom: 8.0,
+        //         //         right: 9.0,
+        //         //         left: 5.0,
+        //         //       ),
+        //         //       child: GestureDetector(
+        //         //         behavior: HitTestBehavior.opaque,
+        //         //         onTap: () => widget.toggleCamera(),
+        //         //         child: Image.asset(
+        //         //           'assets/images/authenticated/record/camera-flip-button.png',
+        //         //           width: 42.0,
+        //         //           height: 42.0,
+        //         //         ),
+        //         //       ),
+        //         //     ),
+        //         //   ],
+        //         // ),
+        //         // CameraIcon(
+        //         //   imageName:
+        //         //       'assets/images/authenticated/record/camera-menu-upload.png',
+        //         //   title: 'Upload',
+        //         //   onPress: () {},
+        //         //   width: 16.0,
+        //         // ),
+        //         // GestureDetector(
+        //         //   behavior: HitTestBehavior.opaque,
+        //         //   onTap: () {
+        //         //     SuperNavigator.handleContactsNavigation(
+        //         //       context: context,
+        //         //       confirm: () {
+        //         //         Navigator.of(context).pop();
+        //         //       },
+        //         //     );
+        //         //   },
+        //         //   child: Padding(
+        //         //     padding: const EdgeInsets.only(right: 3.0),
+        //         //     child: CameraOverlayRolls(),
+        //         //   ),
+        //         // ),
+        //         // ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
