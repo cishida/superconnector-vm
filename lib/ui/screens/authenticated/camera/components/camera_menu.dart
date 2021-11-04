@@ -5,6 +5,7 @@ import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera_lens_container/camera_lens_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/trending/trending.dart';
 
 class CameraMenu extends StatelessWidget {
   const CameraMenu({
@@ -41,11 +42,24 @@ class CameraMenu extends StatelessWidget {
           title: key.capitalize(),
           onPress: () {
             switch (key) {
-              case 'Flip':
+              case 'flip':
                 toggleCamera();
                 break;
-              case 'Flash':
+              case 'flash':
                 print('toggle flash');
+                break;
+              case 'trending':
+                print('trending');
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return FractionallySizedBox(
+                      heightFactor: 0.93,
+                      child: Trending(),
+                    );
+                  },
+                );
                 break;
               default:
                 Navigator.of(context).push(

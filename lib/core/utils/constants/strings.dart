@@ -23,6 +23,20 @@ class ConstantStrings {
       'https://testflight.apple.com/join/KLePjsGB';
   static const String GIF_ARGS = '/animated.gif?start=0&end=2&fps=15&width=200';
 
+  // Trending static
+  static const List<String> TRENDING_LIST = [
+    'gm',
+    'Reflection',
+    'gn',
+    'Check-in',
+    'sup?',
+    'Holidays',
+    'Weekend',
+    'late',
+    'love',
+    'paid',
+  ];
+
   // Categories
   static const List<String> RELATION_CATEGORIES = [
     'Family',
