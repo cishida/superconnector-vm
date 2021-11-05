@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera_lens_container/camera_lens_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/uploaded_media/uploaded_media.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/trending/trending.dart';
 
 class CameraMenu extends StatefulWidget {
@@ -21,6 +26,23 @@ class CameraMenu extends StatefulWidget {
 }
 
 class _CameraMenuState extends State<CameraMenu> {
+  File? _imageFile;
+  final _picker = ImagePicker();
+
+  Future<File?> getImage() async {
+    var pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 90,
+    );
+
+    if (pickedFile != null) {
+      return File(pickedFile.path);
+    } else {
+      print('No image selected.');
+      return null;
+    }
+  }
+
   List<Widget> _buildIcons(
     BuildContext context,
   ) {
@@ -38,6 +60,10 @@ class _CameraMenuState extends State<CameraMenu> {
     };
 
     List<Widget> widgets = [];
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
 
     nameSizes.forEach((key, value) {
       widgets.add(
@@ -52,10 +78,6 @@ class _CameraMenuState extends State<CameraMenu> {
                 widget.toggleCamera();
                 break;
               case 'flash':
-                final cameraHandler = Provider.of<CameraHandler>(
-                  context,
-                  listen: false,
-                );
                 if (cameraHandler.cameraController != null) {
                   switch (cameraHandler.cameraController!.value.flashMode) {
                     case FlashMode.always:
@@ -76,11 +98,28 @@ class _CameraMenuState extends State<CameraMenu> {
                     default:
                   }
                 }
-                print('toggle flash');
                 setState(() {});
                 break;
+              case 'upload':
+                cameraHandler.imageFile = await getImage();
+
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (c, a1, a2) => UploadedMedia(
+                        // file: _imageFile!,
+                        ),
+                    transitionsBuilder: (c, anim, a2, child) => FadeTransition(
+                      opacity: anim,
+                      child: child,
+                    ),
+                    transitionDuration: Duration(
+                      milliseconds: 50,
+                    ),
+                  ),
+                );
+
+                break;
               case 'trending':
-                print('trending');
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
