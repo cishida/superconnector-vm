@@ -1,4 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 
 class CameraIcon extends StatelessWidget {
   const CameraIcon({
@@ -16,6 +19,22 @@ class CameraIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+    );
+
+    if (title == 'Flash' && cameraHandler.cameraController == null) {
+      return Container();
+    }
+
+    FlashMode flashMode = cameraHandler.cameraController!.value.flashMode;
+    TextStyle textStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 12.0,
+      fontWeight: FontWeight.w900,
+      height: 0.0,
+    );
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => onPress(),
@@ -26,9 +45,45 @@ class CameraIcon extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Image.asset(
-              imageName,
-              width: width,
+            Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    right: (title == 'Flash' ? 8.0 : 0.0),
+                  ),
+                  child: Image.asset(
+                    imageName,
+                    width: width,
+                  ),
+                ),
+                if (title == 'Flash' && flashMode == FlashMode.always)
+                  Positioned(
+                    right: 0.0,
+                    bottom: 0.0,
+                    child: Image.asset(
+                      'assets/images/authenticated/record/camera-menu-check.png',
+                      width: 9.0,
+                    ),
+                  ),
+                if (title == 'Flash' && flashMode == FlashMode.auto)
+                  Positioned(
+                    right: 0.0,
+                    bottom: 0.0,
+                    child: Text(
+                      'A',
+                      style: textStyle,
+                    ),
+                  ),
+                if (title == 'Flash' && flashMode == FlashMode.off)
+                  Positioned(
+                    right: 0.0,
+                    bottom: 0.0,
+                    child: Text(
+                      'X',
+                      style: textStyle,
+                    ),
+                  ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(

@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
@@ -7,7 +8,7 @@ import 'package:superconnector_vm/ui/screens/authenticated/camera/components/cam
 import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/trending/trending.dart';
 
-class CameraMenu extends StatelessWidget {
+class CameraMenu extends StatefulWidget {
   const CameraMenu({
     Key? key,
     required this.toggleCamera,
@@ -15,6 +16,11 @@ class CameraMenu extends StatelessWidget {
 
   final Function toggleCamera;
 
+  @override
+  State<CameraMenu> createState() => _CameraMenuState();
+}
+
+class _CameraMenuState extends State<CameraMenu> {
   List<Widget> _buildIcons(
     BuildContext context,
   ) {
@@ -23,7 +29,7 @@ class CameraMenu extends StatelessWidget {
       'flash': 15.0,
       'upload': 16.0,
       'lenses': 22.0,
-      'message': 28.0,
+      // 'message': 28.0,
       'trending': 22.0,
       'intro': 20.4,
       'contract': 22.0,
@@ -40,13 +46,38 @@ class CameraMenu extends StatelessWidget {
               key.toLowerCase() +
               '.png',
           title: key.capitalize(),
-          onPress: () {
+          onPress: () async {
             switch (key) {
               case 'flip':
-                toggleCamera();
+                widget.toggleCamera();
                 break;
               case 'flash':
+                final cameraHandler = Provider.of<CameraHandler>(
+                  context,
+                  listen: false,
+                );
+                if (cameraHandler.cameraController != null) {
+                  switch (cameraHandler.cameraController!.value.flashMode) {
+                    case FlashMode.always:
+                      await cameraHandler.cameraController!.setFlashMode(
+                        FlashMode.auto,
+                      );
+                      break;
+                    case FlashMode.auto:
+                      await cameraHandler.cameraController!.setFlashMode(
+                        FlashMode.off,
+                      );
+                      break;
+                    case FlashMode.off:
+                      await cameraHandler.cameraController!.setFlashMode(
+                        FlashMode.always,
+                      );
+                      break;
+                    default:
+                  }
+                }
                 print('toggle flash');
+                setState(() {});
                 break;
               case 'trending':
                 print('trending');
