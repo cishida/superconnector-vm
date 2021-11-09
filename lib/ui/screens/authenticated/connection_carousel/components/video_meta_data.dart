@@ -12,14 +12,14 @@ class VideoMetaData extends StatelessWidget {
   const VideoMetaData({
     Key? key,
     required this.created,
-    required this.superuser,
+    this.superuser,
     this.duration,
     this.position,
     this.caption = '',
   }) : super(key: key);
 
   final DateTime created;
-  final Superuser superuser;
+  final Superuser? superuser;
   final Duration? duration;
   final Duration? position;
   final String caption;
@@ -59,10 +59,11 @@ class VideoMetaData extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-            Text(
-              superuser.fullName,
-              style: textStyle,
-            ),
+            if (superuser != null)
+              Text(
+                superuser!.fullName,
+                style: textStyle,
+              ),
             // if (caption != '')
             //   Container(
             //     child: Row(

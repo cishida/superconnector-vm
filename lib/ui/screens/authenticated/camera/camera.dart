@@ -6,12 +6,14 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
+import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_menu.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/image_preview_container/image_preview_container.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 import 'package:video_thumbnail/video_thumbnail.dart' as thumb;
 
@@ -19,9 +21,11 @@ class Camera extends StatefulWidget {
   const Camera({
     Key? key,
     this.connection,
+    this.feature,
   }) : super(key: key);
 
   final Connection? connection;
+  final String? feature;
 
   @override
   _CameraState createState() => _CameraState();
@@ -584,8 +588,59 @@ class _CameraState extends State<Camera>
                 CameraMenu(
                   toggleCamera: _toggleCameraLens,
                 ),
+                if (cameraHandler.caption.isNotEmpty)
+                  VideoMetaData(
+                    created: DateTime.now(),
+                    // superuser: superuser,
+                    // duration: _duration,
+                    // position: _position,
+                    caption: cameraHandler.caption,
+                  ),
               ],
             ),
+            bottomNavigationBar: widget.feature != null
+                ? BottomAppBar(
+                    color: ConstantColors.DARK_BLUE,
+                    child: AnimatedSize(
+                      duration: Duration(
+                        milliseconds:
+                            ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: cameraHandler.browsingFilters
+                            ? ConstantValues.BROWSE_FILTER_HEIGHT
+                            : ConstantValues.BOTTOM_NAV_HEIGHT,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                        ),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            // if (widget.reset != null) {
+                            //   widget.reset!();
+                            // }
+                            var selectedContacts =
+                                Provider.of<SelectedContacts>(
+                              context,
+                              listen: false,
+                            );
+                            selectedContacts.reset();
+                            Navigator.of(context).pop();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.asset(
+                              'assets/images/authenticated/record/camera-cancel-lens.png',
+                              width: 28.0,
+                              // color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : null,
           );
         },
       ),

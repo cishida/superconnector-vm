@@ -13,6 +13,7 @@ import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
+import 'package:superconnector_vm/ui/components/gradient_background.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/search_bar.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
@@ -24,11 +25,13 @@ class Contacts extends StatefulWidget {
     Key? key,
     this.tag,
     this.isGroup = false,
+    this.isIntro = false,
     this.confirm,
   }) : super(key: key);
 
   final String? tag;
   final bool isGroup;
+  final bool isIntro;
   final Function? confirm;
 
   @override
@@ -284,120 +287,46 @@ class _ContactsState extends State<Contacts> {
               },
             )
           : Container(),
-      body: Container(
-        width: size.width,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
+      body: GradientBackground(
+        title: widget.isIntro ? 'Intro' : 'Camera Rolls',
+        subtitle: widget.isIntro
+            ? 'Choose 2 people to introduce'
+            : 'Share photos and videos 1-on-1.',
+        child: Expanded(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18.0,
+                ),
+                child: SearchBar(
+                  controller: _controller,
+                  enabled: true,
+                ),
+              ),
+              if (_contacts != null && _contacts!.length > 0)
+                Expanded(
+                  child: ContactsSelection(
+                    onTapContact: (contact) => widget.isGroup
+                        ? _toggleContact(
+                            contact: contact,
+                            context: context,
+                          )
+                        : _onTapContact(
+                            contact: contact,
+                            context: context,
+                          ),
+                    onTapSuperuser: (superuser) => _toggleSuperuser(
+                      superuser: superuser,
+                      context: context,
+                    ),
+                    isSelectable: widget.isGroup,
+                    filter: _filter,
+                    contacts: _contacts!,
+                  ),
+                ),
+            ],
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: size.width,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage(
-                    'assets/images/authenticated/dark-blue-orange-gradient.png',
-                  ),
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
-                ),
-              ),
-              child: Column(
-                children: [
-                  Center(
-                    child: BottomSheetTab(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20.0,
-                      bottom: 19.0,
-                    ),
-                    child: Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            // widget.tag == null
-                            //     ? 'Camera Rolls'
-                            //     : 'Send Request',
-                            'Camera Rolls',
-                            textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.headline5!.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 20.0,
-                                    ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 5.0,
-                            ),
-                            child: Text(
-                              'Share photos and videos 1-on-1.',
-                              // widget.tag == null
-                              //     ? 'Choose who you want to share with.'
-                              //     : widget.isGroup
-                              //         ? 'Add people to your family group.'
-                              //         : 'Invite your ' +
-                              //             widget.tag!.toLowerCase() +
-                              //             ' to connect.',
-                              style: Theme.of(context).textTheme.bodyText1!,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Underline(
-                    color: Colors.white.withOpacity(.2),
-                  ),
-                ],
-              ),
-            ),
-            // ),
-            SizedBox(
-              height: 7.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 18.0,
-              ),
-              child: SearchBar(
-                controller: _controller,
-                enabled: true,
-              ),
-            ),
-            if (_contacts != null && _contacts!.length > 0)
-              Expanded(
-                child: ContactsSelection(
-                  onTapContact: (contact) => widget.isGroup
-                      ? _toggleContact(
-                          contact: contact,
-                          context: context,
-                        )
-                      : _onTapContact(
-                          contact: contact,
-                          context: context,
-                        ),
-                  onTapSuperuser: (superuser) => _toggleSuperuser(
-                    superuser: superuser,
-                    context: context,
-                  ),
-                  isSelectable: widget.isGroup,
-                  filter: _filter,
-                  contacts: _contacts!,
-                ),
-              ),
-          ],
         ),
       ),
     );

@@ -7,11 +7,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
+import 'package:superconnector_vm/ui/components/overlays/overlay_menu.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera_lens_container/camera_lens_container.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay_rolls.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/uploaded_media/uploaded_media.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/image_preview_container/image_preview_container.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/intro/intro_selection.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/trending/trending.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 
 class CameraMenu extends StatefulWidget {
   const CameraMenu({
@@ -26,7 +33,7 @@ class CameraMenu extends StatefulWidget {
 }
 
 class _CameraMenuState extends State<CameraMenu> {
-  File? _imageFile;
+  // File? _imageFile;
   final _picker = ImagePicker();
 
   Future<File?> getImage() async {
@@ -43,6 +50,69 @@ class _CameraMenuState extends State<CameraMenu> {
     }
   }
 
+  Future<XFile?> getVideo() async {
+    var pickedFile = await _picker.pickVideo(
+      source: ImageSource.gallery,
+      maxDuration: Duration(seconds: 60),
+    );
+
+    if (pickedFile != null) {
+      return XFile(pickedFile.path);
+    } else {
+      print('No video selected.');
+      return null;
+    }
+  }
+
+  Future onReset() async {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+
+    cameraHandler.imageFile = null;
+    cameraHandler.videoFile = null;
+  }
+
+  Future _goToUploadedMedia() async {
+    final cameraHandler = Provider.of<CameraHandler>(
+      context,
+      listen: false,
+    );
+
+    Navigator.of(context).pop();
+
+    final widget;
+    if (cameraHandler.imageFile != null) {
+      widget = ImagePreviewContainer(
+        onReset: () => onReset(),
+      );
+    } else {
+      widget = VideoPreviewContainer(
+        onReset: () => onReset(),
+      );
+    }
+
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => widget,
+        transitionDuration: Duration.zero,
+      ),
+    );
+    // Navigator.of(context).push(
+    //   PageRouteBuilder(
+    //     pageBuilder: (c, a1, a2) => UploadedMedia(),
+    //     transitionsBuilder: (c, anim, a2, child) => FadeTransition(
+    //       opacity: anim,
+    //       child: child,
+    //     ),
+    //     transitionDuration: Duration(
+    //       milliseconds: 50,
+    //     ),
+    //   ),
+    // );
+  }
+
   List<Widget> _buildIcons(
     BuildContext context,
   ) {
@@ -50,13 +120,13 @@ class _CameraMenuState extends State<CameraMenu> {
       'flip': 20.0,
       'flash': 15.0,
       'upload': 16.0,
-      'lenses': 22.0,
+      // 'lenses': 22.0,
       // 'message': 28.0,
       'trending': 22.0,
-      'intro': 20.4,
-      'contract': 22.0,
-      'invoice': 19.0,
-      'pay': 13.0,
+      // 'intro': 20.4,
+      // 'contract': 22.0,
+      // 'invoice': 19.0,
+      // 'pay': 13.0,
     };
 
     List<Widget> widgets = [];
@@ -101,22 +171,46 @@ class _CameraMenuState extends State<CameraMenu> {
                 setState(() {});
                 break;
               case 'upload':
-                cameraHandler.imageFile = await getImage();
+                final Map<String, Function> menuOptions = {
+                  'Photo Upload': () async {
+                    cameraHandler.imageFile = await getImage();
+                    if (cameraHandler.imageFile != null) {
+                      _goToUploadedMedia();
+                    }
+                  },
+                  'Video Upload': () async {
+                    cameraHandler.videoFile = await getVideo();
+                    if (cameraHandler.videoFile != null) {
+                      _goToUploadedMedia();
+                    }
+                  },
+                };
 
                 Navigator.of(context).push(
                   PageRouteBuilder(
-                    pageBuilder: (c, a1, a2) => UploadedMedia(
-                        // file: _imageFile!,
-                        ),
-                    transitionsBuilder: (c, anim, a2, child) => FadeTransition(
-                      opacity: anim,
-                      child: child,
-                    ),
-                    transitionDuration: Duration(
-                      milliseconds: 50,
-                    ),
+                    opaque: false,
+                    reverseTransitionDuration: Duration(milliseconds: 0),
+                    pageBuilder: (BuildContext context, _, __) {
+                      return OverlayMenu(menuOptions: menuOptions);
+                    },
                   ),
                 );
+                // cameraHandler.imageFile = await getImage();
+
+                // Navigator.of(context).push(
+                //   PageRouteBuilder(
+                //     pageBuilder: (c, a1, a2) => UploadedMedia(
+                //         // file: _imageFile!,
+                //         ),
+                //     transitionsBuilder: (c, anim, a2, child) => FadeTransition(
+                //       opacity: anim,
+                //       child: child,
+                //     ),
+                //     transitionDuration: Duration(
+                //       milliseconds: 50,
+                //     ),
+                //   ),
+                // );
 
                 break;
               case 'trending':
@@ -131,11 +225,51 @@ class _CameraMenuState extends State<CameraMenu> {
                   },
                 );
                 break;
+              case 'intro':
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return FractionallySizedBox(
+                      heightFactor: 0.93,
+                      child: Contacts(
+                        isIntro: true,
+                        isGroup: true,
+                        confirm: () {
+                          print('Confirm');
+                          Navigator.of(context).pop();
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              pageBuilder: (c, a1, a2) => CameraLensContainer(
+                                lens: key,
+                                // reset: ,
+                                child: Positioned(
+                                  right: 13.0,
+                                  top: ConstantValues.TOP_HEIGHT,
+                                  child: CameraOverlayRolls(),
+                                ),
+                              ),
+                              transitionsBuilder: (c, anim, a2, child) =>
+                                  FadeTransition(
+                                opacity: anim,
+                                child: child,
+                              ),
+                              transitionDuration: Duration(
+                                milliseconds: 200,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
+                break;
               default:
                 Navigator.of(context).push(
                   PageRouteBuilder(
-                    pageBuilder: (c, a1, a2) => CameraLensContainer(
-                      lens: key,
+                    pageBuilder: (c, a1, a2) => Camera(
+                      feature: key,
                     ),
                     transitionsBuilder: (c, anim, a2, child) => FadeTransition(
                       opacity: anim,

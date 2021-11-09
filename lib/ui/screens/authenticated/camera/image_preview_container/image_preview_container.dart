@@ -219,7 +219,7 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.transparent,
+        backgroundColor: ConstantColors.DARK_BLUE,
         body: LayoutBuilder(
           builder: (context, constraints) {
             return Stack(

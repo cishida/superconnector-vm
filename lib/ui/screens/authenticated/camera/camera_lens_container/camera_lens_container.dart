@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
@@ -13,9 +14,13 @@ class CameraLensContainer extends StatefulWidget {
   const CameraLensContainer({
     Key? key,
     required this.lens,
+    this.child,
+    this.reset,
   }) : super(key: key);
 
   final String lens;
+  final Widget? child;
+  final Function? reset;
 
   @override
   _CameraLensContainerState createState() => _CameraLensContainerState();
@@ -53,6 +58,7 @@ class _CameraLensContainerState extends State<CameraLensContainer> {
                     ),
                   ),
                 ),
+                if (widget.child != null) widget.child!,
               ],
             );
           },
@@ -74,6 +80,14 @@ class _CameraLensContainerState extends State<CameraLensContainer> {
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
+                  if (widget.reset != null) {
+                    widget.reset!();
+                  }
+                  var selectedContacts = Provider.of<SelectedContacts>(
+                    context,
+                    listen: false,
+                  );
+                  selectedContacts.reset();
                   Navigator.of(context).pop();
                 },
                 child: Padding(

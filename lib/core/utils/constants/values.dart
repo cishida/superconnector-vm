@@ -2,6 +2,7 @@ class ConstantValues {
   // Nav
   static const double BOTTOM_NAV_HEIGHT = 48.0;
   static const double BROWSE_FILTER_HEIGHT = 96.0;
+  static const double TOP_HEIGHT = 71.0;
 
   // Camera
   static const int VIDEO_TIME_LIMIT = 30;

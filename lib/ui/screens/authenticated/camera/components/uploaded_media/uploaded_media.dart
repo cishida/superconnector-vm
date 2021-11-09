@@ -19,6 +19,7 @@ import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
 
 class UploadedMedia extends StatefulWidget {
   const UploadedMedia({
@@ -215,11 +216,13 @@ class _UploadedMediaState extends State<UploadedMedia> {
                 CameraTransform(
                   constraints: constraints,
                   isImage: true,
-                  child: Image.file(
-                    File(
-                      cameraHandler.imageFile!.path,
-                    ),
-                  ),
+                  child: cameraHandler.imageFile != null
+                      ? Image.file(
+                          File(
+                            cameraHandler.imageFile!.path,
+                          ),
+                        )
+                      : Container(),
                 ),
                 Positioned(
                   top: 71.0 - 28.0,
@@ -227,6 +230,8 @@ class _UploadedMediaState extends State<UploadedMedia> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () async {
+                      cameraHandler.imageFile = null;
+                      cameraHandler.videoFile = null;
                       Navigator.of(context).pop();
                     },
                     child: Padding(
