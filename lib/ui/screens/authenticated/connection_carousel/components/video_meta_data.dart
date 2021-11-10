@@ -15,14 +15,14 @@ class VideoMetaData extends StatelessWidget {
     this.superuser,
     this.duration,
     this.position,
-    this.caption = '',
+    this.caption,
   }) : super(key: key);
 
   final DateTime created;
   final Superuser? superuser;
   final Duration? duration;
   final Duration? position;
-  final String caption;
+  final String? caption;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +37,8 @@ class VideoMetaData extends StatelessWidget {
       context,
     );
     final Size size = MediaQuery.of(context).size;
+
+    final selectedCaption = caption ?? cameraHandler.caption;
 
     return Positioned(
       bottom: 20.0,
@@ -76,7 +78,7 @@ class VideoMetaData extends StatelessWidget {
               Container(
                 width: size.width / 2,
                 child: Text(
-                  '"' + caption + '"',
+                  '"' + selectedCaption + '"',
                   style: textStyle.copyWith(fontWeight: FontWeight.w600),
                 ),
               ),

@@ -199,7 +199,7 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
           Provider.of<AuthenticatedController>(
             context,
             listen: false,
-          ).setIndex(1);
+          ).setIndex(0);
         }
 
         setState(() {

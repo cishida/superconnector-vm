@@ -95,7 +95,7 @@ class CameraHandler extends ChangeNotifier {
     await cameraController!.lockCaptureOrientation(
       DeviceOrientation.portraitUp,
     );
-    caption = '';
+    // caption = '';
 
     notifyListeners();
   }
@@ -111,7 +111,7 @@ class CameraHandler extends ChangeNotifier {
       await temp.dispose();
     }
 
-    caption = '';
+    // caption = '';
 
     // await initCamera(camera);
 
@@ -308,7 +308,7 @@ class CameraHandler extends ChangeNotifier {
     Provider.of<AuthenticatedController>(
       context,
       listen: false,
-    ).setIndex(2);
+    ).setIndex(0);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

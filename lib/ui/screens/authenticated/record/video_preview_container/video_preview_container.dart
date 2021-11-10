@@ -297,7 +297,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
           Provider.of<AuthenticatedController>(
             context,
             listen: false,
-          ).setIndex(1);
+          ).setIndex(0);
         }
 
         // sendVM();

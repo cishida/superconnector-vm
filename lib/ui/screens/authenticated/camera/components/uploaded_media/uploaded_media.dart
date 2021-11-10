@@ -188,7 +188,7 @@ class _UploadedMediaState extends State<UploadedMedia> {
           Provider.of<AuthenticatedController>(
             context,
             listen: false,
-          ).setIndex(1);
+          ).setIndex(0);
         }
 
         setState(() {

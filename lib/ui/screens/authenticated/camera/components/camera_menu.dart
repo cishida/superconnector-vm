@@ -72,6 +72,7 @@ class _CameraMenuState extends State<CameraMenu> {
 
     cameraHandler.imageFile = null;
     cameraHandler.videoFile = null;
+    cameraHandler.caption = '';
   }
 
   Future _goToUploadedMedia() async {

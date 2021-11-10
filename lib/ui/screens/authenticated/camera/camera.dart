@@ -295,6 +295,7 @@ class _CameraState extends State<Camera>
       if (_timer != null) {
         _timer!.cancel();
       }
+      cameraHandler.caption = '';
       await cameraHandler.disposeCamera();
       await initCamera();
       _animationController.reset();
@@ -359,7 +360,7 @@ class _CameraState extends State<Camera>
         ),
       );
 
-      await onNewCameraSelected(cameraHandler.cameraController!.description);
+      // await onNewCameraSelected(cameraHandler.cameraController!.description);
 
       if (_timer != null) {
         _timer!.cancel();
@@ -642,7 +643,7 @@ class _CameraState extends State<Camera>
                     // superuser: superuser,
                     // duration: _duration,
                     // position: _position,
-                    caption: cameraHandler.caption,
+                    // caption: cameraHandler.caption,
                   ),
               ],
             ),
