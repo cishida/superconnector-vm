@@ -23,11 +23,16 @@ class CameraIcon extends StatelessWidget {
       context,
     );
 
+    FlashMode flashMode = FlashMode.auto;
+
     if (title == 'Flash' && cameraHandler.cameraController == null) {
       return Container();
     }
 
-    FlashMode flashMode = cameraHandler.cameraController!.value.flashMode;
+    if (cameraHandler.cameraController != null) {
+      flashMode = cameraHandler.cameraController!.value.flashMode;
+    }
+
     TextStyle textStyle = TextStyle(
       color: Colors.white,
       fontSize: 12.0,

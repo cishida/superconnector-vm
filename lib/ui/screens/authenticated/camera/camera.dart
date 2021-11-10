@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:app_settings/app_settings.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
@@ -40,12 +43,19 @@ class _CameraState extends State<Camera>
   bool _pointerDown = false;
   Timer? _timer;
   int _currentVideoSeconds = 0;
+  PermissionStatus? _cameraStatus;
+  PermissionStatus? _microphoneStatus;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future initCamera({
     CameraDescription? description,
   }) async {
+    _cameraStatus = await Permission.camera.status;
+    _microphoneStatus = await Permission.microphone.status;
+
+    if (mounted) setState(() {});
+
     final cameraHandler = Provider.of<CameraHandler>(
       context,
       listen: false,
@@ -160,7 +170,9 @@ class _CameraState extends State<Camera>
 
       await initCamera();
     }).catchError((err) {
-      print('Error :${err.code}Error message : ${err.message}');
+      print(
+        'Camera Exception\nError code :${err.code}\nError description : ${err.description}',
+      );
     });
 
     _animationController = AnimationController(
@@ -410,12 +422,21 @@ class _CameraState extends State<Camera>
       context,
     );
 
-    if (cameraHandler.cameraController == null ||
-        !cameraHandler.cameraController!.value.isInitialized) {
+    bool permissionAllowed = _cameraStatus != null &&
+        _cameraStatus!.isGranted &&
+        _microphoneStatus != null &&
+        _microphoneStatus!.isGranted;
+
+    if (permissionAllowed &&
+        (cameraHandler.cameraController == null ||
+            !cameraHandler.cameraController!.value.isInitialized)) {
       return Container(
         color: Colors.black,
       );
     }
+
+    // var cameraStatus = await Permission.camera.status;
+    // var microphoneStatus = await Permission.microphone.status;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -430,12 +451,39 @@ class _CameraState extends State<Camera>
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    CameraTransform(
-                      constraints: constraints,
-                      child: CameraPreview(
-                        cameraHandler.cameraController!,
+                    if (permissionAllowed)
+                      CameraTransform(
+                        constraints: constraints,
+                        child: CameraPreview(
+                          cameraHandler.cameraController!,
+                        ),
                       ),
-                    ),
+                    if ((_cameraStatus != null && !_cameraStatus!.isGranted) ||
+                        (_microphoneStatus != null &&
+                            !_microphoneStatus!.isGranted))
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          AppSettings.openAppSettings(
+                            asAnotherTask: true,
+                          );
+                          Future.delayed(
+                              Duration(milliseconds: 50), () => exit(0));
+                        },
+                        child: Container(
+                          // color: Colors.red,
+                          child: Center(
+                            child: Text(
+                              'Tap to turn on your Camera',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     // ClipRRect(
                     //   borderRadius: BorderRadius.only(
                     //     bottomLeft: Radius.circular(10),

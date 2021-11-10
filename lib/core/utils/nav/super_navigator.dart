@@ -68,27 +68,37 @@ class SuperNavigator {
     required BuildContext context,
     Connection? connection,
   }) async {
-    var cameraStatus = await Permission.camera.status;
-    var microphoneStatus = await Permission.microphone.status;
+    // var cameraStatus = await Permission.camera.status;
+    // var microphoneStatus = await Permission.microphone.status;
 
-    if (cameraStatus.isGranted && microphoneStatus.isGranted) {
-      SuperNavigator.push(
-        context: context,
-        widget: connection == null
-            ? Camera()
-            : CameraReply(
-                connection: connection,
-              ),
-        fullScreen: false,
-      );
-    } else {
-      SuperNavigator.push(
-        context: context,
-        widget: RecordPermission(
-          connection: connection,
-        ),
-        fullScreen: false,
-      );
-    }
+    SuperNavigator.push(
+      context: context,
+      widget: connection == null
+          ? Camera()
+          : CameraReply(
+              connection: connection,
+            ),
+      fullScreen: false,
+    );
+
+    // if (cameraStatus.isGranted && microphoneStatus.isGranted) {
+    //   SuperNavigator.push(
+    //     context: context,
+    //     widget: connection == null
+    //         ? Camera()
+    //         : CameraReply(
+    //             connection: connection,
+    //           ),
+    //     fullScreen: false,
+    //   );
+    // } else {
+    //   SuperNavigator.push(
+    //     context: context,
+    //     widget: RecordPermission(
+    //       connection: connection,
+    //     ),
+    //     fullScreen: false,
+    //   );
+    // }
   }
 }

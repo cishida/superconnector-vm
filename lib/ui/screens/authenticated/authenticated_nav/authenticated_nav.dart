@@ -60,24 +60,24 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
     }
   }
 
-  void handleRecordNavigation({
-    required BuildContext context,
-  }) async {
-    var cameraStatus = await Permission.camera.status;
-    var microphoneStatus = await Permission.microphone.status;
+  // void handleRecordNavigation({
+  //   required BuildContext context,
+  // }) async {
+  //   var cameraStatus = await Permission.camera.status;
+  //   var microphoneStatus = await Permission.microphone.status;
 
-    if (cameraStatus.isGranted && microphoneStatus.isGranted) {
-      _toCamera();
-    } else {
-      SuperNavigator.push(
-        context: context,
-        widget: RecordPermission(
-          callback: _toCamera,
-        ),
-        fullScreen: false,
-      );
-    }
-  }
+  //   if (cameraStatus.isGranted && microphoneStatus.isGranted) {
+  //     _toCamera();
+  //   } else {
+  //     SuperNavigator.push(
+  //       context: context,
+  //       widget: RecordPermission(
+  //         callback: _toCamera,
+  //       ),
+  //       fullScreen: false,
+  //     );
+  //   }
+  // }
 
   void _toCamera() {
     Provider.of<AuthenticatedController>(
@@ -118,12 +118,12 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                   controller: _tabController,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
-                    Account(),
+                    Home(),
                     Camera(),
+                    Account(),
                     // Record(
                     //   shouldGoBack: false,
                     // ),
-                    Home(),
 
                     // Container(),
                     // Container(),
@@ -148,15 +148,15 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                   indicatorColor: Colors.transparent,
                   automaticIndicatorColorAdjustment: false,
                   onTap: (value) {
-                    if (value == 1) {
-                      handleRecordNavigation(context: context);
-                    } else {
-                      Provider.of<AuthenticatedController>(
-                        context,
-                        listen: false,
-                      ).setIndex(value);
-                      _tabController.animateTo(value);
-                    }
+                    // if (value == 1) {
+                    //   handleRecordNavigation(context: context);
+                    // } else {
+                    Provider.of<AuthenticatedController>(
+                      context,
+                      listen: false,
+                    ).setIndex(value);
+                    _tabController.animateTo(value);
+                    // }
                     // switch (value) {
                     //   case 1:
                     //     selectedContacts.reset();
@@ -194,7 +194,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     Align(
                       alignment: Alignment.centerLeft,
                       child: BottomNavButton(
-                        title: 'settings',
+                        title: 'camera-rolls',
                         // showBadge: false,
                         selected: _tabController.index == 0,
                       ),
@@ -203,11 +203,10 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                       title: 'camera',
                       selected: _tabController.index == 1,
                     ),
-
                     Align(
                       alignment: Alignment.centerRight,
                       child: BottomNavButton(
-                        title: 'records',
+                        title: 'settings',
                         selected: _tabController.index == 2,
                         imageHeight: 24.0,
                       ),
