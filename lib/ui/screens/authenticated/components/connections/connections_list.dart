@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/camera_rolls_shimmer.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/connection_tile.dart';
 

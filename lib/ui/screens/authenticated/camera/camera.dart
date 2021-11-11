@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
@@ -16,6 +17,7 @@ import 'package:superconnector_vm/ui/screens/authenticated/camera/components/cam
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/image_preview_container/image_preview_container.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/camera/onboarding/record_onboarding_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 import 'package:video_thumbnail/video_thumbnail.dart' as thumb;
@@ -417,11 +419,26 @@ class _CameraState extends State<Camera>
   //   );
   // }
 
+  Future<void> _showRecordOnboarding(Superuser superuser) async {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (BuildContext context, _, __) {
+          return RecordOnboardingOverlay();
+        },
+      ),
+    );
+
+    superuser.recordOnboarding = true;
+    await superuser.update();
+  }
+
   @override
   Widget build(BuildContext context) {
     final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
+    final superuser = Provider.of<Superuser?>(context);
 
     bool permissionAllowed = _cameraStatus != null &&
         _cameraStatus!.isGranted &&
@@ -435,6 +452,14 @@ class _CameraState extends State<Camera>
         color: Colors.black,
       );
     }
+
+    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
+      if (permissionAllowed &&
+          superuser != null &&
+          !superuser.recordOnboarding) {
+        _showRecordOnboarding(superuser);
+      }
+    });
 
     // var cameraStatus = await Permission.camera.status;
     // var microphoneStatus = await Permission.microphone.status;

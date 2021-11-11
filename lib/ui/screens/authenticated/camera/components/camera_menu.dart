@@ -120,7 +120,7 @@ class _CameraMenuState extends State<CameraMenu> {
       'upload': 16.0,
       // 'lenses': 22.0,
       // 'message': 28.0,
-      'trending': 22.0,
+      // 'trending': 22.0,
       // 'intro': 20.4,
       // 'contract': 22.0,
       // 'invoice': 19.0,

@@ -103,7 +103,7 @@ class _CameraOverlayState extends State<CameraOverlay>
     bool _isRecording =
         widget.controller != null && widget.controller!.value.isRecordingVideo;
 
-    double recordButtonBottom = 70.0;
+    double recordButtonBottom = 22.0;
     double recordButtonDiameter = 86.0;
 
     return Stack(
@@ -259,38 +259,38 @@ class _CameraOverlayState extends State<CameraOverlay>
             ),
           ),
         ),
-        Positioned.fill(
-          bottom: 22.0,
-          left: 0.0,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: AnimatedOpacity(
-              opacity: !_isRecording ? 1.0 : 0.0,
-              duration: const Duration(
-                milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
-              ),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
-                  vertical: 6.0,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(32.0),
-                  color: Colors.white.withOpacity(.20),
-                ),
-                child: Text(
-                  'Tap for photo. Hold for video.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
+        // Positioned.fill(
+        //   bottom: 22.0,
+        //   left: 0.0,
+        //   child: Align(
+        //     alignment: Alignment.bottomCenter,
+        //     child: AnimatedOpacity(
+        //       opacity: !_isRecording ? 1.0 : 0.0,
+        //       duration: const Duration(
+        //         milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
+        //       ),
+        //       child: Container(
+        //         padding: const EdgeInsets.symmetric(
+        //           horizontal: 15.0,
+        //           vertical: 6.0,
+        //         ),
+        //         decoration: BoxDecoration(
+        //           borderRadius: BorderRadius.circular(32.0),
+        //           color: Colors.white.withOpacity(.20),
+        //         ),
+        //         child: Text(
+        //           'Tap for photo. Hold for video.',
+        //           textAlign: TextAlign.center,
+        //           style: TextStyle(
+        //             color: Colors.white,
+        //             fontSize: 15.0,
+        //             fontWeight: FontWeight.w600,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // ),
         // Positioned.fill(
         //   top: 51.0,
         //   right: 0.0,
