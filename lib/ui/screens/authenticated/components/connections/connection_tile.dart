@@ -12,6 +12,7 @@ import 'package:superconnector_vm/core/services/photo/photo_service.dart';
 import 'package:superconnector_vm/core/services/video/video_service.dart';
 import 'package:superconnector_vm/core/utils/block/block_utility.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
+import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_names.dart';
@@ -431,7 +432,7 @@ class _ConnectionTileState extends State<ConnectionTile>
                   ),
                 ),
                 Container(
-                  height: 146.0,
+                  height: ConstantValues.MEDIA_TILE_HEIGHT,
                   padding: const EdgeInsets.only(
                     left: 16.0,
                   ),

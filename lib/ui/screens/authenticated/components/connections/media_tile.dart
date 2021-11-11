@@ -7,6 +7,7 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
+import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/media_tile_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/media_tile_progress.dart';
 
@@ -53,8 +54,8 @@ class _MediaTileState extends State<MediaTile> {
     bool unwatched = media.unwatchedIds.contains(superuser.id);
 
     return Container(
-      height: 146.0,
-      width: 110.0,
+      height: ConstantValues.MEDIA_TILE_HEIGHT,
+      width: ConstantValues.MEDIA_TILE_WIDTH,
       // color: Colors.black,
       margin: const EdgeInsets.only(
         right: 1.0,
