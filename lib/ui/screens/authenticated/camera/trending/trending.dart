@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:superconnector_vm/core/models/caption/caption.dart';
 import 'package:superconnector_vm/core/providers/camera_provider.dart';
+import 'package:superconnector_vm/core/services/caption/caption_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/gradient_background.dart';
@@ -19,20 +21,28 @@ class _TrendingState extends State<Trending> {
     return GradientBackground(
       title: 'Trending',
       subtitle: 'Based on an analysis of anonymized captions.',
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: ConstantStrings.TRENDING_LIST.length,
-              itemBuilder: (context, index) {
-                return TrendingTile(
-                  index: index,
-                );
-              },
-            ),
-          ],
+      child: StreamProvider<List<Caption>>.value(
+        value: CaptionService().getCaptions(),
+        initialData: [],
+        child: Consumer<List<Caption>>(
+          builder: (context, captions, child) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: captions.length,
+                    itemBuilder: (context, index) {
+                      return TrendingTile(
+                        caption: captions[index],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -42,10 +52,10 @@ class _TrendingState extends State<Trending> {
 class TrendingTile extends StatefulWidget {
   const TrendingTile({
     Key? key,
-    required this.index,
+    required this.caption,
   }) : super(key: key);
 
-  final int index;
+  final Caption caption;
 
   @override
   State<TrendingTile> createState() => _TrendingTileState();
@@ -72,7 +82,7 @@ class _TrendingTileState extends State<TrendingTile> {
           _isPressed = true;
         });
 
-        cameraProvider.caption = ConstantStrings.TRENDING_LIST[widget.index];
+        cameraProvider.caption = widget.caption.value;
 
         Future.delayed(Duration(milliseconds: 50)).then(
           (value) {
@@ -114,7 +124,7 @@ class _TrendingTileState extends State<TrendingTile> {
                     ),
                     child: Center(
                       child: Text(
-                        widget.index.toString(),
+                        (widget.caption.order + 1).toString(),
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w700,
@@ -131,7 +141,7 @@ class _TrendingTileState extends State<TrendingTile> {
                           chevronWidth,
                     ),
                     child: Text(
-                      ConstantStrings.TRENDING_LIST[widget.index],
+                      widget.caption.value,
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w600,
