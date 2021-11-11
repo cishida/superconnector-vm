@@ -17,6 +17,8 @@ class ConstantStrings {
   // static const String ONBOARDING_NEW_VM_TITLE = 'New VM';
   // static const String ONBOARDING_NEW_VM_SUBTITLE =
   //     'To quickly record and send a video message,\ntap the button in the bottom corner.';
+  static const String INVITE_CARD_COPY =
+      'Invite them to Superconnector so you can use a new camera roll together one-on-one.';
   static const String TARGETED_INVITE_COPY =
       "Just shared a camera roll with you in Superconnector! Here's your invite: ";
   static const String TESTFLIGHT_LINK =

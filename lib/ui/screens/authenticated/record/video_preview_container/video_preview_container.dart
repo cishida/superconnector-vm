@@ -71,8 +71,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
           children: [
             SuperDialog(
               title: 'Confirmation',
-              subtitle:
-                  'Send them a Superconnector invitation so you can both use your shared camera roll.',
+              subtitle: ConstantStrings.INVITE_CARD_COPY,
               primaryActionTitle: 'Continue',
               primaryAction: () async {
                 String body = ConstantStrings.TARGETED_INVITE_COPY +
