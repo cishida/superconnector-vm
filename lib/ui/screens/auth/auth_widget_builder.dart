@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/connection_search_term.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
@@ -10,7 +10,7 @@ import 'package:superconnector_vm/core/services/auth/auth_service.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/services/supercontact/supercontact_service.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
-import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
 
 /// Used to create user-dependent objects that need to be accessible by all widgets.
 /// This widgets should live above the [MaterialApp].
@@ -63,10 +63,10 @@ class AuthWidgetBuilder extends StatelessWidget {
               initialData: [],
             ),
             ChangeNotifierProvider(
-              create: (_) => AuthenticatedController(),
+              create: (_) => BottomNavProvider(),
             ),
             ChangeNotifierProvider(
-              create: (_) => CameraHandler(),
+              create: (_) => CameraProvider(),
             ),
             // NOTE: Any other user-bound providers here can be added here
           ],

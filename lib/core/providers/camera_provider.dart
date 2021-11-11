@@ -16,13 +16,13 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/photo/photo.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
-import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:tapioca/tapioca.dart';
 import 'package:image/image.dart' as img;
 import 'package:uuid/uuid.dart';
 
-class CameraHandler extends ChangeNotifier {
+class CameraProvider extends ChangeNotifier {
   CameraController? cameraController;
   String _caption = '';
   String _filter = 'Normal';
@@ -305,7 +305,7 @@ class CameraHandler extends ChangeNotifier {
   }
 
   void navigateToRolls(BuildContext context) {
-    Provider.of<AuthenticatedController>(
+    Provider.of<BottomNavProvider>(
       context,
       listen: false,
     ).setIndex(0);

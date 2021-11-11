@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
@@ -33,18 +33,18 @@ class VideoMetaData extends StatelessWidget {
       height: 26 / 17,
     );
 
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
     final Size size = MediaQuery.of(context).size;
 
-    final selectedCaption = caption ?? cameraHandler.caption;
+    final selectedCaption = caption ?? cameraProvider.caption;
 
     return Positioned(
       bottom: 20.0,
       left: 15.0,
       child: AnimatedOpacity(
-        opacity: !cameraHandler.browsingFilters ? 1.0 : 0.0,
+        opacity: !cameraProvider.browsingFilters ? 1.0 : 0.0,
         duration: const Duration(
           milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
         ),

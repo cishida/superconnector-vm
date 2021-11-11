@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/components/overlays/overlay_menu.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
@@ -65,18 +65,18 @@ class _CameraMenuState extends State<CameraMenu> {
   }
 
   Future onReset() async {
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
       listen: false,
     );
 
-    cameraHandler.imageFile = null;
-    cameraHandler.videoFile = null;
-    cameraHandler.caption = '';
+    cameraProvider.imageFile = null;
+    cameraProvider.videoFile = null;
+    cameraProvider.caption = '';
   }
 
   Future _goToUploadedMedia() async {
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
       listen: false,
     );
@@ -84,7 +84,7 @@ class _CameraMenuState extends State<CameraMenu> {
     Navigator.of(context).pop();
 
     final widget;
-    if (cameraHandler.imageFile != null) {
+    if (cameraProvider.imageFile != null) {
       widget = ImagePreviewContainer(
         onReset: () => onReset(),
       );
@@ -131,7 +131,7 @@ class _CameraMenuState extends State<CameraMenu> {
     };
 
     List<Widget> widgets = [];
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
       listen: false,
     );
@@ -149,20 +149,20 @@ class _CameraMenuState extends State<CameraMenu> {
                 widget.toggleCamera();
                 break;
               case 'flash':
-                if (cameraHandler.cameraController != null) {
-                  switch (cameraHandler.cameraController!.value.flashMode) {
+                if (cameraProvider.cameraController != null) {
+                  switch (cameraProvider.cameraController!.value.flashMode) {
                     case FlashMode.always:
-                      await cameraHandler.cameraController!.setFlashMode(
+                      await cameraProvider.cameraController!.setFlashMode(
                         FlashMode.auto,
                       );
                       break;
                     case FlashMode.auto:
-                      await cameraHandler.cameraController!.setFlashMode(
+                      await cameraProvider.cameraController!.setFlashMode(
                         FlashMode.off,
                       );
                       break;
                     case FlashMode.off:
-                      await cameraHandler.cameraController!.setFlashMode(
+                      await cameraProvider.cameraController!.setFlashMode(
                         FlashMode.always,
                       );
                       break;
@@ -174,14 +174,14 @@ class _CameraMenuState extends State<CameraMenu> {
               case 'upload':
                 final Map<String, Function> menuOptions = {
                   'Photo Upload': () async {
-                    cameraHandler.imageFile = await getImage();
-                    if (cameraHandler.imageFile != null) {
+                    cameraProvider.imageFile = await getImage();
+                    if (cameraProvider.imageFile != null) {
                       _goToUploadedMedia();
                     }
                   },
                   'Video Upload': () async {
-                    cameraHandler.videoFile = await getVideo();
-                    if (cameraHandler.videoFile != null) {
+                    cameraProvider.videoFile = await getVideo();
+                    if (cameraProvider.videoFile != null) {
                       _goToUploadedMedia();
                     }
                   },
@@ -196,7 +196,7 @@ class _CameraMenuState extends State<CameraMenu> {
                     },
                   ),
                 );
-                // cameraHandler.imageFile = await getImage();
+                // cameraProvider.imageFile = await getImage();
 
                 // Navigator.of(context).push(
                 //   PageRouteBuilder(
@@ -293,7 +293,7 @@ class _CameraMenuState extends State<CameraMenu> {
 
   @override
   Widget build(BuildContext context) {
-    CameraHandler cameraHandler = Provider.of<CameraHandler>(context);
+    CameraProvider cameraProvider = Provider.of<CameraProvider>(context);
 
     return Positioned.fill(
       top: 51.0,
@@ -301,7 +301,7 @@ class _CameraMenuState extends State<CameraMenu> {
       child: Align(
         alignment: Alignment.topRight,
         child: AnimatedOpacity(
-          opacity: !cameraHandler.isRecording() ? 1.0 : 0.0,
+          opacity: !cameraProvider.isRecording() ? 1.0 : 0.0,
           duration: const Duration(
             milliseconds: ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
           ),

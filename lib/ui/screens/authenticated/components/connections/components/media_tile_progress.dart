@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
 class MediaTileProgress extends StatefulWidget {
@@ -15,7 +15,7 @@ class MediaTileProgress extends StatefulWidget {
 class _MediaTileProgressState extends State<MediaTileProgress> {
   @override
   Widget build(BuildContext context) {
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
@@ -29,7 +29,7 @@ class _MediaTileProgressState extends State<MediaTileProgress> {
           valueColor: AlwaysStoppedAnimation<Color>(
             ConstantColors.PRIMARY,
           ),
-          value: cameraHandler.progress / 100,
+          value: cameraProvider.progress / 100,
         ),
       ),
     );

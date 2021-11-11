@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection_search_term.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/screens/home/components/connection_search_bar.dart';
 
@@ -30,10 +30,10 @@ class _HomeTitleBarState extends State<HomeTitleBar>
     double width = MediaQuery.of(context).size.width;
     ConnectionSearchTerm connectionSearchTerm =
         Provider.of<ConnectionSearchTerm>(context);
-    AuthenticatedController authenticatedController =
-        Provider.of<AuthenticatedController>(context);
+    BottomNavProvider bottomNavProvider =
+        Provider.of<BottomNavProvider>(context);
 
-    if (authenticatedController.isSearching) {
+    if (bottomNavProvider.isSearching) {
       _focusNode.requestFocus();
     }
 
@@ -46,7 +46,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
             children: [
               // AnimatedPositioned(
               //   duration: const Duration(milliseconds: 150),
-              //   left: authenticatedController.isSearching ? -300 : 0.0,
+              //   left: bottomNavProvider.isSearching ? -300 : 0.0,
               //   bottom: 20.0,
               //   child: Padding(
               //     padding: const EdgeInsets.only(
@@ -60,7 +60,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
               // ),
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 150),
-                left: authenticatedController.isSearching ? -400 : 0.0,
+                left: bottomNavProvider.isSearching ? -400 : 0.0,
                 bottom: 7.0,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 18.0),
@@ -75,15 +75,14 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                   ),
                 ),
               ),
-              if (!authenticatedController.isSearching)
+              if (!bottomNavProvider.isSearching)
                 Positioned(
                   right: 67,
                   bottom: 6.0,
                   child: AnimatedOpacity(
                     duration: Duration(
-                        milliseconds:
-                            authenticatedController.isSearching ? 0 : 600),
-                    opacity: authenticatedController.isSearching ? 0 : 1,
+                        milliseconds: bottomNavProvider.isSearching ? 0 : 600),
+                    opacity: bottomNavProvider.isSearching ? 0 : 1,
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
@@ -102,20 +101,19 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                     ),
                   ),
                 ),
-              if (!authenticatedController.isSearching)
+              if (!bottomNavProvider.isSearching)
                 Positioned(
                   right: 20,
                   bottom: 6.0,
                   child: AnimatedOpacity(
                     duration: Duration(
-                        milliseconds:
-                            authenticatedController.isSearching ? 0 : 600),
-                    opacity: authenticatedController.isSearching ? 0 : 1,
+                        milliseconds: bottomNavProvider.isSearching ? 0 : 600),
+                    opacity: bottomNavProvider.isSearching ? 0 : 1,
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
                         if (mounted) {
-                          authenticatedController.setIsSearching(true);
+                          bottomNavProvider.setIsSearching(true);
                         }
                         _focusNode.requestFocus();
                       },
@@ -133,7 +131,7 @@ class _HomeTitleBarState extends State<HomeTitleBar>
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 150),
                 right: 0.0,
-                left: authenticatedController.isSearching
+                left: bottomNavProvider.isSearching
                     ? 0
                     : MediaQuery.of(context).size.width,
                 bottom: 8.0,
@@ -149,9 +147,9 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                           searchController: _searchController,
                           focusNode: _focusNode,
                           close: () {
-                            authenticatedController.setIsSearching(false);
+                            bottomNavProvider.setIsSearching(false);
                             // setState(() {
-                            //   authenticatedController.isSearching = false;
+                            //   bottomNavProvider.isSearching = false;
                             // });
                           },
                         ),
@@ -161,22 +159,22 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                 ),
               ),
 
-              if (authenticatedController.isSearching)
+              if (bottomNavProvider.isSearching)
                 Positioned(
                   right: 20.0,
                   top: 8.0,
                   child: AnimatedOpacity(
                     duration: const Duration(milliseconds: 150),
-                    opacity: authenticatedController.isSearching ? 1 : 0,
+                    opacity: bottomNavProvider.isSearching ? 1 : 0,
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
                         _searchController.clear();
                         connectionSearchTerm.set('');
                         FocusScope.of(context).unfocus();
-                        authenticatedController.setIsSearching(false);
+                        bottomNavProvider.setIsSearching(false);
                         // setState(() {
-                        //   authenticatedController.isSearching = false;
+                        //   bottomNavProvider.isSearching = false;
                         // });
                       },
                       child: Padding(

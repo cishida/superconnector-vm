@@ -6,7 +6,7 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
@@ -14,7 +14,7 @@ import 'package:superconnector_vm/core/services/connection/connection_service.da
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
@@ -98,14 +98,14 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
   }
 
   Future _initializeVideo() async {
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
       listen: false,
     );
 
     _betterController = await BetterPlayerUtility.initializeFromVideoFile(
       size: MediaQuery.of(context).size,
-      videoFile: cameraHandler.videoFile!,
+      videoFile: cameraProvider.videoFile!,
       onEvent: () {
         if (_betterController != null) {
           _safeSetState();
@@ -149,7 +149,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       context,
       listen: false,
     );
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
       listen: false,
     );
@@ -202,15 +202,15 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
       });
     }
 
-    cameraHandler.navigateToRolls(context);
-    await cameraHandler.createVideos(
+    cameraProvider.navigateToRolls(context);
+    await cameraProvider.createVideos(
       selectedContacts.connections,
       currentSuperuser,
-      cameraHandler.videoFile!,
+      cameraProvider.videoFile!,
       _betterController!,
     );
 
-    await cameraHandler.disposeCamera();
+    await cameraProvider.disposeCamera();
 
     await _showInviteCard(phoneNumbers);
     selectedContacts.reset();
@@ -227,11 +227,11 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
-    // if (cameraHandler.filter != 'Normal') {
+    // if (cameraProvider.filter != 'Normal') {
     //   _initializeVideo();
     // }
 
@@ -294,7 +294,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
 
           Navigator.of(context).popUntil((route) => route.isFirst);
 
-          Provider.of<AuthenticatedController>(
+          Provider.of<BottomNavProvider>(
             context,
             listen: false,
           ).setIndex(0);
@@ -304,7 +304,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
 
         // Navigator.of(context).popUntil((route) => route.isFirst);
 
-        // Provider.of<AuthenticatedController>(
+        // Provider.of<BottomNavProvider>(
         //   context,
         //   listen: false,
         // ).setIndex(1);
@@ -371,7 +371,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                 top: 71.0 - 28.0,
                 left: 0.0,
                 child: AnimatedOpacity(
-                  opacity: !cameraHandler.browsingFilters ? 1.0 : 0.0,
+                  opacity: !cameraProvider.browsingFilters ? 1.0 : 0.0,
                   duration: const Duration(
                     milliseconds:
                         ConstantValues.CAMERA_OVERLAY_FADE_MILLISECONDS,
@@ -401,7 +401,7 @@ class _VideoPreviewContainerState extends State<VideoPreviewContainer> {
                 superuser: superuser,
                 duration: _duration,
                 position: _position,
-                caption: cameraHandler.caption,
+                caption: cameraProvider.caption,
               ),
               // CameraOptions(),
             ],

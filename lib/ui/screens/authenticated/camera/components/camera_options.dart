@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/caption_overlay.dart';
@@ -12,7 +12,7 @@ class CameraOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
@@ -20,8 +20,8 @@ class CameraOptions extends StatelessWidget {
       top: 71.0,
       right: 0.0,
       child: AnimatedOpacity(
-        opacity: cameraHandler.cameraController == null ||
-                cameraHandler.cameraController!.value.isRecordingVideo
+        opacity: cameraProvider.cameraController == null ||
+                cameraProvider.cameraController!.value.isRecordingVideo
             ? 0.0
             : 1.0,
         duration: const Duration(
@@ -34,7 +34,7 @@ class CameraOptions extends StatelessWidget {
             //   imageName:
             //       'assets/images/authenticated/record/camera-filter-icon.png',
             //   onPress: () {
-            //     cameraHandler.browsingFilters = !cameraHandler.browsingFilters;
+            //     cameraProvider.browsingFilters = !cameraProvider.browsingFilters;
             //   },
             // ),
             CameraIcon(

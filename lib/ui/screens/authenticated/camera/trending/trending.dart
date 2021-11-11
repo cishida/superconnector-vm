@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/gradient_background.dart';
@@ -61,7 +61,7 @@ class _TrendingTileState extends State<TrendingTile> {
     final double numberWidth = 28.0;
     final double chevronWidth = 7.0;
 
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
@@ -72,7 +72,7 @@ class _TrendingTileState extends State<TrendingTile> {
           _isPressed = true;
         });
 
-        cameraHandler.caption = ConstantStrings.TRENDING_LIST[widget.index];
+        cameraProvider.caption = ConstantStrings.TRENDING_LIST[widget.index];
 
         Future.delayed(Duration(milliseconds: 50)).then(
           (value) {

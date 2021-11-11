@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 
 class CameraIcon extends StatelessWidget {
   const CameraIcon({
@@ -19,18 +19,18 @@ class CameraIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
     FlashMode flashMode = FlashMode.auto;
 
-    if (title == 'Flash' && cameraHandler.cameraController == null) {
+    if (title == 'Flash' && cameraProvider.cameraController == null) {
       return Container();
     }
 
-    if (cameraHandler.cameraController != null) {
-      flashMode = cameraHandler.cameraController!.value.flashMode;
+    if (cameraProvider.cameraController != null) {
+      flashMode = cameraProvider.cameraController!.value.flashMode;
     }
 
     TextStyle textStyle = TextStyle(

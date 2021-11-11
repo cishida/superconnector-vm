@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/ui/components/overlays/overlay_text_form_field.dart';
 
 class CaptionOverlay extends StatefulWidget {
@@ -18,7 +18,7 @@ class _CaptionOverlayState extends State<CaptionOverlay> {
 
   @override
   Widget build(BuildContext context) {
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
@@ -47,7 +47,7 @@ class _CaptionOverlayState extends State<CaptionOverlay> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: OverlayTextFormField(
                         fieldKey: 'Caption',
-                        value: cameraHandler.caption,
+                        value: cameraProvider.caption,
                         autofocus: true,
                         cursorColor: Colors.white,
                         focusedBorderColor: Colors.white,
@@ -68,7 +68,7 @@ class _CaptionOverlayState extends State<CaptionOverlay> {
                             return;
                           }
 
-                          cameraHandler.caption = text;
+                          cameraProvider.caption = text;
                         },
                         textInputAction: TextInputAction.done,
                       ),
@@ -77,7 +77,7 @@ class _CaptionOverlayState extends State<CaptionOverlay> {
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0, bottom: 10.0),
                     child: Text(
-                      cameraHandler.caption.length.toString() +
+                      cameraProvider.caption.length.toString() +
                           ' / $_characterLimit',
                       style: TextStyle(
                         fontSize: 14.0,

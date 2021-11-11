@@ -3,7 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/account.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/authenticated_nav/components/bottom_nav_button.dart';
@@ -80,7 +80,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
   // }
 
   void _toCamera() {
-    Provider.of<AuthenticatedController>(
+    Provider.of<BottomNavProvider>(
       context,
       listen: false,
     ).setIndex(1);
@@ -91,8 +91,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
   Widget build(BuildContext context) {
     super.build(context);
     final superuser = context.watch<Superuser?>();
-    final authenticatedController =
-        Provider.of<AuthenticatedController>(context);
+    final bottomNavProvider = Provider.of<BottomNavProvider>(context);
 
     if (superuser == null || superuser.id == '') {
       return Center(
@@ -105,7 +104,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
         setState(() {});
       }
 
-      _tabController.animateTo(authenticatedController.pageIndex);
+      _tabController.animateTo(bottomNavProvider.pageIndex);
 
       return Material(
         color: ConstantColors.DARK_BLUE,
@@ -137,7 +136,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
               //   color: ConstantColors.DIVIDER_GRAY,
               // ),
               Container(
-                height: authenticatedController.isSearching ? 0.0 : 80.0,
+                height: bottomNavProvider.isSearching ? 0.0 : 80.0,
                 padding: const EdgeInsets.only(
                   bottom: 24.0,
                 ),
@@ -151,7 +150,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     // if (value == 1) {
                     //   handleRecordNavigation(context: context);
                     // } else {
-                    Provider.of<AuthenticatedController>(
+                    Provider.of<BottomNavProvider>(
                       context,
                       listen: false,
                     ).setIndex(value);
@@ -170,7 +169,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     //     );
                     //     break;
                     //   case 3:
-                    //     authenticatedController.setIsSearching(true);
+                    //     bottomNavProvider.setIsSearching(true);
                     //     break;
                     //   case 4:
                     //     Navigator.push(
@@ -181,7 +180,7 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     //     );
                     //     break;
                     //   default:
-                    //     Provider.of<AuthenticatedController>(
+                    //     Provider.of<BottomNavProvider>(
                     //       context,
                     //       listen: false,
                     //     ).setIndex(value);

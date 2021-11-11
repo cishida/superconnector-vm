@@ -5,7 +5,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
@@ -13,7 +13,7 @@ import 'package:superconnector_vm/core/services/connection/connection_service.da
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
@@ -87,7 +87,7 @@ class _UploadedMediaState extends State<UploadedMedia> {
       context,
       listen: false,
     );
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
       listen: false,
     );
@@ -140,13 +140,13 @@ class _UploadedMediaState extends State<UploadedMedia> {
       });
     }
 
-    cameraHandler.navigateToRolls(context);
-    await cameraHandler.createPhotos(
+    cameraProvider.navigateToRolls(context);
+    await cameraProvider.createPhotos(
       selectedContacts.connections,
       currentSuperuser,
     );
 
-    await cameraHandler.disposeCamera();
+    await cameraProvider.disposeCamera();
     await _showInviteCard(phoneNumbers);
     selectedContacts.reset();
   }
@@ -154,7 +154,7 @@ class _UploadedMediaState extends State<UploadedMedia> {
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
@@ -185,7 +185,7 @@ class _UploadedMediaState extends State<UploadedMedia> {
 
           Navigator.of(context).popUntil((route) => route.isFirst);
 
-          Provider.of<AuthenticatedController>(
+          Provider.of<BottomNavProvider>(
             context,
             listen: false,
           ).setIndex(0);
@@ -216,10 +216,10 @@ class _UploadedMediaState extends State<UploadedMedia> {
                 CameraTransform(
                   constraints: constraints,
                   isImage: true,
-                  child: cameraHandler.imageFile != null
+                  child: cameraProvider.imageFile != null
                       ? Image.file(
                           File(
-                            cameraHandler.imageFile!.path,
+                            cameraProvider.imageFile!.path,
                           ),
                         )
                       : Container(),
@@ -230,8 +230,8 @@ class _UploadedMediaState extends State<UploadedMedia> {
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () async {
-                      cameraHandler.imageFile = null;
-                      cameraHandler.videoFile = null;
+                      cameraProvider.imageFile = null;
+                      cameraProvider.videoFile = null;
                       Navigator.of(context).pop();
                     },
                     child: Padding(
@@ -247,7 +247,7 @@ class _UploadedMediaState extends State<UploadedMedia> {
                   VideoMetaData(
                     created: DateTime.now(),
                     superuser: superuser,
-                    caption: cameraHandler.caption,
+                    caption: cameraProvider.caption,
                   ),
               ],
             );

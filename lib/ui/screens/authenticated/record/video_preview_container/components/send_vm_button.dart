@@ -40,7 +40,7 @@
 
 //           Navigator.of(context).popUntil((route) => route.isFirst);
 
-//           Provider.of<AuthenticatedController>(
+//           Provider.of<BottomNavProvider>(
 //             context,
 //             listen: false,
 //           ).setIndex(1);

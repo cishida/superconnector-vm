@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 
 class FilterPreview extends StatelessWidget {
@@ -21,14 +21,14 @@ class FilterPreview extends StatelessWidget {
       return Container();
     }
 
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        cameraHandler.setFilter(filter);
+        cameraProvider.setFilter(filter);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -40,7 +40,7 @@ class FilterPreview extends StatelessWidget {
               width: 54.0,
               height: 54.0,
               decoration: BoxDecoration(
-                border: cameraHandler.filter == filter
+                border: cameraProvider.filter == filter
                     ? Border.all(color: ConstantColors.TURQUOISE, width: 3.0)
                     : Border.all(width: 0.0),
                 borderRadius: BorderRadius.circular(27.0),
@@ -58,7 +58,7 @@ class FilterPreview extends StatelessWidget {
                 filter,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: cameraHandler.filter == filter
+                  color: cameraProvider.filter == filter
                       ? ConstantColors.TURQUOISE
                       : Colors.white,
                 ),

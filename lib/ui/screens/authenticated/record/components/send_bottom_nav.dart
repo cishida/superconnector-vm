@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
@@ -13,13 +13,13 @@ class SendBottomNav extends StatelessWidget {
     required this.sendButton,
   }) : super(key: key);
 
-  // final CameraHandler cameraHandler;
+  // final CameraProvider cameraProvider;
   final Widget browseFilters;
   final Widget sendButton;
 
   @override
   Widget build(BuildContext context) {
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
@@ -31,7 +31,7 @@ class SendBottomNav extends StatelessWidget {
         ),
         child: Container(
           alignment: Alignment.centerRight,
-          height: cameraHandler.browsingFilters
+          height: cameraProvider.browsingFilters
               ? ConstantValues.BROWSE_FILTER_HEIGHT
               : ConstantValues.BOTTOM_NAV_HEIGHT,
           padding: const EdgeInsets.symmetric(
@@ -78,7 +78,7 @@ class SendBottomNav extends StatelessWidget {
               //   ),
               // ),
               Spacer(),
-              cameraHandler.browsingFilters ? browseFilters : sendButton,
+              cameraProvider.browsingFilters ? browseFilters : sendButton,
             ],
           ),
         ),

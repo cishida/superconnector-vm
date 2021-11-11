@@ -25,7 +25,7 @@ class _AuthenticatedState extends State<Authenticated>
     super.initState();
     WidgetsFlutterBinding.ensureInitialized().addObserver(this);
     // final controller =
-    //     Provider.of<AuthenticatedController>(context, listen: false);
+    //     Provider.of<BottomNavProvider>(context, listen: false);
     // controller.setIndex(1);
     _logAppOpen();
     _setAnalyticsProperties();

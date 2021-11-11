@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AuthenticatedController extends ChangeNotifier {
+class BottomNavProvider extends ChangeNotifier {
   int _pageIndex = 1;
   bool _isSearching = false;
 

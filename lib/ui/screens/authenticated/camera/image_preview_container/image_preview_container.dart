@@ -5,7 +5,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
@@ -13,7 +13,7 @@ import 'package:superconnector_vm/core/services/connection/connection_service.da
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/core/utils/nav/authenticated_controller.dart';
+import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
@@ -88,7 +88,7 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
       context,
       listen: false,
     );
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
       listen: false,
     );
@@ -141,13 +141,13 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
       });
     }
 
-    cameraHandler.navigateToRolls(context);
-    await cameraHandler.createPhotos(
+    cameraProvider.navigateToRolls(context);
+    await cameraProvider.createPhotos(
       selectedContacts.connections,
       currentSuperuser,
     );
 
-    await cameraHandler.disposeCamera();
+    await cameraProvider.disposeCamera();
     await _showInviteCard(phoneNumbers);
     selectedContacts.reset();
   }
@@ -155,11 +155,11 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
-    if (cameraHandler.imageFile == null) {
+    if (cameraProvider.imageFile == null) {
       return Container();
     }
 
@@ -196,7 +196,7 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
 
           Navigator.of(context).popUntil((route) => route.isFirst);
 
-          Provider.of<AuthenticatedController>(
+          Provider.of<BottomNavProvider>(
             context,
             listen: false,
           ).setIndex(0);
@@ -224,13 +224,13 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
           builder: (context, constraints) {
             return Stack(
               children: [
-                if (cameraHandler.imageFile != null)
+                if (cameraProvider.imageFile != null)
                   CameraTransform(
                     constraints: constraints,
                     isImage: true,
                     child: Image.file(
                       File(
-                        cameraHandler.imageFile!.path,
+                        cameraProvider.imageFile!.path,
                       ),
                     ),
                   ),
@@ -256,7 +256,7 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
                   VideoMetaData(
                     created: DateTime.now(),
                     superuser: superuser,
-                    caption: cameraHandler.caption,
+                    caption: cameraProvider.caption,
                   ),
               ],
             );
@@ -274,13 +274,13 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
         //     ),
         //     child: Container(
         //       alignment: Alignment.centerRight,
-        //       height: cameraHandler.browsingFilters
+        //       height: cameraProvider.browsingFilters
         //           ? ConstantValues.BROWSE_FILTER_HEIGHT
         //           : ConstantValues.BOTTOM_NAV_HEIGHT,
         //       padding: const EdgeInsets.symmetric(
         //         horizontal: 20.0,
         //       ),
-        //       child: cameraHandler.browsingFilters ? Container() : sendButton,
+        //       child: cameraProvider.browsingFilters ? Container() : sendButton,
         //     ),
         //   ),
         // ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 
 class CameraTransform extends StatelessWidget {
   const CameraTransform({
@@ -16,15 +16,15 @@ class CameraTransform extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
-    // if (isImage && cameraHandler.decodedImage != null) {
+    // if (isImage && cameraProvider.decodedImage != null) {
     //   final aspect = constraints.maxWidth / constraints.maxHeight;
     //   var scale = aspect *
-    //       (cameraHandler.decodedImage!.height /
-    //           cameraHandler.decodedImage!.width);
+    //       (cameraProvider.decodedImage!.height /
+    //           cameraProvider.decodedImage!.width);
     //   // to prevent scaling down, invert the value
     //   if (scale < 1) scale = 1 / scale;
     //   return Transform.scale(
@@ -38,8 +38,8 @@ class CameraTransform extends StatelessWidget {
     double scale = 0;
     double cameraAspect = 1.7777777;
 
-    if (cameraHandler.cameraController != null) {
-      var camera = cameraHandler.cameraController!.value;
+    if (cameraProvider.cameraController != null) {
+      var camera = cameraProvider.cameraController!.value;
 
       if (!camera.isInitialized) {
         return Container();

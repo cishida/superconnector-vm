@@ -2,7 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/models/camera/camera_handler.dart';
+import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
@@ -30,7 +30,7 @@ class _CameraLensContainerState extends State<CameraLensContainer> {
   @override
   Widget build(BuildContext context) {
     Superuser? superuser = Provider.of<Superuser?>(context);
-    final cameraHandler = Provider.of<CameraHandler>(
+    final cameraProvider = Provider.of<CameraProvider>(
       context,
     );
 
@@ -46,7 +46,7 @@ class _CameraLensContainerState extends State<CameraLensContainer> {
                 CameraTransform(
                   constraints: constraints,
                   child: CameraPreview(
-                    cameraHandler.cameraController!,
+                    cameraProvider.cameraController!,
                   ),
                 ),
                 Center(
@@ -71,7 +71,7 @@ class _CameraLensContainerState extends State<CameraLensContainer> {
             ),
             child: Container(
               alignment: Alignment.center,
-              height: cameraHandler.browsingFilters
+              height: cameraProvider.browsingFilters
                   ? ConstantValues.BROWSE_FILTER_HEIGHT
                   : ConstantValues.BOTTOM_NAV_HEIGHT,
               padding: const EdgeInsets.symmetric(
