@@ -137,6 +137,8 @@ class _ImagePreviewContainerState extends State<ImagePreviewContainer> {
         }
         selectedContacts.addConnection(connection);
       });
+    } else {
+      selectedContacts.addConnection(widget.connection!);
     }
 
     cameraProvider.navigateToRolls(context);
