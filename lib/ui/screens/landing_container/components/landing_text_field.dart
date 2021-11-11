@@ -27,7 +27,7 @@ class LandingTextField extends StatelessWidget {
     );
 
     TextStyle textFieldStyle = TextStyle(
-      color: Colors.black.withOpacity(.6),
+      color: Colors.white.withOpacity(.4),
       fontWeight: FontWeight.w600,
       fontSize: 17.0,
       // backgroundColor: ConstantColors.SECONDARY,
@@ -40,7 +40,7 @@ class LandingTextField extends StatelessWidget {
           autofocus: false,
           autocorrect: false,
           enabled: enabled,
-          style: textFieldStyle,
+          style: textFieldStyle.copyWith(color: Colors.white),
           cursorColor: ConstantColors.PRIMARY,
           keyboardAppearance: Brightness.light,
           keyboardType: TextInputType.phone,
@@ -63,7 +63,7 @@ class LandingTextField extends StatelessWidget {
             border: border,
             focusedBorder: border,
             filled: true,
-            fillColor: Colors.white.withOpacity(.7),
+            fillColor: Colors.white.withOpacity(.2),
           ),
           controller: textController,
           onEditingComplete: () {
@@ -83,7 +83,7 @@ class LandingTextField extends StatelessWidget {
             style: TextStyle(
               fontSize: 17.0,
               fontWeight: FontWeight.w600,
-              color: Colors.black.withOpacity(.6),
+              color: Colors.white,
             ),
           ),
         ),

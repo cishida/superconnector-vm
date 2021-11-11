@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/ui/components/buttons/bar_button.dart';
 import 'package:superconnector_vm/ui/components/buttons/chevron_back_button.dart';
-import 'package:superconnector_vm/ui/screens/landing_container/components/onboarding_text_field.dart';
+import 'package:superconnector_vm/ui/screens/landing_container/components/landing_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
 
 class InitialLanding extends StatefulWidget {
   const InitialLanding({
     Key? key,
-    // required this.onButtonPress,
     required this.setVerificationId,
     required this.setPhoneNumber,
   }) : super(key: key);
@@ -124,12 +123,6 @@ class _InitialLandingState extends State<InitialLanding>
       child: Container(
         decoration: BoxDecoration(
           color: ConstantColors.DARK_BLUE,
-          // image: DecorationImage(
-          //   image: AssetImage(
-          //     'assets/images/unauthenticated/landing-background.png',
-          //   ),
-          //   fit: BoxFit.cover,
-          // ),
         ),
         child: SafeArea(
           child: Stack(
@@ -153,8 +146,8 @@ class _InitialLandingState extends State<InitialLanding>
                         vertical: 24.0,
                       ),
                       child: BarButton(
-                        textColor: ConstantColors.PRIMARY,
-                        backgroundColor: Colors.white,
+                        textColor: Colors.white,
+                        backgroundColor: ConstantColors.PRIMARY,
                         title: 'Continue',
                         onPressed: _verifyPhoneNumber,
                         showLoading: _submitted,
@@ -184,7 +177,7 @@ class _InitialLandingState extends State<InitialLanding>
               AnimatedPositioned(
                 curve: Curves.easeOut,
                 duration: _animationDuration,
-                top: _isInputting ? 40 : size.height * .1175,
+                top: _isInputting ? 40 : size.height * .075,
                 child: AnimatedOpacity(
                   opacity: _isInputting ? 0 : 1,
                   duration: _animationDuration,
@@ -193,12 +186,12 @@ class _InitialLandingState extends State<InitialLanding>
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Image.asset(
                             'assets/images/unauthenticated/superconnector-icon-white.png',
-                            width: 70,
-                            height: 70,
+                            width: 80,
+                            height: 80,
                           ),
                           SizedBox(
                             height: 7.0,
@@ -206,7 +199,7 @@ class _InitialLandingState extends State<InitialLanding>
                           Text(
                             'Superconnector',
                             style: TextStyle(
-                              fontSize: 36.0,
+                              fontSize: 34.0,
                               color: Colors.white.withOpacity(.8),
                               fontWeight: FontWeight.w900,
                               fontFamily: 'SourceSerifPro',
@@ -214,12 +207,12 @@ class _InitialLandingState extends State<InitialLanding>
                             ),
                           ),
                           Text(
-                            'A shared camera for friends & family',
+                            'Business Camera',
                             style: TextStyle(
-                              fontSize: 16.0,
+                              fontSize: 20.0,
                               color: Colors.white.withOpacity(.8),
                               fontWeight: FontWeight.w600,
-                              letterSpacing: .15,
+                              // letterSpacing: .15,
                             ),
                           ),
                         ],
