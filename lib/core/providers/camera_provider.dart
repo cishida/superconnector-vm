@@ -95,7 +95,7 @@ class CameraProvider extends ChangeNotifier {
     await cameraController!.lockCaptureOrientation(
       DeviceOrientation.portraitUp,
     );
-    // caption = '';
+    caption = '';
 
     notifyListeners();
   }
