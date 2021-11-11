@@ -47,6 +47,10 @@ class _ConnectionTileState extends State<ConnectionTile>
   late Timer _periodicUpdate;
   // String _groupName = '';
   List<String> _filteredNames = [];
+  // final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  //     GlobalKey<RefreshIndicatorState>();
+  ScrollController _scrollController = ScrollController();
+  bool _swipeTriggered = false;
 
   // Future _loadUsers() async {
   //   List<Superuser> tempSuperusers = [];
@@ -84,8 +88,49 @@ class _ConnectionTileState extends State<ConnectionTile>
   //   }
   // }
 
+  Future _navigateToGrid() async {
+    return Future.delayed(Duration(milliseconds: 10), () {
+      if (!_swipeTriggered) {
+        setState(() {
+          _swipeTriggered = true;
+        });
+
+        SuperNavigator.push(
+          context: context,
+          widget: ConnectionGrid(
+            connection: widget.connection,
+          ),
+          fullScreen: false,
+          callback: () {
+            setState(() {
+              _swipeTriggered = false;
+            });
+          },
+        );
+      }
+    });
+  }
+
+  _scrollListener() async {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent + 110 &&
+        _scrollController.position.outOfRange &&
+        !_swipeTriggered) {
+      await _navigateToGrid();
+    }
+    if (_scrollController.offset <=
+            _scrollController.position.minScrollExtent - 110 &&
+        _scrollController.position.outOfRange) {
+      setState(() {
+        _swipeTriggered = true;
+      });
+      print("reach the end left");
+    }
+  }
+
   @override
   void initState() {
+    _scrollController.addListener(_scrollListener);
     super.initState();
     // _loadUsers();
     _periodicUpdate = Timer.periodic(Duration(seconds: 30), (Timer t) {
@@ -170,6 +215,12 @@ class _ConnectionTileState extends State<ConnectionTile>
     // } else {
     onComplete();
     // }
+  }
+
+  Future<dynamic> refreshList() async {
+    await Future.delayed(const Duration(seconds: 1));
+    print('here');
+    return null; //do some here.
   }
 
   @override
@@ -436,90 +487,106 @@ class _ConnectionTileState extends State<ConnectionTile>
                   padding: const EdgeInsets.only(
                     left: 16.0,
                   ),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: min(itemCount + (itemCount == 0 ? 1 : 0), 5),
-                    itemBuilder: (context, index) {
-                      if (index == 0 && itemCount == 0) {
-                        return VMConnectionTile(
-                          invertGradient: widget.invertGradient,
-                          onPressed: () {
-                            _handleNav(
-                              onComplete: () {
-                                BlockUtility blockUtility = BlockUtility(
-                                  context: context,
-                                  superuser: superuser,
-                                  connection: widget.connection,
+                  child: Stack(
+                    children: [
+                      if (itemCount > 4)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'Swipe for more',
+                            style: TextStyle(
+                              fontSize: 17.0,
+                            ),
+                          ),
+                        ),
+                      ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        controller: _scrollController,
+                        itemCount: min(itemCount + (itemCount == 0 ? 1 : 0), 5),
+                        itemBuilder: (context, index) {
+                          if (index == 0 && itemCount == 0) {
+                            return VMConnectionTile(
+                              invertGradient: widget.invertGradient,
+                              onPressed: () {
+                                _handleNav(
+                                  onComplete: () {
+                                    BlockUtility blockUtility = BlockUtility(
+                                      context: context,
+                                      superuser: superuser,
+                                      connection: widget.connection,
+                                    );
+                                    blockUtility
+                                        .handleBlockedRecordNavigation();
+                                  },
                                 );
-                                blockUtility.handleBlockedRecordNavigation();
                               },
                             );
-                          },
-                        );
-                      }
+                          }
 
-                      if (media[index] is Video) {
-                        return GestureDetector(
-                          behavior: widget.shouldIgnoreTaps
-                              ? HitTestBehavior.translucent
-                              : HitTestBehavior.opaque,
-                          onTap: () {
-                            if (widget.shouldIgnoreTaps) {
-                              return;
-                            }
+                          if (media[index] is Video) {
+                            return GestureDetector(
+                              behavior: widget.shouldIgnoreTaps
+                                  ? HitTestBehavior.translucent
+                                  : HitTestBehavior.opaque,
+                              onTap: () {
+                                if (widget.shouldIgnoreTaps) {
+                                  return;
+                                }
 
-                            if (media[index].status == 'ready') {
-                              _handleNav(
-                                onComplete: () {
-                                  SuperNavigator.push(
-                                    context: context,
-                                    widget: ConnectionCarousel(
-                                      connection: widget.connection,
-                                      media: media,
-                                      initialIndex: index,
-                                    ),
-                                    fullScreen: false,
+                                if (media[index].status == 'ready') {
+                                  _handleNav(
+                                    onComplete: () {
+                                      SuperNavigator.push(
+                                        context: context,
+                                        widget: ConnectionCarousel(
+                                          connection: widget.connection,
+                                          media: media,
+                                          initialIndex: index,
+                                        ),
+                                        fullScreen: false,
+                                      );
+                                    },
                                   );
-                                },
-                              );
-                            }
-                          },
-                          child: MediaTile(
-                            video: media[index],
-                          ),
-                        );
-                      } else {
-                        return GestureDetector(
-                          behavior: widget.shouldIgnoreTaps
-                              ? HitTestBehavior.translucent
-                              : HitTestBehavior.opaque,
-                          onTap: () {
-                            if (widget.shouldIgnoreTaps) {
-                              return;
-                            }
+                                }
+                              },
+                              child: MediaTile(
+                                video: media[index],
+                              ),
+                            );
+                          } else {
+                            return GestureDetector(
+                              behavior: widget.shouldIgnoreTaps
+                                  ? HitTestBehavior.translucent
+                                  : HitTestBehavior.opaque,
+                              onTap: () {
+                                if (widget.shouldIgnoreTaps) {
+                                  return;
+                                }
 
-                            if (media[index].status == 'ready') {
-                              _handleNav(
-                                onComplete: () {
-                                  SuperNavigator.push(
-                                    context: context,
-                                    widget: ConnectionCarousel(
-                                      connection: widget.connection,
-                                      media: media,
-                                      initialIndex: index,
-                                    ),
-                                    fullScreen: false,
+                                if (media[index].status == 'ready') {
+                                  _handleNav(
+                                    onComplete: () {
+                                      SuperNavigator.push(
+                                        context: context,
+                                        widget: ConnectionCarousel(
+                                          connection: widget.connection,
+                                          media: media,
+                                          initialIndex: index,
+                                        ),
+                                        fullScreen: false,
+                                      );
+                                    },
                                   );
-                                },
-                              );
-                            }
-                          },
-                          child: MediaTile(
-                            photo: media[index],
-                          ),
-                        );
-                      }
-                    },
+                                }
+                              },
+                              child: MediaTile(
+                                photo: media[index],
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(
