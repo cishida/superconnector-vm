@@ -175,7 +175,8 @@ class _ConnectionGridState extends State<ConnectionGrid> {
         backgroundColor: Colors.white,
         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(
-          backgroundColor: ConstantColors.OFF_WHITE,
+          backgroundColor: Colors.white,
+          systemUiOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         floatingActionButton: Container(
           height: 64.0,
