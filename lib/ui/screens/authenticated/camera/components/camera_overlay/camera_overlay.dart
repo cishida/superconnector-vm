@@ -279,7 +279,7 @@ class _CameraOverlayState extends State<CameraOverlay>
                   color: Colors.white.withOpacity(.20),
                 ),
                 child: Text(
-                  'Hold for video, tap for photo',
+                  'Tap for photo. Hold for video.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,

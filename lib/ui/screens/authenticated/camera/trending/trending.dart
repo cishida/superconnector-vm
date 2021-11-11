@@ -4,7 +4,6 @@ import 'package:superconnector_vm/core/models/caption/caption.dart';
 import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/services/caption/caption_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
-import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/components/gradient_background.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 
