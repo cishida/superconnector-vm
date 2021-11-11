@@ -32,11 +32,13 @@ target 'Runner' do
   use_modular_headers!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
-
+  
   # Had some issues with versioning here..just speeds up build times so unnecessary
   # When updating podfile/pubspec, make sure to get most recent version here
   # https://github.com/invertase/firestore-ios-sdk-frameworks
   # pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '8.3.0'
+  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '8.9.1'
+
 end
 
 post_install do |installer|

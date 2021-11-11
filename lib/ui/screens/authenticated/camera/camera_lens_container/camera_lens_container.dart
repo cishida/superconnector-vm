@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
-import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
@@ -29,7 +28,6 @@ class CameraLensContainer extends StatefulWidget {
 class _CameraLensContainerState extends State<CameraLensContainer> {
   @override
   Widget build(BuildContext context) {
-    Superuser? superuser = Provider.of<Superuser?>(context);
     final cameraProvider = Provider.of<CameraProvider>(
       context,
     );

@@ -107,7 +107,6 @@ class _SuperconnectorVMState extends State<SuperconnectorVM> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(statusBarBrightness: Brightness.dark));
-    // FlutterStatusbarcolor.setStatusBarColor(ConstantColors.DARK_BLUE);
     // _firebaseMessaging.requestNotificationPermissions();
 
     return FutureBuilder(

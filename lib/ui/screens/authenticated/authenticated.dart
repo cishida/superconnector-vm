@@ -7,7 +7,6 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/authenticated_nav/authenticated_nav.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/onboarding/onboarding.dart';
-// import 'package:superconnector_vm/core/services/auth/auth_service.dart';
 
 class Authenticated extends StatefulWidget {
   const Authenticated({Key? key}) : super(key: key);
@@ -24,27 +23,17 @@ class _AuthenticatedState extends State<Authenticated>
   void initState() {
     super.initState();
     WidgetsFlutterBinding.ensureInitialized().addObserver(this);
-    // final controller =
-    //     Provider.of<BottomNavProvider>(context, listen: false);
-    // controller.setIndex(1);
     _logAppOpen();
-    _setAnalyticsProperties();
   }
 
   void _logAppOpen() async {
     final analytics = Provider.of<FirebaseAnalytics>(context, listen: false);
     await analytics.logAppOpen();
-  }
 
-  void _setAnalyticsProperties() async {
-    FirebaseAnalytics analytics =
-        Provider.of<FirebaseAnalytics>(context, listen: false);
     Superuser? superuser = Provider.of<Superuser?>(context, listen: false);
-
     if (superuser == null || superuser.id == '') {
       return;
     }
-
     await analytics.setUserId(superuser.id);
   }
 
@@ -105,7 +94,6 @@ class _AuthenticatedState extends State<Authenticated>
 
     WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) async {
       _setFCMToken(superuser);
-      // _syncBadge(superuser);
     });
 
     if (!superuser.onboarded) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/connection_search_term.dart';
@@ -22,6 +23,38 @@ class AuthWidgetBuilder extends StatelessWidget {
   }) : super(key: key);
   final Widget Function(BuildContext, AsyncSnapshot<SuperFirebaseUser>) builder;
 
+  List<SingleChildWidget> _buildProviders(SuperFirebaseUser superFirebaseUser) {
+    return [
+      Provider<SuperFirebaseUser>.value(value: superFirebaseUser),
+      ChangeNotifierProvider(
+        create: (_) => SelectedContacts(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => ConnectionSearchTerm(),
+      ),
+      StreamProvider<Superuser?>.value(
+        initialData: Superuser(created: DateTime.now()),
+        value: SuperuserService(id: superFirebaseUser.id).superuser,
+      ),
+      StreamProvider<List<Connection>>.value(
+        value:
+            ConnectionService().getConnectionsWithUsers(superFirebaseUser.id),
+        initialData: [],
+      ),
+      StreamProvider<List<Supercontact>>.value(
+        value: SupercontactService().getSupercontacts(superFirebaseUser.id),
+        initialData: [],
+      ),
+      ChangeNotifierProvider(
+        create: (_) => BottomNavProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CameraProvider(),
+      ),
+      // NOTE: Any other user-bound providers here can be added here
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
@@ -35,44 +68,9 @@ class AuthWidgetBuilder extends StatelessWidget {
 
         final SuperFirebaseUser superFirebaseUser = snapshot.data!;
         return MultiProvider(
-          providers: [
-            Provider<SuperFirebaseUser>.value(value: superFirebaseUser),
-            ChangeNotifierProvider(
-              create: (_) => SelectedContacts(),
-            ),
-            ChangeNotifierProvider(
-              create: (_) => ConnectionSearchTerm(),
-            ),
-            StreamProvider<Superuser?>.value(
-              initialData: Superuser(created: DateTime.now()),
-              value: SuperuserService(id: superFirebaseUser.id).superuser,
-            ),
-            // StreamProvider<List<UserConnection>>.value(
-            //   value: UserConnectionService()
-            //       .getUserConnections(superFirebaseUser.id),
-            //   initialData: [],
-            // ),
-            StreamProvider<List<Connection>>.value(
-              value: ConnectionService()
-                  .getConnectionsWithUsers(superFirebaseUser.id),
-              initialData: [],
-            ),
-            StreamProvider<List<Supercontact>>.value(
-              value:
-                  SupercontactService().getSupercontacts(superFirebaseUser.id),
-              initialData: [],
-            ),
-            ChangeNotifierProvider(
-              create: (_) => BottomNavProvider(),
-            ),
-            ChangeNotifierProvider(
-              create: (_) => CameraProvider(),
-            ),
-            // NOTE: Any other user-bound providers here can be added here
-          ],
+          providers: _buildProviders(superFirebaseUser),
           child: builder(context, snapshot),
         );
-        // return builder(context, snapshot);
       },
     );
   }

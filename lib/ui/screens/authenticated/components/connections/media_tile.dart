@@ -25,7 +25,7 @@ class MediaTile extends StatefulWidget {
 }
 
 class _MediaTileState extends State<MediaTile> {
-  Superuser? _owner;
+  // Superuser? _owner;
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
@@ -29,29 +30,24 @@ class BottomNavButton extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // showBadge
-        //     ? Badge(
-        //         badgeContent: Text(''),
-        //         toAnimate: false,
-        //         badgeColor: ConstantColors.TURQUOISE,
-        //         position: BadgePosition.topEnd(
-        //           top: -11.0,
-        //           end: -8.0,
-        //         ),
-        //         padding: EdgeInsets.all(
-        //           7.0,
-        //         ),
-        //         child: Image.asset(
-        //           'assets/images/home-tab-${title.toLowerCase()}.png',
-        //           height: 22.0,
-        //           color: color,
-        //         ),
-        //       )
-        //     :
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: image,
-        ),
+        showBadge
+            ? Badge(
+                badgeContent: Text(''),
+                toAnimate: false,
+                badgeColor: ConstantColors.TURQUOISE,
+                position: BadgePosition.topEnd(
+                  top: -11.0,
+                  end: -8.0,
+                ),
+                padding: EdgeInsets.all(
+                  7.0,
+                ),
+                child: image,
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: image,
+              ),
         Text(
           title == 'camera-rolls' ? 'Camera Rolls' : title.capitalize(),
           style: TextStyle(

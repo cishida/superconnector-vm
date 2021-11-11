@@ -9,14 +9,10 @@ import 'package:superconnector_vm/core/models/photo/photo.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/photo/photo_service.dart';
-import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/services/video/video_service.dart';
 import 'package:superconnector_vm/core/utils/block/block_utility.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
-import 'package:superconnector_vm/ui/components/overlays/overlay_explanation.dart';
-import 'package:superconnector_vm/ui/components/overlays/overlay_input.dart';
 import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_names.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/components/connection_photos.dart';
@@ -24,8 +20,6 @@ import 'package:superconnector_vm/ui/screens/authenticated/components/connection
 import 'package:superconnector_vm/ui/screens/authenticated/components/connections/media_tile.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/connection_carousel.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/relation_categories/relation_categories.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/relations/relations.dart';
 
 class ConnectionTile extends StatefulWidget {
   const ConnectionTile({
@@ -47,10 +41,10 @@ class _ConnectionTileState extends State<ConnectionTile>
     with AutomaticKeepAliveClientMixin {
   VideoService _videoService = VideoService();
   PhotoService _photoService = PhotoService();
-  SuperuserService _superuserService = SuperuserService();
+  // SuperuserService _superuserService = SuperuserService();
   // List<Superuser> _superusers = [];
   late Timer _periodicUpdate;
-  String _groupName = '';
+  // String _groupName = '';
   List<String> _filteredNames = [];
 
   // Future _loadUsers() async {
@@ -117,7 +111,7 @@ class _ConnectionTileState extends State<ConnectionTile>
       return;
     }
 
-    final String? tag = widget.connection.tags[superuser.id];
+    // final String? tag = widget.connection.tags[superuser.id];
 
     // if ((tag == null || tag.isEmpty) &&
     //     !widget.connection.isExampleConversation) {
@@ -287,8 +281,8 @@ class _ConnectionTileState extends State<ConnectionTile>
                   )
                   .length;
 
-          Color textColor =
-              unwatchedCount > 0 ? ConstantColors.PRIMARY : Colors.black;
+          // Color textColor =
+          //     unwatchedCount > 0 ? ConstantColors.PRIMARY : Colors.black;
           return InkWell(
             onTap: () {
               if (widget.shouldIgnoreTaps) {

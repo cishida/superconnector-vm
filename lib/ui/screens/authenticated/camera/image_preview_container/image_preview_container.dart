@@ -12,7 +12,6 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
-import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
@@ -20,7 +19,6 @@ import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/send_bottom_nav.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
 
 class ImagePreviewContainer extends StatefulWidget {
   const ImagePreviewContainer({

@@ -59,7 +59,8 @@ class _CarouselVideoPlayerState extends State<CarouselVideoPlayer> {
         controlsConfiguration: BetterPlayerControlsConfiguration(
           showControls: true,
           playerTheme: _playerTheme,
-          customControlsBuilder: (controller) => CustomControlsWidget(
+          customControlsBuilder: (controller, onVisibilityChanged) =>
+              CustomControlsWidget(
             controller: controller,
           ),
         ),

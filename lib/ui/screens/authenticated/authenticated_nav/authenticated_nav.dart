@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
-import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/account/account.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/authenticated_nav/components/bottom_nav_button.dart';
+import 'package:superconnector_vm/ui/screens/authenticated/authenticated_nav/components/authenticated_nav_tab_bar.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/record/record_permission/record_permission.dart';
 import 'package:superconnector_vm/ui/screens/home/home.dart';
 
 class AuthenticatedNav extends StatefulWidget {
@@ -60,31 +57,13 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
     }
   }
 
-  // void handleRecordNavigation({
-  //   required BuildContext context,
-  // }) async {
-  //   var cameraStatus = await Permission.camera.status;
-  //   var microphoneStatus = await Permission.microphone.status;
-
-  //   if (cameraStatus.isGranted && microphoneStatus.isGranted) {
-  //     _toCamera();
-  //   } else {
-  //     SuperNavigator.push(
-  //       context: context,
-  //       widget: RecordPermission(
-  //         callback: _toCamera,
-  //       ),
-  //       fullScreen: false,
-  //     );
-  //   }
-  // }
-
-  void _toCamera() {
+  void _changeTab(int value) {
     Provider.of<BottomNavProvider>(
       context,
       listen: false,
-    ).setIndex(1);
-    _tabController.animateTo(1);
+    ).setIndex(value);
+    _tabController.animateTo(value);
+    setState(() {});
   }
 
   @override
@@ -120,21 +99,9 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                     Home(),
                     Camera(),
                     Account(),
-                    // Record(
-                    //   shouldGoBack: false,
-                    // ),
-
-                    // Container(),
-                    // Container(),
-                    // Container(),
-                    // Container(),
                   ],
                 ),
               ),
-              // Container(
-              //   height: 1.0,
-              //   color: ConstantColors.DIVIDER_GRAY,
-              // ),
               Container(
                 height: bottomNavProvider.isSearching ? 0.0 : 80.0,
                 padding: const EdgeInsets.only(
@@ -142,87 +109,9 @@ class _AuthenticatedNavState extends State<AuthenticatedNav>
                 ),
                 width: MediaQuery.of(context).size.width,
                 color: ConstantColors.DARK_BLUE,
-                child: TabBar(
-                  isScrollable: false,
-                  indicatorColor: Colors.transparent,
-                  automaticIndicatorColorAdjustment: false,
-                  onTap: (value) {
-                    // if (value == 1) {
-                    //   handleRecordNavigation(context: context);
-                    // } else {
-                    Provider.of<BottomNavProvider>(
-                      context,
-                      listen: false,
-                    ).setIndex(value);
-                    _tabController.animateTo(value);
-                    // }
-                    // switch (value) {
-                    //   case 1:
-                    //     selectedContacts.reset();
-                    //     SuperNavigator.handleContactsNavigation(
-                    //       context: context,
-                    //     );
-                    //     break;
-                    //   case 2:
-                    //     SuperNavigator.handleRecordNavigation(
-                    //       context: context,
-                    //     );
-                    //     break;
-                    //   case 3:
-                    //     bottomNavProvider.setIsSearching(true);
-                    //     break;
-                    //   case 4:
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => Account(),
-                    //       ),
-                    //     );
-                    //     break;
-                    //   default:
-                    //     Provider.of<BottomNavProvider>(
-                    //       context,
-                    //       listen: false,
-                    //     ).setIndex(value);
-                    //     _tabController.animateTo(value);
-                    //     break;
-                    // }
-                    setState(() {});
-                  },
-                  tabs: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: BottomNavButton(
-                        title: 'camera-rolls',
-                        // showBadge: false,
-                        selected: _tabController.index == 0,
-                      ),
-                    ),
-                    BottomNavButton(
-                      title: 'camera',
-                      selected: _tabController.index == 1,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: BottomNavButton(
-                        title: 'settings',
-                        selected: _tabController.index == 2,
-                        imageHeight: 24.0,
-                      ),
-                    ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(bottom: 4.0),
-                    //   child: Image.asset(
-                    //     'assets/images/authenticated/bottom_nav/bottom-nav-record.png',
-                    //     height: 48.0,
-                    //   ),
-                    // ),
-                    // BottomNavButton(
-                    //   title: 'search',
-                    //   showBadge: showChatsBadge,
-                    //   selected: _tabController.index == 3,
-                    // ),
-                  ],
+                child: AuthenticatedNavTabBar(
+                  changeTab: _changeTab,
+                  showBadge: showChatsBadge,
                 ),
               ),
             ],

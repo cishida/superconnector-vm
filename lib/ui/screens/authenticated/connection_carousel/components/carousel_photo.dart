@@ -1,21 +1,13 @@
-import 'dart:io';
-import 'dart:ui';
-
-import 'package:better_player/better_player.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/models/photo/photo.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
-import 'package:superconnector_vm/core/utils/video/video_player_helper.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/custom_controls_widget.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 
 class CarouselPhoto extends StatefulWidget {
@@ -32,7 +24,7 @@ class CarouselPhoto extends StatefulWidget {
 
 class _CarouselPhotoState extends State<CarouselPhoto> {
   Superuser? _photoSuperuser;
-  BetterPlayerTheme _playerTheme = BetterPlayerTheme.custom;
+  // BetterPlayerTheme _playerTheme = BetterPlayerTheme.custom;
   bool _showedCard = false;
 
   Future _loadUserAndLog() async {
@@ -104,7 +96,7 @@ class _CarouselPhotoState extends State<CarouselPhoto> {
   @override
   Widget build(BuildContext context) {
     // var aspectRatio = _betterPlayerController.getAspectRatio();
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
 
     Superuser? superuser = Provider.of<Superuser?>(context);
 

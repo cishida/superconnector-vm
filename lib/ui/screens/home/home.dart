@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/ui/components/app_bars/custom_app_bar.dart';
@@ -278,6 +279,7 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.white,
           appBar: CustomAppBar(
             backgroundColor: Colors.white,
+            systemUiOverlayStyle: SystemUiOverlayStyle.dark,
           ),
           // floatingActionButton: NewConnectionButton(
           //   onPressed: () {

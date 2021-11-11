@@ -5,7 +5,6 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/snack_bars/light_snack_bar.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/contacts/relation_categories/relation_categories.dart';
 
 class ConnectionGridMenu extends StatelessWidget {
   const ConnectionGridMenu({

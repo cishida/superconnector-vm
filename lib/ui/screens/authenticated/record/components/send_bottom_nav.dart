@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/providers/camera_provider.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/caption_overlay.dart';
 
 class SendBottomNav extends StatelessWidget {

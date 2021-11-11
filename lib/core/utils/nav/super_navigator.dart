@@ -5,7 +5,6 @@ import 'package:superconnector_vm/ui/screens/authenticated/camera/camera.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/camera_reply/camera_reply.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_permission/contacts_permission.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/record/record_permission/record_permission.dart';
 
 class SuperNavigator {
   static void push({

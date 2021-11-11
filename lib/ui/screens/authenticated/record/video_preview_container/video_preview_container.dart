@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:better_player/better_player.dart';
-import 'package:camera/camera.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
-import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
 import 'package:superconnector_vm/core/providers/bottom_nav_provider.dart';
@@ -19,10 +17,7 @@ import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/core/utils/video/better_player_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_options.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/components/caption_overlay.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/components/send_bottom_nav.dart';
 import 'dart:ui' as ui;

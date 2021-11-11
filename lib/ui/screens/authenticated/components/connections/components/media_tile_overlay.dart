@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:superconnector_vm/core/models/video/video.dart';
 import 'package:superconnector_vm/core/utils/formatters/timestamp_formatter.dart';
 
 class MediaTileOverlay extends StatelessWidget {

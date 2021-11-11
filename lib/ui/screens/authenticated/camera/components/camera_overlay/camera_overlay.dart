@@ -6,9 +6,6 @@ import 'package:superconnector_vm/core/models/superuser/superuser.dart';
 import 'package:superconnector_vm/core/services/connection/connection_service.dart';
 import 'package:superconnector_vm/core/utils/constants/colors.dart';
 import 'package:superconnector_vm/core/utils/constants/values.dart';
-import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay_rolls.dart';
 
 class CameraOverlay extends StatefulWidget {
   const CameraOverlay({

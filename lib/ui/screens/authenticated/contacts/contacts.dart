@@ -11,10 +11,8 @@ import 'package:superconnector_vm/core/services/supercontact/supercontact_servic
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/core/utils/nav/super_navigator.dart';
 import 'package:superconnector_vm/core/utils/sms_utility.dart';
-import 'package:superconnector_vm/ui/components/bottom_sheet_tab.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/components/gradient_background.dart';
-import 'package:superconnector_vm/ui/components/underline.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/components/search_bar.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_grid/connection_grid.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/components/group_selection_button.dart';
@@ -256,7 +254,7 @@ class _ContactsState extends State<Contacts> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    // final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.transparent,

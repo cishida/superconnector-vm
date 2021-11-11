@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:superconnector_vm/core/models/connection/connection.dart';
 import 'package:superconnector_vm/core/models/selected_contacts.dart';
 import 'package:superconnector_vm/core/models/superuser/superuser.dart';
-import 'package:superconnector_vm/core/services/superuser/superuser_service.dart';
 import 'package:superconnector_vm/core/utils/constants/strings.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/components/contact_item.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts_selection/components/superuser_item.dart';
@@ -32,7 +31,7 @@ class ContactsSelection extends StatefulWidget {
 class _ContactsSelectionState extends State<ContactsSelection> {
   List<Contact> _sortedContacts = [];
   // List<Superuser>? _superusers;
-  SuperuserService _superuserService = SuperuserService();
+  // SuperuserService _superuserService = SuperuserService();
   // List<Connection> _connections = [];
 
   // Future _loadUsers() async {

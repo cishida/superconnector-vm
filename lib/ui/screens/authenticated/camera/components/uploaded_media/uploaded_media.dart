@@ -19,7 +19,6 @@ import 'package:superconnector_vm/core/utils/sms_utility.dart';
 import 'package:superconnector_vm/ui/components/dialogs/super_dialog.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_transform.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/connection_carousel/components/video_meta_data.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/record/components/video_preview.dart';
 
 class UploadedMedia extends StatefulWidget {
   const UploadedMedia({

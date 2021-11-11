@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -13,9 +12,7 @@ import 'package:superconnector_vm/ui/screens/authenticated/camera/camera_lens_co
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_icon.dart';
 import 'package:superconnector_vm/core/utils/extensions/string_extension.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/components/camera_overlay/camera_overlay_rolls.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/components/uploaded_media/uploaded_media.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/image_preview_container/image_preview_container.dart';
-import 'package:superconnector_vm/ui/screens/authenticated/camera/intro/intro_selection.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/camera/trending/trending.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/contacts/contacts.dart';
 import 'package:superconnector_vm/ui/screens/authenticated/record/video_preview_container/video_preview_container.dart';
