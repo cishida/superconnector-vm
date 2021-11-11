@@ -21,7 +21,6 @@ class HomeTitleBar extends StatefulWidget {
 
 class _HomeTitleBarState extends State<HomeTitleBar>
     with SingleTickerProviderStateMixin {
-  // bool _isSearching = false;
   TextEditingController _searchController = TextEditingController();
   FocusNode _focusNode = FocusNode();
 
@@ -44,20 +43,6 @@ class _HomeTitleBarState extends State<HomeTitleBar>
           width: width,
           child: Stack(
             children: [
-              // AnimatedPositioned(
-              //   duration: const Duration(milliseconds: 150),
-              //   left: bottomNavProvider.isSearching ? -300 : 0.0,
-              //   bottom: 20.0,
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(
-              //       left: 18.0,
-              //     ),
-              //     child: Image.asset(
-              //       'assets/images/authenticated/superconnector-title.png',
-              //       width: width * .527,
-              //     ),
-              //   ),
-              // ),
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 150),
                 left: bottomNavProvider.isSearching ? -400 : 0.0,
@@ -115,7 +100,10 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                         if (mounted) {
                           bottomNavProvider.setIsSearching(true);
                         }
-                        _focusNode.requestFocus();
+
+                        Future.delayed(Duration(milliseconds: 200), () {
+                          _focusNode.requestFocus();
+                        });
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -148,9 +136,6 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                           focusNode: _focusNode,
                           close: () {
                             bottomNavProvider.setIsSearching(false);
-                            // setState(() {
-                            //   bottomNavProvider.isSearching = false;
-                            // });
                           },
                         ),
                       ),
@@ -158,7 +143,6 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                   ),
                 ),
               ),
-
               if (bottomNavProvider.isSearching)
                 Positioned(
                   right: 20.0,
@@ -173,9 +157,6 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                         connectionSearchTerm.set('');
                         FocusScope.of(context).unfocus();
                         bottomNavProvider.setIsSearching(false);
-                        // setState(() {
-                        //   bottomNavProvider.isSearching = false;
-                        // });
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -191,40 +172,6 @@ class _HomeTitleBarState extends State<HomeTitleBar>
                     ),
                   ),
                 ),
-
-              // Positioned(
-              //   right: 0.0,
-              //   bottom: 9.0,
-              //   child: Container(
-              //     child: GestureDetector(
-              //       behavior: HitTestBehavior.opaque,
-              //       onTap: () {
-              //         // SuperNavigator.push(
-              //         //   context: context,
-              //         //   widget: Account(),
-              //         //   fullScreen: false,
-              //         // );
-              //         Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //             builder: (context) => Account(),
-              //           ),
-              //         );
-              //       },
-              //       child: Padding(
-              //         padding: const EdgeInsets.only(
-              //           right: 12.0,
-              //           left: 11.0,
-              //         ),
-              //         child: SuperuserImage(
-              //           url: widget.superuser.photoUrl,
-              //           radius: 21.0,
-              //           bordered: false,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
