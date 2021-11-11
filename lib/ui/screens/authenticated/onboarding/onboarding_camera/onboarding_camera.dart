@@ -36,7 +36,7 @@ class OnboardingCamera extends StatelessWidget {
                 height: 12.0,
               ),
               Text(
-                'This lets you use your phone’s camera to record and share videos. ',
+                'This helps you use your camera for business\noperations and integrate with business apps.',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,

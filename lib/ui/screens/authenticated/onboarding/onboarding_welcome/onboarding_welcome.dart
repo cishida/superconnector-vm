@@ -76,7 +76,7 @@ class _OnboardingWelcomeState extends State<OnboardingWelcome> {
               height: 12.0,
             ),
             Text(
-              'Superconnector is a shared camera for friends & family. Enter your information to get started.',
+              'Superconnector is your business camera. Enter your information to get started.',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,

@@ -33,12 +33,15 @@ class OnboardingNotifications extends StatelessWidget {
               SizedBox(
                 height: 12.0,
               ),
-              Text(
-                'These tell you when you receive video messages so you can reply quickly.',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Text(
+                  'These tell you when people share business photos and videos with you.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
               SizedBox(
