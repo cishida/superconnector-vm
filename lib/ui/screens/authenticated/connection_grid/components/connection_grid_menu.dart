@@ -208,21 +208,6 @@ class ConnectionGridMenu extends StatelessWidget {
                     ),
                   ),
                   children: [
-                    // shouldBlock
-                    //     ? MenuChip(
-                    //         onPressed: () => _blockPressed(
-                    //           context: context,
-                    //           superuser: superuser,
-                    //         ),
-                    //         title: 'Block',
-                    //       )
-                    //     : MenuChip(
-                    //         onPressed: () => _unblockPressed(
-                    //           context: context,
-                    //           superuser: superuser,
-                    //         ),
-                    //         title: 'Unblock',
-                    //       ),
                     if (targetUserId.isNotEmpty)
                       GridMenuItem(
                         title: shouldBlock ? 'Block' : 'Unblock',
@@ -243,10 +228,6 @@ class ConnectionGridMenu extends StatelessWidget {
                         context: context,
                       ),
                     ),
-                    // GridMenuItem(
-                    //   title: 'Edit Relation',
-                    //   onTap: () => _editRelationPressed(context),
-                    // ),
                   ],
                 ),
               ),
